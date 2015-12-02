@@ -1252,7 +1252,7 @@ p {
 .Gadget .Header > div.CallStatus .CallAvatar.CallAvatar_Office img.default,
 .Gadget .Header > div.CallStatus .CallAvatar_Office img.default,
 .Gadget .Header > div.CallStatus .CallAvatar img.default {
-  margin-left: -2px;
+  margin-left: -1px;
 }
 .Gadget .Header .Title {
   margin-left: .5em;
@@ -1800,6 +1800,7 @@ p {
 .WidgetHeader .Avatar img:not(.GroupAvatarItemImg) {
   width: 38px !important;
   height: 38px !important;
+  margin-left: -1px;
 }
 .WidgetBody {
   position: relative;
@@ -1887,7 +1888,7 @@ p {
 .WidgetBody .vmsection .Avatar.CallAvatar_Office,
 .WidgetBody .vmsection .Avatar.CallAvatar_External,
 .WidgetBody .vmsection .Avatar.CallAvatar_Queue {
-  margin: auto 2px !important;
+  margin: auto 2px;
   border: none;
   width: 40px;
   height: 40px;
@@ -6625,6 +6626,40 @@ form ul li {
 .ListLineContentCell.Down span {
   color: #729C00;
 }
+.GroupRow .Avatar {
+  width: 40px !important;
+  height: 40px !important;
+}
+.GroupRow .Avatar img {
+  width: 38px !important;
+  height: 38px !important;
+}
+.GroupRow .WidgetHeaderCallStatus {
+  height: 40px;
+  margin-top: .5em;
+}
+.GroupRow .WidgetHeaderCallStatus .Avatar {
+  width: 30px !important;
+  height: 30px !important;
+  background: url("../img/XAvatarBorder.png") no-repeat -95px -95px;
+}
+.GroupRow .WidgetHeaderCallStatus .Avatar img {
+  width: 28px !important;
+  height: 28px !important;
+  margin-left: 1px !important;
+  margin-top: 1px !important;
+}
+.GroupRow .WidgetHeaderCallStatus .CallLineTop {
+  margin-top: -5px;
+  width: 80px !important;
+}
+.GroupRow .WidgetHeaderCallStatus .CallLineTop .CallerName {
+  width: 100%;
+}
+.GroupRow .WidgetHeaderCallStatus .CallDuration {
+  margin-top: -5px;
+  top: 11px !important;
+}
 .ListRow {
   position: relative;
   cursor: pointer;
@@ -6736,6 +6771,9 @@ form ul li {
   display: flex;
   display: -webkit-flex;
 }
+.ListRow .GroupListRowContent .Avatar {
+  margin-top: 0px !important;
+}
 .ListRow .ListRowTitle {
   float: left;
   padding: .5em;
@@ -6799,16 +6837,27 @@ form ul li {
 .ListRow .ListRowTitle .name .ConferenceListRowStatusText {
   font-size: 12px !important;
 }
-.ListRow .GroupListRowTitle {
+.ListRow .GroupListRowTitleWidget {
   max-width: 100%;
+  padding-top: 10px;
 }
-.ListRow .GroupListRowTitle .status_message {
+.ListRow .GroupListRowTitleWidget span {
+  color: #222;
+}
+.ListRow .GroupListRowTitleWidget .ListRowStatusIcon {
+  margin-left: 0px;
+}
+.ListRow .GroupListRowTitleWidget .status_message {
   -ms-overflow-x: none;
   -ms-overflow-y: none;
   -ms-text-overflow: ellipsis;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: -2px;
+  width: 85%;
 }
 .ListRow .ListRowStatus {
   float: right;
@@ -7151,11 +7200,26 @@ form ul li {
   float: right;
   color: gray;
 }
+.vmsection.group_members .GroupListRowContent .Avatar.CallAvatar_Office {
+  background: transparent url('') no-repeat !important;
+  border: 3px solid #009CFF;
+}
+.vmsection.group_members .GroupListRowContent .Avatar.CallAvatar_Office img {
+  margin-left: -1px !important;
+  margin-top: -1px !important;
+}
+.vmsection.group_members .GroupListRowContent .Avatar.CallAvatar_Queue {
+  background: url("../img/XAvatarBorder.png") no-repeat -95px -185px;
+  margin: auto 2px !important;
+}
+.vmsection.group_members .GroupListRowContent .Avatar.CallAvatar_External {
+  background: url("../img/XAvatarBorder.png") no-repeat -95px -140px;
+}
 .vmsection.group_members .vmalternate {
   display: inline-block;
   float: right;
   position: relative;
-  margin-top: 3px;
+  margin-top: 6px;
   margin-right: 5px;
   height: 40px;
   -ms-flex: 1;
@@ -7165,6 +7229,7 @@ form ul li {
   right: 0;
   top: 0;
   position: absolute;
+  margin-top: 5px;
 }
 .vmsection.group_members .vmalternate .extension {
   visibility: visible;
@@ -9555,7 +9620,7 @@ a.Messages {
 }
 .voicemail.vmails .vmsection .displayName p {
   clear: none;
-  max-width: 50%;
+  max-width: 48%;
 }
 .voicemail.vmails .vmsection .displayName .vmalternate {
   margin-top: 0px !important;
@@ -9588,6 +9653,12 @@ a.Messages {
 .vmsection .Avatar.CallAvatar_Queue {
   margin: auto 0px auto -5px !important;
 }
+.vmsection .Avatar.CallAvatar.CallAvatar_Office,
+.vmsection .Avatar.CallAvatar.CallAvatar_External,
+.vmsection .Avatar.CallAvatar.CallAvatar_Queue {
+  top: 0px !important;
+  margin-top: 8px;
+}
 .vmsection .ConferenceAvatarSection.Avatar.ConferenceRecording {
   margin: 0.5em;
 }
@@ -9610,7 +9681,6 @@ a.Messages {
   padding: 5px;
   cursor: pointer;
   font-size: 11px;
-  line-height: 48px;
 }
 .vmsection .vminfo:hover .displayName .vmtime {
   visibility: hidden;
@@ -9629,8 +9699,7 @@ a.Messages {
   max-width: 70%;
 }
 .vmsection .vminfo .displayName {
-  position: absolute;
-  top: 5px;
+  position: relative;
   left: 5px;
   right: 5px;
   text-align: left;
@@ -9670,15 +9739,15 @@ a.Messages {
   position: relative;
 }
 .vmsection .vminfo .footnote.voicemails {
-  white-space: normal;
+  white-space: normal !important;
   color: #222;
   font-style: normal;
   line-height: 16px;
   word-wrap: break-word;
   width: 100%;
-  vertical-align: bottom;
-  height: 20px;
   margin-bottom: -3px;
+  overflow: inherit !important;
+  display: inherit !important;
 }
 .vmsection:hover {
   background-color: #f0f0ff;
@@ -9710,9 +9779,14 @@ a.Messages {
 .vmsection:hover .vmtime {
   visibility: hidden;
 }
+.vmsection.recording .vminfo {
+  line-height: inherit !important;
+}
+.vmsection.recording .vminfo .displayName {
+  height: 30px !important;
+}
 .vmsection.recording .vminfo .footnote {
-  height: 30px;
-  vertical-align: bottom;
+  height: 15px;
   margin-left: 5px;
 }
 .vmsection.recording .vminfo .footnote .vmduration {
@@ -9721,11 +9795,13 @@ a.Messages {
 .vmsection.recording .vminfo .footnote .no_transcription,
 .vmsection.recording .vminfo .footnote .transcription {
   margin-bottom: -18px;
-  vertical-align: bottom;
 }
 .vmsection.recording .vminfo em,
 .vmsection.recording .vminfo p.vmdisplay {
   float: left;
+}
+.vmsection.recording .Avatar.CallAvatar_Queue {
+  margin-left: 0px !important;
 }
 .vmfootnote {
   display: inline-block;
@@ -9736,13 +9812,36 @@ a.Messages {
 .vmfootnote.transcription,
 .vmfootnote.no_transcription {
   white-space: normal;
-  overflow: inherit;
-  text-overflow: inherit;
+  overflow: inherit !important;
+  text-overflow: inherit !important;
   line-height: 16px;
 }
 .vmfootnote.transcription {
   color: #888;
   font-size: 12px;
+  max-width: 85%;
+  max-height: 320px;
+  overflow-y: hidden !important;
+  display: block;
+}
+.vmfootnote.transcription:after {
+  content: ' ';
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 1em;
+  bottom: 0px;
+  left: 0px;
+}
+.vmfootnote.transcription:before {
+  content: "...";
+  text-align: right;
+  position: absolute;
+  display: block;
+  width: 2em;
+  height: 1em;
+  bottom: .4em;
+  right: 10px;
 }
 .vmfootnote.no_transcription {
   color: #999;
@@ -9755,7 +9854,8 @@ a.Messages {
   margin-right: 10px;
   height: 15px;
   line-height: 10px;
-  /*vertical-align: bottom;*/
+  float: left;
+  margin-left: 5px;
 }
 .vmdisplay {
   display: inline-block;

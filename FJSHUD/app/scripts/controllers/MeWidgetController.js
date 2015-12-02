@@ -463,6 +463,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.autoAwaySelected;
   
     $scope.update_settings = function(type,action,model, currentObject){
+    	console.log('settings');
         switch(type){
             case 'auto_away_timeout':
                 if(model){
@@ -751,10 +752,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 var QueueAlertsLW = $scope.settings['HUDw_QueueAlertsLW_' + $scope.queues[i].xpid];
                 var QueueNotificationsAb = $scope.settings['HUDw_QueueNotificationsAb_' + $scope.queues[i].xpid];
                 var QueueAlertsAb = $scope.settings['HUDw_QueueAlertsAb_' + $scope.queues[i].xpid]; 
+                
 				$scope.settings['HUDw_QueueNotificationsLW_'+$scope.queues[i].xpid] = QueueNotificationsLW == "true" ? true : (QueueNotificationsLW == true ? QueueNotificationsLW : false);
 				$scope.settings['HUDw_QueueAlertsLW_'+ $scope.queues[i].xpid] =  QueueAlertsLW == "true" ? true : (QueueAlertsLW == true ? QueueAlertsLW : false);
 				$scope.settings['HUDw_QueueNotificationsAb_'+ $scope.queues[i].xpid] = QueueNotificationsAb == "true" ? true : (QueueNotificationsAb == true ? QueueNotificationsAb : false);
 				$scope.settings['HUDw_QueueAlertsAb_'+ $scope.queues[i].xpid] = QueueAlertsAb == "true" ? true : (QueueAlertsAb == true ? QueueAlertsAb : false);
+				
 			}
 		}
 		$scope.$safeApply();
@@ -808,7 +811,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     
     $scope.$on('settings_updated',function(event,data){
         if (data){
-			//$scope.settings = settings = data;
+			$scope.settings = settings = data;
 			update_queues();
             update_settings();
         }
@@ -1241,7 +1244,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     });
     
-    /*$scope.$on("queues_synced", function(event,data){
+    $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
             $scope.queues = data;
             $scope.queues = $scope.queues.sort(function(a,b){
@@ -1251,7 +1254,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             });
         }
         update_queues();
-    });*/
+    });
 
     queueService.getQueues().then(function(data){
          if(data && data != undefined){

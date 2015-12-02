@@ -29,6 +29,21 @@ self.addEventListener('message',function(event){
 				get_feed_data(event.data.feed);
 				
 				break;
+			case 'delete':
+				var feed = event.data.feed;
+				var key = event.data.xpid.split('_')[0];
+				
+				if (data_obj[feed] && data_obj[feed][key]) {
+					for (var i = 0, len = data_obj[feed][key].items.length; i < len; i++) {
+						if (data_obj[feed][key].items[i].xpid == event.data.xpid) {
+							// force delete flag
+							data_obj[feed][key].items[i].xef001type = 'delete';
+							break;
+						}
+					}
+				}
+			
+				break;
 		}
 	}
 });

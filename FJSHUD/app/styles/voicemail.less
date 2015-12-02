@@ -13,7 +13,7 @@
 	  	em.from{
 	  	  font-style: italic;
 	  	}
-	  	p{clear: none; max-width: 50%;}
+	  	p{clear: none; max-width: 48%;}
 	  	.vmalternate{margin-top: 0px !important;}
 	  }
 	}
@@ -50,6 +50,14 @@
     .Avatar.CallAvatar_Queue{
           margin: auto 0px auto -5px !important;
     }
+    .Avatar.CallAvatar{
+      &.CallAvatar_Office,
+      &.CallAvatar_External,
+      &.CallAvatar_Queue{
+	   top: 0px !important;
+	   margin-top: 8px;
+	  } 
+	}
     
     .ConferenceAvatarSection.Avatar.ConferenceRecording{
         margin: 0.5em;
@@ -64,7 +72,7 @@
 			width: 2.5em;
 			height: 2.5em;
 		}
-	}
+	}	
 	.vminfo{
 		flex: 1;
 		-webkit-flex: 1;
@@ -74,7 +82,7 @@
 		padding: 5px;
 		cursor: pointer;
 		font-size: 11px;
-		line-height: 48px;
+		//line-height: 48px;
 		
 		&:hover{
 		  .displayName{
@@ -97,8 +105,9 @@
 		  max-width: 70%;
 		}
 		.displayName{ 
-            position: absolute;
-            top: 5px;
+            //position: absolute;
+            //top: 5px;
+            position: relative;
             left: 5px;
             right: 5px;                      
             text-align: left;
@@ -143,15 +152,17 @@
             position: relative;           
                         
             &.voicemails{
-            	white-space: normal;
+            	white-space: normal !important;
 			    color: #222;			   
 			    font-style: normal;
 			    line-height: 16px;
 			    word-wrap: break-word;
 			    width: 100%;
-			    vertical-align: bottom;
-                height: 20px;
+			    //vertical-align: bottom;
+                //height: 20px;
                 margin-bottom: -3px;
+                overflow: inherit !important;
+                display: inherit !important;
             }         
           }
 	}
@@ -188,9 +199,14 @@
 	}
 	&.recording{
 			.vminfo{
+			    line-height: inherit !important;
+			    .displayName{
+			    	height: 30px !important;			    	
+			    }
 				.footnote {
-					height: 30px;
-    				vertical-align: bottom;
+					//height: 30px;
+    				//vertical-align: bottom;
+    				height: 15px;
     				margin-left: 5px;
     				
     				.vmduration {
@@ -199,7 +215,7 @@
     				
     				.no_transcription,.transcription {
     					margin-bottom: -18px;
-    					vertical-align: bottom;
+    					//vertical-align: bottom;
     				}
     				
 				}
@@ -207,6 +223,9 @@
 				 	float: left;
 				 }
 			}
+      .Avatar.CallAvatar_Queue{
+        margin-left: 0px !important;
+      }
 	}
 }
 
@@ -215,16 +234,41 @@
 	overflow:hidden;
 	text-overflow:ellipsis;
 	white-space:nowrap;
+	
 	&.transcription,
 	&.no_transcription{
 		white-space:normal;
-		overflow: inherit;
-		text-overflow:inherit;
+		overflow: inherit !important;
+		text-overflow:inherit !important;
 		line-height: 16px;		
 	}
 	&.transcription{
 		color: #888;
-    	font-size: 12px;    
+    	font-size: 12px;   
+    	max-width: 85%; 
+    	max-height: 320px;
+        overflow-y: hidden !important;
+        display: block;
+        
+        &:after {
+	        content:                    ' ';
+	        position:                   absolute;
+	        display:                    block;
+	        width:                      100%;
+	        height:                     1em;
+	        bottom:                     0px;
+	        left:                       0px;
+        }
+        &:before {
+	        content: "...";
+			text-align: right;
+			position: absolute;
+			display: block;
+			width: 2em;
+			height: 1em;
+			bottom: .4em;
+			right: 10px;
+        }
 	}
 	&.no_transcription{
 		color: #999;
@@ -236,8 +280,9 @@
 		padding: 3px 2px;
 		margin-right: 10px;
 		height: 15px;
-		line-height: 10px;
-		/*vertical-align: bottom;*/
+		line-height: 10px;		
+		float: left;
+		margin-left: 5px;
 	}
 }
 

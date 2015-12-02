@@ -55,22 +55,22 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 			for (var i = 0, len = $scope.profile.members.length; i < len; i++) {
 				var member = $scope.profile.members[i];
 				
-				// find user's member ID
+				// replace contact with member object
 				if ($scope.widget == 'conversation' && member.contactId == $scope.context.xpid)
-					$scope.original = member;
+					$scope.context = member;
 				
 				if (member.contactId == $rootScope.myPid) {
 					$scope.myQueue = true;
 					
 					if ($scope.widget != 'conversation')
-						$scope.original = member;
+						$scope.context = member;
 				}
 			}
 		}
 		else if ($scope.profile.roomNumber !== undefined) {
 			$scope.type = 'ConferenceRoom';
 		}
-		else if ($scope.profile.name !== undefined) {
+		else if ($scope.profile.name !== undefined && $scope.profile.name != '') {
 			$scope.type = 'Group';
 			$scope.isMine = groupService.isMine($scope.profile.xpid);
 		}
@@ -82,6 +82,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		// permissions
 		if ($scope.profile.permissions !== undefined) {
 			switch ($scope.type) {
+				case 'QueueStat':
+					if ($scope.context)
+						$scope.canLoginAgent = settingsService.isEnabled($scope.context.fullProfile.permissions, 9);
+					
+					break;
 				case 'Contact':
 					$scope.canIntercom = settingsService.isEnabled($scope.profile.permissions, 6);
 					$scope.canLoginAgent = settingsService.isEnabled($scope.profile.permissions, 9);
@@ -357,12 +362,14 @@ console.log("Contact",contact);
    
 
 	$scope.loginQueue = function() {
-		httpService.sendAction('queue_members', 'agentLogin', {memberId: $scope.original.xpid});
+		httpService.sendAction('queue_members', 'agentLogin', {
+			memberId: $scope.context ? $scope.context.xpid : $scope.original.xpid
+		});
 	};
 	
 	$scope.logoutQueue = function(reason) {
 		httpService.sendAction('queue_members', 'agentLogout', {
-			memberId: $scope.original.xpid, 
+			memberId: $scope.context ? $scope.context.xpid : $scope.original.xpid, 
 			reason: reason
 		});
 	};

@@ -169,7 +169,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     			return $scope.vm.myProfile;
     		}
     	}
-		return voicemail;
+		   return voicemail;
     };
 
     $rootScope.$on('voicemailbox_synced', function(event, data) {
