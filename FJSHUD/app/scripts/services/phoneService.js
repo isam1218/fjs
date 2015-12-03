@@ -819,11 +819,11 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					break;
 				case '/showQueue':
 					var context = queryArray[0];
-					var audience = context.split(':')[0];
 					xpid = context.split(':')[1];
 					var queueId = queryArray[0];
 					var type = queryArray[2];
 					var messagexpid = queryArray[3];
+					var audience = queryArray[4];
 
 					showQueue(queueId,audience, type,messagexpid);
 					break;

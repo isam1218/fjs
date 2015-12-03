@@ -122,7 +122,7 @@
 						</div>
 						
 						<div class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
-							<div class="XButton" onclick="mouseClick(this)" action="#/showQueue?{{::message.queueId}}&{{::message.audience}}&{{::message.type}}&{{::message.xpid}}">{{::verbage.Show}}</div>
+							<div class="XButton" onclick="mouseClick(this)" action="#/showQueue?{{::message.queueId}}&{{::message.audience}}&{{::message.type}}&{{::message.xpid}}&{{::message.audience}}">{{::verbage.Show}}</div>
 						</div>
 					</div>
 				</div>
