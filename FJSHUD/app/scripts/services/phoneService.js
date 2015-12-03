@@ -823,7 +823,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var queueId = queryArray[0];
 					var type = queryArray[2];
 					var messagexpid = queryArray[3];
-					var audience = queryArray[4];
+					var audience = queryArray[1];
 
 					showQueue(queueId,audience, type,messagexpid);
 					break;
