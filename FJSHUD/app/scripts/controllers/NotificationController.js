@@ -451,10 +451,14 @@ hudweb.controller('NotificationController',
     }
   };
 
-  $scope.acceptCall = function(xpid, message){
+  $scope.acceptCall = function(xpid, message, currentCall){
     for(var call = 0; call < $scope.calls.length; call++){
       if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
         $scope.holdCall($scope.calls[call].xpid,true);
+      }
+      // if the user's incoming call is a queue call --> force change that call's state to ACCEPTED so that "End" and "Hold" appear. This is for the "Press to Accept" permission (HUDF-1338) to work properly.
+      if (currentCall.type == $scope.calltype.QUEUE_CALL && $scope.calls[call].xpid == xpid){
+        $scope.calls[call].state = $scope.callState.CALL_ACCEPTED;
       }
     }
     if (message && message.type == 'zoom'){
