@@ -22,7 +22,7 @@
             </div>
             <div class="new_notifications notifications_section">
 				  <!-- errors -->
-				  <div class="Messages error" ng-repeat="error in errors track by error.xpid" ng-switch="::error.xpid">	
+				  <div class="Messages error overlay" ng-repeat="error in errors track by error.xpid" ng-switch="::error.xpid">	
 					<div class="NotificationHeader"> 
 						<div class="NotificationHeaderBackground"> 
 							<div class="NotificationClose" ng-click="dismissError(error.xpid)"></div>
@@ -79,7 +79,7 @@
 				  </div>
 				  
 				  <!-- normal messages -->
-                  <div class="Messages" ng-repeat="message in get_new_notifications() track by message.xpid">             
+                  <div class="Messages overlay" ng-repeat="message in get_new_notifications()">             
                      <div class="NotificationHeader"> 
                             <div class="NotificationHeaderBackground"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
@@ -200,7 +200,7 @@
              <input type="button" class="XButton header" value="{{::verbage.clear}}" ng-click="removeOldNotifications()" />
           </div>   
              <div class="old_notifications notifications_section" ng-show="!showOld">                        
-                <div class="Messages" ng-repeat="message in get_old_notifications()">             
+                <div class="Messages overlay" ng-repeat="message in get_old_notifications()">             
                      <div class="NotificationHeader"> 
                             <div class="NotificationHeaderBackground"> 
                                 <div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
