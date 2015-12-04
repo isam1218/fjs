@@ -230,10 +230,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		myHttpService.getFeed('locations');
 		myHttpService.getFeed('calllog');   
 		myHttpService.getFeed('calls');    
+		myHttpService.getFeed('calldetails');    
 		myHttpService.getFeed('weblauncher');    
 		myHttpService.getFeed('weblaunchervariables');
 		myHttpService.getFeed('i18n_langs');
-		//myHttpService.getFeed('settings');
 	}
 
     
