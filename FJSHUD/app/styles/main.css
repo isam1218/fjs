@@ -380,6 +380,10 @@ p {
 .TopBar2ItemAppIcon.Intellinote {
   background: url("../img/Intellinote-Icon.png") no-repeat 1px 6px;
 }
+.TopBarItemAppIcon.Zipwhip,
+.TopBar2ItemAppIcon.Zipwhip {
+  background: url("../img/zipwhipIcon.png") no-repeat 1px 6px;
+}
 .TopBarItemAppIcon.more {
   background-position: -280px -40px;
   position: relative;
@@ -5285,7 +5289,7 @@ form ul li {
   right: 7px;
   float: right;
   width: 229px;
-  height: 400px;
+  height: 75%;
   border: 1px solid none;
 }
 #joinVideoScreen .SearchContactOverlay {
