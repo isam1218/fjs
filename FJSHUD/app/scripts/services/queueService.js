@@ -3,6 +3,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	var queues = [];
 	var mine = [];
 	var total = {};
+	var agents = {};
 	var myLoggedIn = 0;
 	var reasons = [];
 	var selectedFlag = '';
@@ -301,11 +302,12 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			queue.loggedInMembers = 0;
 			queue.loggedOutMembers = 0;
 
-			if (queue.members && queue.members.length > 0) {
-				total.members += queue.members.length;
-			
+			if (queue.members && queue.members.length > 0) {			
 				// current member list
 				for (var m = 0, mLen = queue.members.length; m < mLen; m++) {
+					// prepare for total count
+					agents[queue.members[m].contactId] = false;
+					
 					// member list from sync
 					for (var i = 0, iLen = data.length; i < iLen; i++) {
 						if (data[i].xpid == queue.members[m].xpid) {
@@ -313,8 +315,9 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				
 							// logged totals
 							if (queue.members[m].status.status.indexOf('login') != -1) {
+								agents[queue.members[m].contactId] = true;
+								
 								queue.loggedInMembers++;
-								total.loggedIn++;
 								
 								if (queue.members[m].contactId == $rootScope.myPid)
 									myLoggedIn++;
@@ -331,6 +334,14 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 					}
 				}
 			}
+		}
+		
+		// finalize totals
+		for (var key in agents) {
+			total.members++;
+			
+			if (agents[key] === true)
+				total.loggedIn++;
 		}
 	});
 	
