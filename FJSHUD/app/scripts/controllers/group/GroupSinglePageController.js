@@ -13,8 +13,6 @@ hudweb.controller('GroupSinglePageController', ['$scope', '$rootScope', '$routeP
 	];
 	
 	$scope.selectedAction = $scope.callOptions[0];
-
-	// $scope.action.selected = $scope.callOptions[0];
 	
 	$scope.memberFilter = function(){
 		return function(member){
