@@ -80,7 +80,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		}
 		
 		// permissions
-		if ($scope.profile.permissions !== undefined) {
+		if ($scope.profile && $scope.profile.permissions !== undefined) {
 			switch ($scope.type) {
 				case 'QueueStat':
 					if ($scope.context)
@@ -232,7 +232,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 			settingIsEnabled = true;
 		else
 			settingIsEnabled = false;
-		return (settingIsEnabled && $scope.profile.call != null);
+		// external callers don't have profile so run check to prevent js error
+		if ($scope.profile)
+			return (settingIsEnabled && $scope.profile.call != null);
+		else
+			return false;
 	};
 	
 	$scope.bargeCall = function(action) {

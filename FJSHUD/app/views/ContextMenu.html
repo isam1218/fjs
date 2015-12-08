@@ -129,7 +129,7 @@
 	</div>
 		
 	<!-- contact -->
-	<div ng-if="profile.xpid != myPid && type == 'Contact'">
+	<div ng-if="profile.xpid != myPid && (type != 'QueueStat' || type != 'ConferenceRoom' || type != 'Group')">
 		<a class="Button" href="" ng-show="original.parkExt" ng-click="takeParkedCall()">
 			<div class="ListRowActionButtonTake"></div>
 			<span>{{::verbage.take}}</span>
