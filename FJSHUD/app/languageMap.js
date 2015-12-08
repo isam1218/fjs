@@ -244,7 +244,7 @@
 
       /**** ZOOM ****/
       video_collaboration_summary: "You are licensed to use Fonality's Video Collaboration. With this feature, you can hold live video meetings with others inside, or outside, your company. You can even share screens. To get started, simply join or start a meeting below.",
-      join_summary:"To join a video collaboration session started by someone else, enter the Meeting ID below, and click the 'Join Now' button.",
+      join_summary:"To join a video collaboration session started by someone else, enter the Meeting ID, and click the 'Join Now' button.",
 	    create_summary:"To create a new video collaboration session, select the type of video session you'd like to start below, and optionally select people from HUD that you'd wish to invite - they will be sent a link in HUD automatically.",
       start_screen_share_only:"Start with Screen Share Only",
       start_with_video:"Start with Video",
