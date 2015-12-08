@@ -77,6 +77,12 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 							if (attrs.profile !== 'recording'){
 								element.addClass('AvatarNormal');
 							}
+							// if group call/page/intercom (any part of app) --> blue circle
+							if (attrs.type == "1"){
+								classy += "Office";
+								element.addClass(classy);
+								break;
+							}
 							// all else --> queue is orange circle, external is green circle, internal is blue
 							if (avatarObjType == 3 || avatarObjType == 1)
 								classy += 'Queue';
