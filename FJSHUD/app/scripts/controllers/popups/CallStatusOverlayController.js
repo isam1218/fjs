@@ -157,7 +157,12 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.meToo.me;
 		}
 		else if (screen == 'transfer') {
-			$scope.transferFrom = contactService.getContact(xpid);
+			// for queue calls, always use main call object
+			if ($scope.onCall.call.type == 3)
+				$scope.transferFrom = $scope.onCall.call;
+			else
+				$scope.transferFrom = contactService.getContact(xpid);
+				
 			$scope.tranQuery = '';
 			$scope.transferTo = null;
 			$scope.sendToPrimary = true;
@@ -322,7 +327,11 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			}
 			else {
 				feed = 'calls';
-				params.fromContactId = $scope.transferFrom.call.contactId;
+				
+				if ($scope.transferFrom.call && $scope.transferFrom.call.contactId)
+					params.fromContactId = $scope.transferFrom.call.contactId;
+				else
+					params.fromContactId = $scope.transferFrom.xpid;
 			}
 			
 			// receiver
