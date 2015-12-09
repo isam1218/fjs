@@ -165,7 +165,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		authTicket = localStorage.authTicket;
 		
 	// get node id
-	clientRegistry = function(){
+	var clientRegistry = function(){
 			$http({
 				url:fjs.CONFIG.SERVER.serverURL 
 				+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
@@ -177,13 +177,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				method:'POST'
 			})
 			.success(function(response) {
-				nodes = response.match(/node=([^\n]+)/);
+				var nodes = response.match(/node=([^\n]+)/);
 				if(nodes && nodes.length > 0){
 					nodeID = nodes[1];
 					localStorage.nodeID = nodeID;
 				}else{
-					url = response.match(/RedirectHost=([^\n]+)/)[1];
-					localStorage.serverHost = url;
+					localStorage.serverHost = response.match(/RedirectHost=([^\n]+)/)[1];
 					clientRegistry();			
 				}
 				// start shared worker
