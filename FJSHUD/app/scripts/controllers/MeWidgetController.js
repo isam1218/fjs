@@ -1231,6 +1231,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                                 
                             for(var i = 0; i < $scope.inputDevices.length;i++){
                                 if($scope.selectedDevices.selectedInput.name == $scope.inputDevices[i].name){
+                                    var counter = $scope.inputDevices[i].name.length;
+                                    // if the device name-string is a certain length, add ellipsis to the end...
+                                    $scope.inputDevices[i].title = counter > 19 ? $scope.inputDevices[i].name.slice(0, 19) + '...' : $scope.inputDevices[i].name;
                                     $scope.selectedDevices.selectedInput = $scope.inputDevices[i];
                                     $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
                                     inputSelected = true;
@@ -1240,6 +1243,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                         }else{
                             for(var i = 0; i < $scope.inputDevices.length;i++){
                                 if(inputId == $scope.inputDevices[i].id){
+                                    var counter = $scope.inputDevices[i].name.length;
+                                    $scope.inputDevices[i].title = counter > 19 ? $scope.inputDevices[i].name.slice(0, 19) + '...' : $scope.inputDevices[i].name;
                                     $scope.selectedDevices.selectedInput = $scope.inputDevices[i];
                                     $scope.updateAudioSettings($scope.selectedDevices.selectedInput.id,'Input');
                                     inputSelected = true;
@@ -1268,6 +1273,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                                     $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
                                     ringSelected = true;
                                 }
+                                var counter = $scope.outputDevices[j].name.length;
+                                $scope.outputDevices[j].title = counter > 19 ? $scope.outputDevices[j].name.slice(0, 19) + '...' : $scope.outputDevices[j].name;
                             }
                         }else{
                              for(var j = 0; j < $scope.outputDevices.length; j++){
@@ -1283,6 +1290,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                                     $scope.updateAudioSettings($scope.selectedDevices.selectedRingput.id,'Ring');
                                     ringSelected = true;
                                 }
+                                var counter = $scope.outputDevices[j].name.length;
+                                $scope.outputDevices[j].title = counter > 19 ? $scope.outputDevices[j].name.slice(0, 19) + '...' : $scope.outputDevices[j].name;
                             }
                         }
 

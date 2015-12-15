@@ -39,17 +39,16 @@
       <div class="lblSelect">{{::verbage.input_devices}}: </div>
       <select class="fj-hbox SelectBox SelectBoxSettings"
           ng-model="$parent.selectedDevices.selectedInput"
-          ng-options="inputDevice.name for inputDevice in inputDevices"
+          ng-options="inputDevice.title for inputDevice in inputDevices"
           ng-change="updateAudioSettings(selectedDevices.selectedInput.id,'Input')"
       >
       </select>
-
     </div>
     <div class="Dialog-settings-row">
       <div class="lblSelect">{{::verbage.output_devices}}: </div>
       <select class="fj-hbox SelectBox SelectBoxSettings"
          ng-model="$parent.selectedDevices.selectedOutput"
-          ng-options="outputDevice.name for outputDevice in outputDevices"
+          ng-options="outputDevice.title for outputDevice in outputDevices"
           ng-change="updateAudioSettings(selectedDevices.selectedOutput.id,'Output')"
    
       >
@@ -60,7 +59,7 @@
         <div class="lblSelect">{{::verbage.ring_devices}}: </div>
         <select class="fj-hbox SelectBox SelectBoxSettings"
              ng-model="$parent.selectedDevices.selectedRingput"
-            ng-options="outputDevice.name for outputDevice in outputDevices"
+            ng-options="outputDevice.title for outputDevice in outputDevices"
                ng-change="updateAudioSettings(selectedDevices.selectedRingput.id,'Ring')"
    
         >
