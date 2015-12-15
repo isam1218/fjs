@@ -38,7 +38,7 @@
 	</a>
 		
 	<!-- voicemails -->	
-	<div ng-if="widget == 'voicemails' && profile.xpid && profile.xpid != myPid">
+	<div ng-if="widget == 'voicemails' && profile.xpid != myPid">
 		<a class="Button" href="" ng-click="deleteRecording()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.delete_word}}</span>
