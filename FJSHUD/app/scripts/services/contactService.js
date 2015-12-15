@@ -92,6 +92,10 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 	
 	$rootScope.$on('calls_synced', function(event, data) {
 		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
+			// skip myself (this info comes from mycalls feed)
+			if (contacts[c].xpid == $rootScope.myPid)
+				continue;
+			
 			var match = false;
 			
 			// find caller
@@ -141,7 +145,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 	
 	$rootScope.$on('calldetails_synced', function(event, data) {
 		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
-			if (contacts[c].call) {
+			if (contacts[c].xpid != $rootScope.myPid && contacts[c].call) {
 				for (var i = 0, iLen = data.length; i < iLen; i++) {
 					if (contacts[c].xpid == data[i].xpid) {
 						contacts[c].call.details = data[i];
