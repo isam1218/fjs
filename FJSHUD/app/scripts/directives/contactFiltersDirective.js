@@ -57,9 +57,10 @@ hudweb.directive('contactFilters', function ($rootScope) {
 					else {
 						for (var i = 0, len = scope.contacts.length; i < len; i++) {
 							var contact = scope.contacts[i];
-							var row = element[0].getElementsByClassName('ContactRow-' + contact.xpid)[0];
+							var row = element[0].getElementsByClassName('ContactRow-' + contact.id)[0];
 							
-							if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
+							//if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
+							if (contact.username.toLowerCase().indexOf(query) != -1 || contact.extension.indexOf(query) != -1 || contact.extension.replace(/\D/g,'').indexOf(query) != -1)
 								$(row).show();
 							else
 								$(row).hide();
@@ -73,13 +74,14 @@ hudweb.directive('contactFilters', function ($rootScope) {
 			function filterContacts() {
 				for (var i = 0, len = scope.contacts.length; i < len; i++) {
 					var contact = scope.contacts[i];
-					var row = element[0].getElementsByClassName('ContactRow-' + contact.xpid)[0];
+					var row = element[0].getElementsByClassName('ContactRow-' + contact.id)[0];
+					var my_id = $rootScope.myPid.split('_')[1];	
 					
-					if (tab == 'all' && contact.xpid != $rootScope.myPid)
+					if (tab == 'all' && contact.id != my_id)
 						$(row).removeClass('Hide');
-					else if (tab == 'external' && contact.primaryExtension == '')
+					else if (tab == 'external' && contact.extension == '')
 						$(row).removeClass('Hide');
-					else if (tab == 'favorites' && scope.favorites[contact.xpid] !== undefined)
+					else if (tab == 'favorites' && scope.favorites[contact.id] !== undefined)
 						$(row).removeClass('Hide');
 					else
 						$(row).addClass('Hide');

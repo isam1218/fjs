@@ -87,7 +87,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			$rootScope.$evalAsync(function() {
 				// loop through feeds in order, according to properties.js
 				for (var i = 0, ilen = feeds.length; i < ilen; i++){
-					if (data[feeds[i]] && data[feeds[i]].length > 0){
+					if (data[feeds[i]] && data[feeds[i]].length > 0 && feeds[i] != "contacts"){
 						$rootScope.$broadcast(feeds[i] + '_synced', data[feeds[i]]);
 					}
 				}

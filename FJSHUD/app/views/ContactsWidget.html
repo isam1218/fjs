@@ -21,25 +21,30 @@
 
 <div class="ContactList">
 	<div class="LeftBarTabContentList">
-		<a href="#contact/{{::contact.xpid}}" ng-repeat="contact in contacts | orderBy: 'displayName'  | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.xpid}}" droppable="Call">	
+		<!-- <a href="#contact/{{::contact.xpid}}" ng-repeat="contact in contacts | orderBy: 'displayName'  | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.xpid}}" droppable="Call"> -->		
+		<a href="#contact/{{::contact.id}}" ng-repeat="contact in contacts | orderBy: 'username'  | orderBy: sortField: sortReverse track by contact.id" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.id}}" droppable="Call"><!-- ng-click="getChatHistory($event)" -->	
 			<avatar profile="contact" context="contacts:$parent.tab"></avatar>
 			
 			<div class="ListRowContent" dockable="contact">
 				<div class="ListRowTitle">
-					<div class="name" ng-if="::contact.primaryExtension">
-						<strong ng-bind-html="::contact.displayName"></strong>
-						<span class="ListRowTitleExtension">#{{ ::contact.primaryExtension }}</span>
+					<div class="name" ng-if="::contact.extension">
+						<strong ng-bind-html="::contact.username"></strong>
+						<span class="ListRowTitleExtension">#{{ ::contact.extension }}</span>
 					</div>
-					<div class="name" ng-if="::!contact.primaryExtension" >
-						<strong ng-bind-html="contact.displayName"></strong>
+					<div class="name" ng-if="::!contact.extension" >
+						<strong ng-bind-html="contact.username"></strong>
 					</div>
 				</div>	
 				
 				<div class="ListRowStatus">
-                    <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                    <!-- <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
                     <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
                     <br/>                   
-                    <div class="ListRowStatusText" ng-bind-html="(contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + ' + verbage['on_call'] : '')"></div>
+                     <div class="ListRowStatusText" ng-bind-html="(contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + ' + verbage['on_call'] : '')"></div> -->
+                    <div class="ListRowStatusIcon XIcon-ChatStatus-offline"></div>
+                    <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-login"></div>
+                    <br/>     
+                    <div class="ListRowStatusText" ng-bind-html="verbage['offline']"></div>
                 </div>	
                 
                 <div class="CallStatus" ng-if="contact.call">

@@ -59,21 +59,21 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
 				
 					break;
                 case "chat":
-                    if($scope.contact.primaryExtension == '' && $scope.contact.jid == '' && $scope.contact.ims == ''){
+                    if($scope.contact && $scope.contact.extension == '' && $scope.contact.jid && $scope.contact.jid == '' && $scope.contact.ims && $scope.contact.ims == ''){
                         return false;
                     }else{
                         return true;
                     }
                     break;
                 case "groups":
-                    if($scope.contact.primaryExtension == ''){
+                    if($scope.contact.extension == ''){
                         return false;
                     }else{
                         return true;
                     }
                     break;
                 case "queues":
-                    if($scope.contact.primaryExtension == ''){
+                    if($scope.contact.extension == ''){
                         return false;
                     }else{
                         return true;

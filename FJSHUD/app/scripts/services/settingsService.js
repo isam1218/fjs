@@ -124,7 +124,9 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
             }
 			// assign other useful goodies
 			else if (data[i].propertyKey == 'my_pid') {
-				$rootScope.myPid = data[i].propertyValue;
+				//$rootScope.myPid = data[i].propertyValue;
+				$rootScope.myPid = '126114';
+				$rootScope.meModel[data[i].propertyKey] = '126114';
 			}
 			else if (data[i].propertyKey == 'my_jid'){
         		$rootScope.meModel.login = data[i].propertyValue.split("@")[0];

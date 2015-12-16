@@ -25,42 +25,6 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
         }
     };
 	
-	/*
-	// filter contacts down
-	$scope.customFilter = function() {
-		var tab = $scope.$parent.tab;
-		
-		return function(contact) {
-			// remove self
-			if (contact.xpid != $rootScope.myPid) {
-				// filter by tab
-				switch (tab) {
-					case 'all':
-						return true;
-						break;
-					case 'external':
-						if (contact.primaryExtension == '')
-							return true;
-						break;
-					case 'favorites':
-						if ($scope.favorites[contact.xpid] !== undefined)
-							return true;
-						break;
-				}
-			}
-		};
-	};
-	
-	$scope.searchFilter = function(contact){
-		var query = $scope.$parent.query.toLowerCase();
-
-		if (query == '')
-			return true;
-		else if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
-			return true;
-	};
-	*/
-	
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();
         $event.preventDefault();

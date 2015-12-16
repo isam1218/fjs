@@ -1,4 +1,4 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', function($scope,httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService) {
+hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService', '$routeParams', 'ContactService','ChatService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', function($q, $rootScope, $scope,httpService, $routeParams, contactService, chatService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService) {
 	
 	// redirect if not allowed
 	if ($scope.$parent.chatTabEnabled !== undefined && $scope.$parent.chatTabEnabled === false) {
@@ -21,7 +21,12 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	$scope.enableChat = true;
 	$scope.filteredMessages = [];
 	$scope.messages = [];
-
+	$scope.message_time = '';
+	$scope.my_id = $rootScope.meModel.my_pid;//.split('_')[1];
+	var my_id = $rootScope.meModel.my_pid;
+	var contactId = $routeParams.contactId;	
+	var server_id = $rootScope.meModel.server_id;
+		
 	// set chat data
 	if ($routeParams.contactId) {
 		chat.name = $scope.contact.displayName;
@@ -165,9 +170,129 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			scrollbox.scrollTop = scrollbox.scrollHeight;
 	});
 	
-	var conversationType = chat.type == 'f.conversation.chat' ? 'f.conversation' : chat.type;
+	var conversationType = chat.type == 'f.conversation.chat' ? 'f.conversation' : chat.type;		
+	
+	//send a request to the websocket for the chat history
+	$scope.getChatHistory = function()
+	{      	    	
+			var myObj = {};
+			var body = {};
+			var d = new Date();									
+			
+	        myObj["reqtype"] = "chatHistory";
+			myObj["ts"] = d.getTime().toString();
+			//myObj["request_id"] = $scope.getRequestId();
+			myObj["sender"] = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815
+			body["chatType"] = "user";
+			body["targetId"] = contactId;//contact Id//username __5549_7042
+			myObj["body"] = JSON.stringify(body);
+			var json = JSON.stringify(myObj);			
+			$scope.sock.send(json);	
+			scrollbox = $('#ListViewContent');
+			var scroll_height = $(scrollbox).outerHeight() * 2.5;			
+			$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');			
+	};
+	
+	//$q.defer().resolve();
+	var promise = $q(function(resolve, reject) {
+		$scope.getChatHistory();
+	}).then(callEmit);
+	
+	var callEmit = function()
+	{
+		/*$scope.sock.onmessage = function(e) {
+			 var responseData = JSON.parse(e.data);
+	          
+	          if(responseData.Body)
+	          {	
+	        	  var responseBody = responseData.Body;
+	        	  if(responseBody.chatHistory)
+		          {	    
+		        	  console.log("message received: chat history ");
+		        	      $rootScope.$emit('chat_loaded', $scope.getChatHistory(responseBody));		        	      
+		          }	        	  	  
+	          }	  
+		};*/
+		
+	};
+	
+	//set the scrollBox after messages updated
+	var setScrollBox = function()
+    {
+		scrollbox = document.getElementById('ListViewContent');
+		scrollbox.onscroll = function() {
+			// check scroll position
+			if (scrollbox.scrollTop == 0 && !$scope.loading && $scope.messages.length > 0) {
+				$scope.loading = true;
+				
+				// ping server
+				//httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
+				////////////////////////////////////////////////////////////////////////// updates
+					//version = data.h_ver;
+				
+				//	$scope.loading = false;			
+				//	addMessages(data);//data.items
 
-	httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
+					// bump scroll down
+					//if (scrollbox.scrollTop == 0)
+				//		scrollbox.scrollTop = 100;
+					
+					// end of history
+					//if (version < 0)
+					//	scrollbox.onscroll = null;
+				//});
+				///////////////////////////////////////////////////////////////////////////////////	updates			
+			}
+			
+			$scope.loading = false;
+			addMessages(data);//data.items
+			
+			// kill watcher
+			$timeout(function() {
+				scrollWatch();
+			}, 100, false);
+			
+			// no more chats
+			if (version < 0)
+				scrollbox.onscroll = null;
+		};
+    };
+    
+	// pull chat history from service
+	chatService.getChatHistory().then(function(data) {
+		$scope.messages = data;	
+	    setScrollBox();	
+	    
+		$scope.loading = false;			
+	});
+    
+	//pull the new messages from the service 
+	chatService.getChatMessage().then(function(data) {
+		var message = data;
+		message.id = message.message_id;
+		var is_in = false; 
+		
+		if($scope.messages.length > 0)
+		{
+			$.each($scope.messages, function(){				
+				if($(this)[0].id == message.id)
+					is_in = true;
+			});
+			
+		}
+		
+		if(!is_in)
+		{
+			if($scope.messages.length == 0)
+				$scope.messages[0] = message;
+			else
+				$scope.messages.push(message);								
+		}		
+		setScrollBox();
+		$scope.$safeApply();
+	});	
+    
+	/*httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
 		version = data.h_ver;
 		scrollbox = document.getElementById('ListViewContent');
 			
@@ -260,7 +385,7 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 				scrollbox.scrollTop = scrollbox.scrollHeight;
 			}, 100, false);
 		}
-	});
+	});*/
 	
 	$scope.$watch('chat.query', function(data) {
 		// jump to bottom on search clear
@@ -284,20 +409,38 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}
 		// normal chat
 		else {
+			/*
 			httpService.sendAction('streamevent', 'sendConversationEvent', {
 				type: chat.type,
 				audience: chat.audience,
 				to: chat.targetId,
 				message: $scope.chat.message
-			});
+			});*/
+			var msg = $scope.chat.message;			
+			var d = new Date();
+			var myObj = {};
+			var body = {};
+			
+			myObj["reqtype"] = "postChatMessage";
+			myObj["ts"] = d.getTime().toString();
+			myObj["sender"] = "U:"+server_id+":"+my_id;
+			body["chatType"] = "user";
+			body["targetId"] = contactId;
+			body["message"] = msg;
+			myObj["body"] = JSON.stringify(body);
+			var json = JSON.stringify(myObj);
+			$scope.sock.send(json); 			
 		}		
 		
-		$scope.chat.message = '';
-		storageService.saveChatMessage(chat.targetId);		
-		document.getElementById('ChatMessageText').style.height = '1px';
-		
+		$scope.chat.message = '';		
+		storageService.saveChatMessage(chat.targetId);			
+		$('#ChatMessageText').css('height', '1px');
+		scrollbox = $('#ListViewContent');
+		var scroll_height = $(scrollbox).outerHeight() * 2.5;			
+		$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');			
 		// play sfx
 		phoneService.playSound("sent");
+		return false;
 	};
 	
 	$scope.searchChat = function(increment) {
@@ -346,25 +489,71 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			$scope.messages.push(data[i]);
 		}
 	};
+	
+	$scope.getMonth = function(num)
+	{
+		switch(num){
+		case 0: return 'January';	      			
+		case 1: return 'February';
+		case 2: return 'March';
+		case 3: return 'April';
+		case 4: return 'May';
+		case 5: return 'June';
+		case 6: return 'July';
+		case 7: return 'August';
+		case 8: return 'September';
+		case 9: return 'October'
+		case 10:return 'November';
+		case 11:return 'December'; 
+		}
+	};
+	
+	$scope.getTime = function(created)
+	{
+		var d = new Date(0);
+		d.setUTCSeconds(created);
+		var month = $scope.getMonth(d.getMonth());
+		var date = d.getDate();
+		var hour = d.getHours();
+		var pm_am = hour < 11 ? 'am' : 'pm';
+		hour = hour < 10 ? '0'+hour : hour > 12 ? (hour - 12): hour;
+		var minutes = d.getMinutes();
+		minutes = minutes < 10 ? '0' + minutes : minutes;
+		
+		return (hour + ':' + minutes + ' ' + pm_am);
+	};
+	
+	$scope.getDate = function(created)
+	{
+		var d = new Date(0);
+		d.setUTCSeconds(created);
+		var month = $scope.getMonth(d.getMonth());
+		var date = d.getDate();
+		
+		return (month +' '+date);
+	}
 
 	$scope.nameDisplay = function(message, index){
 		var curMsg = $scope.$parent.filteredMessages[index];
-		var curMsgDate = new Date(curMsg.created);
+		var curMsgDate = new Date(0);
+		curMsgDate.setUTCSeconds(curMsg.created); 
+		//var curMsgDate = new Date(curMsg.created);
 		var prvMsg;
 		if (index !== 0){
 			prvMsg = $scope.$parent.filteredMessages[index-1];
-			var prvMsgDate = new Date(prvMsg.created);
+			var prvMsgDate = new Date(0);
+			prvMsgDate.setUTCSeconds(prvMsg.created);
 		}
 		// if very 1st message --> display name
 		if (index === 0){
 			return true;
 		} else {
 			if(curMsgDate && prvMsgDate){
-        var curHour = parseInt(moment(curMsgDate).format('H mm').split(' ')[0]);
-        var prvHour = parseInt(moment(prvMsgDate).format('H mm').split(' ')[0]);
-        var hourDiff = curHour - prvHour;
-        // if same owner on same day + w/in 2hrs 59 min -> do not display name/avatar/time
-				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid && hourDiff < 3){
+		        var curHour = parseInt(moment(curMsgDate).format('H mm').split(' ')[0]);
+		        var prvHour = parseInt(moment(prvMsgDate).format('H mm').split(' ')[0]);
+		        var hourDiff = curHour - prvHour;
+	        // if same owner on same day + w/in 2hrs 59 min -> do not display name/avatar/time
+				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.sender_id == prvMsg.sender_id && hourDiff < 3){
 					return false;
 				} else {
 					// otherwise display

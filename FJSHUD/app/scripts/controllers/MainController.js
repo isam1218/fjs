@@ -1,4 +1,4 @@
-hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', 'HttpService','SettingsService', 'ContactService', function($rootScope, $scope, $timeout, $q, myHttpService, settingsService, contactService) {
+hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '$routeParams', 'HttpService','SettingsService', 'ContactService', function($rootScope, $scope, $timeout, $q, $routeParams, myHttpService, settingsService, contactService) {
 	$rootScope.myPid = null;
 	
 	$scope.number = "";
@@ -7,12 +7,35 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.currentPopup.x = 0;
 	$scope.currentPopup.y = 0;
 	$scope.pluginDownloadUrl = $scope.browser != 'Chrome' ? fjs.CONFIG.PLUGINS[$scope.platform] : fjs.CONFIG.PLUGINS[$scope.platform + "_NEW"];
-
+	
+	$scope.contacts = [];
+	$scope.sock = null;
+	var wsuri = "ws://10.10.12.125:1234";
+	$scope.wsuri = "ws://dev-svc1.arch.fonality.com:1234";
+	$scope.contactList = [];
+	
 	$scope.overlay = {
 		show: false,
 		url: '',
 		data: null
 	};
+	
+	//sort by username
+	var compare = function(a,b) {
+    	if (a.username < b.username)
+    	    return -1;
+    	if (a.username > b.username)
+    	    return 1;
+    	return 0;
+   	};	
+    //sorts by date
+   	var dateCompare = function(a,b) {
+   		  if (a.created < b.created)
+   		    return -1;
+   		  if (a.created > b.created)
+   		    return 1;
+   		  return 0;
+   	}
 	
 	// prevents overlapping digest cycles
     $scope.$safeApply = function(fn) {
@@ -29,17 +52,125 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
                 $scope.$apply();
             }
         }
+    }; 
+    
+    
+  //get the chat history
+    $scope.getHistoryObject = function(responseBody)
+    {  
+        if(!responseBody.chatHistory || responseBody.chatHistory == null || responseBody.chatHistory == "null")
+    		return [];
+    		
+    	var historyObj = JSON.parse(responseBody.chatHistory);//.replace(/[^\w\s]/gi, '').toLowerCase();
+    	
+    	if($.isArray(historyObj))
+    	{	
+    	  var chatHistory = responseBody.chatHistory.toString().replace(/(\r\n|\n|\r)/gm,"");
+    	  var historyArray = JSON.parse(chatHistory);   
+    	  historyArray.sort(dateCompare);
+    	 
+    	  $.each(historyArray, function(){
+    		  var chat_obj = this;
+    		 $.each($scope.contactList, function(){
+    			if($(this)[0].id ==  $(chat_obj)[0].sender_id)
+    				$(chat_obj)[0].username = $(this)[0].username;
+    		 });    		
+    	  });
+    	  return historyArray; 
+    	} 
     };
-	
+    
+    //get chat message
+    $scope.getChatMessage =  function(chatMsg){		
+        if(chatMsg && chatMsg.content_name && 
+           chatMsg.content_name == "chatMessage")
+        {	        	
+        	return chatMsg.body.Message;          	
+        }
+    };        
+    
+    $scope.connectWS = function() {
+		console.log("onload");			
+		$scope.sock = new WebSocket($scope.wsuri);
+		var prev_msg_id = '';
+		var current_user = settingsService.getMe().$$state.value;
+		var my_id = current_user.my_pid;//.split('_')[1];		
+		var server_id = current_user.server_id;		
+				
+	    $scope.sock.onopen = function() {
+	            var d = new Date();	            
+	            console.log("connected to " + $scope.wsuri);			
+				var contactsObj = {};
+				contactsObj["reqType"] = "contactList";
+				contactsObj["ts"] = d.getTime().toString();
+				//contactsObj["request_id"] = $scope.getRequestId();
+				contactsObj["sender"] = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//+nameValue;//156815
+				var contactsJson = JSON.stringify(contactsObj);			
+				$scope.sock.send(contactsJson);				
+	     };
+
+	     $scope.sock.onclose = function(e) {
+		     $scope.sock = null;
+	         console.log("connection closed (" + e.code + ")");
+	         //$scope.connectWS();
+	         $scope.sock = new WebSocket($scope.wsuri);
+	     };
+
+	     $scope.sock.onmessage = function(e) {
+	         // console.log("message received: " + e.data);	
+	          var d = new Date();
+	          try{
+	        	  var responseData = JSON.parse(e.data);
+	          }catch(e){}
+	          
+	          if(responseData) 
+	          {	  
+		          if(responseData.Body)
+		          {	
+		        	  var responseBody = responseData.Body;
+		        	  
+			          if(responseBody.contactList)
+			          {	  
+			        	  console.log("message received: contact list ");
+			        	  $scope.contactList = responseBody.contactList;
+			        	  $scope.contactList.sort(compare);
+			              $rootScope.$broadcast('contacts_synced', responseBody.contactList);				            	  
+			          }	 
+			          
+			          if(responseBody.chatHistory)// && responseBody.chatHistory != null && responseBody.chatHistory != "null")
+			          {	    
+			        	  console.log("message received: chat history ");
+			        	    $rootScope.$broadcast('chat_loaded', $scope.getHistoryObject(responseBody));
+			          }			          
+		          }
+		          
+		          if(responseData.Message)
+		          {        	
+		        	 var chatMsg = JSON.parse(responseData.Message);	        	        	 
+		        	 console.log("message received: chat message ");
+		        	 $rootScope.$broadcast('message_loaded', chatMsg.body);//$scope.getChatMessage(chatMsg)	        	
+		          }	
+	          } 
+	     }; 
+	        
+		 $scope.sock.onerror = function(error){
+		     console.log('Error detected: ' + error);
+		     $scope.sock.close();
+		 };
+	 };
+		
 	var activityTimeout;
 	
-	$q.all([settingsService.getSettings(), contactService.getContacts()]).then(function() {
+	$q.all([settingsService.getSettings()]).then(function() {//contactService.getContacts()		
 		// show app
 		$timeout(function() {
 			angular.element(document.getElementById('AppLoading')).remove();
 			
 			myHttpService.setUnload();
-	
+			
+			//////////////////////////////////////////////////////////////////////////////						
+			$scope.connectWS();
+			/////////////////////////////////////////////////////////////////////////////
 			// wake status
 			document.onmousemove = function() {
 				if (!activityTimeout) {

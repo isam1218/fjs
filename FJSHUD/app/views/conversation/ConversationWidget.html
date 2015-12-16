@@ -2,14 +2,14 @@
     <div class="WidgetHeader">
         <avatar profile="contact"></avatar>
         <div class="WidgetHeaderTitle WidgetHeaderTitleOverflow">
-			<span ng-if="::contact.primaryExtension">{{ ::contact.displayName }} ({{::contact.primaryExtension}})</span>
-			<span ng-if="::!contact.primaryExtension">{{ contact.displayName }}</span>
+			<span ng-if="::contact.primaryExtension">{{ ::contact.username }} ({{::contact.extension}})</span>
+			<span ng-if="::!contact.primaryExtension">{{ contact.username }}</span>
 			<br/>
             <div class="ListRowStatusIcon XIcon-QueueStatus-{{ contact.queue_status }}"></div>
             <div class="XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>
             <span class="ChatStatus" ng-bind-html="contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']"></span>
 		</div>
-        <callstatus profile="contact"></callstatus>
+        <!-- <callstatus profile="contact"></callstatus>-->
     </div>
     <div class="WidgetBody" ng-switch="selected">
         <div class="WidgetTabBar">

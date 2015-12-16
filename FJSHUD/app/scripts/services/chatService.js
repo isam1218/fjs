@@ -1,14 +1,19 @@
-hudweb.service('ChatService', ['$q', '$rootScope', 'NtpService', 'HttpService', function($q, $rootScope, ntpService, httpService) {
+hudweb.service('ChatService', ['$q', '$rootScope', function($q, $rootScope) {
 	var deferred = $q.defer();
 	var message_deferred = $q.defer();
 	var service = this;
 	var messages = [];
 	
 	service.getChatHistory = function(){
+		deferred = $q.defer();
 		// waits until data is present before sending back
 		return deferred.promise;
 	};
 	
+	service.getChatMessage = function(){		
+		// waits until data is present before sending back
+		return message_deferred.promise;
+	};
 	//sorts by date
 	var compare = function(a,b) {
 	 if (a.created < b.created)
@@ -16,45 +21,41 @@ hudweb.service('ChatService', ['$q', '$rootScope', 'NtpService', 'HttpService', 
 	 if (a.created > b.created)
 	    return 1;
 	 return 0;
-	};		
+	};	
+	
+	
 	
 	$rootScope.$on('chat_loaded', function(event, data) {
-		
-	   if(messages.length == 0)
-		   messages = data;
-	   /*else
-	   {
-		  if(messages.length != data.length)
-		  {
-			//sort by date
+		if(!data || data == undefined || !$.isArray(data) || ($.isArray(data) && data.length == 0))
+			messages = [];
+		else
+		{	
+			messages = data; 
 			messages.sort(compare);
-			data.sort(compare);
-		  
-			for (var n = 0, nLen = data.length; n < cLen; n++) { 
-				var match = false;
-			  for (var c = 0, cLen = messages.length; c < cLen; c++) {														
-			   if(data[n].created == messages[c].created && data[n].id == messages[c].id)
-			   {
-				   continue;
-			   }
-			   else
-			   {
-				   messages.push(data[n]); 	   
-			   }
-			  }				   			   
-		    }
-		  } 
-	   }*/
-		
-		deferred.resolve(messages);	
+		}
+		$rootScope.$apply(deferred.resolve(messages));			  
 	});
 	
+	//pull the messages
 	$rootScope.$on('message_loaded', function(event, data) {
-		if(messages.length == 0)
-			   messages = data;
-		else
-				messages.push(data); 
+		var message = data;
+		message.id = message.message_id;
+		var is_in = false; 
 		
-		message_deferred.resolve(messages);	
+		if(messages.length > 0)
+		{
+			$.each(messages, function(){				
+				if($(this)[0].id == message.id)
+					is_in = true;
+			});
+		}
+		
+		
+		if(!is_in)
+		{	
+			
+			messages.push(message);	
+			$rootScope.$apply();						
+		}	
 	});
-]);
+}]);

@@ -13,25 +13,27 @@
 </div>
 
 <div class="ListViewContent" id="ListViewContent">       
-    <div class="ListMessage" ng-class="::message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" >
-        <div class="ListMessageLeft">
-            <avatar ng-if="::nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar>
-            <div class="time">{{::message.created | fondate: 'h:mm a':fon_lang_code:'list_message_left'}}</div>
+    <!-- <div class="ListMessage" ng-class="::message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" > -->
+    <div class="ListMessage" ng-class="'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.id">           
+           <div class="ListMessageLeft"><!-- ng-if="::nameDisplay(message, $index)" -->
+            <!-- <avatar ng-if="::nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar> -->
+            <avatar ng-if="::nameDisplay(message, $index)" profile="message" context="chat"></avatar>
+            <div class="time">{{ getTime(message.created)}}</div> <!--  | fondate: 'h:mm a':fon_lang_code:'list_message_left' -->
         </div>
         <div class="ListMessageContent AttachmentsHolder" >
             <div class="ListMessageHeader"  ng-if="::nameDisplay(message, $index)" >
                 <em>...{{::verbage.from}}</em>
-                <span class="ListMessageHeaderName">{{::message.fullProfile.xpid == meModel.my_pid ? 'Me' : message.fullProfile.displayName}}</span>
-                <div class="time">{{::message.created | fondate:'MMMM D YYYY':fon_lang_code:'list_message_header'}}</div>
+                <span class="ListMessageHeaderName">{{::message.id == my_id ? 'Me' : message.username}}</span>
+                <div class="time">{{getDate(message.created)}}</div><!--  | fondate:'MMMM D YYYY':fon_lang_code:'list_message_header' -->
             
             </div>
-            <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag">
-                <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query"></div>
-                <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
+             <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag">
+                <div class="ListMessageText" ng-bind-html="message.Message"></div> <!-- | highlight:chat.query -->
+                <!-- <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
                     <img class="AttachmentImg" ng-src="{{::getAttachment(attachment.url,attachment.fileName)}}" />               
-                    <p> {{ ::attachment.fileName }}</p>
-                </div> 
-            </div>
+                    <p> {{ ::attachment.fileName }}</p> 
+                </div> -->
+            </div> 
         </div>
     </div>
 </div>

@@ -5,7 +5,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 
 	service.getContact = function(xpid) {
 		for (var i = 0, len = contacts.length; i < len; i++) {
-			if (contacts[i].xpid == xpid)
+			if (contacts[i].id == xpid)
 				return contacts[i];
 		}
 		
@@ -71,6 +71,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 		/*httpService.getFeed('contactstatus');
 		httpService.getFeed('calls');
 		httpService.getFeed('contactpermissions');*/
+		deferred.resolve(contacts);
 	});
 	
 	$rootScope.$on('contactstatus_synced', function(event, data) {
@@ -172,9 +173,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 					break;
 				}
 			}
-		}
-		
-		deferred.resolve(contacts);
+		}				
 	});
 
 
