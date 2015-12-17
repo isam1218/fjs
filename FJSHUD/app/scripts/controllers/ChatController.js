@@ -194,26 +194,12 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');			
 	};
 	
-	//$q.defer().resolve();
 	var promise = $q(function(resolve, reject) {
 		$scope.getChatHistory();
 	}).then(callEmit);
 	
 	var callEmit = function()
 	{
-		/*$scope.sock.onmessage = function(e) {
-			 var responseData = JSON.parse(e.data);
-	          
-	          if(responseData.Body)
-	          {	
-	        	  var responseBody = responseData.Body;
-	        	  if(responseBody.chatHistory)
-		          {	    
-		        	  console.log("message received: chat history ");
-		        	      $rootScope.$emit('chat_loaded', $scope.getChatHistory(responseBody));		        	      
-		          }	        	  	  
-	          }	  
-		};*/
 		
 	};
 	
