@@ -463,7 +463,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.autoAwaySelected;
   
     $scope.update_settings = function(type,action,model, currentObject){
-    	console.log('settings');
         switch(type){
             case 'auto_away_timeout':
                 if(model){
