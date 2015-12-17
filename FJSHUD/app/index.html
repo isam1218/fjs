@@ -172,9 +172,12 @@
 		include-once="views/ContextMenu.html"
 		ng-controller="ContextMenuController">
 	</div>
-
-    <!--bower components-->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+	 
+    
+	<!-- @if NODE_ENV='development' --> 
+	<!--bower components-->
+	<script src="properties.js"></script>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="bower_components/jquery-hoverintent/jquery.hoverIntent.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
@@ -186,9 +189,7 @@
 
 	<script src="bower_components/moment/min/moment.min.js"></script>
 	<script src="bower_components/moment/locale/ja.js"></script>
-  	<script src="properties.js"></script>
 
-	<!-- @if NODE_ENV='development' --> 
 	<!--config-->
     <script src="languageMap.js"></script>   
     <script src="scripts/app.js"></script>
@@ -288,6 +289,8 @@
     <!-- @endif -->   
 	
 	<!-- @if NODE_ENV='production' -->
+	<script src="scripts/bower.min.js?v=<%- version %>"></script>
+	<script src="scripts/templates.js?v=<%- version %>"></script>
 	<script src="scripts/fjs.min.js?v=<%- version %>"> </script>
 	<!-- @endif --> 
     
