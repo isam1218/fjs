@@ -4,6 +4,7 @@ hudweb.controller('NotificationController',
   var playChatNotification = false;
   var displayDesktopAlert = true;
   $scope.notifications = nservice.notifications  || [];
+  $scope.todaysNotifications = nservice.todaysNotifications || [];
   $scope.errors = nservice.errors || [];
   $scope.calls = [];
   var long_waiting_calls = {};
@@ -36,7 +37,6 @@ hudweb.controller('NotificationController',
   $scope.newNotifications = [];
   $scope.awayNotifications = [];
   $scope.oldNotifications = []; 
-  $scope.todaysNotifications = [];
   $scope.numshowing = 0;
   $scope.totalTodaysNotifications = 0;
   $scope.showing = 4;
@@ -339,10 +339,9 @@ hudweb.controller('NotificationController',
   
   $scope.remove_all = function(){
 
-    $scope.notifications = [];
-    $scope.todaysNotifications = [];
-	
-	// empty errors array
+	// empty arrays without breaking reference
+    $scope.notifications.splice(0, $scope.notifications.length);
+    $scope.todaysNotifications.splice(0, $scope.todaysNotifications.length);
 	$scope.errors.splice(0, $scope.errors.length);
 
     myHttpService.sendAction('quickinbox','removeAll');
@@ -452,10 +451,14 @@ hudweb.controller('NotificationController',
     }
   };
 
-  $scope.acceptCall = function(xpid, message){
+  $scope.acceptCall = function(xpid, message, currentCall){
     for(var call = 0; call < $scope.calls.length; call++){
       if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
         $scope.holdCall($scope.calls[call].xpid,true);
+      }
+      // if the user's incoming call is a queue call --> force change that call's state to ACCEPTED so that "End" and "Hold" appear. This is for the "Press to Accept" permission (HUDF-1338) to work properly.
+      if (currentCall.type == $scope.calltype.QUEUE_CALL && $scope.calls[call].xpid == xpid){
+        $scope.calls[call].state = $scope.callState.CALL_ACCEPTED;
       }
     }
     if (message && message.type == 'zoom'){
@@ -1011,8 +1014,9 @@ hudweb.controller('NotificationController',
 
 		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
 			$scope.displayAlert = true;
-			//if(displayDesktopAlert)
-			//	$timeout(displayNotification, 1500);		
+			
+			if(displayDesktopAlert)
+				$timeout(displayNotification, 1500);		
 		}else{
 			phoneService.removeNotification();
 			phoneService.cacheNotification(undefined,0,0);

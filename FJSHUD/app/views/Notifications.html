@@ -32,7 +32,7 @@
 					<div class="LeftBarNotificationMessageSection"> 
 						<div ng-click="go_to_notification_chat(message)" class="chatNotification">
 							<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >
-								<span ng-if="::message.displayName" ng-class="::message.displayName.length > 14 ? 'truncate' : ''">{{::message.displayName}}</span>
+								<span ng-if="::message.displayName" ng-class="::message.displayName.length > 14 ? 'truncate' : ''">{{message.displayName}}</span>
 								<span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> 
 								<div class="NotificationTime">{{ message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div>
 							</div> 
@@ -168,9 +168,8 @@
 					<div ng-click="currentCall.type != calltype.CONFERENCE_CALL ? holdCall(currentCall.xpid,true) : ''" ng-class="currentCall.type == calltype.CONFERENCE_CALL ? 'disabled' : ''" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton hold">{{::verbage.hold}}</div>
 					
 					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
-					<div ng-click="acceptCall(currentCall.xpid)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm' && currentCall.location.locationType != 'm'" class="XButton accept">{{::verbage.accept}}</div>
+					<div ng-click="acceptCall(currentCall.xpid, false, currentCall)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm' && currentCall.location.locationType != 'm'" class="XButton accept">{{::verbage.accept}}</div>
 				</div>
-				
 	</div>	
 </div>
 	<!--include once directive is causing the IE to crash for call alerts still unsure why until then switching back to ng-include   -->
