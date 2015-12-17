@@ -122,7 +122,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			localStorage.removeItem("nodeID");
 			attemptLogin();
 		}
-	}, 20000, false);
+	}, 40000, false);
 	
 	/**
 		AUTHORIZATION
@@ -183,6 +183,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					localStorage.nodeID = nodeID;
 				}else{
 					localStorage.serverHost = response.match(/RedirectHost=([^\n]+)/)[1];
+					fjs.CONFIG.SERVER.serverURL = localStorage.serverHost;
 					clientRegistry();			
 				}
 				// start shared worker
