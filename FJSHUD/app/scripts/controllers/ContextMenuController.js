@@ -298,6 +298,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 	$scope.screenShare = function(contact){
 
 		        $scope.addedContacts.push(contact);
+		        console.log("ADDED CONTACTS",contact);
 
 
 
@@ -341,6 +342,7 @@ console.log("Contact",contact);
             $scope.joinUrl = response.data.join_url;
             window.open($scope.startUrl, '_blank');
             $scope.inMeeting = true;
+            $scope.addedContacts = [];
             $scope.$safeApply();
 
         });
