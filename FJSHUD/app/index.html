@@ -10,7 +10,9 @@
     <!--[if lt IE ]> 
         <link rel="stylesheet" href="styles/ie.css">  
     <![endif]-->
-  	<script type="text/javascript">   	
+  	<script type="text/javascript">
+		console.time('worker');
+		
 			(function(){				
 				var uv=document.createElement('script');
 				uv.type='text/javascript';
@@ -73,7 +75,7 @@
 			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-			console.log("initialize analytics");
+			
 			ga('create', 'UA-68784809-1', 'auto');
 
 		</script>

@@ -37,6 +37,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		        case "init":
 					workerStarted = true;
 					
+					console.timeEnd('worker');
+					console.time('sync');
+					
 		        	updateSettings('instanceId','update',localStorage.instance_id); 
 
 		            worker.postMessage({
@@ -46,7 +49,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		        case "sync_completed":
 		            if (event.data.data) {
 		                broadcastSyncData(event.data.data);
-						synced = true;
+						
+						if (!synced) {
+							console.timeEnd('sync');
+							console.time('render');
+							synced = true;
+						}
 						
 						if ($rootScope.networkError)
 							$rootScope.$broadcast('network_issue', {show: false});
@@ -77,8 +85,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		
 		
 		worker.onerror = function(evt){
-			console.log("error with shared worker port");
-			console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
+			console.error("error with worker port, line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
 		};
 	}
 	else {
@@ -368,7 +375,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				progress: 100,
 			};
 			deferred_progress.notify(data);
-			console.log(evt);
 		},false);
 		request.open("POST",requestURL, true);
 		request.send(fd);
@@ -409,7 +415,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				progress: 100,
 			};
 			deferred_progress.notify(data);
-			console.log(evt);
 		},false);
 		
 		request.open("POST",requestURL, true);
