@@ -58,25 +58,28 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
   //get the chat history
     $scope.getHistoryObject = function(responseBody)
     {  
-        if(!responseBody.chatHistory || responseBody.chatHistory == null || responseBody.chatHistory == "null")
+        if(!responseBody || responseBody == null || responseBody == "null" || responseBody.length == 0)
     		return [];
     		
-    	var historyObj = JSON.parse(responseBody.chatHistory);//.replace(/[^\w\s]/gi, '').toLowerCase();
+    	var historyObj = responseBody;//JSON.parse(responseBody);//.replace(/[^\w\s]/gi, '').toLowerCase();
     	
     	if($.isArray(historyObj))
     	{	
-    	  var chatHistory = responseBody.chatHistory.toString().replace(/(\r\n|\n|\r)/gm,"");
-    	  var historyArray = JSON.parse(chatHistory);   
-    	  historyArray.sort(dateCompare);
+    	  //var chatHistory = responseBody.toString().replace(/(\r\n|\n|\r)/gm,"");
+    	  //var historyArray = JSON.parse(chatHistory);   
+    	  //historyArray.sort(dateCompare);
+    		historyObj.sort(dateCompare);
     	 
-    	  $.each(historyArray, function(){
+    	  //$.each(historyArray, function(){
+    	  $.each(historyObj, function(){
     		  var chat_obj = this;
     		 $.each($scope.contactList, function(){
     			if($(this)[0].id ==  $(chat_obj)[0].sender_id)
     				$(chat_obj)[0].username = $(this)[0].username;
     		 });    		
     	  });
-    	  return historyArray; 
+    	 // return historyArray;
+    	  return historyObj;
     	} 
     };
     
@@ -99,12 +102,16 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 				
 	    $scope.sock.onopen = function() {
 	            var d = new Date();	            
-	            console.log("connected to " + $scope.wsuri);			
+	            console.log("connected to " + $scope.wsuri);
+	            
 				var contactsObj = {};
-				contactsObj["reqType"] = "contactList";
-				contactsObj["ts"] = d.getTime().toString();
+				contactsObj.reqtype = "data/getContacts";
+				contactsObj.ts = d.getTime().toString();
 				//contactsObj["request_id"] = $scope.getRequestId();
-				contactsObj["sender"] = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//+nameValue;//156815
+				contactsObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//+nameValue;//156815
+				var body = {};
+				body.serverId = server_id;
+				contactsObj.body = JSON.stringify(body);
 				var contactsJson = JSON.stringify(contactsObj);			
 				$scope.sock.send(contactsJson);				
 	     };
@@ -125,26 +132,28 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	          
 	          if(responseData) 
 	          {	  
-		          if(responseData.Body)
+		          if(responseData.Body && responseData.ContentName != "chat/postMessage")
 		          {	
-		        	  var responseBody = responseData.Body;
-		        	  
-			          if(responseBody.contactList)
-			          {	  
+		        	  var responseBody = responseData.Body.toString().replace(/(\r\n|\n|\r)/gm,"");		
+		        	  responseBody = JSON.parse(responseBody);
+			          //if(responseBody.contactList)
+		        	  switch(responseData.ContentName)
+		        	  {
+		        	  case "data/getContacts"://if(responseData.ContentName)			            
 			        	  console.log("message received: contact list ");
-			        	  $scope.contactList = responseBody.contactList;
+			        	  $scope.contactList = responseBody;//.contactList;
 			        	  $scope.contactList.sort(compare);
-			              $rootScope.$broadcast('contacts_synced', responseBody.contactList);				            	  
-			          }	 
+			              $rootScope.$broadcast('contacts_synced', responseBody);//.contactList				            	  
+			              break;
 			          
-			          if(responseBody.chatHistory)// && responseBody.chatHistory != null && responseBody.chatHistory != "null")
-			          {	    
+		        	  case "chat/getChatMessageHistoryForSession": 		        	      
 			        	  console.log("message received: chat history ");
-			        	    $rootScope.$broadcast('chat_loaded', $scope.getHistoryObject(responseBody));
-			          }			          
+			        	  $rootScope.$broadcast('chat_loaded', $scope.getHistoryObject(responseBody));
+			        	  break;  			          	
+		        	  }
 		          }
 		          
-		          if(responseData.Message)
+		          if(responseData.Message)		          
 		          {        	
 		        	 var chatMsg = JSON.parse(responseData.Message);	        	        	 
 		        	 console.log("message received: chat message ");

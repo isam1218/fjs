@@ -179,13 +179,14 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			var body = {};
 			var d = new Date();									
 			
-	        myObj["reqtype"] = "chatHistory";
-			myObj["ts"] = d.getTime().toString();
+	        myObj.reqtype = "chat/getChatMessageHistoryForSession";
+			myObj.ts = d.getTime().toString();
 			//myObj["request_id"] = $scope.getRequestId();
-			myObj["sender"] = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815
-			body["chatType"] = "user";
-			body["targetId"] = contactId;//contact Id//username __5549_7042
-			myObj["body"] = JSON.stringify(body);
+			myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815
+			body.chatType = "user";
+			body.userId = my_id;
+			body.targetId = contactId;//contact Id//username __5549_7042
+			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);			
 			$scope.sock.send(json);	
 			scrollbox = $('#ListViewContent');
@@ -421,13 +422,15 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			var myObj = {};
 			var body = {};
 			
-			myObj["reqtype"] = "postChatMessage";
-			myObj["ts"] = d.getTime().toString();
-			myObj["sender"] = "U:"+server_id+":"+my_id;
-			body["chatType"] = "user";
-			body["targetId"] = contactId;
-			body["message"] = msg;
-			myObj["body"] = JSON.stringify(body);
+			myObj.reqtype = "chat/postMessage";
+			myObj.ts = d.getTime().toString();
+			myObj.sender = "U:" + server_id + ":" + my_id;
+			body.chatType = "user";
+			body.targetId = contactId;
+			body.message = msg;
+			body.serverId = server_id;
+			body.senderId = my_id;
+			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);
 			$scope.sock.send(json); 			
 		}		
