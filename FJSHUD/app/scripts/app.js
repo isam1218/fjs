@@ -108,13 +108,7 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 		});
 })
 .run(function ($http, $templateCache, $rootScope, $location, $routeParams, StorageService, SettingsService, GroupService, $timeout) {
-	// cache native alert template
-	$http.get('views/nativealerts/Alert.html', { cache: $templateCache });
-	$http.get('views/nativealerts/CallAlert.html', { cache: $templateCache });
-	$http.get('views/popups/NotificationsOverlay.html', { cache: $templateCache });
-	$http.get('views/popups/NetworkErrorsOverlay.html', { cache: $templateCache });
-	
-    $rootScope.$on("$locationChangeStart", function(e, next, current) {
+	$rootScope.$on("$locationChangeStart", function(e, next, current) {
     	  
        // don't redirect to self
       if ($location.path().indexOf($rootScope.myPid) != -1){

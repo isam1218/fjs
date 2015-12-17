@@ -127,6 +127,18 @@ module.exports = function(grunt) {
       }
 
     },
+    ngtemplates: {
+      dist: {
+        cwd: 'app',
+        src: ['views/**.html', 'views/**/**.html'],
+        dest: 'prod/app/scripts/templates.js'
+      }
+    },
+    bower_concat: {
+      dist: {
+        dest: 'prod/app/scripts/bower.js'
+      }
+    },
     template:{
       dist:{
           options:{
@@ -225,7 +237,8 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: [ 
+        src: [
+        'prod/app/properties.js',
         'app/languageMap.js',
         'app/scripts/app.js',
         'app/scripts/filters/**/*.js',
@@ -245,16 +258,20 @@ module.exports = function(grunt) {
           beautify:true,
         },
         files:{
-          'dest/fjsmin.js': '<%= concat.dist.src %>'
+          'dest/fjsmin.js': '<%= concat.dist.src %>',
+
         }
       },
       dist:{
         options:{
           mangle:false,
           beautify:false,
+          compress:true,
         },
         files:{
-          'prod/app/scripts/fjs.min.js':['<%= concat.dist.dest %>']}
+          'prod/app/scripts/fjs.min.js':['<%= concat.dist.dest %>'],
+          'prod/app/scripts/bower.min.js':['prod/app/scripts/bower.js'],
+        }
       },
       huc_dev:{
         options:{
@@ -381,11 +398,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-template');
+  grunt.loadNpmTasks('grunt-angular-templates');
+  grunt.loadNpmTasks('grunt-bower-concat');
 
+  
+  grunt.registerTask('default', ['ngtemplates']);
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
-  grunt.registerTask('build-dist', ['concat','template:dist','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
+  grunt.registerTask('build-dist', ['template:dist','concat','ngtemplates','bower_concat','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
   grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);
   grunt.registerTask('build-huc-dev', ['concat','template:huc_dev','preprocess:huc_dev','less:huc_dev','uglify:huc_dev','copy:huc_dev','zip']);
-  
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };
