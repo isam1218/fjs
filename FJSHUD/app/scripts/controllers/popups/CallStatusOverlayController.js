@@ -1,8 +1,5 @@
 hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filter', '$timeout', '$location', 'ConferenceService', 'ContactService', 'HttpService', 'NtpService', 'PhoneService', 'SettingsService', function($scope, $rootScope, $filter, $timeout, $location, conferenceService, contactService, httpService, ntpService, phoneService, settingsService) {
 	$scope.onCall = $scope.$parent.overlay.data;
-
-	$scope.timeElapsed = 0;
-	$scope.recordingElapsed = 0;
 	
 	$scope.conferences = [];
 	$scope.conf = this;
@@ -71,29 +68,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	}else{
 		$scope.screen = 'call';
 	}
-
-	var updateTime = function() {
-		if ($scope.onCall.call) {
-						
-			var startTime = $scope.onCall.call.startedAt ? $scope.onCall.call.startedAt : $scope.onCall.call.created;
-			// format date			
-			var date = ntpService.calibrateTime(new Date().getTime());
-
-			$scope.timeElapsed = $filter('date')(date - startTime, 'mm:ss');
-			
-			// also get recorded time
-			if ($scope.onCall.call.recorded)
-				$scope.recordingElapsed = $filter('date')(date - $scope.onCall.call.recordedStartTime, 'mm:ss');
-		
-			// increment
-			if ($scope.$parent.overlay.show)
-				$timeout(updateTime, 1000);
-		}
-		else
-			$scope.showOverlay(false);
-	};
-	
-	updateTime();
 	
 	$scope.getCallStatusAvatar = function(call) {
 		if (call && call.contactId)
@@ -111,10 +85,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		var action = '';
 		if (!$scope.onCall.call.recorded) {
 			$scope.onCall.call.recorded = true;
-			$scope.recordingElapsed = '00:00';
 			
 			action = 'startCallRecording';
-			updateTime();
 		}
 		else{
 			$scope.onCall.call.recorded = false;
@@ -226,11 +198,17 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	};
 
 	/* Disabling of Barge/Monitor/Whisper Buttons --> dependent on barge permission, if external caller, and whether has been barged already */
-	$scope.$watch('onCall.call.details', function(callDetails){
-		$scope.canBarge = settingsService.isEnabled(callDetails.permissions, 1);
+	$scope.$watchCollection('onCall.call', function(call){
+		// call ended, so close overlay
+		if (!call) {
+			$scope.showOverlay(false);
+			return;
+		}
+		
+		$scope.canBarge = settingsService.isEnabled(call.details.permissions, 1);
 		// disable barge/monitor/whisper buttons for bottom user if external caller...
-		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled(callDetails.permissions, 1);
-		$scope.canRecordOthers = settingsService.isEnabled(callDetails.permissions, 0);
+		$scope.bottomUserCanBarge = $scope.onCall.call.type == 5 ? false : settingsService.isEnabled(call.details.permissions, 1);
+		$scope.canRecordOthers = settingsService.isEnabled(call.details.permissions, 0);
 		// disable barge/monitor/whisper buttons if already being barged/monitored/whsipered...
 		if ($scope.onCall.call.bargers && $scope.onCall.call.bargers.length > 0){
 			$scope.alreadyBarged = $scope.onCall.call.bargers[0].call.barge == 2;
@@ -379,8 +357,4 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			}
 		}
 	});
-
-  $scope.$on("$destroy", function() {
-		updateTime = null;
-  });
 }]);

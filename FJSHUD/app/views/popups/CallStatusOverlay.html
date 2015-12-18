@@ -27,7 +27,7 @@
 					
 					<div class="Barging" ng-if="onCall.call.barge > 0">{{::verbage.barging}}</div>
 					
-					<div class="Time">{{ timeElapsed }}</div>
+					<div class="Time" timer="onCall.call.startedAt ? onCall.call.startedAt : onCall.call.created"></div>
 					
 					<div class="Buttons">
 						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!topUserCanBargeFinal" />
@@ -44,7 +44,7 @@
 						{{ ::onCall.call.phone }}
 					</div>
 					
-					<div class="Time">{{ timeElapsed }}</div>
+					<div class="Time" timer="onCall.call.startedAt ? onCall.call.startedAt : onCall.call.created"></div>
 					
 					<div class="Buttons">
 						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!bottomUserCanBargeFinal" />
@@ -79,7 +79,7 @@
 		</div>
 		
 		<div class="Footer">
-			<div class="Error" ng-show="onCall.call.recorded">{{ recordingElapsed }}</div>
+			<div class="Error" ng-if="onCall.call.recordedStartTime" timer="onCall.call.recordedStartTime"></div>
 		
 			<input type="button" class="XButton" ng-show="canRecordOthers" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" ng-model="onCall.call.recorded" />
 			<input type="button" class="XButton" value="Close" ng-click="showOverlay(false)" />
