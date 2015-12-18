@@ -5,6 +5,12 @@ hudweb.controller('LocationsController',['$scope', '$rootScope', '$routeParams',
 	// get locations
 	phoneService.getLocationPromise().then(function(data) {
 		$scope.locations = data;
+		
+        for (var i in $scope.locations) {
+			// update softphone status again
+            if ($scope.locations[i].locationType == 'w')
+                $scope.locations[i].status.deviceStatus = phoneService.getPhoneState() ? 'r' : 'u';
+        }
 	});
 	
 	// show another device error
