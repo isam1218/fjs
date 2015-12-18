@@ -129,6 +129,10 @@ module.exports = function(grunt) {
     },
     ngtemplates: {
       dist: {
+        options:{
+          standalone:true,
+          
+        },
         cwd: 'app',
         src: ['views/**.html', 'views/**/**.html'],
         dest: 'prod/app/scripts/templates.js'
@@ -136,7 +140,7 @@ module.exports = function(grunt) {
     },
     bower_concat: {
       dist: {
-        dest: 'prod/app/scripts/bower.js'
+        dest: 'app/scripts/bower.js'
       }
     },
     template:{
@@ -269,7 +273,7 @@ module.exports = function(grunt) {
         },
         files:{
           'prod/app/scripts/fjs.min.js':['<%= concat.dist.dest %>'],
-          'prod/app/scripts/bower.min.js':['prod/app/scripts/bower.js'],
+          'prod/app/scripts/bower.min.js':['app/scripts/bower.js']
         }
       },
       huc_dev:{
