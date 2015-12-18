@@ -334,7 +334,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/res/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
-          {expand: true, src: ['app/styles/*.css'], dest: 'dest/'},
+          {expand: true, src: ['app/styles/*.css'], dest: 'prod/'},
 
         ]
       },
