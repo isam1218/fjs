@@ -238,7 +238,6 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [
-        'prod/app/properties.js',
         'app/languageMap.js',
         'app/scripts/app.js',
         'app/scripts/filters/**/*.js',
