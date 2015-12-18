@@ -10,7 +10,9 @@
     <!--[if lt IE ]> 
         <link rel="stylesheet" href="styles/ie.css">  
     <![endif]-->
-  	<script type="text/javascript">   	
+  	<script type="text/javascript">
+		console.time('worker');
+		
 			(function(){				
 				var uv=document.createElement('script');
 				uv.type='text/javascript';
@@ -73,7 +75,7 @@
 			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-			console.log("initialize analytics");
+			
 			ga('create', 'UA-68784809-1', 'auto');
 
 		</script>
@@ -172,19 +174,16 @@
 		include-once="views/ContextMenu.html"
 		ng-controller="ContextMenuController">
 	</div>
-
-<!-- <<<<<<< HEAD
-	<div class="fonAudio"> 
-		<audio class="send" src="res/audio/sent.mp3"> </audio>
-		<audio class="received" src="res/audio/received.mp3"> </audio>
-		<audio class="firstreceived" src="res/audio/firstreceived.mp3"> </audio>
-	
-	</div>
-	
-
-======= -->
     <!--bower components-->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="properties.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-clip/0.2.6/ng-clip.min.js"></script>
+	<script src="jstz-1.0.4.min.js"></script>  
+    <link rel="stylesheet" href="styles/bootstrap.css">
+	
+	<!-- @if NODE_ENV='development' --> 
+	<!--bower components-->
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="bower_components/jquery-hoverintent/jquery.hoverIntent.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
@@ -201,35 +200,20 @@
 	<script src="bower_components/moment/min/moment-with-locales.min.js"></script>
 
 	<script src="bower_components/moment/locale/ja.js"></script>
-	
-	<!--<script src="bower_components/moment-timezone/moment-timezone-utils.js"></script>-->
-
 	<script src="bower_components/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
-	<script src="scripts/ui-bootstrap-tpls.js"></script>
-	<link rel="stylesheet" href="styles/bootstrap.css">
-	
-
-
-  
-
-	<!-- @if NODE_ENV='development' --> 
 	<!--config-->
     <script src="properties.js"></script>
     <script src="languageMap.js"></script> 
-    <script src="jstz-1.0.4.min.js"></script>  
     <script src="scripts/app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-clip/0.2.6/ng-clip.min.js"></script>
 
-
-
-    <!--filters-->
+	<!--filters-->
     <script src="scripts/filters/highlightTextFilter.js"></script>
     <script src="scripts/filters/durationFilter.js"></script>
     <script src="scripts/filters/dateFilter.js"></script>
     <script src="scripts/filters/chatTextFilter.js"></script>
 	<script src="scripts/filters/sortVoiceMailFilter.js"></script>
 	<script src="scripts/filters/sortItemsFilter.js"></script>
+	<script src="scripts/ui-bootstrap-tpls.js"></script>
 	
 	<!--directives-->
 	<script src="scripts/directives/windowResizeDirective.js"></script>
@@ -317,8 +301,10 @@
     <script src="scripts/factory/windowDimensionsFactory.js"></script>   
    	<script src="scripts/services/notificationService.js"></script>
     <!-- @endif -->   
-	
-	<!-- @if NODE_ENV='production' -->
+
+    <!-- @if NODE_ENV='production' -->
+	<script src="scripts/bower.min.js?v=<%- version %>"></script>
+	<script src="scripts/templates.js?v=<%- version %>"></script>
 	<script src="scripts/fjs.min.js?v=<%- version %>"> </script>
 	<!-- @endif --> 
     

@@ -56,7 +56,6 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 	};
 
 	service.enable_box = function(){
-		// console.error('in setting service');
 		$rootScope.$broadcast('enable_box', {});
 	};
 

@@ -105,7 +105,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   }();
 
   $scope.recentFilter = function(){
-    // console.log('in recent filter! $scope.recent is - ', $scope.recent);
     return function(item){
       // grab merged item's xpid
       var currentXpid = item.xpid;
