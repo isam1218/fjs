@@ -6,7 +6,7 @@ pushd $FJ_ROOT_DIR/FJSHUD
 npm install
 popd
 
-pushd $FJ_ROOT_DIR/FJSHUD
+pushd $FJ_ROOT_DIR/FJSHUD/app
 bower install
 popd
 
