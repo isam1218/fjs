@@ -297,7 +297,15 @@
   }
   
   .Widget{
-    
+    .ToolBar{
+	   .selectWrapper{	
+	   	&:hover{  
+	   	  select{          
+            background: none !important;            
+          }  
+        } 
+	   }
+    } 
     
     &#WidgetSearch{
       .WidgetBody .SearchPanel{
@@ -400,8 +408,7 @@
             max-width: 12%;
       }
         
-      .LeftBarNotificationMessageSection{
-         /*width: 90%;*/
+      .LeftBarNotificationMessageSection{         
          max-width: 86%;
          padding-left: 10px;
 
@@ -426,12 +433,10 @@
     }
   }
   .XIcon24-Record-Off{
-    right: 12px !important;
-    // top: 1px !important;
+    right: 12px !important;   
   }  
   .XIcon24-Record-On{    
-    right: 12px !important;
-    // top: 3px !important;
+    right: 12px !important;    
     top: 1px !important;
   }        
    
@@ -537,20 +542,15 @@
 		&.recording{
 			.vminfo{
 			    line-height: inherit !important;
-			   /* .displayName{
-			    	height: 25px !important;			    	
-			    }*/
-				.footnote {
-					//height: 30px;
-    				//vertical-align: bottom;
+			   
+				.footnote {					
     				.vmduration {
     					margin-bottom: -18px;
     					vertical-align: bottom;
     				}
     				
     				.no_transcription,.transcription {
-    					margin-bottom: -18px;
-    					//vertical-align: bottom;
+    					margin-bottom: -18px;    					
     				}
     				
 				}
