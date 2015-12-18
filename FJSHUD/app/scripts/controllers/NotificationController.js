@@ -890,10 +890,13 @@ hudweb.controller('NotificationController',
         displayDesktopAlert = false;
       }
     }
-    if((settingsService.getSetting('alert_call_outgoing') != 'true' && !item.incoming) || 
-	   (settingsService.getSetting('alert_call_incoming') != 'true' && item.incoming))
-	{
-    	displayDesktopAlert = false;
+	
+	if (item.incoming !== undefined) {
+		if((settingsService.getSetting('alert_call_outgoing') != 'true' && !item.incoming) || 
+		   (settingsService.getSetting('alert_call_incoming') != 'true' && item.incoming))
+		{
+			displayDesktopAlert = false;
+		}
 	}
 
     if(item.audience == 'queue')
