@@ -18,16 +18,18 @@ self.addEventListener('message',function(event){
 			case 'authorized':
 				node = event.data.data.node;
 				auth = event.data.data.auth;
+				if(event.data.data.serverURL && event.data.data.serverURL != undefined){
+					fjs.CONFIG.SERVER.serverURL = event.data.data.serverURL;
+				}
+				
 				self.postMessage({"action":"init"});
 				
 				break;	
 			case 'sync':
 				do_version_check();
-
-				break;
+				break;	
 			case 'feed_request':
 				get_feed_data(event.data.feed);
-				
 				break;
 			case 'delete':
 				var feed = event.data.feed;

@@ -18,6 +18,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     var VERSIONS_PATH = "/v1/versions";
     var VERSIONSCACHE_PATH = "/v1/versionscache";
 	var worker = undefined;
+
+	if(localStorage.serverHost != undefined){
+		fjs.CONFIG.SERVER.serverURL = localStorage.serverHost;
+	}
 	
 	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN');
 	$rootScope.browser = browser;
@@ -71,6 +75,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			}
 		}, false);
 		
+		
 		worker.onerror = function(evt){
 			console.log("error with shared worker port");
 			console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
@@ -103,6 +108,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	        "data": {
 	            "node": nodeID,
 	            "auth": "auth=" + authTicket,
+	            "serverURL":fjs.CONFIG.SERVER.serverURL
 	        }
 
 	    };
@@ -159,53 +165,59 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		authTicket = localStorage.authTicket;
 		
 	// get node id
-	if (localStorage.nodeID === undefined) {
-		$http({
-			url:fjs.CONFIG.SERVER.serverURL 
-			+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
-			+ authTicket,
-			headers:{
-				'Content-Type':'application/x-www-form-urlencoded'
-			},
-			data:'',
-			method:'POST'
-		})
-		.success(function(response) {
-			nodeID = response.match(/node=([^\n]+)/)[1];
-			localStorage.nodeID = nodeID;
-			
-			// start shared worker
-			authorizeWorker();
-		})
-		.error(function(response, status) {
-			switch(status){
-				case 403:
-				case 402:
-					delete localStorage.me;
-					delete localStorage.nodeID;
-					delete localStorage.authTicket;
-					$rootScope.$broadcast('no_license', undefined);
+	var clientRegistry = function(){
+			$http({
+				url:fjs.CONFIG.SERVER.serverURL 
+				+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
+				+ authTicket,
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded'
+				},
+				data:'',
+				method:'POST'
+			})
+			.success(function(response) {
+				var nodes = response.match(/node=([^\n]+)/);
+				if(nodes && nodes.length > 0){
+					nodeID = nodes[1];
+					localStorage.nodeID = nodeID;
+				}else{
+					localStorage.serverHost = response.match(/RedirectHost=([^\n]+)/)[1];
+					clientRegistry();			
+				}
+				// start shared worker
+				authorizeWorker();
+			})
+			.error(function(response, status) {
+				switch(status){
+					case 403:
+					case 402:
+						delete localStorage.me;
+						delete localStorage.nodeID;
+						delete localStorage.authTicket;
+						$rootScope.$broadcast('no_license', undefined);
 
-					break;
-				case 404:
-				case 500:
-					$rootScope.$broadcast('network_issue',undefined);
-					break;
-				default:
-					attemptLogin();
-					break;
-			}
-		});
-	}
-	else {
-		nodeID = localStorage.nodeID;
-		authorizeWorker();
-	}
-	
+						break;
+					case 404:
+					case 500:
+						$rootScope.$broadcast('network_issue',undefined);
+						break;
+					default:
+						attemptLogin();
+						break;
+				}
+			});
+	};
 	/**
 		SCOPE FUNCTIONS
 	*/
-	
+	if (localStorage.nodeID === undefined) {
+		clientRegistry();
+	}else {
+		nodeID = localStorage.nodeID;
+		authorizeWorker();
+	}
+
 	this.logout = function() {
         var authURL = fjs.CONFIG.SERVER.loginURL
             + '/oauth/authorize'
@@ -222,6 +234,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     	localStorage.removeItem("nodeID");
     	localStorage.removeItem("data_obj");
     	localStorage.removeItem("instance_id");
+    	localStorage.removeItem("serverHost");
 		
 		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     	
