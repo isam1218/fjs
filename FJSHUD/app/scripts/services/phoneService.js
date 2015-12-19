@@ -1745,12 +1745,16 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
         if(data){
             for (var i = 0, iLen = data.length; i < iLen; i++) {
                 if(data[i].locationType != 'a'){
-                     locations[data[i].xpid] = data[i];
+					// update location while preserving status
+					if (locations[data[i].xpid])
+						angular.extend(locations[data[i].xpid], data[i]);
+					else
+						locations[data[i].xpid] = data[i];
                 }
             }
         }
+		
         deferredLocations.resolve(locations);
-    
     });
 
      $rootScope.$on('location_status_synced', function(event,data){
