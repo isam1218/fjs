@@ -412,7 +412,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
   settingsService.getSettings().then(function() {
      
-   $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email).success(function(response){
+   $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email,{cache:false}).success(function(response){
         console.log("MEETING DATA",response.meetings);
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
@@ -550,7 +550,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 $scope.$on('modalInstance', function() {
 $scope.loading.meetingLoaded = true;
- $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email).success(function(response){
+ $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email,{cache:false}).success(function(response){
         console.log("MEETING DATA",response.meetings);
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
@@ -686,7 +686,7 @@ $scope.loading.meetingLoaded = true;
   $scope.getData = function(){
   
   
-     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email).success(function(response){
+     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email,{cache:false}).success(function(response){
         console.log("MEETING DATA",response.meetings);
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
