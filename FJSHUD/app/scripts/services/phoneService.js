@@ -1115,7 +1115,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     				  context.getEACTailLength = function() {return msg.ec};
     			  }
     			  if(msg.status!=undefined)thus.onCallStateChanged(msg);
-    		  } catch (ex) {console.error(e.data)}
+    		  } catch (ex) { }
 		};
 
     };
