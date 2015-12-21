@@ -535,6 +535,9 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
         
 
+      }).error(function(data){
+        $scope.messages = data;
+        console.log("ERROR in AJAX",$scope.messages);
       });
  });
 
@@ -672,6 +675,9 @@ $scope.loading.meetingLoaded = true;
            
         
 
+      }).error(function(data){
+        $scope.messages = data;
+        console.log("ERROR in AJAX",$scope.messages);
       });
         console.log("Broadcast Received");
       });
@@ -820,6 +826,9 @@ $scope.loading.meetingLoaded = true;
            
         
 
+      }).error(function(data){
+        $scope.messages = data;
+        console.log("ERROR in AJAX",$scope.messages);
       });
 
 
