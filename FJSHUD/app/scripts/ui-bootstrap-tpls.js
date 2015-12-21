@@ -3803,7 +3803,7 @@ angular.module('ui.bootstrap.progressbar', [])
     });
 }])
 
-.directive('progress', function() {
+/*.directive('progress', function() {
     return {
         restrict: 'EA',
         replace: true,
@@ -3815,7 +3815,7 @@ angular.module('ui.bootstrap.progressbar', [])
         },
         templateUrl: 'template/progressbar/progress.html'
     };
-})
+})*/
 
 .directive('bar', function() {
     return {
