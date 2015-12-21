@@ -735,36 +735,29 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			xpid = queryArray[0];
     	}
 
-		// re-focus tab/window
-		if (url.indexOf('/Close') === -1 && url.indexOf('"ts"') === -1 && url.indexOf("/AcceptCall") === -1
-			&& url.indexOf('/RemoveNotification') === -1
-		) {
-			activateBrowserTab();
-			window.focus();
-		}
-
+		// use 'return' instead of 'break' if we don't need to re-focus tab
     	switch(url){
 	    		case '/Close':
 	    			removeNotification();
 	    			isCancelled = true;
-					break;
+					return;
 	    		case '/CancelCall':
 	    			hangUp(xpid);
-	    			break;
+	    			return;
 	    		case '/EndCall':
 	    			hangUp(xpid);
 	    			removeNotification();
-					break;
+					return;
 	    		case '/HoldCall':
 	    			holdCall(xpid,true);
-	    			break;
+	    			return;
 	    		case '/ResumeCall':
 	    			data = {
 	    				event: 'resume'
 	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					holdCall(xpid,false);
-	    			break;
+	    			return;
 	    		case '/AcceptCall':
 					acceptCall(xpid);
 					if(settingsService.getSetting('alert_call_duration') == "while_ringing"){
@@ -774,16 +767,20 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							remove_notification();
 						}
 	    			}
-					break;
+					return;
 	    		case '/AcceptZoom':
-	    		var apiUrl = queryArray[1].split(': ')[1];
-					window.open(apiUrl,'_blank');
+					var apiUrl = queryArray[1].split(': ')[1];
+					
+					// brief delay so window can re-focus
+					setTimeout(function() {
+						window.open(apiUrl,'_blank');
+					}, 100);
+					
 					remove_notification(xpid);
 					break;
-
 	    		case '/RejectZoom':
 	    			removeNotification();
-	    			break;
+	    			return;
 	    		case '/OpenNotifications':
 	    			data = {
 	    				event:'openNot'
@@ -795,7 +792,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					break;
 				case '/CallBack':
 					makeCall(xpid);
-					break;
+					return;
 				case '/contact':
 					$location.path('/contact/'+xpid);
 					$location.replace();
@@ -804,7 +801,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					break;
 				case '/RemoveNotification':
 				    remove_notification(xpid);
-					break;
+					return;
 				case '/goToChat':
 					var context = queryArray[0];
 					// var audience = context.split(":")[0];
@@ -824,10 +821,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					var phone = queryArray[1];
 					makeCall(phone); 
 					remove_notification(xpid); 
-					break;	
+					return;	
 				case '/activatePhone':
 					activatePhone();
-					break;
+					return;
 				case '/showCallControlls':
 					showCurrentCallControls(xpid);
 					break;
@@ -848,7 +845,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					};
 					
 					$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
-					break;
+					return;
 				case '/HandleError':
 					var el = document.getElementById('error-' + xpid);
 					
@@ -858,8 +855,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					
 					el = null;
 					break;
-			}
+		}
+
+		// re-focus tab/window
+		if (url.indexOf('"ts"') === -1) {
+			activateBrowserTab();
+			window.focus();
+		}
     };
+	
 	var removeNotification = function(){
 		if(alertPlugin){
 
