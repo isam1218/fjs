@@ -75,7 +75,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     $scope.joinScheduledMeeting = function(meetingId){
 
        $http.get(fjs.CONFIG.SERVER.ppsServer +'zoom/pmiStartUrl'+'?meetingId='+meetingId+'&hostId='+$scope.host_id+'&authToken='+$scope.authTicket).success(function(response){
-        console.log("PMISTUFF",response);
+        
         window.open(response.start_url);
 
        });
@@ -185,7 +185,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
                 
 
            $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
-            console.log("DATA",response);
+            
             response.meetings.meeting_id = meeting;
             sharedData.meeting.meeting_id = response.meetings.meeting_id;
 
@@ -204,7 +204,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       sharedData.meeting.AmPm = "";
       
 
-      console.log("MEETING ID",sharedData.meeting.meeting_id);
+      
     
 
      $modal.open({
@@ -260,14 +260,14 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
                         $scope.Time = "Time: Your meeting will start immediately";
 
            $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
-            console.log("DATA",response);
+            
             response.meetings.meeting_id = meeting;
             sharedData.meeting.meeting_id = response.meetings.meeting_id;
 });
 
       sharedData.meeting.meetingTopic = $rootScope.meModel.my_jid.split("@")[0] + " Personal Meeting Room";
       sharedData.meeting.timeSelect = $scope.Time;
-      console.log("MEETING ID",sharedData.meeting.meeting_id);
+     
       
     $scope.Time = "Your meeting will start immediately.";
 
@@ -536,7 +536,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
       }).error(function(data){
         $scope.messages = data;
-        console.log("ERROR in AJAX",$scope.messages);
+        
       });
  });
 
@@ -675,9 +675,9 @@ $scope.loading.meetingLoaded = true;
 
       }).error(function(data){
         $scope.messages = data;
-        console.log("ERROR in AJAX",$scope.messages);
+        
       });
-        console.log("Broadcast Received");
+        
       });
 
 
@@ -825,7 +825,7 @@ $scope.loading.meetingLoaded = true;
 
       }).error(function(data){
         $scope.messages = data;
-        console.log("ERROR in AJAX",$scope.messages);
+        
       });
 
 
@@ -838,7 +838,7 @@ $scope.loading.meetingLoaded = true;
     //Logic to delete the item
 
     $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket}).success(function(data){
-       console.log("Delete DATA",data);
+       
             //httpService.sendAction('voicemailbox', 'delete', fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket);
 
         
@@ -1171,7 +1171,7 @@ $scope.meeting.dt = $scope.meeting.times;
 
   
      $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
-        console.log("MEETING DATA",response);
+        
      
 
         
@@ -1204,7 +1204,7 @@ $scope.reloadRoute = function() {
 
   $scope.colon = $scope.startHour.indexOf(":");
   $scope.startHourUTC = $scope.startHour.substr(0,$scope.colon);
-  console.log("UTC",$scope.startHourUTC);
+  
  $scope.hourUTC = $scope.startHourUTC;
 
 var dates = $filter('date')($scope.startTime,'Z');
@@ -1326,8 +1326,8 @@ var dates = $filter('date')($scope.startTime,'Z');
   }
   else{
           $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
-              console.log("PUT",data);
-              console.log("PUT MEETING ID",sharedData.meeting.meeting_id);
+              
+              
               
               
 
@@ -1469,10 +1469,10 @@ if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
 }
 else{
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&email='+$rootScope.meModel.email+'&startTime='+$scope.starts+'&startHour='+$scope.AmPm+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
-      console.log('SUCCESS', data);
+      
       sharedData.meeting.meeting_id = data.meeting.meeting_id;
 
-      console.log("Email",$rootScope.meModel.email);
+      
 
 
         
@@ -1502,7 +1502,7 @@ else{
 
 $scope.$on('$destroy', function() {
         $rootScope.$broadcast('modalInstance');
-        console.log("Broadcast occurred");
+        
       });
 
  
