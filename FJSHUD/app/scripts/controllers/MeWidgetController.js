@@ -524,19 +524,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             queueThresholdUpdateTimeout = undefined;
         },500);
     };
-
-    $scope.reset_app_menu = function(){
-        $scope.update_settings('HUDw_AppModel_callLog','delete');
-        $scope.update_settings('HUDw_AppModel_conferences','delete');
-        $scope.update_settings('HUDw_AppModel_callcenter','delete');
-        $scope.update_settings('HUDw_AppModel_search','delete');
-        $scope.update_settings('HUDw_AppModel_zoom','delete');
-        $scope.update_settings('HUDw_AppModel_box','delete');
-		
-        $scope.boxObj.enableBox = true;
-        settingsService.reset_app_menu();
-    };
-
     
     var update_settings = function(){
         if($scope.meModel.my_jid){
@@ -906,13 +893,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 }
         }
     };
-    
-    $scope.$on('groups_synced', function(event,data){
-        var meGroup = data.filter(function(item){
-            return item.xpid == $scope.meModel['my_pid'];
-        });
-
-    });
 
     $scope.holdCall = function(call){    	
     	var isHeld = (call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD) ? true : false;
