@@ -37,6 +37,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		// show app
 		$timeout(function() {
 			angular.element(document.getElementById('AppLoading')).remove();
+			console.timeEnd('render');
 			
 			myHttpService.setUnload();
 	

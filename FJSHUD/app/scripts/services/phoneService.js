@@ -184,7 +184,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		if(nservice.isEnabled()){
 			isCancelled = nservice.getCancelled();
 		}
-		console.log("cancelled? " + isCancelled);	
+		
 		//remove if the alert was closed
 		if(isCancelled)
 		{
@@ -1133,7 +1133,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
     				  context.getEACTailLength = function() {return msg.ec};
     			  }
     			  if(msg.status!=undefined)thus.onCallStateChanged(msg);
-    		  } catch (ex) {console.log(e.data)}
+    		  } catch (ex) {console.error(e.data)}
 		};
 
     };
