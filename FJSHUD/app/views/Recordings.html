@@ -15,7 +15,7 @@
 						&lt;{{ ::recording.fullProfile.primaryExtension || recording.calleePhone }}&gt;
 					</p>
 					<div class="vmalternate">
-						<div class="vmtime">{{ ::recording.created | fondate: 'MMMM D, hh:mm a':fon_lang_code:'':this }}</div>
+						<div class="vmtime">{{ ::recording.created | fondate: 'MMMM D, hh:mm a':fon_lang_code }}</div>
 						
 						<input ng-if="::!recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callNumber($event, recording.calleePhone)"></input>
 						<input ng-if="::recording.conferenceId" style="float:right" class="vmcallbtn" type="button" value="{{::verbage.join}}" ng-click="joinConference($event, recording.conferenceId)"></input>

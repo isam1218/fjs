@@ -96,7 +96,7 @@
                             type="::determineAvatarType(message)">
                         </avatar>                  
                         <div class="LeftBarNotificationMessageSection" ng-init="new_notifications_to_display = getMessage(message); multiple_new_notifications = getMultipleNotifications(message)">                         
-                            <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ng-click="go_to_notification_chat(message)">{{::message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code:'':this    }} </div></div> 
+                            <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ng-click="go_to_notification_chat(message)">{{::message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div> 
                                <div class="NotificationType">...{{ message.label }} <span class='NotificationDisplayName' ng-if="::message.type == 'gchat'">
                                 {{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
                                 
@@ -158,7 +158,7 @@
                         </avatar>                  
 
                         <div class="LeftBarNotificationMessageSection" ng-init="away_notifications_to_display = getMessage(message);multiple_away_notifications = getMultipleNotifications(message)">
-                            <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code:'':this    }} </div></div>
+                            <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ng-click="go_to_notification_chat(message)">{{ message.displayName}} <div class="NotificationTime">{{  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div>
                                <div class="NotificationType">...{{ ::message.label }} <span ng-if="message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
                             
                             <div class="NotificationMessage" ng-click="go_to_notification_chat(message)">                            	
@@ -219,7 +219,7 @@
 
                    
                         <div class="LeftBarNotificationMessageSection" ng-init="old_notifications_to_display = getMessage(message); multiple_old_notifications = getMultipleNotifications(message)">
-                            <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'"  ng-click="go_to_notification_chat(message)">{{::message.displayName}}<div class="NotificationTime">{{::  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code:'':this    }} </div></div>
+                            <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'"  ng-click="go_to_notification_chat(message)">{{::message.displayName}}<div class="NotificationTime">{{::  message.time | fondate:'MMMM D YYYY, hh:mm a':fon_lang_code    }} </div></div>
                                <div class="NotificationType">...{{ message.label }} <span ng-if="::message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
 
                             <div class="NotificationMessage" ng-click="go_to_notification_chat(message)">

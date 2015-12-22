@@ -1,5 +1,5 @@
 hudweb.filter('fondate', ['NtpService', function(ntpService) {
-    return function(milliseconds,dateformat,locale,chatSection,scope) {		
+    return function(milliseconds,dateformat,locale,chatSection) {		
         var todayTime = ntpService.calibrateTime(new Date().getTime());
     	var locale_code = 'en';
 
@@ -84,10 +84,10 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                     return calcTime(milliseconds);
                 }
                 else if (chatSection === 'list_message_header' && dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
-                    return scope.verbage.today;
+                    return fjs.i18n[locale].today;
                 }
                 else if (chatSection === 'list_message_header' && dateInputted === dateNumberYesterday && monthInputted === monthYesterday && yearInputted === yearYesterday){
-                    return scope.verbage.yesterday;
+                    return fjs.i18n[locale].yesterday;
                 }
                 else if (chatSection === 'list_message_header' && (milliseconds > weekagoTime && milliseconds < todayTime)){
                     return weekObj[weekagoDay];
@@ -96,10 +96,10 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                     return monthObj[monthInputted] + ' ' + dateInputted;
                 }
                 else if (dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
-                    return scope.verbage.today + ' ' + calcTime(milliseconds);
+                    return fjs.i18n[locale].today + ' ' + calcTime(milliseconds);
                 }
                 else if (dateInputted === dateNumberYesterday && monthInputted === monthYesterday && yearInputted === yearYesterday){
-                    return scope.verbage.yesterday + ' ' + calcTime(milliseconds);
+                    return fjs.i18n[locale].yesterday + ' ' + calcTime(milliseconds);
                 }
                 else if (milliseconds > weekagoTime && milliseconds < todayTime){
                     return weekObj[weekagoDay] + ', ' + calcTime(milliseconds);
@@ -118,10 +118,10 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                     return calcTime(milliseconds);
                 } 
                 else if (chatSection === 'list_message_header' && dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
-                    return scope.verbage.today;
+                    return fjs.i18n[locale].today;
                 } 
                 else if (chatSection === 'list_message_header' && dateInputted === dateNumberYesterday && monthInputted === monthYesterday && yearInputted === yearYesterday){
-                    return scope.verbage.yesterday;
+                    return fjs.i18n[locale].yesterday;
                 } 
                 else if (chatSection === 'list_message_header' && (milliseconds > weekagoTime && milliseconds < todayTime)){
                     return moment(milliseconds).lang(locale_code).format('dddd');
@@ -130,10 +130,10 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                     return moment(milliseconds).lang(locale_code).format('MMMM D');
                 } 
                 else if (dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
-                    return scope.verbage.today + moment(milliseconds).lang(locale_code).format('hh:mm a');
+                    return fjs.i18n[locale].today + moment(milliseconds).lang(locale_code).format('hh:mm a');
                 } 
                 else if (dateInputted === dateNumberYesterday && monthInputted === monthYesterday && yearInputted === yearYesterday){
-                    return scope.verbage.yesterday + moment(milliseconds).lang(locale_code).format('hh:mm a');
+                    return fjs.i18n[locale].yesterday + moment(milliseconds).lang(locale_code).format('hh:mm a');
                 } 
                 else if (yearInputted === yearToday){
                     return moment(milliseconds).lang(locale_code).format("MMMM D, hh:mm a");
