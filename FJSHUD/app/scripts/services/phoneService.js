@@ -1407,8 +1407,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
 				voicemails[v].fullProfile = contactService.getContact(voicemails[v].contactId);
 			}
-
-			deferredVM.resolve(voicemails);
 		}
 		else {
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
@@ -1436,6 +1434,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				}
 			}
 		}
+
+		deferredVM.resolve(voicemails);
 	});
 
 	this.mute = function(callId,toMute){
