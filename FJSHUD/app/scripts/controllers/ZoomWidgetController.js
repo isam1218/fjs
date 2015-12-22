@@ -47,8 +47,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
     
     
-
-
+     
 
      var getURL = function(action) {
 
