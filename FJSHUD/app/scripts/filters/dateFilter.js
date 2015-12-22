@@ -1,7 +1,6 @@
 hudweb.filter('fondate', ['NtpService', function(ntpService) {
     return function(milliseconds,dateformat,locale,chatSection) {		
-		
-    	var todayTime = ntpService.calibrateTime(new Date().getTime());
+        var todayTime = ntpService.calibrateTime(new Date().getTime());
     	var locale_code = 'en';
 
         var dateInputted = new Date(milliseconds).getDate();
@@ -75,7 +74,7 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
             }
             return hour + ':' + min + ' ' + ampm;
         };
-    	
+
     	//this will switch the locale from our format to moment.js prefered locale code
     	switch(locale){
     		case 'us':
@@ -85,10 +84,10 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                     return calcTime(milliseconds);
                 }
                 else if (chatSection === 'list_message_header' && dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
-                    return 'Today';
+                    return fjs.i18n[locale].today;
                 }
                 else if (chatSection === 'list_message_header' && dateInputted === dateNumberYesterday && monthInputted === monthYesterday && yearInputted === yearYesterday){
-                    return "Yesterday";
+                    return fjs.i18n[locale].yesterday;
                 }
                 else if (chatSection === 'list_message_header' && (milliseconds > weekagoTime && milliseconds < todayTime)){
                     return weekObj[weekagoDay];
@@ -97,10 +96,10 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                     return monthObj[monthInputted] + ' ' + dateInputted;
                 }
                 else if (dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
-                    return "Today " + calcTime(milliseconds);
+                    return fjs.i18n[locale].today + ' ' + calcTime(milliseconds);
                 }
                 else if (dateInputted === dateNumberYesterday && monthInputted === monthYesterday && yearInputted === yearYesterday){
-                    return "Yesterday " + calcTime(milliseconds);
+                    return fjs.i18n[locale].yesterday + ' ' + calcTime(milliseconds);
                 }
                 else if (milliseconds > weekagoTime && milliseconds < todayTime){
                     return weekObj[weekagoDay] + ', ' + calcTime(milliseconds);
@@ -118,25 +117,25 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                 if (chatSection === "list_message_left"){
                     return calcTime(milliseconds);
                 } 
-                else if (chatSection === 'list_message_header' && moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
-                    return "Today";
+                else if (chatSection === 'list_message_header' && dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
+                    return fjs.i18n[locale].today;
                 } 
-                else if (chatSection === 'list_message_header' && moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
-                    return "Yesterday";
+                else if (chatSection === 'list_message_header' && dateInputted === dateNumberYesterday && monthInputted === monthYesterday && yearInputted === yearYesterday){
+                    return fjs.i18n[locale].yesterday;
                 } 
-                else if (chatSection == 'list_message_header' && moment(milliseconds).startOf('week').isSame(moment(todayTime).startOf('week'))){
+                else if (chatSection === 'list_message_header' && (milliseconds > weekagoTime && milliseconds < todayTime)){
                     return moment(milliseconds).lang(locale_code).format('dddd');
                 } 
-                else if (chatSection === 'list_message_header' && moment(milliseconds).startOf('year').isSame(moment(todayTime).startOf('year'))){
+                else if (chatSection === 'list_message_header' && yearInputted === yearToday){
                     return moment(milliseconds).lang(locale_code).format('MMMM D');
                 } 
-                else if (moment(milliseconds).startOf('day').isSame(moment(todayTime).startOf('day'))){
-                    return "Today " + moment(milliseconds).lang(locale_code).format('hh:mm a');
+                else if (dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
+                    return fjs.i18n[locale].today + moment(milliseconds).lang(locale_code).format('hh:mm a');
                 } 
-                else if (moment(milliseconds).startOf('day').isSame(moment(todayTime).subtract(1,'days').startOf('day'))){
-                    return "Yesterday " + moment(milliseconds).lang(locale_code).format('hh:mm a');
+                else if (dateInputted === dateNumberYesterday && monthInputted === monthYesterday && yearInputted === yearYesterday){
+                    return fjs.i18n[locale].yesterday + moment(milliseconds).lang(locale_code).format('hh:mm a');
                 } 
-                else if (moment(milliseconds).startOf('year').isSame(moment(todayTime).startOf('year'))){
+                else if (yearInputted === yearToday){
                     return moment(milliseconds).lang(locale_code).format("MMMM D, hh:mm a");
                 } 
                 else {
@@ -144,6 +143,6 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                 }
                 break;
         }   
-
+        
 	};
 }]);
