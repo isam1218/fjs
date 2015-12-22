@@ -21,26 +21,11 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 				//we create a call status contact and attach it to the scope 
 				scope.callstatusContact = contact;
 				if(contact.call){
-					
-					avatarEle = angular.element("<avatar ng-click='showCallOverlay(callstatusContact)' context='callstatus' profile='callstatusContact.call.fullProfile' type=" + contact.call.type + "> </avatar>");
-					details = angular.element("<div class='CallLineTop'></div>");
-					detailCallerName = angular.element("<div class='CallerName'>" + contact.call.displayName + "</div>");
-					detailCallExtension = angular.element("<div class='CallExtension'>" + contact.call.phone + "</div>");
-					duration = angular.element("<div class='CallDuration' timer=" + contact.call.startedAt + "> </div>");
-					details.append(detailCallerName);
-					details.append(detailCallExtension); 
-					//avatarEle.css('height','40px');
-					//avatarEle.css('width', '40px');
-					
-					element.append(avatarEle);
-					element.append(details);
-					element.append(duration);
-					
+					var innerElement = "<avatar ng-click='showCallOverlay(callstatusContact)' context='callstatus' profile='callstatusContact.call.fullProfile' type=" + contact.call.type + "> </avatar> <div class='CallLineTop'> <div class='CallerName'>" + contact.call.displayName + "</div> <div class='CallExtension'>" + contact.call.phone + "</div> </div> <div class='CallDuration' timer=" + contact.call.startedAt + "> </div>";
+					element.append(innerElement);
 				}else{
-					details = angular.element('<div class="NoCallText">' + scope.verbage.no_active_call + "</div>");
-					detailCallerName = angular.element('<div class="NoCallIcon"> </div>');
-					element.append(details);
-					element.append(detailCallerName);
+					var innerElement = '<div class="NoCallText">' + scope.verbage.no_active_call + '</div> <div class="NoCallIcon"> </div>';
+					element.append(innerElement);
 				}
 				$compile(element.contents())(scope);
 			}
