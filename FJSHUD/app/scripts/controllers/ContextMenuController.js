@@ -1,5 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService','$http',
-	function($rootScope, $scope, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService,$http) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService','$http','$modal',
+	function($rootScope, $scope, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService,$http,$modal) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -350,6 +350,62 @@ console.log("Contact",contact);
                context.onAjaxResult(isOk, data)
         });*/
     };
+    if($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined){
+    	$scope.noEmail = true;
+    }
+    $scope.checkEmail = function(){
+    	if($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined){
+    		$scope.noEmail = true;
+    		$modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'emailCheck.html',
+      controller: 'ModalInstanceCtrl',
+      size: 'lg',
+      resolve: {
+        schedule: function () {
+          return $scope.scheduleBtn;
+        },
+        update: function(){
+          return $scope.updateBtn;
+        },
+        shared: function(){
+          return $scope.meeting_id;
+        },
+        host: function(){
+          return $scope.host_id;
+        },
+        topic: function(){
+          return $scope.topic;
+        },
+        time: function(){
+          return $scope.start_time;
+        },
+        timezone:function(){
+          return $scope.timezone;
+        },
+        password:function(){
+          return $scope.password;
+        },
+        option:function(){
+          return $scope.option; 
+        },
+        start_hour: function(){
+          return $scope.start_hour;
+        },
+        AmPm: function(){
+          return $scope.AmPm;
+        },
+        hourDuration: function(){
+          return $scope.hourDuration;
+        },
+        minDuration: function(){
+          return $scope.minDuration;
+        }
+      }
+    });
+
+    	}
+    }
 
      settingsService.getPermissions().then(function(data) {
        $scope.getVideo = data.showVideoCollab;

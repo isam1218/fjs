@@ -1,13 +1,13 @@
 <div class="TopBarLogo"></div>
 
 <div class="TopBarIcons">
-	<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons | filter: {enabled: true}" ng-show="showNavIcon(icon)">		
+	<a href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons | filter: {enabled: true}" ng-show="showNavIcon(icon)" ng-click="checkEmail(icon.key,icon.url)">		
 		<div class="Avatar AvatarNormal TopBarItemAppIcon" ng-show="::icon.key == 'Me'" >
 			<img class="AvatarImgPH" data-ng-src="{{ getAvatar() }}" onerror="this.src='img/Generic-Avatar-28.png'" />
 			<div class="AvatarForeground AvatarInteractable"></div>
 		</div>
-		<div class="TopBarItemAppIcon {{ ::icon.key }}" ng-show="::icon.key != 'Me'" ng-init="checkEmail(icon.key,icon.url)" ng-click="checkEmail(icon.key,icon.url)"></div>
-		<div class="TopBarItemAppName" ng-click="checkEmail(icon.key,icon.url)">{{ ::icon.title }}</div>
+		<div class="TopBarItemAppIcon {{ ::icon.key }}" ng-show="::icon.key != 'Me'" ng-init="checkEmail(icon.key,icon.url)" ></div>
+		<div class="TopBarItemAppName" >{{ ::icon.title }}</div>
 	</a>	
 	<div class="TopBarItemApp more" ng-click="showHideiconsDropdown(true)"><!--  ng-if="voicemail && smallScreen" -->	  
         <div class="TopBarItemAppIcon more"></div>

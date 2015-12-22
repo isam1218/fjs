@@ -222,7 +222,7 @@
 			<div class="ListRowActionButtonFileShare"></div>
 			<span>{{::verbage.file_share}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.primaryExtension" ng-hide="hideScreenShare" ng-click="screenShare(profile)">
+		<a class="Button" href="" ng-show="profile.primaryExtension" ng-hide="hideScreenShare" ng-disabled="noEmail"  ng-click="noEmail ? checkEmail() : screenShare(profile)">
 			<div class="ListRowActionButtonScreenShare" ng-hide="hideScreenShare"></div>
 			<span ng-hide="hideScreenShare">Screen Share</span>
 		</a>

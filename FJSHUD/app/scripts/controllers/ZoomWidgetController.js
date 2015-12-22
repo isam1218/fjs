@@ -46,7 +46,12 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
      $scope.Time = "Time: ";
 
     
-    
+    if($rootScope.meModel.email == undefined || $rootScope.meModel.email == ""){
+      $scope.noEmail = true;
+    }
+    else{
+      $scope.noEmail = false;
+    }
      
 
      var getURL = function(action) {

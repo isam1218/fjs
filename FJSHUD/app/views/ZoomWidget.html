@@ -66,7 +66,7 @@
     <div class="ListSectionBtn">
         <div id="scheduleMeetingBtn" >
        <!--  <button data-ng-click="open('lg')" class="XButton XButton XButtonWide XButtonBlue">Schedule Meeting<div>&#9654;</div></button> -->
-        <div class="WorkspaceButton" ng-click="open('lg')" style="padding-left:40px">
+        <div class="WorkspaceButton" ng-click="noEmail || open('lg')" ng-disabled="noEmail" style="padding-left:40px">
                         Schedule Meeting
                         <div class="line"><div class="rightArrow">&#9654;</div></div>
                     </div>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <!-- <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button> -->
-                <div class="WorkspaceButton" data-ng-click="joinMeeting(meetingId)" style="padding-left:60px">
+                <div class="WorkspaceButton" data-ng-click="noEmail || joinMeeting(meetingId)" ng-disabled="noEmail" style="padding-left:60px">
                         Join Now
                        <div class="line"><div class="rightArrow">&#9654;</div></div>
                     </div>
@@ -117,12 +117,12 @@
                 </div>
             </div>
                 <!-- <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">Start Without Video</button> -->
-                <div class="WorkspaceImgButton" ng-click="startMeeting('screen_share')" style="margin-bottom:10px;margin-top:8px;padding-left:40px">
+                <div class="WorkspaceImgButton" ng-click="noEmail || startMeeting('screen_share')" ng-disabled="noEmail" style="margin-bottom:10px;margin-top:8px;padding-left:40px">
                         Start Without Video
                         <img src="img/Icon-screen-share.png" style="    margin-right: 10px;">
                     </div>
                <!--  <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button> -->
-                <div class="WorkspaceImgButton" ng-click="startMeeting('video')" style="padding-left:50px">
+                <div class="WorkspaceImgButton" ng-click="noEmail || startMeeting('video')" ng-disabled="noEmail" style="padding-left:50px">
                         Start With Video
                         <img src="img/Icon-Video.png">
                     </div>
