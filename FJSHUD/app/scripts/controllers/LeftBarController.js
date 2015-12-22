@@ -3,7 +3,6 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
     $scope.tab = 'all';
 	$scope.overlay = '';
 	$scope.number = "";
-	$scope.locations = [];
     $scope.autoClearTime;
     $scope.autoClearOn;
     $scope.language = 'us';
@@ -23,13 +22,4 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 		storageService.saveRecentByPhone(number);
 		$scope.number = '';
     };
-
-    $scope.$on('locations_synced', function(event,data){
-        if(data){
-            var me = {};
-            for (var i = 0, iLen = data.length; i < iLen; i++) {
-                $scope.locations[data[i].xpid] = data[i];
-            }
-        }
-    });
 }]);
