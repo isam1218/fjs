@@ -1,4 +1,4 @@
-hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDimensions', '$sce', '$interval', '$timeout', 'QueueService', 'HttpService', 'ContactService', 'SettingsService', function($rootScope, $scope, windowDimensions, $sce, $interval, $timeout, queueService, httpService, contactService, settingsService) {
+hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDimensions', '$sce', '$interval', '$timeout', 'QueueService', 'HttpService', 'ContactService', 'SettingsService','$modal', function($rootScope, $scope, windowDimensions, $sce, $interval, $timeout, queueService, httpService, contactService, settingsService, $modal) {
   $scope.showDropdown = false;
   $scope.smallScreen = false;
   //Initialize window width 
@@ -81,6 +81,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			key:"Intellinote", 
 			enabled:false, 
 			title: "Intellinote"
+		},
+		{
+			url:"#/zipwhip", 
+			key:"Zipwhip", 
+			enabled:false, 
+			title: "Zipwhip"
 		}
     ];
 	
@@ -90,6 +96,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 				// toggle permission-based icons
 				if ($scope.appIcons[i].key == 'Intellinote')
 					$scope.appIcons[i].enabled = data.showIntellinote;
+				else if ($scope.appIcons[i].key == 'Zipwhip')
+					$scope.appIcons[i].enabled = data.showZipwhip;
 				else if ($scope.appIcons[i].key == 'Zoom')
 					$scope.appIcons[i].enabled = data.showVideoCollab;
 				else if ($scope.appIcons[i].key == 'CallCenter')
@@ -107,6 +115,65 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			}
 		}
 	});
+	
+
+	$scope.checkEmail = function(key,url){
+			
+		if(($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined) && (key === "Zoom" && key != "Box") && (url === '#/zoom' && url != '#/box')){
+			console.log("email is undefined", key);
+
+		
+		$modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'emailCheck.html',
+      controller: 'emailCheckController',
+      size: 'lg',
+      resolve: {
+        schedule: function () {
+          return $scope.scheduleBtn;
+        },
+        update: function(){
+          return $scope.updateBtn;
+        },
+        shared: function(){
+          return $scope.meeting_id;
+        },
+        host: function(){
+          return $scope.host_id;
+        },
+        topic: function(){
+          return $scope.topic;
+        },
+        time: function(){
+          return $scope.start_time;
+        },
+        timezone:function(){
+          return $scope.timezone;
+        },
+        password:function(){
+          return $scope.password;
+        },
+        option:function(){
+          return $scope.option; 
+        },
+        start_hour: function(){
+          return $scope.start_hour;
+        },
+        AmPm: function(){
+          return $scope.AmPm;
+        },
+        hourDuration: function(){
+          return $scope.hourDuration;
+        },
+        minDuration: function(){
+          return $scope.minDuration;
+        }
+      }
+    });
+
+	}
+	}
+
 
   $scope.getAvatar = function() {
     return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);
@@ -334,3 +401,11 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		source = null;
 	};
 }]);
+
+hudweb.controller('emailCheckController', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,timezone,password,option,start_hour,AmPm,hourDuration,minDuration,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
+  $scope.cancelEmailCheck = function () {
+    $modalInstance.dismiss('cancel');
+  };
+
+  
+});

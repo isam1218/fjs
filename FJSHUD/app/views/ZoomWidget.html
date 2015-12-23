@@ -1,88 +1,388 @@
-<div class="Widget WidgetZoom" id="widget-zoom">
-    <div class="WidgetHeader">
+<div class="Widget WidgetZoom" id="widget-zoom" >
+    <div class="WidgetHeader" >
         <div class="TopBarItemAppIcon Zoom"></div>
         <div class="WidgetHeaderTitle">
-            {{::verbage.zoom}}
+            Fonality Video Collaboration<br>
+            <img src="img/poweredby-zoom.png">
         </div>
     </div>
 
-    <div class="ListSection WidgetFont WidgetZoomBody" ng-if="inMeeting"> 
-             <div>
-              <h2>{{::verbage.zoom_created}}</h2>
-            </div>
-            <div> {{::verbage.zoom_your_meeting_will_begin}} <a target="_blank" href="{{joinUrl}}"> {{::verbage.link}} </a> </div>
-            <br>
-            <div> 
-                {{::verbage.link_to_join}}
-                <br>
-                <a target="_blank" href="{{joinUrl}}">{{ joinUrl}} </a>
-            </div>
-        </div>
+    
+             
+            
 
 
 
-    <div class="WidgetZoomBody "ng-if="!inMeeting"> 
+    <div class="WidgetZoomBody "> 
         
 
                 
 
-        <div class="ListSection WidgetFont" > 
-            <div> {{::verbage.video_collaboration_summary}}</div>
-        </div>        
-	    <div class="ZoomWidgetSection left"> 
-	            <div class="ListSection WidgetTextHeader"> 
-	                <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
-	                <div class="WidgetFont">{{::verbage.join_summary}}</div>
-	            </div>
-	           <div class="joinWrapper">
-	            <div class="JoinMeetingSection"> 
-	                <div class="SearchInputBox">
-	                    <div class="SearchInputBoxInputHolder">
-	                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" placeholder="{{::verbage.meeting_id}}" />
-	                    </div>
-	                </div>
-	                <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button>
-	
-	            </div>
-	          </div>
-	        </div>
-	
-	        <div class="ZoomWidgetSection right"> 
-	            <div class="ListSection WidgetTextHeader"> 
-	                <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
-	                <div class="WidgetFont">{{::verbage.create_summary}}</div>
-	            </div>
-	            <div class="joinWrapper">
-		            <div class="JoinMeetingSection"> 
-		                <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">{{::verbage.start_screen_share_only}}</button>
-		                <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button>
-		                <div class="addContact">
-							<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" placeholder="{{::verbage.add_someone}}" contact-search="all|addedContacts" />
-		                </div>
-		            </div>
-	            </div>
-            </div>              
-            <div class="widget-zoom-contacts" resize-height>
-                    <div class="ListRow Small" data-ng-class="{'ListRowOdd':$odd}" data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid">
-						<avatar profile="contact" widget="zoom"></avatar>
+        <div class="ListSection WidgetFont" style="padding:5px 15px 20px 20px"> 
+            <div>You are licensed to use Fonality's Video Collaboration. With this feature, conduct scheduled and instant interactive audio/video collaborations plus screen-sharing sessions directly from HUD Web. Get started today.</div>
+
+
+        </div>
+
+            <div class="ScheduleTabBar" >
+                        <a href="" class="ScheduleTabBarButton Ready" ng-click="setScheduleTab('Home')" ng-class="tab == 'Home' ? 'fj-selected-item' : ''">
+                            <div class="inner">Home</div>
+                            <div class="arrow"></div>
+                        </a>
+                        <a href="" class="ScheduleTabBarButton Ready" ng-click="setScheduleTab('Meetings'); getData()" ng-class="tab == 'Meetings' ? 'fj-selected-item' : ''" >
+                            <div class="inner">Meetings</div>
+                            <div class="arrow"></div>
+                        </a>
+            </div>
+<div id="createdVideo" ng-show="inMeeting" style="padding:10px 10px 15px 25px">
+             <div>
+              <h2 style="font-size: 20px;font-weight: 600;color: gray">{{::verbage.zoom_created}}</h2>
+            </div>
+            <div> {{::verbage.zoom_your_meeting_will_begin}} <a target="_blank" href="{{joinUrl}}"> {{::verbage.link}} </a> </div>
+            <br>
+            <div style="margin-bottom:30px"> 
+                {{::verbage.link_to_join}}
+                <br>
+                <a target="_blank" href="{{joinUrl}}">{{ joinUrl}} </a>
+            </div>
+                <a href="" ng-click="setScheduleTab('Home')">Back to Fonality Video Conferencing</a>
+            </div>
+<div id="homeContainer" ng-show="showHome"  >
+        <div class="ZoomWidgetSection left"> 
+            <div class="ListSection WidgetTextHeader" style="margin-bottom:10px"> 
+                <div class="ListSectionHeaderTitle">SCHEDULE A MEETING</div>
+                <div class="WidgetFont">To schedule your meeting click the 'Schedule Meeting' button and fill out the details.</div>
+            </div>
+            <div class="ListSection WidgetTextHeader" style="margin-bottom:10px"> 
+                    <div class="ListSectionHeaderTitle">{{::verbage.join}}</div> 
+                    <div class="WidgetFont">{{::verbage.join_summary}}</div>
+            </div>
+            <div class="ListSection WidgetTextHeader" style="padding-bottom:15px"> 
+                            <div class="ListSectionHeaderTitle">{{::verbage.create}}</div> 
+                            <div class="WidgetFont">{{::verbage.create_summary}}</div>
+            </div>       
+        </div>
+<div id="btnContainer">
+    <div class="ListSectionBtn">
+        <div id="scheduleMeetingBtn" >
+       <!--  <button data-ng-click="open('lg')" class="XButton XButton XButtonWide XButtonBlue">Schedule Meeting<div>&#9654;</div></button> -->
+        <div class="WorkspaceButton" ng-click="noEmail || open('lg')" ng-disabled="noEmail" style="padding-left:40px">
+                        Schedule Meeting
+                        <div class="line"><div class="rightArrow">&#9654;</div></div>
+                    </div>
+
+       </div>
+    </div>
+    <div class="ListSectionBtn">
+        <div id="joinMeeting">
+                <div class="SearchInputBox" style="float:none">
+                    <div class="SearchInputBoxInputHolder">
+                        <input class="SearchInputBoxInput" data-ng-model="meetingId" type="text" ng-attr-placeholder="{{::verbage.meeting_id}}" />
+                    </div>
+                </div>
+                <!-- <button data-ng-click="joinMeeting(meetingId)" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.join_now}}</button> -->
+                <div class="WorkspaceButton" data-ng-click="noEmail || joinMeeting(meetingId)" ng-disabled="noEmail" style="padding-left:60px">
+                        Join Now
+                       <div class="line"><div class="rightArrow">&#9654;</div></div>
+                    </div>
+
+        </div>
+    </div>
+
+     
+            <div class="ListSectionBtn">
+                <div id="joinVideoScreen">
+                 <div class="addContact">
+                    <div >
+                        <input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search="all|addedContacts" />
+                    </div>
+                 </div>
+                 <div id="contacts-height" style="max-height:150px;overflow-y:auto">
+                <div class="Contacts widget-zoom-contacts" style="float:none;width:100%;max-height:none">
+                    <div class="ListRow Small " data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid ">
+                        <avatar profile="contact" widget="zoom"></avatar>
                         <div class="ListRowContent" dockable="contact">
                             <div class="ZoomRowTitle">
-                                <div class="name">{{contact.displayName}}</div>
+                                <div class="name">{{::contact.displayName}}</div>
                                 <div class="link">#{{::contact.primaryExtension }}</div>
                             </div>
                             <div class="ZoomRowStatus">
                                 <!-- <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.queueStatus}}"></div> -->
                                 <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
-                                <div class="ListRowDesc">{{::contact.hud_status}}</div>
+                                <div class="ListRowDesc">{{contact.hud_status}}</div>
                             </div>
                         </div>
                         <button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>
                     </div>
+                </div>
             </div>
-
-
+                <!-- <button ng-click="startMeeting('screen_share')" class="XButton XButton XButtonWide XButtonBlue first">Start Without Video</button> -->
+                <div class="WorkspaceImgButton" ng-click="noEmail || startMeeting('screen_share')" ng-disabled="noEmail" style="margin-bottom:10px;margin-top:8px;padding-left:40px">
+                        Start Without Video
+                        <img src="img/Icon-screen-share.png" style="    margin-right: 10px;">
+                    </div>
+               <!--  <button ng-click="startMeeting('video')" class="XButton XButton XButtonWide XButtonBlue">{{::verbage.start_with_video}}</button> -->
+                <div class="WorkspaceImgButton" ng-click="noEmail || startMeeting('video')" ng-disabled="noEmail" style="padding-left:50px">
+                        Start With Video
+                        <img src="img/Icon-Video.png">
+                    </div>
+               
+            
         
 
-    </div>
+            </div>
+            </div>
 
 </div>
+
+</div>
+
+<div id="meetingContainer" ng-show="showMeetings" >
+    <div class="meetingHeader" >
+        <ul>
+          <li><h4>Personal Meeting ID (PMI)</h4><button ng-click="joinScheduledMeeting(pmi_id.pmi)">Start</button></li>
+          <li><h3 ng-model="pmi_id.pmi" style="margin-left:30px">{{pmi_id.pmi.substr(0,3)}}-{{pmi_id.pmi.substr(3,3)}}-{{pmi_id.pmi.substr(6,4)}}</h3><button ng-click="copyPmi(x.topic,pmi_id.pmi)">Copy</button></li>
+        </ul>
+    </div>
+    
+
+
+        <div class="meetingBody" >
+            <h3>My Meetings</h3>
+
+            <ul>
+                <li ng-repeat="x in meetingList|orderBy:'start_time'">
+                                        <div ng-init="getTimezone(x.start_time)"></div>
+
+                   <h5 style="font-weight:bold" ng-model="x.timeDate">{{x.timeDate}}</h5><img ng-show="loading.meetingLoaded" src="img/XLoading.gif" />
+                   <p ng-model="x.startHour">{{x.startHour}} to </p><p ng-model="x.endHour" style="margin-top: -15px;margin-left: 72px;">{{x.endHour}}</p>
+                   <p ng-model="x.topic" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 250px;">Topic: {{x.topic}}</p>
+                   <p ng-model="x.meeting_id">Meeting ID: {{x.meeting_id}}</p>
+                   <p ng-model="x.timezone">Time Zone: {{x.timezone}}</p>
+                   <p ng-model="x.duration" ng-hide="true">{{x.end_time}}</p>
+                   <div class="meetingBtnsContainer">
+                       <button ng-click="openEditModal(x.meeting_id,x.topic,x.timeDate,x.startHour,x.timezone,x.password,x.option_jbh,x.duration)">Edit</button>
+                       <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
+                       <button ng-click="copy(x.timeDate,x.startHour,x.topic,x.meeting_id,x.timezone,x.password)">Copy</button>
+                       <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+</div>
+</div>
+
+
+<script type="text/ng-template" id="myModalContent.html">
+                <div ng-init="setOffset()"></div>
+
+   <div class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
+        <div class="TopBarItemAppIcon Zoom"></div>
+        <div class="ScheduleHeaderTitle">
+            Fonality Video Collaboration - Schedule A Meeting
+        </div>
+    </div>
+    <div class="modal-body" ng-controller="ZoomWidgetController" style="padding: 15px 10px 10px 20px;">
+    <div ng-controller="DatepickerDemoCtrl">
+       
+        <div id="scheduleInputContainer">
+            <ul>
+               <li><label style="margin-left: -3px;margin-right: 7px;">Meeting Topic:</label><input ng-model="meeting.meetingTopic" style="width:310px"></li>
+               <li>
+                       
+                  <label style="margin-left:55px">When:</label>     
+                  <input style="padding:0px 10px 0px 10px;width:100px"  datepicker-popup="{{format}}" ng-model="meeting.dt" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions"  ng-required="true" close-text="Close" />
+                    <img src="img/datePicker.png" ng-click="open($event)" style="height:15px">
+              
+                          
+
+               <select ng-init="meeting.timeSelect" ng-options="o for o in times" name="timeSelect" ng-model="meeting.timeSelect" >
+               </select>
+               <select name="AmPm" ng-model="meeting.AmPm" ng-init="meeting.AmPm" ng-options="a for a in meridian">
+                    
+               </select>
+
+
+                </li>
+                <li>
+                <label style="margin-left:35px">Duration:</label>
+                <select name="hourDuration" ng-model="meeting.hourDuration" ng-init="meeting.hourDuration"  ng-options="hr for hr in hourOption">
+                </select>
+                <label>hr</label>
+                <select name="minDuration" ng-model="meeting.minDuration" ng-init="meeting.minDuration" ng-options="min for min in minOption">
+                </select>
+                <label>min</label>
+                </li>
+                <li>
+                <label style="margin-left:25px">Time Zone:</label>
+                <select name="timezone" ng-model="meeting.timezone"ng-init="meeting.timezone" ng-options="t as t for t in timeZone">
+                </select>
+                </li>
+            </ul>
+        <div id="passwordContainer">
+            <form>
+                
+                    <label>Meeting Options:</label>
+                    <ul>
+                    <li><input type="checkbox" ng-model="meeting.checked"> <label style="font-weight:inherit"> Require meeting password</label></li>
+                    
+                    <li><input style="margin-left: 20px;"  ng-model="meeting.password"   ng-hide="!meeting.checked"></li>
+                    
+                    <li><input type="checkbox" ng-model="meeting.jbh"> <label style="font-weight:inherit"> Enable join before host</label></li></ul>
+
+                
+            </form>
+        </div>
+        </div>
+        
+
+    
+
+    
+    <div class="modal-footer">
+       
+        <button class="SchedulingBtns" style="background: linear-gradient(rgb(254, 254, 254), rgb(235, 235, 235)) rgb(254, 254, 254);color:black;" type="button" ng-click="cancel()">Cancel</button>
+         <button class="SchedulingBtns" type="button" ng-show="scheduleBtn" ng-click="scheduleMeeting(meeting.AmPm); openClipboard(meetingTopic);">Schedule Meeting</button>
+        <button class="SchedulingBtns" ng-show="updateBtn" ng-click="editMeeting(meeting.AmPm)">Update Meeting</button>
+    </div>
+    </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="copyToClipboard.html">
+   <div  class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
+        <div class="TopBarItemAppIcon Zoom"></div>
+        <div class="ScheduleHeaderTitle">
+            Fonality Video Collaboration - Add To Calendar
+        </div>
+    </div>
+    <div id="calendarContainer" style="padding:0px 10px 0px 25px">
+        <div style="font-size:14px;font-weight:bold;border:1px solid none;width:225px;margin-bottom:10px">Your Meeting is Scheduled</div>
+        
+        <p style="font-family:Arial;font-size:14px;width:280px;line-height:1.4">Highlight the text in the box to the right and Ctrl+C (Win) or Cmd+C (Mac) and paste it in to your Calendar invitation.</p>
+
+        <p style="font-family:Arial;font-size:14px;width:280px;line-height:1.4">* When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard.</p>
+        
+    </div>
+   <div id="textArea" contentEditable="true" >
+    <ul>
+
+    <li>Hi there,</li>
+
+    <li>{{userName}} is inviting you to a scheduled Zoom meeting.</li>
+
+    <li>Topic: {{meeting.meetingTopic}}</li>
+
+    <li>Time: {{meeting.dt|date:"MMM dd, yyyy "}} {{meeting.timeSelect|date:'h:mma'}}{{meeting.AmPm}}  {{meeting.timezone}}</li></li>
+    <li ng-hide="!meeting.password">Password: {{meeting.password}}</li>
+
+    <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}<img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
+
+    <li>Or join by phone:</li>
+
+    <li>+1 646 568 7788 (US Toll) or +1 415 762 9988 (US Toll)<br>
+    Meeting ID:{{meeting.meeting_id}} <img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
+    </ul>
+    </div>
+
+    
+    <div class="modal-footer" style="margin-top:-155px">
+        <button class="SchedulingBtns"  type="button" ng-click="cancel()">Close Window</button>
+    </div>
+   
+</script>
+
+<script type="text/ng-template" id="copyToClipboardPMI.html">
+   <div  class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
+        <div class="TopBarItemAppIcon Zoom"></div>
+        <div class="WidgetHeaderTitle">
+            Fonality Video Collaboration - Add To Calendar
+        </div>
+    </div>
+    <div id="calendarContainer" style="padding:0px 10px 0px 25px">
+        <div style="font-size:14px;font-weight:bold;border:1px solid none;width:225px;margin-bottom:10px">Your Meeting is Scheduled</div>
+        
+        <p style="font-family:Arial;font-size:14px;width:280px;line-height:1.4">Highlight the text in the box to the right and Ctrl+C (Win) or Cmd+C (Mac) and paste it in to your Calendar invitation.</p>
+
+        <p style="font-family:Arial;font-size:14px;width:280px;line-height:1.4">* When using your Fonality conference bridge please add conference bridge number and password in the editable invitation area before copying to the clipboard.</p>
+        
+    </div>
+    <div id="textArea" contentEditable="true" >
+    <ul>
+
+    <li>Hi there,</li>
+
+    <li>{{userName}} is inviting you to a scheduled Zoom meeting.</li>
+
+    <li>Topic: {{meeting.meetingTopic}}</li>
+
+    <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}<img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
+
+    <li>Or join by phone:</li>
+
+    <li>+1 646 568 7788 (US Toll) or +1 415 762 9988 (US Toll)<br>
+    Meeting ID:{{meeting.meeting_id}}<img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
+    </ul>
+    </div>
+
+    
+    <div class="modal-footer" style="margin-top:-155px">
+        <button class="SchedulingBtns"  type="button" ng-click="cancel()">Close Window</button>
+    </div>
+   
+</script>
+
+<script type="text/ng-template" id="emailCheck.html">
+ <div  class="WidgetHeader" style="border-bottom:1px solid gray; padding:10px 10px 0px 10px;margin:12px">
+        <div class="TopBarItemAppIcon Zoom"></div>
+        <div class="WidgetHeaderTitle">
+            Fonality Video Collaboration
+        </div>
+    </div>
+    <div style="padding:0px 10px 40px 25px">
+       
+        
+        <p style="font-family:Arial;font-size:16px;color:#333333">We have released a new version of Video Collaboration. Note that because of the new features, it is necessary for Fonality to capture a unique email address. To perform this change yourself, please go to the <a target="_blank" href="http://bit.ly/1NK8QIy">instructions link</a>.</p>
+        <p style="font-family:Arial;font-size:16px;color:#333333"> Alternatively, please contact your Administrator to add an email address to your profile.</p>
+
+        
+        
+    </div>
+    
+
+    
+    <div class="modal-footer">
+<button class="SchedulingBtns" style="background: linear-gradient(rgb(254, 254, 254), rgb(235, 235, 235)) rgb(254, 254, 254);color:black;margin-right:20px" type="button" ng-click="cancelEmailCheck()">Cancel</button>    </div>
+</script>
+
+
+
+
+<style>
+.full button span {
+background-color: limegreen;
+border-radius: 32px;
+color: black;
+}
+.partially button span {
+background-color: orange;
+border-radius: 32px;
+color: black;
+}
+#scrollArea {
+height: 310px;
+overflow: auto;
+}
+
+#bottom {
+display: block;
+margin-top: 2000px;
+}
+</style>
+        
+    

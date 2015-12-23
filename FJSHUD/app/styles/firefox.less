@@ -1,9 +1,61 @@
 //@supports (-moz-appearance:meterbar) {  
-     input[type="search"]{float: left;}
+     //input[type="search"]{float: left;}
      
      .SearchBox {
         padding: .5em .5em .5em 2.3em !important;
      } 
+     #homeContainer{
+  border: 1px solid none;
+  height:79%;
+  overflow-y: auto;
+  padding: 0px 20px 0px 20px;
+}
+#meetingContainer{
+  border:1px solid none;
+  height: 780px;
+  padding: 0px 10px 0px 10px;
+  height: 79%;
+  overflow-y: auto;
+}
+.WidgetZoomBody .ListSectionBtn #joinVideoScreen {
+    margin: 16px 0px 0px;
+    padding: 15px 10px 13px 20px;
+}
+   
+.CallLog{
+   .ListLineContent.Header{
+    .ListLineContentCell{
+      max-width: none !important;
+      &:first-child{
+         width: 30px;
+      }   
+                    
+      .DirectionArrow{
+        left: 8px !important; 
+        position: relative !important;
+      }
+      &.Down{
+        .DirectionArrow{top: 4px;}
+      }
+                    
+      @media screen and (-ms-high-contrast: active),
+      (-ms-high-contrast: none) {
+        .DirectionArrow{margin-left: 0;}
+      }                   
+                  
+      &.Name{width: 150px;}
+      &.Topic{width: 130px;}   
+      &.Phone{width: 74px;}
+      &.Duration{width: 70px; margin-left: 10px;} 
+      &.Meeting_Id{width:70px; margin-left: 160px;}     
+      &.StartedAt{width: 70px;}
+      &.videoStartedAt{width: 110px;}
+      &.CallType{width: 10%;}
+      &.Start_time{width: 20%;margin-left: 20px;}
+
+    }                                               
+  }
+}  
      
      img.x{
            width: 7px; 
@@ -13,13 +65,13 @@
            margin-left: -15px; 
            margin-top: -3px;   
            cursor: pointer;   
-		   z-index: 100;
+       z-index: 100;
      }
 
      .Gadget {
-		border-radius: 5px;
-		overflow: hidden;
-	 }	 
+    border-radius: 5px;
+    overflow: hidden;
+   }   
         
      .TopBarMeStatus{
         .Logout {
@@ -284,12 +336,12 @@
         }
    }*/
    .ListRow .Avatar img {
-   		&.CallAvatar_Office{
-   		 img{
-   		   margin: -1px !important;
-   		 }
-   		} 
-   	}
+      &.CallAvatar_Office{
+       img{
+         margin: -1px !important;
+       }
+      } 
+    }
   }
   
   .LeftBarNotificationSection{
@@ -377,7 +429,7 @@
         span{
           width: auto !important;
           &.truncate{
-          	max-width: 55% !important;
+            max-width: 55% !important;
           }
         }       
     }
@@ -411,10 +463,10 @@
        }
       .NotificationMessages{
         .NotificationTime{
-        	bottom: 15px;
+          bottom: 15px;
         }
         .NotificationMessage{
-        	max-height: inherit !important;
+          max-height: inherit !important;
         }
       }
       
@@ -422,7 +474,7 @@
   }
   .CallStatusText{   
     &.ringing{     
-        	max-width: 40% !important;
+          max-width: 40% !important;
     }
   }
   .XIcon24-Record-Off{

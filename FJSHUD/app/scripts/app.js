@@ -1,6 +1,7 @@
 'use strict';
 
 var hudweb = angular.module('fjshudApp', [
+	'ui.bootstrap',
     'ngRoute',
     'ngSanitize',
     'flow',
@@ -17,7 +18,6 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 
 	// combines responses into one digest cycle
 	$httpProvider.useApplyAsync(true);
-	
 	$routeProvider
 		.when('/settings',
 		{
@@ -102,6 +102,11 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 		{
 			templateUrl: 'views/Intellinote.html',
 			controller: 'IntellinoteController'
+		})
+		.when('/zipwhip',
+		{
+			templateUrl: 'views/Zipwhip.html',
+			controller: 'ZipwhipController'
 		})
 		.otherwise({
 			redirectTo: '/settings'
