@@ -52,7 +52,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     else{
       $scope.noEmail = false;
     }
-     
+
 
      var getURL = function(action) {
 
@@ -1101,7 +1101,7 @@ moment.locale('en');
 var tzName = jstz.determine().name(); // America/Los_Angeles
 
  for(i=0;i<=$scope.timeZone.length;i++){
-   if(tzName == $scope.timeZone[i]){
+   if(tzName && tzName == $scope.timeZone[i]){
             $scope.timeZone.unshift($scope.timeZone[i]);
 
             break;
