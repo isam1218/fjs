@@ -419,7 +419,7 @@ console.log("Contact",contact);
     });
 
     	
-    }
+    };
 
 
      settingsService.getPermissions().then(function(data) {

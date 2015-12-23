@@ -87,7 +87,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     };
     $scope.startScheduledMeeting = function(start_url){
       window.open(start_url);
-    }
+    };
 
     $scope.openEditModal = function(meetingId,topic,start_time,startHr,timezone,password,option,duration){
       
@@ -202,9 +202,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
             sharedData.meeting.timezone = timezone;
           });
 
-      /*sharedData.meeting.timeSelect = startTime;
-      sharedData.meeting.meetingTopic = topic;
-      sharedData.meeting.timezone = timezone;*/
+      
       sharedData.meeting.AmPm = "";
       
 
@@ -356,19 +354,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       }
     });
 
-  /*  $scope.setScheduleTab = function(tab) {
-        $scope.tab = tab;
-        $scope.query = '';
-
-        if(tab == "Meetings"){
-            $scope.showHome =false;
-            $scope.showMeetings=true;
-        }
-        if(tab =="Home"){
-            $scope.showHome=true;
-            $scope.showMeetings = false;
-        }
-    }; */ 
+ 
 
     $scope.startMeeting = function(option){
         var data = {};
@@ -427,10 +413,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     
     $scope.addedContacts = [];
     $scope.searchContact = function(contact){
-     /*   for (var i = 0; i < $scope.addedContacts.length; i++) {
-            if (contact == $scope.addedContacts[i])
-                return;
-        }*/
+     
         $scope.addedContacts.push(contact);
     };
 
@@ -538,7 +521,6 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
                   if(strHourString > 24 || (strHourString == 24 && parseInt(strMin) > 0)){
                   
                   
-                  //var sx = parseInt($scope.meetingList[i].duration.toString().substr(0,2)) + (24 - strHourString);
                   var sx = parseInt(strHourString) - 24;
                  
                   strHourString = sx;
@@ -559,8 +541,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 
                if($scope.meetingList[i].duration.toString().length == 2){
-              //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
-              //alert($scope.meetingList[i].duration.toString().substr(0,2));
+              
               var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               if(strMin == 60){
                
@@ -603,12 +584,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       });
  });
 
-  /*$scope.getTimezone = function(start_time){
-    $scope.startTime = start_time;
-    $scope.startTime.substr(11,2);
-    console.log("STARTTIME",$scope.meetingList);
-   
-  }*/
+ 
 
 $scope.$on('modalInstance', function() {
 $scope.loading.meetingLoaded = true;
@@ -617,8 +593,7 @@ $scope.loading.meetingLoaded = true;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
         $scope.loading.meetingLoaded = false;
-        /*$scope.meetingList.push({"start_hour":$scope.start_hour});
-                console.log("START_HOUR",$scope.start_hour);*/
+        
 
         for(var i = 0; i<=30;i++){
           var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
@@ -676,7 +651,6 @@ $scope.loading.meetingLoaded = true;
                  if(strHourString > 24 || (strHourString == 24 && parseInt(strMin) > 0)){
                   
                   
-                  //var sx = parseInt($scope.meetingList[i].duration.toString().substr(0,2)) + (24 - strHourString);
                   var sx = parseInt(strHourString) - 24;
                   
                   strHourString = sx;
@@ -697,8 +671,7 @@ $scope.loading.meetingLoaded = true;
 
 
                  if($scope.meetingList[i].duration.toString().length == 2){
-              //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
-              //alert($scope.meetingList[i].duration.toString().substr(0,2));
+              
               var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               if(strMin == 60){
                 
@@ -752,9 +725,6 @@ $scope.loading.meetingLoaded = true;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
 
-        /*$scope.meetingList.
-        push({"start_hour":$scope.start_hour});
-                console.log("START_HOUR",$scope.start_hour);*/
 
         for(var i = 0; i<=30;i++){
 
@@ -774,9 +744,7 @@ $scope.loading.meetingLoaded = true;
               if($scope.meetingList[i].duration.toString().length == 3){
                 $scope.meetingList[i].duration = "0"+ $scope.meetingList[i].duration ;
               }
-            /*if($scope.meetingList[i].duration.toString().length == 2){
-              $scope.meetingList[i].duration = "0" + $scope.meetingList[i].duration;
-            }*/
+            
 
           
                  if($scope.meetingList[i].duration.toString().length == 4){
@@ -902,27 +870,15 @@ $scope.loading.meetingLoaded = true;
 
     $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket}).success(function(data){
        
-            //httpService.sendAction('voicemailbox', 'delete', fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket);
 
         
 
       });
-    /*$http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(data){
-      console.log(data);
-    })*/
+    
     }
   };
 
 
-
-
-
-
-/*}]);
-
-
-hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$http) {
-*/
   $scope.items = ['item1', 'item2', 'item3'];
 
   $scope.animationsEnabled = true;
@@ -931,6 +887,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
   $scope.open = function (size) {
     $scope.scheduleBtn = true;
     $scope.updateBtn = false;
+    
     $scope.userName=$rootScope.meModel.first_name +" "+ $rootScope.meModel.last_name;
     $scope.topic = $scope.userName + " Meeting";
     var modalInstance = $modal.open({
@@ -993,17 +950,7 @@ hudweb.controller('ModalDemoCtrl', function ($scope, $modal, $log,$rootScope,$ht
     $scope.animationsEnabled = !$scope.animationsEnabled;
   };
 
- // $scope.hourOption = ['00','01','02','03','04','05'];
 
-  /*for(var hour = 0; hour <=12; hour++){
-    $scope.hourOption.push(hour);
-  }*/
-
-  //$scope.minOption = ['00','15','30','45'];
-
-  /*for(var min = 0; min <60; min+=15){
-    $scope.minOption.push(min);
-  }*/
 
 }]);
 
@@ -1174,9 +1121,11 @@ else{
 
 if($scope.meeting.timezone != undefined){
     $scope.meeting.timezone = timezone;
+
 }
 else{
     $scope.meeting.timezone = $scope.timeZone[0];
+    
 }
 
 if($scope.meeting.hourDuration != undefined){
@@ -1230,28 +1179,12 @@ $scope.meeting.dt = $scope.meeting.times;
   sharedData.meeting.timezone = $scope.meeting.timezone;
   sharedData.meeting.password = $scope.meeting.password;
   sharedData.meeting.jbh = $scope.meeting.jbh;
- $scope.getInfo = function(){
 
-  
-     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
-        
-     
-
-        
-           
-
-      });
-
-
-  }
   $scope.setScheduleTab = sharedData.setScheduleTab;
 
      //$scope.setScheduleTab('Meetings');
 
-$scope.reloadRoute = function() {
-     
-   $route.reload();
-}
+
 
  $scope.editMeeting = function(AmPm){
   if(sharedData.meeting.meetingTopic == ""){
@@ -1287,13 +1220,7 @@ var dates = $filter('date')($scope.startTime,'Z');
     
  
  }
- /* if($scope.meeting.AmPm =="PM" && (($scope.startHourUTC == "09" && $scope.startMinute.substr(1,2) == 30) || ($scope.startHourUTC == 12 && $scope.startMinute.substr(1,2) == 30) || $scope.startHourUTC =="10" || $scope.startHourUTC =="11")){
-  
-  $scope.hourUTC =$scope.startHourUTC;
-  $scope.startDay = $scope.startTime.getDate();
-    
- 
- }*/
+
  if($scope.meeting.AmPm == "PM" && $scope.startHourUTC == 12){
   $scope.hourUTC =parseInt($scope.startHourUTC) - 12;
   
@@ -1305,79 +1232,6 @@ var dates = $filter('date')($scope.startTime,'Z');
  }
  
  
- 
-/*if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
-  $scope.hourUTC = parseInt($scope.startHourUTC) + parseInt(dates.substr(1,2));
-    $scope.startDay = $scope.startTime.getDate();
-    
-    
-    if($scope.startHour.substr(0,2) == 12){
-      $scope.hourUTC = dates.substr(1,2);
-    }
- }
-  if($scope.meeting.AmPm =="PM" && dates.charAt(0) == '-'){
-  
-  $scope.startHourUTC = parseInt($scope.startHourUTC);
-  $scope.hourUTC =parseInt($scope.startHourUTC) + 12 + parseInt(dates.substr(1,2));
-    $scope.startDay = $scope.startTime.getDate();
-    
- if($scope.startHour.substr(0,2) == 12){
-      $scope.hourUTC = parseInt(dates.substr(1,2)) + 12;
-      
-    }
- }
- // for 30 min timezones
- if(dates.substr(3,2) == 30 && dates.charAt(0) == '-'){
-  $scope.startMinute = ":" + (parseInt($scope.startMinute.substr(1,2)) + 30);
- }
- if(dates.substr(3,2) == 30 && dates.charAt(0) == '+'){
-  $scope.startMinute = ":" + (parseInt($scope.startMinute.substr(1,2)) - 30);
- }
-//for timezones with +
- if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '+'){
-  $scope.hourUTC = parseInt($scope.startHourUTC) - parseInt(dates.substr(1,2));
-    $scope.startDay = $scope.startTime.getDate();
-    
-    
-    if($scope.startHour.substr(0,2) == 12){
-      $scope.hourUTC = parseInt(dates.substr(1,2))-(parseInt(dates.substr(1,2)*2));
-    }
- }
-
-  if($scope.meeting.AmPm =="PM" && dates.charAt(0) == '+'){
-  
-  $scope.startHourUTC = parseInt($scope.startHourUTC);
-  $scope.hourUTC =parseInt($scope.startHourUTC) + 12 - parseInt(dates.substr(1,2));
-    $scope.startDay = $scope.startTime.getDate();
-    
- if($scope.startHour.substr(0,2) == 12){
-      $scope.hourUTC = parseInt($scope.hourUTC)-12;
-      
-    }
- }*/
-/* if($scope.hourUTC >= dates.substr(1,2) && dates.charAt(0) == "-"){
-  $scope.startDay = $scope.startTime.getDate();
- }
- else if($scope.hourUTC <= dates.substr(1,2) && dates.charAt(0) == "-"){
-  $scope.startDay = $scope.startTime.getDate()+1;
- }
-
-  if($scope.startHourUTC >= dates.substr(1,2) && dates.charAt(0) == "+"){
-  $scope.startDay = $scope.startTime.getDate();
- }
- if($scope.startHourUTC <= dates.substr(1,2) && dates.charAt(0) == "+"){
-  $scope.startDay = $scope.startTime.getDate();
- }*/
- 
-
-
-
- 
- 
- 
-
-
-
 
  
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+$scope.startMinute+":00Z";
@@ -1403,26 +1257,12 @@ var dates = $filter('date')($scope.startTime,'Z');
 
 
 
-/*  for(i=1;i<=$scope.timeZone.length;i++){
-   if(tzName == $scope.timeZone[i]){
-    var a = $scope.timeZone.indexOf($scope.timeZone[i]);
-    $scope.timeZone.splice(a,1);
-            console.log("REMOVE THIS",a);
-        break;
-  }
-  }*/
-   
-  
-
-
-
 
   $scope.startTime = "";
   $scope.starts = null;
 
 
 
- // $scope.startTime = $scope.meeting.timeSelect+$scope.meeting.AmPm+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear();
 
 
   $scope.scheduleMeeting = function (AmPm) {
@@ -1468,64 +1308,6 @@ if($scope.meeting.AmPm =="AM"){
  }
  
  
-
-/*if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '-'){
-  $scope.hourUTC = parseInt($scope.startHourUTC) + parseInt(dates.substr(1,2));
-    $scope.startDay = $scope.startTime.getDate();
-    
-    
-    if($scope.startHour.substr(0,2) == 12){
-      $scope.hourUTC = dates.substr(1,2);
-    }
- }
-  if($scope.meeting.AmPm =="PM" && dates.charAt(0) == '-'){
-  
-  $scope.startHourUTC = parseInt($scope.startHourUTC);
-  $scope.hourUTC =parseInt($scope.startHourUTC) + 12 + parseInt(dates.substr(1,2));
-    $scope.startDay = $scope.startTime.getDate();
-    
- if($scope.startHour.substr(0,2) == 12){
-      $scope.hourUTC = parseInt(dates.substr(1,2)) + 12;
-      
-    }
- }
-// for 30 min timezones
- if(dates.substr(3,2) == 30 && dates.charAt(0) == '-'){
-  $scope.startMinute = ":" + (parseInt($scope.startMinute.substr(1,2)) + 30);
- }
- if(dates.substr(3,2) == 30 && dates.charAt(0) == '+'){
-  $scope.startMinute = ":" + (parseInt($scope.startMinute.substr(1,2)) - 30);
- }
-//for timezones with +
- if($scope.meeting.AmPm == "AM" && dates.charAt(0) == '+'){
-  $scope.hourUTC = parseInt($scope.startHourUTC) - parseInt(dates.substr(1,2));
-    $scope.startDay = $scope.startTime.getDate();
-    
-    
-    if($scope.startHour.substr(0,2) == 12){
-      $scope.hourUTC = parseInt(dates.substr(1,2))-(parseInt(dates.substr(1,2)*2));
-    }
- }
-
-  if($scope.meeting.AmPm =="PM" && dates.charAt(0) == '+'){
-  
-  $scope.startHourUTC = parseInt($scope.startHourUTC);
-  $scope.hourUTC =parseInt($scope.startHourUTC) + 12 - parseInt(dates.substr(1,2));
-    $scope.startDay = $scope.startTime.getDate();
-    
- if($scope.startHour.substr(0,2) == 12){
-      $scope.hourUTC = parseInt($scope.hourUTC)-12;
-      
-    }
- }*/
-
-/* if($scope.hourUTC ==24){
-    $scope.hourUTC = $scope.hourUTC -;
-  }*/
-
-  //$scope.hourUTC = $scope.hourUTC -17;
-/*$scope.startTime.getTimezoneOffset() = +240;
-*/ 
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+$scope.startMinute+":00Z";
 if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
   alert("Looks like you did not select a Duration. Please select a Duration for your meeting.");
