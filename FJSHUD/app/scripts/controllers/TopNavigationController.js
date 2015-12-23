@@ -115,6 +115,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			}
 		}
 	});
+	
 
 	$scope.checkEmail = function(key,url){
 			
@@ -405,4 +406,6 @@ hudweb.controller('emailCheckController', function ($scope, $modalInstance, sche
   $scope.cancelEmailCheck = function () {
     $modalInstance.dismiss('cancel');
   };
+
+  
 });
