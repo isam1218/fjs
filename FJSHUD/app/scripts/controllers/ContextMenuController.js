@@ -368,7 +368,6 @@ console.log("Contact",contact);
   
    
     $scope.checkEmail = function(){
-    	if($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined){
 
     		$scope.noEmail = true;
     		$modal.open({
@@ -419,7 +418,7 @@ console.log("Contact",contact);
       }
     });
 
-    	}
+    	
     }
 
 

@@ -295,7 +295,66 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
     $scope.inMeeting = false;
 
- 
+    settingsService.getMe().then(function(data) {
+      var DATA = data;
+      if(data.email !== undefined){
+        console.log("MY EMAIL", data.email);
+        $scope.noEmail = false;
+      }
+      if(data.email === undefined | data.email == ""){
+        console.log("MY EMAIL", data.email);
+        $scope.noEmail = true;
+
+        $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'emailCheck.html',
+      controller: 'emailCheckController',
+      size: 'lg',
+      resolve: {
+        schedule: function () {
+          return $scope.scheduleBtn;
+        },
+        update: function(){
+          return $scope.updateBtn;
+        },
+        shared: function(){
+          return $scope.meeting_id;
+        },
+        host: function(){
+          return $scope.host_id;
+        },
+        topic: function(){
+          return $scope.topic;
+        },
+        time: function(){
+          return $scope.start_time;
+        },
+        timezone:function(){
+          return $scope.timezone;
+        },
+        password:function(){
+          return $scope.password;
+        },
+        option:function(){
+          return $scope.option; 
+        },
+        start_hour: function(){
+          return $scope.start_hour;
+        },
+        AmPm: function(){
+          return $scope.AmPm;
+        },
+        hourDuration: function(){
+          return $scope.hourDuration;
+        },
+        minDuration: function(){
+          return $scope.minDuration;
+        }
+      }
+    });
+
+      }
+    });
 
   /*  $scope.setScheduleTab = function(tab) {
         $scope.tab = tab;
