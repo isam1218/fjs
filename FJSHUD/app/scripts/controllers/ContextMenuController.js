@@ -301,8 +301,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		        console.log("ADDED CONTACTS",contact);
 
 
-
-		      
+		        
+		  
 
 		
         var data = {};
@@ -350,16 +350,31 @@ console.log("Contact",contact);
                context.onAjaxResult(isOk, data)
         });*/
     };
-    if($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined){
-    	$scope.noEmail = true;
-    }
+   
+   
+   
+   	settingsService.getMe().then(function(data) {
+   		var DATA = data;
+   		if(data.email !== undefined){
+   			console.log("MY EMAIL", data.email);
+   			$scope.noEmail = false;
+   		}
+   		if(data.email === undefined | data.email == ""){
+   			console.log("MY EMAIL", data.email);
+   			$scope.noEmail = true;
+   		}
+   	});
+
+  
+   
     $scope.checkEmail = function(){
     	if($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined){
+
     		$scope.noEmail = true;
     		$modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'emailCheck.html',
-      controller: 'ModalInstanceCtrl',
+      controller: 'emailCheckController',
       size: 'lg',
       resolve: {
         schedule: function () {
@@ -406,6 +421,7 @@ console.log("Contact",contact);
 
     	}
     }
+
 
      settingsService.getPermissions().then(function(data) {
        $scope.getVideo = data.showVideoCollab;

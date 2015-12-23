@@ -118,12 +118,14 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 
 	$scope.checkEmail = function(key,url){
 			
-		if(($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined) && key === "Zoom" && url === '#/zoom'){
+		if(($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined) && (key === "Zoom" && key != "Box") && (url === '#/zoom' && url != '#/box')){
 			console.log("email is undefined", key);
+
+		
 		$modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'emailCheck.html',
-      controller: 'ModalInstanceCtrl',
+      controller: 'emailCheckController',
       size: 'lg',
       resolve: {
         schedule: function () {
@@ -169,7 +171,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
     });
 
 	}
-}
+	}
+
 
   $scope.getAvatar = function() {
     return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);
@@ -397,3 +400,9 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		source = null;
 	};
 }]);
+
+hudweb.controller('emailCheckController', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,timezone,password,option,start_hour,AmPm,hourDuration,minDuration,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
+  $scope.cancelEmailCheck = function () {
+    $modalInstance.dismiss('cancel');
+  };
+});

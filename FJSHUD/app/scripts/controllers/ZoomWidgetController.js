@@ -420,7 +420,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
-        
+        console.log("EMAIL ZOOM", $rootScope.meModel.email);
 
         for(var i = 0; i<=30;i++){
            var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
