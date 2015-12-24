@@ -182,8 +182,8 @@ module.exports = function(grunt) {
       huc_dev:{
         options:{
           data:{
-            serverUrl:"https://huc-dev.fonality.com:8081",
-            loginUrl: "https://huc-dev.fonality.com:5501",
+            serverUrl: getServerUrl(),
+            loginUrl: getLoginUrl(),
             ppsServer: getPpsServer(),
             version: "HUDW" + getBuildNumber(),
             WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
