@@ -10,7 +10,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 	
 	$scope.removeText = function(){
 		$scope.inviteStatus = "";
-	}
+	};
 	$scope.checkContacts = function(){
 		if($scope.addedContacts.length > 0){
     $scope.disableInvite = false;
@@ -20,7 +20,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
     $scope.myColor.myVar ='WorkspaceButtonDisabled';
 	}
 	$scope.inviteStatus = "";
-	}
+	};
 
 
 	
