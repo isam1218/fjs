@@ -38,6 +38,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					workerStarted = true;
 					
 					console.timeEnd('worker');
+					console.log('syncing...');
 					console.time('sync');
 					
 		        	updateSettings('instanceId','update',localStorage.instance_id); 
@@ -52,6 +53,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 						
 						if (!synced) {
 							console.timeEnd('sync');
+							console.log('rendering...');
 							console.time('render');
 							synced = true;
 						}
