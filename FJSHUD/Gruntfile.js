@@ -128,7 +128,7 @@ module.exports = function(grunt) {
 
     },
     ngtemplates: {
-      dist: {
+      fjshudApp: {
         options:{
           standalone:true,
           
@@ -405,7 +405,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bower-concat');
 
   
-  grunt.registerTask('default', ['ngtemplates']);
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
   grunt.registerTask('build-dist', ['template:dist','concat','ngtemplates','bower_concat','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
   grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);
