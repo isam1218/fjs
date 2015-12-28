@@ -130,8 +130,8 @@ module.exports = function(grunt) {
     ngtemplates: {
       fjshudApp: {
         options:{
-          standalone:true,
-          
+          standalone:false,
+          module:'fjshudApp',
         },
         cwd: 'app',
         src: ['views/**.html', 'views/**/**.html'],
