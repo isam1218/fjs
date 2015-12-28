@@ -279,13 +279,14 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 
 
 	settingsService.getMe().then(function(data){
-
 		if($rootScope.browser == "Chrome"){
-			if(!context.webphone && $rootScope.meModel.my_pid){
+			// chrome on chromebook and linux still won't work
+			if(!navigator.userAgent.match(/CrOS|Linux/) && !context.webphone && $rootScope.meModel.my_pid){
 				getWSVersion();
         		nservice.initNSService();
         	}
-		}else{
+		}
+		else{
 			if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
 	        var username = $rootScope.meModel.my_jid.split("@")[0];
 				if(!isRegistered && phonePlugin.getSession){
@@ -1399,39 +1400,28 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	};
 
 	$rootScope.$on('voicemailbox_synced', function(event, data) {
-		// first time
-		if (voicemails.length == 0) {
-			voicemails = data;
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
+			var match = false;
 
-			// add full profile
 			for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
-				voicemails[v].fullProfile = contactService.getContact(voicemails[v].contactId);
-			}
-		}
-		else {
-			for (var i = 0, iLen = data.length; i < iLen; i++) {
-				var match = false;
-
-				for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
-					// find and update or delete
-					if (voicemails[v].xpid == data[i].xpid) {
-						if (data[i].xef001type == 'delete') {
-							voicemails.splice(v, 1);
-							vLen--;
-						}
-						else
-							voicemails[v].readStatus = data[i].readStatus;
-
-						match = true;
-						break;
+				// find and update or delete
+				if (voicemails[v].xpid == data[i].xpid) {
+					if (data[i].xef001type == 'delete') {
+						voicemails.splice(v, 1);
+						vLen--;
 					}
-				}
+					else
+						voicemails[v].readStatus = data[i].readStatus;
 
-				if (!match && data[i].xef001type != 'delete') {
-					data[i].fullProfile = contactService.getContact(data[i].contactId);
-					voicemails.push(data[i]);
-
+					match = true;
+					break;
 				}
+			}
+
+			// don't add voicemails from myself
+			if (!match && data[i].xef001type != 'delete' && data[i].phone != $rootScope.meModel.primary_vm_box && data[i].phone != $rootScope.meModel.primary_extension) {
+				data[i].fullProfile = contactService.getContact(data[i].contactId);
+				voicemails.push(data[i]);
 			}
 		}
 
