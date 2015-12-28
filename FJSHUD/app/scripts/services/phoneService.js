@@ -271,13 +271,14 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 
 	settingsService.getMe().then(function(data){
-
 		if($rootScope.browser == "Chrome"){
-			if(!context.webphone && $rootScope.meModel.my_pid){
+			// chrome on chromebook and linux still won't work
+			if(!navigator.userAgent.match(/CrOS|Linux/) && !context.webphone && $rootScope.meModel.my_pid){
 				getWSVersion();
         		nservice.initNSService();
         	}
-		}else{
+		}
+		else{
 			if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
 	        var username = $rootScope.meModel.my_jid.split("@")[0];
 				if(!isRegistered && phonePlugin.getSession){

@@ -48,14 +48,17 @@ hudweb.controller('NotificationController',
   $scope.clearOld;
   $scope.alertDuration = settingsService.getSetting('alert_call_duration');    
     
-  settingsService.getMe().then(function() {
-	// delayed so phoneService can do its thing
-	$timeout(function() {
-		// can't find plugin or it's outdated
-		if (!phoneService.isPluginInstalled() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
-			$scope.addError('browserPlugin');
-	}, 1000, false);
-  });
+  // does not apply to non-plugin browsers
+  if (!navigator.userAgent.match(/CrOS|Edge|Linux/)) {
+	  settingsService.getMe().then(function() {
+		// delayed so phoneService can do its thing
+		$timeout(function() {
+			// can't find plugin or it's outdated
+			if (!phoneService.isPluginInstalled() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
+				$scope.addError('browserPlugin');
+		}, 1000, false);
+	  });
+  }
 
   $scope.getAvatar = function(pid){
     return myHttpService.get_avatar(pid,40,40);
