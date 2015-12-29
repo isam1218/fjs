@@ -33,7 +33,7 @@
 	                </div> 
 	                <div class="footnote voicemails">
 	                    <div class="vmfootnote vmduration">{{ ::voicemail.duration | duration }} </div>
-	                    <div class="vmfootnote" ng-class="::voicemail.transcription != '' ? 'transcription' : 'no_transcription'">{{ ::voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}</div>
+						<div class="vmfootnote" ng-class="voicemail.transcription != '' ? 'transcription' : 'no_transcription'">{{ voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}</div>
 	                </div>
 
 	                <!--<pre>{{voicemail|json}}</pre>-->

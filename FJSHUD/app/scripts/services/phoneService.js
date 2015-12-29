@@ -1412,7 +1412,10 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 							vLen--;
 						}
 						else
+						{	
 							voicemails[v].readStatus = data[i].readStatus;
+							voicemails[v].transcription = data[i].transcription;
+						}	
 
 						match = true;
 						break;
