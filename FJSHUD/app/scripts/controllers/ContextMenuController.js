@@ -267,8 +267,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 				case 'queue':
 					name = queueService.getQueue(xpid).name;
 					break;
-				case 'group':
-					name = groupService.getGroup(xpid).name;
+				case 'group':					
+					name = groupService.getGroupById(xpid).name;						
 					break;
 			}
 			

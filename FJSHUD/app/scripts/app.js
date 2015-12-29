@@ -80,7 +80,8 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			controller: 'GroupSingleController',
 			resolve: {
 				resolve: function (GroupService) {
-					return GroupService.getGroups();
+					//return GroupService.getGroups();
+					return GroupService.getSingleGroup();
 				}
 			}
 		})     

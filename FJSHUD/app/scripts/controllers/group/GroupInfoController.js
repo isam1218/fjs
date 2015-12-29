@@ -5,8 +5,10 @@ hudweb.controller('GroupInfoController', ['$scope', '$routeParams', '$rootScope'
   
   $scope.userIsOwner = false;
 
-  var curGroup = groupService.getGroup($rootScope.groupInfoId);
-
+  //var curGroup = groupService.getGroupById($rootScope.groupInfoId);
+  groupService.getGroup().then(function(data) {
+	  curGroup =  data;
+  });
   if ($rootScope.myPid === curGroup.ownerId)
     $scope.userIsOwner = true;
 

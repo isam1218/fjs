@@ -54,7 +54,7 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 				if (item.queueId !== undefined)
 					item.fullProfile = queueService.getQueue(item.queueId);
 				else if (item.departmentId !== undefined)
-					item.fullProfile = groupService.getGroup(item.departmentId);
+					item.fullProfile = groupService.getGroupById(item.departmentId);
 				else if (item.conferenceId !== undefined)
 					item.fullProfile = conferenceService.getConference(item.conferenceId);
 				else if (item.contactId !== undefined)

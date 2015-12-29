@@ -1,9 +1,17 @@
-hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'SettingsService', 'StorageService', '$location', function($scope, $rootScope, $routeParams, groupService, settingsService, storageService, $location) {
-	$scope.groupID = $routeParams.groupId;
-	$scope.group = groupService.getGroup($scope.groupID);
-	$scope.isMine = groupService.isMine($scope.groupID);
+hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$routeParams', 'GroupService', 'SettingsService', 'StorageService', '$location', function($q, $scope, $rootScope, $routeParams, groupService, settingsService, storageService, $location) {
 	
-	$scope.targetId = $scope.groupID;
+	//groupService.getSingleGroup();
+	
+	$scope.groupId = $routeParams.groupId;
+	/*$scope.group = groupService.getGroupById($scope.groupId);*/
+	groupService.getGroup().then(function(data) {
+		$scope.group =  data;
+		$scope.members = $scope.group.members;
+	});
+	
+	$scope.isMine = groupService.isMine($scope.groupId);
+	
+	$scope.targetId = $scope.groupId;
 	$scope.conversationType = 'group';
 	$scope.targetAudience = "group";
 	$scope.targetType = "f.conversation.chat";
@@ -17,10 +25,10 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 	{upper: $scope.verbage.page, lower: 'page', idx: 3}, 
 	{upper: $scope.verbage.recordings, lower: 'recordings', idx: 4},
   {upper: $scope.verbage.group_info, lower: 'info', idx: 5}
-  ];
+  ];  
 
   // store recent
-  storageService.saveRecent('group', $scope.groupID);
+  storageService.saveRecent('group', $scope.groupId);
 
   $scope.chatTabEnabled;
   if ($scope.isMine){
@@ -36,11 +44,11 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 
   $scope.infoTab = false;
   $scope.pageTab = false;
-  if ($scope.group.type != 0){
+  //if ($scope.group.type != 0){
     $scope.infoTab = true;
-  } else {
-    $scope.pageTab = true;
-  }
+ // } else {
+   // $scope.pageTab = true;
+ // }
 
   // if route is defined (click on specific tab or manaully enter url)...
   if ($routeParams.route){
@@ -68,5 +76,5 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
   
   $scope.$on("$destroy", function() {
 
-  });
+  });    
 }]);

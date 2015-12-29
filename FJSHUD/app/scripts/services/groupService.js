@@ -1,15 +1,57 @@
-hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpService', function($q, $rootScope, contactService, httpService) {
+hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactService', 'HttpService', 'SettingsService', function($q, $rootScope, $routeParams, contactService, httpService, settingsService) {
 	var service = this;
 	var deferred = $q.defer();
+	var deferredSingle = $q.defer();
 	
 	var groups = [];
 	var favorites = {};
 	var favoriteID;
 	var mine;
+	var group = {};
 	
-	service.getGroup = function(xpid) {
+	var getCurGroup = function()
+	{
+		var myObj = {};
+		var body = {};
+		var d = new Date();	
+		if($rootScope.sock == null)
+			$rootScope.sock = new WebSocket($rootScope.wsuri);	
+		var current_user = settingsService.getMe().$$state.value;
+		var my_id = current_user.my_pid;//.split('_')[1];		
+		var server_id = current_user.server_id;			
+		
+	    myObj.reqType = "data/getUsersInGroup";						
+		myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815		
+		body.groupType = "group";
+		body.groupId = $routeParams.groupId;
+		body.serverId = server_id;		
+		
+		myObj.body = JSON.stringify(body);
+		var json = JSON.stringify(myObj);	
+		if($rootScope.sock != null)
+			$rootScope.sock.send(json);	
+		
+	};
+	
+	var callSingleEmit = function(){};
+	
+	service.getSingleGroup = function()
+	{     	    											
+		settingsService.getMe().then(function(data) {  
+		  var singlePromise = $q(function(resolve, reject) {
+			  getCurGroup();
+		  }).then(callSingleEmit);
+		});		 				  		
+	};  			
+	
+	service.getGroup = function() {		
+		//deferredSingle = $q.defer();
+		return deferredSingle.promise;
+	};
+	
+	service.getGroupById = function(id) {
 		for (var i = 0, len = groups.length; i < len; i++) {
-			if (groups[i].xpid == xpid)
+			if (groups[i].id == id)
 				return groups[i];
 		}
 		
@@ -17,6 +59,7 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 	};
 	
 	service.getGroups = function() {
+		//deferred = $q.defer();
 		// waits until data is present before sending back
 		return deferred.promise;
 	};
@@ -81,8 +124,18 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 	/**
 		SYNCING
 	*/
+	
+	$rootScope.$on("groups_loaded", function(event, data) {		
+			groups = data;
+			$rootScope.$apply(deferred.resolve(groups));
+	});
+	
+	$rootScope.$on("single_group_loaded", function(event, data) {		
+		    group = data;
+			$rootScope.$apply(deferredSingle.resolve(group));
+	});
 
-	$rootScope.$on('groups_synced', function(event, data) {
+	/*$rootScope.$on('groups_synced', function(event, data) {
 		// first time
 		if (groups.length == 0) {
 			groups = data;
@@ -165,8 +218,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 		}
 			
 		// populate members via different feed
-		/*httpService.getFeed('groupcontacts');
-		httpService.getFeed('group_page_member');*/
+		httpService.getFeed('groupcontacts');
+		httpService.getFeed('group_page_member');
 	});
 	
 	$rootScope.$on('groupcontacts_synced', function(event, data) {
@@ -263,5 +316,5 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 				}
 			}
 		}
-	});
+	});*/
 }]);

@@ -919,13 +919,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 }
         }
     };
-    
+    /*
     $scope.$on('groups_synced', function(event,data){
         var meGroup = data.filter(function(item){
             return item.xpid == $scope.meModel['my_pid'];
         });
 
-    });
+    });*/
 
     $scope.holdCall = function(call){    	
     	var isHeld = (call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD) ? true : false;

@@ -1,18 +1,45 @@
-hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'GroupService', 'ContactService', function($scope, $rootScope, myHttpService, groupService, contactService) {
+hudweb.controller('GroupsController', ['$q', '$scope', '$rootScope', '$routeParams', 'HttpService', 'GroupService', 'ContactService', function($q, $scope, $rootScope, $routeParams, myHttpService, groupService, contactService) {
   $scope.query = "";
   $scope.sortField = "name";
   $scope.sortReverse = false;
   $scope.groups = [];
-	$scope.mine = null;
-	$scope.favoriteID = null;
+  $scope.mine = null;
+  $scope.favoriteID = null;
+  $scope.my_id = $rootScope.meModel.my_pid;//.split('_')[1];
+  var my_id = $rootScope.meModel.my_pid;
+  var contactId = $routeParams.contactId;	
+  var server_id = $rootScope.meModel.server_id;
 
+    //request group data
+  $scope.getGroups = function()
+  {      	    	
+			var myObj = {};
+			var body = {};
+			var d = new Date();									
+			
+	        myObj.reqType = "data/getGroupsForServer";						
+			myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815					
+			body.serverId = server_id;
+			body.groupType = "group";
+			myObj.body = JSON.stringify(body);
+			var json = JSON.stringify(myObj);			
+			//$scope.sock.send(json);
+			$rootScope.sock.send(json);
+  };
+  var promise = $q(function(resolve, reject) {
+		$scope.getGroups();
+  }).then(callEmit);
+	
+  var callEmit = function(){};
+	
   // pull group updates from service, including groups from local storage
   groupService.getGroups().then(function(data) {
-    $scope.groups = data.groups;
-    $scope.mine = data.mine;
-    $scope.favoriteID = data.favoriteID;
-  });
-	
+    //$scope.groups = data.groups;
+    //$scope.mine = data.mine;
+   // $scope.favoriteID = data.favoriteID;
+	  $scope.groups = data;
+  });   
+  
   $scope.sort = function(field) {
       if($scope.sortField!=field) {
           $scope.sortField = field;
@@ -24,7 +51,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
   };
 	
 	// filter groups down
-	$scope.customFilter = function(type) {
+	/*$scope.customFilter = function(type) {
 		return function(group) {
 			// remove mine
 			if (group != $scope.mine && $scope.favoriteID != group.xpid) {
@@ -57,7 +84,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 				}
 			}
 		};
-	};
+	};*/
 
   $scope.searchFilter = function(){
     var query = $scope.$parent.query.toLowerCase();

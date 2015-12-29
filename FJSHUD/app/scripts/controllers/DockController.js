@@ -59,7 +59,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						gadget.data = contactService.getContact(gadget.value.entityId);
 						break;
 					case 'GadgetGroup':
-						gadget.data = groupService.getGroup(gadget.value.entityId);
+						gadget.data = groupService.getGroupById(gadget.value.entityId);
 						break;
 					case 'GadgetConferenceRoom':
 						gadget.data = conferenceService.getConference(gadget.value.entityId);

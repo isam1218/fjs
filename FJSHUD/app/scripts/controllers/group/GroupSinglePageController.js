@@ -1,7 +1,4 @@
 hudweb.controller('GroupSinglePageController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'HttpService', function($scope, $rootScope, $routeParams, groupService, httpService) {
-	$scope.groupId = $routeParams.groupId;
-	$scope.group = groupService.getGroup($scope.groupId);
-	$scope.members = $scope.group.members;
 	// console.error('group page members - ', $scope.members);
 	$scope.action = {};
 	 

@@ -1,8 +1,5 @@
-hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService', 
-	function($scope, $rootScope, $routeParams, groupService, contactService, httpService, storageService) {
-	$scope.groupId = $routeParams.groupId;
-	$scope.group = groupService.getGroup($scope.groupId);
-	$scope.members = $scope.group.members;
+hudweb.controller('GroupSingleMembersController', ['$q', '$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService', 
+	function($q, $scope, $rootScope, $routeParams, groupService, contactService, httpService, storageService) {		
 	$scope.grp = {};
 	$scope.grp.query = '';
 	$scope.query = "";

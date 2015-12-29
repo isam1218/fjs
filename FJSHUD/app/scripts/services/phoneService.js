@@ -1477,7 +1477,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 				});
 			break;
 			case 'group':
-				var group = groupService.getGroup(id);
+				var group = groupService.getGroupById(id);
 				var groupVm = [];
 				if(group){
 					for (var g = 0, gLen = group.members.length; g < gLen; g++) {

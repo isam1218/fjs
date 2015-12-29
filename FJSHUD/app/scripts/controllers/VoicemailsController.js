@@ -11,8 +11,8 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	  $scope.vm = {};
 
     	// single group widget
-		if ($routeParams.groupId) {
-			var group = groupService.getGroup($routeParams.groupId);
+		if ($routeParams.groupId) {			
+			var group = groupService.getGroupById($routeParams.groupId);
 			$scope.emptyVoiceLabel = group.name;
 		}
 		// conversation widget

@@ -1065,8 +1065,8 @@ hudweb.controller('NotificationController',
   $scope.checkIfGroup = function(msg){
     if (msg != undefined && msg.audience == 'group'){
       // display group avatar rather than individual
-      var groupId = msg.context.split(':')[1];
-      var ourGroup = groupService.getGroup(groupId);
+      var groupId = msg.context.split(':')[1];     
+      var ourGroup = groupService.getGroupById(groupId);
       return ourGroup;
     } else if (msg != undefined && msg.audience == 'queue'){
       // display queue avatar rather than individual avatar

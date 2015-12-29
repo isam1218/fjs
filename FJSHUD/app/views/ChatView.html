@@ -15,7 +15,7 @@
 <div class="ListViewContent" id="ListViewContent">       
     <!-- <div class="ListMessage" ng-class="::message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" > -->
     <div class="ListMessage" ng-class="'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.id">           
-           <div class="ListMessageLeft"><!-- ng-if="::nameDisplay(message, $index)" -->
+        <div class="ListMessageLeft"><!-- ng-if="::nameDisplay(message, $index)" -->
             <!-- <avatar ng-if="::nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar> -->
             <avatar ng-if="::nameDisplay(message, $index)" profile="message" context="chat"></avatar>
             <div class="time">{{ getTime(message.created)}}</div> <!--  | fondate: 'h:mm a':fon_lang_code:'list_message_left' -->
@@ -28,7 +28,7 @@
             
             </div>
              <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag">
-                <div class="ListMessageText" ng-bind-html="message.Message"></div> <!-- | highlight:chat.query -->
+                <div class="ListMessageText" ng-bind-html="message.message"></div> <!-- | highlight:chat.query -->
                 <!-- <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
                     <img class="AttachmentImg" ng-src="{{::getAttachment(attachment.url,attachment.fileName)}}" />               
                     <p> {{ ::attachment.fileName }}</p> 

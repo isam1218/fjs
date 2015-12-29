@@ -9,9 +9,11 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.pluginDownloadUrl = $scope.browser != 'Chrome' ? fjs.CONFIG.PLUGINS[$scope.platform] : fjs.CONFIG.PLUGINS[$scope.platform + "_NEW"];
 	
 	$scope.contacts = [];
-	$scope.sock = null;
+	//$scope.sock = null;
+	$rootScope.sock = null;
 	var wsuri = "ws://10.10.12.125:1234";
-	$scope.wsuri = "ws://dev-svc1.arch.fonality.com:1234";
+	//$scope.wsuri = "ws://dev-svc1.arch.fonality.com:1234";
+	$rootScope.wsuri = "ws://dev-svc1.arch.fonality.com:1234";
 	$scope.contactList = [];
 	
 	$scope.overlay = {
@@ -64,21 +66,17 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     	var historyObj = responseBody;//JSON.parse(responseBody);//.replace(/[^\w\s]/gi, '').toLowerCase();
     	
     	if($.isArray(historyObj))
-    	{	
-    	  //var chatHistory = responseBody.toString().replace(/(\r\n|\n|\r)/gm,"");
-    	  //var historyArray = JSON.parse(chatHistory);   
-    	  //historyArray.sort(dateCompare);
-    		historyObj.sort(dateCompare);
-    	 
-    	  //$.each(historyArray, function(){
+    	{	    	  
+    	  historyObj.sort(dateCompare);
+    	  
     	  $.each(historyObj, function(){
     		  var chat_obj = this;
     		 $.each($scope.contactList, function(){
-    			if($(this)[0].id ==  $(chat_obj)[0].sender_id)
+    			if($(this)[0].id ==  $(chat_obj)[0].senderId)
     				$(chat_obj)[0].username = $(this)[0].username;
     		 });    		
     	  });
-    	 // return historyArray;
+    	 
     	  return historyObj;
     	} 
     };
@@ -93,37 +91,45 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     };        
     
     $scope.connectWS = function() {
-		console.log("onload");			
-		$scope.sock = new WebSocket($scope.wsuri);
+		console.log("onload");
+		if($rootScope.sock != null)	
+			$rootScope.sock = new WebSocket($rootScope.wsuri);
+			//$scope.sock = new WebSocket($scope.wsuri);
+		
 		var prev_msg_id = '';
 		var current_user = settingsService.getMe().$$state.value;
 		var my_id = current_user.my_pid;//.split('_')[1];		
 		var server_id = current_user.server_id;		
 				
-	    $scope.sock.onopen = function() {
+	    //$scope.sock.onopen = function() {
+		$rootScope.sock.onopen = function() {
 	            var d = new Date();	            
-	            console.log("connected to " + $scope.wsuri);
+	            console.log("connected to " + $rootScope.wsuri);
 	            
 				var contactsObj = {};
-				contactsObj.reqtype = "data/getContacts";
-				contactsObj.ts = d.getTime().toString();
-				//contactsObj["request_id"] = $scope.getRequestId();
+				contactsObj.reqType = "data/getContacts";
+				//contactsObj.ts = parseInt(d.getTime().toString(), 10);			
 				contactsObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//+nameValue;//156815
 				var body = {};
 				body.serverId = server_id;
 				contactsObj.body = JSON.stringify(body);
 				var contactsJson = JSON.stringify(contactsObj);			
-				$scope.sock.send(contactsJson);				
+				//$scope.sock.send(contactsJson);	
+				$rootScope.sock.send(contactsJson);	
 	     };
 
-	     $scope.sock.onclose = function(e) {
-		     $scope.sock = null;
+	     //$scope.sock.onclose = function(e) {
+	     $rootScope.sock.onclose = function(e) {	 
+		    // $scope.sock = null;
+	    	 $rootScope.sock = null;
 	         console.log("connection closed (" + e.code + ")");
 	         //$scope.connectWS();
-	         $scope.sock = new WebSocket($scope.wsuri);
+	         //$scope.sock = new WebSocket($scope.wsuri);
+	         $rootScope.sock = new WebSocket($rootScope.wsuri);
 	     };
 
-	     $scope.sock.onmessage = function(e) {
+	     //$scope.sock.onmessage = function(e) {
+	     $rootScope.sock.onmessage = function(e) {
 	         // console.log("message received: " + e.data);	
 	          var d = new Date();
 	          try{
@@ -132,12 +138,12 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	          
 	          if(responseData) 
 	          {	  
-		          if(responseData.Body && responseData.ContentName != "chat/postMessage")
+		          if(responseData.body && responseData.contentName != "chat/postMessage")
 		          {	
-		        	  var responseBody = responseData.Body.toString().replace(/(\r\n|\n|\r)/gm,"");		
+		        	  var responseBody = responseData.body.toString().replace(/(\r\n|\n|\r)/gm,"");		
 		        	  responseBody = JSON.parse(responseBody);
 			          //if(responseBody.contactList)
-		        	  switch(responseData.ContentName)
+		        	  switch(responseData.contentName)
 		        	  {
 		        	  case "data/getContacts"://if(responseData.ContentName)			            
 			        	  console.log("message received: contact list ");
@@ -149,7 +155,15 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		        	  case "chat/getChatMessageHistoryForSession": 		        	      
 			        	  console.log("message received: chat history ");
 			        	  $rootScope.$broadcast('chat_loaded', $scope.getHistoryObject(responseBody));
-			        	  break;  			          	
+			        	  break; 	
+		        	  case "data/getGroupsForServer":
+		        		  console.log("message received: group list ");
+			        	  $rootScope.$broadcast('groups_loaded', responseBody);
+			        	  break; 
+		        	  case "data/getUsersInGroup":
+		        		  console.log("message received: group list ");
+			        	  $rootScope.$broadcast('single_group_loaded', responseBody);
+			        	  break; 
 		        	  }
 		          }
 		          
@@ -162,9 +176,11 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	          } 
 	     }; 
 	        
-		 $scope.sock.onerror = function(error){
+		 //$scope.sock.onerror = function(error){
+	     $rootScope.sock.onerror = function(error){
 		     console.log('Error detected: ' + error);
-		     $scope.sock.close();
+		     //$scope.sock.close();
+		     $rootScope.sock.close();
 		 };
 	 };
 		

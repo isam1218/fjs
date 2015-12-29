@@ -167,7 +167,11 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	// keep scrollbar at bottom until chats are loaded
 	var scrollWatch = $scope.$watch(function() {
 		if (scrollbox.scrollHeight)
-			scrollbox.scrollTop = scrollbox.scrollHeight;
+		{	
+			//scrollbox.scrollTop = scrollbox.scrollHeight;			
+			var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
+			$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');		
+		}	
 	});
 	
 	var conversationType = chat.type == 'f.conversation.chat' ? 'f.conversation' : chat.type;		
@@ -179,18 +183,19 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			var body = {};
 			var d = new Date();									
 			
-	        myObj.reqtype = "chat/getChatMessageHistoryForSession";
-			myObj.ts = d.getTime().toString();
-			//myObj["request_id"] = $scope.getRequestId();
+	        myObj.reqType = "chat/getChatMessageHistoryForSession";
+			//myObj.ts = parseInt(d.getTime().toString(), 10);			
 			myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815
 			body.chatType = "user";
 			body.userId = my_id;
 			body.targetId = contactId;//contact Id//username __5549_7042
 			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);			
-			$scope.sock.send(json);	
+			//$scope.sock.send(json);
+			$rootScope.sock.send(json);
+			
 			scrollbox = $('#ListViewContent');
-			var scroll_height = $(scrollbox).outerHeight() * 2.5;			
+			var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
 			$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');			
 	};
 	
@@ -377,7 +382,12 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	$scope.$watch('chat.query', function(data) {
 		// jump to bottom on search clear
 		if (!data || data == '')
-			scrollbox.scrollTop = scrollbox.scrollHeight;
+		{
+			//scrollbox.scrollTop = scrollbox.scrollHeight;
+			var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
+			$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');		
+		}	
+			
 	});
 	
 	$scope.sendMessage = function() {
@@ -408,8 +418,8 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			var myObj = {};
 			var body = {};
 			
-			myObj.reqtype = "chat/postMessage";
-			myObj.ts = d.getTime().toString();
+			myObj.reqType = "chat/postMessage";
+			//myObj.ts = parseInt(d.getTime().toString(), 10);
 			myObj.sender = "U:" + server_id + ":" + my_id;
 			body.chatType = "user";
 			body.targetId = contactId;
@@ -418,14 +428,15 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			body.senderId = my_id;
 			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);
-			$scope.sock.send(json); 			
+			//$scope.sock.send(json);
+			$rootScope.sock.send(json);
 		}		
 		
 		$scope.chat.message = '';		
 		storageService.saveChatMessage(chat.targetId);			
 		$('#ChatMessageText').css('height', '1px');
 		scrollbox = $('#ListViewContent');
-		var scroll_height = $(scrollbox).outerHeight() * 2.5;			
+		var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
 		$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');			
 		// play sfx
 		phoneService.playSound("sent");
