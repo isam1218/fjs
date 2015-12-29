@@ -220,8 +220,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.makeCall(calllog.phone);
         }
     };
-
-    $scope.recentSelectSort = 'Date';
 	
 	// only poll worker on subsequent page loads
 	if (!$rootScope.isFirstSync) {
@@ -806,6 +804,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		$scope.settings = settings = data;
 		update_queues();
         update_settings();
+        $scope.recentSelectSort = localStorage['MeWidget_RecentCalls_recentSelectSort_of_' + $rootScope.myPid] ? JSON.parse(localStorage['MeWidget_RecentCalls_recentSelectSort_of_' + $rootScope.myPid]) : 'Date';
+        $scope.isAscending = localStorage['MeWidget_RecentCalls_isAscending_of_' + $rootScope.myPid] ? JSON.parse(localStorage['MeWidget_RecentCalls_isAscending_of_' + $rootScope.myPid]) : true;
 	});
     
     $scope.$on('settings_updated',function(event,data){
@@ -852,18 +852,25 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }   
     });
 
-    $scope.sortCallLog = function(calllog){
-        switch($scope.recentSelectSort){
+    $scope.sortRecentCalls = function(field){
+        $scope.isAscending = !$scope.isAscending;
+        localStorage['MeWidget_RecentCalls_recentSelectSort_of_' + $rootScope.myPid] = JSON.stringify(field);
+        localStorage['MeWidget_RecentCalls_isAscending_of_' + $rootScope.myPid] = JSON.stringify($scope.isAscending);
+        switch(field){
             case 'Date':
+                $scope.recentSelectSort = 'Date';
                 return calllog.startedAt;
                 break;
             case 'From':
+                $scope.recentSelectSort = 'From';
                 return calllog.fromDisplayValue;
                 break;
             case 'To':
+                $scope.recentSelectSort = 'To';
                 return calllog.toDisplayValue;
                 break;
             case 'Duration':
+                $scope.recentSelectSort = 'Duration';
                 return calllog.duration;
                 break;
         }

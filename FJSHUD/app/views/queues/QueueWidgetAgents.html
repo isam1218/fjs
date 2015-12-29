@@ -6,6 +6,7 @@
 		<option value="queue_status">{{::verbage.sort_by_call_status}}</option>
 		<option value="hud_status">{{::verbage.sort_by_chat_status}}</option>
     </select>
+
   </div>  
 </div>
 
@@ -19,7 +20,7 @@
 
   <div 
 	include-once="views/queues/QueueMemberSection.html"
-    data-ng-repeat="member in agents | filter: statusFilter('in') | filter: searchFilter() | orderBy: selectedSort" class="queueAgents">
+    data-ng-repeat="member in agents | filter: statusFilter('in') | filter: searchFilter() | orderBy: customAgentOrderBy" class="queueAgents">
   </div>
 
   <div class="ListSection">
@@ -31,7 +32,7 @@
 
   <div
 	include-once="views/queues/QueueMemberSection.html"
-    data-ng-repeat="member in agents | filter: statusFilter('out') | filter: searchFilter() | orderBy: selectedSort" class="queueAgents">
+    data-ng-repeat="member in agents | filter: statusFilter('out') | filter: searchFilter() | orderBy: customAgentOrderBy" class="queueAgents">
   </div>
 </div>
 

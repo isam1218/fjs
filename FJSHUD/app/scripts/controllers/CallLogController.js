@@ -3,8 +3,23 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 	$scope.calllog = this;
 	$scope.calllog.query = '';
 	$scope.calls = [];
-	$scope.sortField = "startedAt";
-	$scope.sortReverse = true;
+
+	settingsService.getSettings().then(function(data) {
+		if ($routeParams.queueId){
+			// load specific queue call log
+			$scope.sortField = localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortField_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortField_of_' + $rootScope.myPid]) : 'startedAt';
+			$scope.sortReverse = localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortReverse_of_' + $rootScope.myPid]) : true;	
+		} else if ($routeParams.contactId){
+			// load specific conversation call log
+			$scope.sortField = localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortField_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortField_of_' + $rootScope.myPid]) : 'startedAt';
+			$scope.sortReverse = localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortReverse_of_' + $rootScope.myPid]) : true;	
+		} else {
+			// load user call log
+			$scope.sortField = localStorage['CallLog_sortField_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallLog_sortField_of_' + $rootScope.myPid]) : 'startedAt';
+			$scope.sortReverse = localStorage['CallLog_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallLog_sortReverse_of_' + $rootScope.myPid]) : true;
+		}
+	});
+
 	$scope.loading = true;
 	
 	var pageFilter;
@@ -14,7 +29,7 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 		pageFilter = $routeParams.queueId;
 	else if ($routeParams.contactId)
 		pageFilter = $routeParams.contactId;
-	
+
 	if (!$rootScope.isFirstSync)
 		httpService.getFeed('calllog');
 	
@@ -77,15 +92,41 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 		};
 	};	
 
-    $scope.sort = function(field) {
-      if($scope.sortField!=field) {
-          $scope.sortField = field;
-          $scope.sortReverse = false;
-      }
-      else {
-          $scope.sortReverse = !$scope.sortReverse;
-      }
-    };
+
+
+  $scope.sort = function(field) {
+    if($scope.sortField!=field) {
+        $scope.sortField = field;
+        $scope.sortReverse = false;
+        if ($routeParams.queueId){
+					// save specific queue call log
+					localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
+					localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+				} else if ($routeParams.contactId){
+					// save specific conversation call log
+					localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
+					localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+				} else {
+	        localStorage['CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
+	        localStorage['CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+				}
+    }
+    else {
+        $scope.sortReverse = !$scope.sortReverse;
+        if ($routeParams.queueId){
+					// save specific queue call log
+					localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
+					localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+				} else if ($routeParams.contactId){
+					// save specific conversation call log
+					localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
+					localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+				} else {
+	        localStorage['CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
+	        localStorage['CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+				}
+    }
+  };
 	
 	$scope.makeCall = function(call) {
 		var number = call.phone;

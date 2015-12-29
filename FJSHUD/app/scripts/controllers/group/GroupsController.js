@@ -1,7 +1,5 @@
-hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'GroupService', 'ContactService', function($scope, $rootScope, myHttpService, groupService, contactService) {
+hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'GroupService', 'ContactService', 'SettingsService', function($scope, $rootScope, myHttpService, groupService, contactService, settingsService) {
   $scope.query = "";
-  $scope.sortField = "name";
-  $scope.sortReverse = false;
   $scope.groups = [];
 	$scope.mine = null;
 	$scope.favoriteID = null;
@@ -12,14 +10,23 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
     $scope.mine = data.mine;
     $scope.favoriteID = data.favoriteID;
   });
+
+  settingsService.getSettings().then(function(data) {   
+    $scope.sortField = localStorage['LeftBar_Groups_sortTab_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_Groups_sortTab_of_' + $rootScope.myPid]) : 'name';
+    $scope.sortReverse = localStorage['LeftBar_Groups_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_Groups_sortReverse_of_' + $rootScope.myPid]) : false;
+  });
 	
   $scope.sort = function(field) {
       if($scope.sortField!=field) {
           $scope.sortField = field;
           $scope.sortReverse = false;
+          localStorage['LeftBar_Groups_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+          localStorage['LeftBar_Groups_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
       }
       else {
           $scope.sortReverse = !$scope.sortReverse;
+          localStorage['LeftBar_Groups_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+          localStorage['LeftBar_Groups_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
       }
   };
 	

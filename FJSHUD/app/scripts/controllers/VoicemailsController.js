@@ -31,7 +31,17 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         {display_name:$scope.verbage.sort_read_status, type:"readStatusNum", desc: false}
     ];
 
-    $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
+
+    if ($routeParams.contactId){
+      // conversation
+      $scope.selectedVoice = localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid]) : $scope.voice_options[1];
+    } else if ($routeParams.groupId){
+      // group
+      $scope.selectedVoice = localStorage['Group_' + $routeParams.groupId + '_saved_voice_option_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Group_' + $routeParams.groupId + '_saved_voice_option_of_' + $rootScope.myPid]) : $scope.voice_options[1];
+    } else {
+      // user's own vm tab
+      $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
+    }
 
     $scope.getVerbage = function(voicemail)
     {
@@ -50,7 +60,13 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     
     $scope.sortBy = function(selectedVoice){
         $scope.selectedVoice = selectedVoice;
-        localStorage.saved_voice_option = JSON.stringify($scope.selectedVoice);
+        if ($routeParams.contactId){
+          localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid] = JSON.stringify($scope.selectedVoice);
+        } else if ($routeParams.groupId){
+          localStorage['Group_' + $routeParams.groupId + '_saved_voice_option_of_' + $rootScope.myPid] = JSON.stringify($scope.selectedVoice);
+        } else {
+          localStorage.saved_voice_option = JSON.stringify($scope.selectedVoice);  
+        }
     };
 
     $scope.actions = [

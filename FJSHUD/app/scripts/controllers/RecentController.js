@@ -1,4 +1,4 @@
-hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', '$location',  function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService, storageService, $location){
+hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', 'SettingsService', '$location',  function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService, storageService, settingsService ,$location){
   
   $scope.totalContacts = [];
   $scope.totalGroups = [];
@@ -7,7 +7,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.combined = {};
   $scope.totalCombined = [];
   $scope.recent = storageService.getRecents();
-  $scope.sortField = "timeline";
+  // $scope.sortField = "timeline";
   $scope.sectionSortField = 'time';
   $scope.myPid = $rootScope.myPid;
   var contactPagesShown = 1;
@@ -128,12 +128,21 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     $scope.showOverlay(true, 'CallStatusOverlay', contact);
   };
 
+  settingsService.getSettings().then(function(data) {   
+    $scope.sortField = localStorage['LeftBar_RecentContacts_sortTab_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_RecentContacts_sortTab_of_' + $rootScope.myPid]) : 'timeline';
+    $scope.sortReverse = localStorage['LeftBar_RecentContacts_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_RecentContacts_sortReverse_of_' + $rootScope.myPid]) : false;
+  });
+
   $scope.sort = function(field){
     if ($scope.sortField != field){
       $scope.sortField = field;
       $scope.sortReverse = false;
+      localStorage['LeftBar_RecentContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+      localStorage['LeftBar_RecentContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
     } else {
       $scope.sortReverse = !$scope.sortReverse;
+      localStorage['LeftBar_RecentContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+      localStorage['LeftBar_RecentContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
     }
   };
 

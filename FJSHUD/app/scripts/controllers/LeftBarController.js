@@ -11,12 +11,15 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	settingsService.getSettings().then(function(data) {		
 		$scope.language =  $rootScope.language;
 		$scope.$safeApply();
-	});
-	
-	$scope.setTab = function(tab) {
-		$scope.tab = tab;
-		$scope.query = '';
-	};
+    });
+  
+    $scope.setTab = function(tab) {
+      $scope.$broadcast('contactTabSet',{
+          contactTab: tab
+      });
+      $scope.tab = tab;
+      $scope.query = '';
+    };
 	
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);

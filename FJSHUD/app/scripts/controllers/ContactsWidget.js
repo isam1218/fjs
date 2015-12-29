@@ -1,7 +1,5 @@
-hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', function($scope, $rootScope, myHttpService, contactService, groupService) {
+hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'SettingsService', function($scope, $rootScope, myHttpService, contactService, groupService, settingsService) {
 	$scope.query = "";
-	$scope.sortField = "displayName";
-	$scope.sortReverse = false;
 	$scope.contacts = [];
 	$scope.favorites = {};
 	
@@ -14,16 +12,58 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	groupService.getGroups().then(function(data) {
 		$scope.favorites = data.favorites;
 	});
-	
-    $scope.sort = function(field) {
-        if($scope.sortField != field) {
-            $scope.sortField = field;
-            $scope.sortReverse = false;
-        }
-        else {
-            $scope.sortReverse = !$scope.sortReverse;
-        }
-    };
+
+	// load sort
+	settingsService.getSettings().then(function(data) {
+		if (chosenTab == "favorites"){
+			$scope.sortField = localStorage['LeftBar_FavoriteContacts_sortTab_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_FavoriteContacts_sortTab_of_' + $rootScope.myPid]) : 'displayName';
+			$scope.sortReverse = localStorage['LeftBar_FavoriteContacts_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_FavoriteContacts_sortReverse_of_' + $rootScope.myPid]) : false;
+		} else {
+			$scope.sortField = localStorage['LeftBar_AllContacts_sortTab_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_AllContacts_sortTab_of_' + $rootScope.myPid]) : 'displayName';
+			$scope.sortReverse = localStorage['LeftBar_AllContacts_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_AllContacts_sortReverse_of_' + $rootScope.myPid]) : false;
+		}
+  });
+
+	var chosenTab;
+
+	// listen to leftbar controller for which tab is chosen so can set sticky sort for specific contact tab
+	$scope.$on('contactTabSet', function(event,data){
+		chosenTab = data.contactTab;
+		if (chosenTab == "favorites"){
+			// favorite sort
+			$scope.sortField = localStorage['LeftBar_FavoriteContacts_sortTab_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_FavoriteContacts_sortTab_of_' + $rootScope.myPid]) : 'displayName';
+			$scope.sortReverse = localStorage['LeftBar_FavoriteContacts_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_FavoriteContacts_sortReverse_of_' + $rootScope.myPid]) : false;
+		} else {
+			// all sort
+			$scope.sortField = localStorage['LeftBar_AllContacts_sortTab_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_AllContacts_sortTab_of_' + $rootScope.myPid]) : 'displayName';
+			$scope.sortReverse = localStorage['LeftBar_AllContacts_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_AllContacts_sortReverse_of_' + $rootScope.myPid]) : false;
+		}
+	});
+
+	// sort and save last chosen sort option
+  $scope.sort = function(field) {
+      if($scope.sortField != field) {
+          $scope.sortField = field;
+          $scope.sortReverse = false;
+          if (chosenTab == 'all'){
+	          localStorage['LeftBar_AllContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+	          localStorage['LeftBar_AllContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+          } else if (chosenTab == 'favorites'){
+	          localStorage['LeftBar_FavoriteContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+	          localStorage['LeftBar_FavoriteContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+          }
+      }
+      else {
+          $scope.sortReverse = !$scope.sortReverse;
+          if (chosenTab == 'all'){
+	          localStorage['LeftBar_AllContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+	          localStorage['LeftBar_AllContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+          } else if (chosenTab == 'favorites'){
+	          localStorage['LeftBar_FavoriteContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+	          localStorage['LeftBar_FavoriteContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+          }
+      }
+  };
 	
 	/*
 	// filter contacts down

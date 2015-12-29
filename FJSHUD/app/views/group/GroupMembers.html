@@ -1,19 +1,19 @@
 <div class="ToolBar">        
         <input class="SearchBox" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="grp.query">
       
-        <div class="SelectBox selectWrapper members">
-	        <select ng-model="selectedSort"
-	                    ng-options="sort_option.name for sort_option in sort_options"
-	                ng-change="sortBy(selectedSort.type)"
-	        > 
-	        </select>
+        <div class="SelectBox selectWrapper members">      
+            <select ng-model="selectedSort">
+                <option value="displayName">{{::verbage.sort_by_name}}</option>
+                <option value="fullProfile.call">{{::verbage.sort_by_call_status}}</option>
+                <option value="fullProfile.hud_status">{{::verbage.sort_by_chat_status}}</option>
+            </select>
         </div>
 </div>
 
 <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
 	
-    <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'fullProfile.displayName'] track by member.xpid" droppable="Call">        
+    <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: customMemberOrderBy" droppable="Call">        
         <a ng-href="#/contact/{{::member.contactId}}">
             <avatar profile="member.fullProfile"></avatar>
             <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null"> 
