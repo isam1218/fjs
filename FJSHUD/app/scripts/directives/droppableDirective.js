@@ -34,7 +34,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 						type = 'ConferenceRoom';
 					else if (obj.name !== undefined)
 						type = 'Group';
-					else if (obj.record !== undefined)
+					else if (obj.record !== undefined || obj.recorded !== undefined)
 						type = 'Call';
 					
 					// check for allowed cases
@@ -169,21 +169,30 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 					else {
 						// check if I have isXFerFromIsEnabled personal permission...
 						if (settingsService.getPermission('canTransferFrom')) {
-							var xpid;
+							var fromID;
+							var toID;
+							
+							// queue call vs my call vs other's call
+							if (obj.agentContactId)
+								fromID = obj.agentContactId;
+							else if (obj.sipId)
+								fromID = $rootScope.myPid;
+							else
+								fromID = obj.xpid;
 							
 							// contact id comes from multiple places
 							if (scope.contact)
-								xpid = scope.contact.xpid;
+								toID = scope.contact.xpid;
 							else if (scope.member)
-								xpid = scope.member.contactId;
+								toID = scope.member.contactId;
 							else if (scope.gadget)
-								xpid = scope.gadget.data.xpid;
+								toID = scope.gadget.data.xpid;
 							else if (scope.item)
-								xpid = scope.item.xpid;
+								toID = scope.item.xpid;
 							
 							httpService.sendAction('calls', 'transferToContact', {
-								fromContactId: $rootScope.myPid,
-								toContactId: xpid
+								fromContactId: fromID,
+								toContactId: toID
 							});
 						}
 					}
