@@ -10,20 +10,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     
 	  $scope.vm = {};
 
-    	// single group widget
-		if ($routeParams.groupId) {
-			var group = groupService.getGroup($routeParams.groupId);
-			$scope.emptyVoiceLabel = group.name;
-		}
-		// conversation widget
-		else if ($routeParams.contactId) {
-			var contact = contactService.getContact($routeParams.contactId);
-			$scope.emptyVoiceLabel = contact.displayName;
-		}
-		// calls & recordings
-		else
-			$scope.emptyVoiceLabel = 'anyone else';
-
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
         {display_name:$scope.verbage.sort_newest_first, type:"date", desc: true},
@@ -31,15 +17,21 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         {display_name:$scope.verbage.sort_read_status, type:"readStatusNum", desc: false}
     ];
 
-
-    if ($routeParams.contactId){
-      // conversation
-      $scope.selectedVoice = localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid]) : $scope.voice_options[1];
-    } else if ($routeParams.groupId){
-      // group
+      // single group widget
+    if ($routeParams.groupId) {
+      var group = groupService.getGroup($routeParams.groupId);
+      $scope.emptyVoiceLabel = group.name;
       $scope.selectedVoice = localStorage['Group_' + $routeParams.groupId + '_saved_voice_option_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Group_' + $routeParams.groupId + '_saved_voice_option_of_' + $rootScope.myPid]) : $scope.voice_options[1];
-    } else {
-      // user's own vm tab
+    }
+    // conversation widget
+    else if ($routeParams.contactId) {
+      var contact = contactService.getContact($routeParams.contactId);
+      $scope.emptyVoiceLabel = contact.displayName;
+      $scope.selectedVoice = localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid]) : $scope.voice_options[1];
+    }
+    // calls & recordings
+    else{
+      $scope.emptyVoiceLabel = 'anyone else';
       $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
     }
 

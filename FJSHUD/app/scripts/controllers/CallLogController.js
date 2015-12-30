@@ -98,34 +98,22 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
     if($scope.sortField!=field) {
         $scope.sortField = field;
         $scope.sortReverse = false;
-        if ($routeParams.queueId){
-					// save specific queue call log
-					localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
-					localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
-				} else if ($routeParams.contactId){
-					// save specific conversation call log
-					localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
-					localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
-				} else {
-	        localStorage['CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
-	        localStorage['CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
-				}
     }
     else {
         $scope.sortReverse = !$scope.sortReverse;
-        if ($routeParams.queueId){
-					// save specific queue call log
-					localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
-					localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
-				} else if ($routeParams.contactId){
-					// save specific conversation call log
-					localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
-					localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
-				} else {
-	        localStorage['CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
-	        localStorage['CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
-				}
     }
+    if ($routeParams.queueId){
+			// save specific queue call log
+			localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
+			localStorage['Queue_' + $routeParams.queueId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+		} else if ($routeParams.contactId){
+			// save specific conversation call log
+			localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
+			localStorage['Contact_' + $routeParams.contactId + '_CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+		} else {
+      localStorage['CallLog_sortField_of_' + $rootScope.myPid] = JSON.stringify(field);
+      localStorage['CallLog_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
+		}
   };
 	
 	$scope.makeCall = function(call) {

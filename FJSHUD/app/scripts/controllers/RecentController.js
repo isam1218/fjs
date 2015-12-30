@@ -137,13 +137,11 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
     if ($scope.sortField != field){
       $scope.sortField = field;
       $scope.sortReverse = false;
-      localStorage['LeftBar_RecentContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
-      localStorage['LeftBar_RecentContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
     } else {
       $scope.sortReverse = !$scope.sortReverse;
-      localStorage['LeftBar_RecentContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
-      localStorage['LeftBar_RecentContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
     }
+    localStorage['LeftBar_RecentContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+    localStorage['LeftBar_RecentContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
   };
 
   $scope.sectionSort = function(field){

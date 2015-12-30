@@ -20,14 +20,12 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
       if($scope.sortField!=field) {
           $scope.sortField = field;
           $scope.sortReverse = false;
-          localStorage['LeftBar_Groups_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
-          localStorage['LeftBar_Groups_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
       }
       else {
           $scope.sortReverse = !$scope.sortReverse;
-          localStorage['LeftBar_Groups_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
-          localStorage['LeftBar_Groups_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
       }
+      localStorage['LeftBar_Groups_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
+      localStorage['LeftBar_Groups_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
   };
 	
 	// filter groups down

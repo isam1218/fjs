@@ -23,7 +23,6 @@ hudweb.directive('contactFilters', function ($rootScope) {
 					if (newVal == oldVal) return;
 					
 					tab = newVal;
-					
 					// filter every time we click a contact-related tab
 					if (tab != 'groups' && tab != 'recent') {
 						filterContacts();

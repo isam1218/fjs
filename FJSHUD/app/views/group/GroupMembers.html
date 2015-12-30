@@ -13,7 +13,7 @@
 <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
 	
-    <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: customMemberOrderBy" droppable="Call">        
+    <div class=" GroupRow ListRow ListRow-Contact vmsection group_members" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: customMemberOrderBy track by member.xpid" droppable="Call">        
         <a ng-href="#/contact/{{::member.contactId}}">
             <avatar profile="member.fullProfile"></avatar>
             <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null"> 
