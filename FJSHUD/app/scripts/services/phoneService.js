@@ -1411,9 +1411,10 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 						vLen--;
 					}
 					else
+					{	
 						voicemails[v].readStatus = data[i].readStatus;
 					    voicemails[v].transcription = data[i].transcription;
-
+					}
 					match = true;
 					break;
 				}
