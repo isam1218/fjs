@@ -171,6 +171,8 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
         switch(typeFlag){
           case 'contact':
             tmpSelected = localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid]) : 'chat';
+            if(tmpSelected == 'queues' && !$rootScope.in_queue)
+            	tmpSelected = 'chat';
             endPath = '/contact/' + finalContactId + '/' + tmpSelected;
             break;
           case 'group':
