@@ -1,4 +1,4 @@
-hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', 'NtpService','SettingsService', function ($rootScope, $q, contactService, httpService, ntpService,settingsService) {
+hudweb.service('QueueService', ['$rootScope', '$q', '$location', 'ContactService', 'HttpService', 'NtpService','SettingsService', function ($rootScope, $q, $location, contactService, httpService, ntpService,settingsService) {
 	var deferred = $q.defer();	
 	var queues = [];
 	var mine = [];
@@ -171,8 +171,15 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			if(queues[i].me)
 				$rootScope.in_queue = true;
 		}
-		
-		//$rootScope.in_queue = false;
+				
+		if(!$rootScope.in_queue)
+		{								
+			var locationArray = $location.path().split('/');
+			
+			if(locationArray[1] == 'callcenter')			
+				$location.path('/callcenter/allqueues');
+		}	
+		localStorage['in_queue'] = $rootScope.in_queue;
 	});
 
 	$rootScope.$on("queue_stat_calls_synced", function (event, data) {

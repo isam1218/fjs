@@ -165,7 +165,8 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
         switch(typeFlag){
           case 'contact':
             tmpSelected = localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid]) : 'chat';
-            if(tmpSelected == 'queues' && !$rootScope.in_queue)
+            if(tmpSelected == 'queues' && !$rootScope.showCallCenter)             	
+            	//(localStorage['showCallCenter'] && localStorage['showCallCenter'] == 'false'))
             	tmpSelected = 'chat';
             endPath = '/contact/' + finalContactId + '/' + tmpSelected;
             break;
@@ -183,7 +184,8 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
             break;
           case 'callcenter':
             tmpSelected = localStorage['CallCenter_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $rootScope.myPid]) : 'myqueue';
-            if(!$rootScope.in_queue)
+            if(localStorage['in_queue'] && localStorage['in_queue'] == 'false')
+            //if(!$rootScope.in_queue)
             	tmpSelected = 'allqueues';
             
             endPath = '/callcenter/' + tmpSelected;
