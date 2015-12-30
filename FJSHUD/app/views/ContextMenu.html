@@ -12,16 +12,18 @@
 			</div>
 		</div>
 		
-		<div class="Numbers" ng-if="widget != 'voicemails'">
-			<div>email:</div> <span>{{ profile.email }}</span>
-			<br/>
-			<div>ext:</div> <span>{{ profile.primaryExtension }}</span>
-		</div>
-		
-		<div class="Numbers" ng-if="widget != 'voicemails'">
-			<div>mobile:</div> <span>{{ profile.phoneMobile }}</span>
-			<br/>
-			<div>phone:</div> <span>{{ profile.phoneBusiness }}</span>
+		<div ng-if="widget != 'voicemails'">
+			<div class="Numbers">
+				<div>email:</div> <span>{{ profile.email }}</span>
+				<br/>
+				<div>ext:</div> <span>{{ profile.primaryExtension }}</span>
+			</div>
+			
+			<div class="Numbers">
+				<div>mobile:</div> <span>{{ profile.phoneMobile }}</span>
+				<br/>
+				<div>phone:</div> <span>{{ profile.phoneBusiness }}</span>
+			</div>
 		</div>
 	</div>
 	
@@ -182,46 +184,49 @@
 			<span>{{::verbage.Call_Later}}</span>
 		</a>
 		
-		<a class="Button" href="" ng-show="canIntercom && profile.primaryExtension && widget != 'voicemails'" ng-click="callInternal('callIntercom')">
-			<div class="ListRowActionButtonCall"></div>
-			<span>{{::verbage.Intercom}}</span>
-		</a>
-		<a class="Button" href="" ng-show="profile.primaryExtension && widget != 'voicemails'" ng-click="callInternal('callVoicemail')">
-			<div class="ListRowActionButtonVoicemail"></div>
-			<span>{{::verbage.voicemail}}</span>
-		</a>
-		<a class="Button" href="" ng-show="profile.phoneBusiness && widget != 'voicemails'" ng-click="callNumber(profile.phoneBusiness)">
-			<div class="ListRowActionButtonCall"></div>
-			<span>{{::verbage.Business}}</span>
-		</a>
-		<a class="Button" href="" ng-show="profile.phoneMobile && widget != 'voicemails'" ng-click="callNumber(profile.phoneMobile)">
-			<div class="ListRowActionButtonMobile"></div>
-			<span>{{::verbage.mobile}}</span>
-		</a>
-		
-		<div ng-if="canBarge && profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid && widget != 'voicemails'">
-			<a class="Button" href="" ng-click="bargeCall('barge')">
-				<div class="ListRowActionButtonBarge"></div>
-				<span>{{::verbage.barge}}</span>
+		<div ng-show="widget != 'voicemails'">
+			<a class="Button" href="" ng-show="canIntercom && profile.primaryExtension" ng-click="callInternal('callIntercom')">
+				<div class="ListRowActionButtonCall"></div>
+				<span>{{::verbage.Intercom}}</span>
 			</a>
-			<a class="Button" href="" ng-click="bargeCall('monitor')">
-				<div class="ListRowActionButtonMonitor"></div>
-				<span>{{::verbage.monitor}}</span>
+			<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callInternal('callVoicemail')">
+				<div class="ListRowActionButtonVoicemail"></div>
+				<span>{{::verbage.voicemail}}</span>
 			</a>
-			<a class="Button" href="" ng-click="bargeCall('whisper')">
-				<div class="ListRowActionButtonWhisper"></div>
-				<span>{{::verbage.whisper}}</span>
+			<a class="Button" href="" ng-show="profile.phoneBusiness" ng-click="callNumber(profile.phoneBusiness)">
+				<div class="ListRowActionButtonCall"></div>
+				<span>{{::verbage.Business}}</span>
+			</a>
+			<a class="Button" href="" ng-show="profile.phoneMobile" ng-click="callNumber(profile.phoneMobile)">
+				<div class="ListRowActionButtonMobile"></div>
+				<span>{{::verbage.mobile}}</span>
+			</a>
+			
+			<div ng-if="canBarge && profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid">
+				<a class="Button" href="" ng-click="bargeCall('barge')">
+					<div class="ListRowActionButtonBarge"></div>
+					<span>{{::verbage.barge}}</span>
+				</a>
+				<a class="Button" href="" ng-click="bargeCall('monitor')">
+					<div class="ListRowActionButtonMonitor"></div>
+					<span>{{::verbage.monitor}}</span>
+				</a>
+				<a class="Button" href="" ng-click="bargeCall('whisper')">
+					<div class="ListRowActionButtonWhisper"></div>
+					<span>{{::verbage.whisper}}</span>
+				</a>
+			</div>
+			
+			<a class="Button" href="mailto:{{ profile.email }}" target="_blank" ng-show="profile.email">
+				<div class="ListRowActionButtonEmail"></div>
+				<span>{{::verbage.email}}</span>
+			</a>
+			<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="fileShare()">
+				<div class="ListRowActionButtonFileShare"></div>
+				<span>{{::verbage.file_share}}</span>
 			</a>
 		</div>
-		
-		<a class="Button" href="mailto:{{ profile.email }}" target="_blank" ng-show="profile.email && widget != 'voicemails'">
-			<div class="ListRowActionButtonEmail"></div>
-			<span>{{::verbage.email}}</span>
-		</a>
-		<a class="Button" href="" ng-show="profile.primaryExtension && widget != 'voicemails'" ng-click="fileShare()">
-			<div class="ListRowActionButtonFileShare"></div>
-			<span>{{::verbage.file_share}}</span>
-		</a>
+
 	</div>
 	
 	<!-- group -->
@@ -314,14 +319,17 @@
 	
 	<!-- dockable -->
 	<div ng-show="profile.xpid  && profile.xpid != myPid && (profile.displayName || profile.name) && (profile.displayName !== undefined || profile.name !== undefined)">
-		<a class="Button" href="" ng-show="canDock && widget != 'voicemails'" ng-click="dockItem(true)">
-			<div class="ListRowActionButtonDock"></div>
-			<span>{{::verbage.dock}}</span>
-		</a>
-		<a class="Button" href="" ng-show="!canDock && widget != 'voicemails'" ng-click="dockItem(false)">
-			<div class="ListRowActionButtonUndock"></div>
-			<span>{{::verbage.undock}}</span>
-		</a>
+		<div ng-show="widget != 'voicemails'">
+			<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
+				<div class="ListRowActionButtonDock"></div>
+				<span>{{::verbage.dock}}</span>
+			</a>
+			<a class="Button" href="" ng-show="!canDock" ng-click="dockItem(false)">
+				<div class="ListRowActionButtonUndock"></div>
+				<span>{{::verbage.undock}}</span>
+			</a>
+		</div>
+
 	</div>
 
 	<div ng-if="profile.xpid && profile.xpid != myPid && profile.call"> 
