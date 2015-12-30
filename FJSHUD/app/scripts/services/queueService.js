@@ -152,6 +152,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	});
 
 	$rootScope.$on('queuepermissions_synced', function (event, data){
+		$rootScope.in_queue = false;
 		for (var i = 0, iLen = queues.length; i < iLen; i++){
 			for (var j = 0, jLen = data.length; j < jLen; j++){
 				if (data[j].xpid == queues[i].xpid){
@@ -160,7 +161,17 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				}
 				
 			}
+			for(var n = 0, nLen = queues[i].members.length; n < nLen; n++)
+			{
+				if(queues[i].members[n].fullProfile && queues[i].members[n].fullProfile.xpid == $rootScope.myPid)
+					$rootScope.in_queue = true;
+			}
+			
+			if(queues[i].me)
+				$rootScope.in_queue = true;
 		}
+		
+		//$rootScope.in_queue = false;
 	});
 
 	$rootScope.$on("queue_stat_calls_synced", function (event, data) {

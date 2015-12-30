@@ -187,6 +187,9 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
             break;
           case 'callcenter':
             tmpSelected = localStorage['CallCenter_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $rootScope.myPid]) : 'myqueue';
+            if(!$rootScope.in_queue)
+            	tmpSelected = 'allqueues';
+            
             endPath = '/callcenter/' + tmpSelected;
             break;
           case 'calllog':

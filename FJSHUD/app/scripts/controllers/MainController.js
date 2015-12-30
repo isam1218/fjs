@@ -1,5 +1,6 @@
 hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', 'HttpService','SettingsService', 'ContactService', function($rootScope, $scope, $timeout, $q, myHttpService, settingsService, contactService) {
 	$rootScope.myPid = null;
+	$rootScope.in_queue = true;
 	
 	$scope.number = "";
 	$scope.currentPopup = {};
