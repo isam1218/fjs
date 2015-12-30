@@ -129,24 +129,24 @@
           <div class="WidgetSectionTitle meTitle">{{::verbage.recent_calls}}</div>
           
           <div class="RecentCallColumnHeaders">  
-            <div class="RecentCallsHeader RecentDate" ng-class="recentSelectSort == 'Date' ? 'recent-selected-column' :''" ng-click="recentSelectSort = 'Date';isAscending = !isAscending"> 
+            <div class="RecentCallsHeader RecentDate" ng-class="recentSelectSort == 'Date' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('Date')"> 
               <div class="RecentPointer">
                 <span class="upper">{{::verbage.date + '/' + verbage.time}}</span>
                 <div ng-class="recentSelectSort == 'Date' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
               </div>
             </div>
             
-            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''" ng-click=" recentSelectSort = 'From';isAscending = !isAscending ">
+            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('From')"> 
                 <div class="RecentPointer"><span class="upper">{{::verbage.from}}</span></div>
                 <div ng-class="recentSelectSort == 'From' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
             </div>
             
-            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''" ng-click="recentSelectSort = 'To';isAscending = !isAscending ">
+            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('To')"> 
                 <div class="RecentPointer"><span class="upper">{{::verbage.to}}</span></div>
                 <div ng-class="recentSelectSort == 'To' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
             </div>
             
-            <div class="RecentCallsHeader RecentDur" ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''" ng-click="recentSelectSort = 'Duration';isAscending = !isAscending">
+            <div class="RecentCallsHeader RecentDur" ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('Duration')"> 
              <div class="RecentPointer"><span class="upper">{{::verbage.duration}}</span></div>
              <div ng-class="recentSelectSort == 'Duration' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
             </div>
