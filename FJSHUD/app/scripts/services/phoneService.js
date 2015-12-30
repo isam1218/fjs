@@ -797,7 +797,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				case '/contact':
 					$location.path('/contact/'+xpid);
 					$location.replace();
-					//$rootScope.$apply();
+					
 					removeNotification();
 					break;
 				case '/RemoveNotification':
