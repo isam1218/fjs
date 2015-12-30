@@ -1,7 +1,7 @@
 <div ng-if="contextShow"> 
 <div class="Arrow Left"></div>
 <div class="TopRow" ng-switch="type == 'Contact' && profile != null">
-	<div class="Contact" ng-switch-when="true">
+	<div class="Contact" ng-switch-when="true" ng-switch="widget != 'voicemails'">
 		<div>
 			<avatar profile="profile" context="context"></avatar>
 			<div class="info">
@@ -12,18 +12,16 @@
 			</div>
 		</div>
 		
-		<div ng-if="widget != 'voicemails'">
-			<div class="Numbers">
-				<div>email:</div> <span>{{ profile.email }}</span>
-				<br/>
-				<div>ext:</div> <span>{{ profile.primaryExtension }}</span>
-			</div>
-			
-			<div class="Numbers">
-				<div>mobile:</div> <span>{{ profile.phoneMobile }}</span>
-				<br/>
-				<div>phone:</div> <span>{{ profile.phoneBusiness }}</span>
-			</div>
+		<div class="Numbers" ng-switch-when="true">
+			<div>email:</div> <span>{{ profile.email }}</span>
+			<br/>
+			<div>ext:</div> <span>{{ profile.primaryExtension }}</span>
+		</div>
+		
+		<div class="Numbers" ng-switch-when="true">
+			<div>mobile:</div> <span>{{ profile.phoneMobile }}</span>
+			<br/>
+			<div>phone:</div> <span>{{ profile.phoneBusiness }}</span>
 		</div>
 	</div>
 	
