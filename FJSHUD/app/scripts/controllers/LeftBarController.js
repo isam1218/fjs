@@ -1,4 +1,4 @@
-hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', function($scope, $rootScope, httpService, phoneService, settingsService ,storageService) {
+hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', '$timeout', function($scope, $rootScope, httpService, phoneService, settingsService ,storageService, $timeout) {
 	$scope.query = '';
   $scope.tab;
 	$scope.overlay = '';
@@ -9,10 +9,11 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
   $scope.language = 'us';
     
 	settingsService.getSettings().then(function(data) {		
-		$scope.language =  $rootScope.language;
-		$scope.$safeApply();
-    // load last accessed contact panel tab
-    $scope.tab = localStorage['LeftBar_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_tabs_of_' + $rootScope.myPid]) : 'all';
+    $timeout(function(){
+      $scope.language =  $rootScope.language;
+      // load last accessed contact panel tab
+      $scope.tab = localStorage['LeftBar_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_tabs_of_' + $rootScope.myPid]) : 'all';
+    }, 100);
   });
   
     $scope.setTab = function(tab) {
