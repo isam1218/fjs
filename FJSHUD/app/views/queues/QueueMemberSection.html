@@ -8,7 +8,7 @@
 		<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.status.status}}"></div>
 
 		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}"></div>
-		<span ng-bind-html="(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '')"></span>
+		<span class="AgentStatus" ng-bind-html="(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '')"></span>
     </div>
 
     <callStatus profile="member.fullProfile" ng-switch-when="true"></callStatus>

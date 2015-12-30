@@ -2,17 +2,16 @@ hudweb.controller('GroupSinglePageController', ['$scope', '$rootScope', '$routeP
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = $scope.group.members;
-	// console.error('group page members - ', $scope.members);
 	$scope.action = {};
 	 
 	$scope.callOptions = [
-		{text: $scope.verbage.Call, type: ''},
+		{text: $scope.verbage.Call, type: 'call'},
 		{text: $scope.verbage.group_page, type: 'page'},
 		{text: $scope.verbage.group_intercom, type: 'intercom'},
 		{text: $scope.verbage.group_voicemail, type: 'voicemail'}
 	];
 	
-	$scope.action.selected = $scope.callOptions[0];
+	$scope.selectedAction = $scope.callOptions[0];
 	
 	$scope.memberFilter = function(){
 		return function(member){

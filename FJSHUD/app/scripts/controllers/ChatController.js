@@ -360,8 +360,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			return true;
 		} else {
 			if(curMsgDate && prvMsgDate){
-        var curHour = parseInt(moment(curMsgDate).format('H mm').split(' ')[0]);
-        var prvHour = parseInt(moment(prvMsgDate).format('H mm').split(' ')[0]);
+        var curHour = curMsgDate.getHours();
+        var prvHour = prvMsgDate.getHours();
         var hourDiff = curHour - prvHour;
         // if same owner on same day + w/in 2hrs 59 min -> do not display name/avatar/time
 				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid && hourDiff < 3){

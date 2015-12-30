@@ -86,7 +86,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		if (data.use_column_layout == 'true') {
 			$timeout(function() {
 				// update draggable status
-				$('#InnerDock .Gadget').draggable('disable');
+				$('#InnerDock .Gadget:not(.ui-sortable-placeholder)').draggable('disable');
 			
 				// turn sorting on for first time
 				if (!column) {
@@ -97,7 +97,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					else {
 						$('#InnerDock').sortable({
 							revert: 1,
-							handle: '.Header, .Content',
+							handle: '.Header, .List',
 							helper: 'clone',
 							appendTo: 'body',
 							cursorAt: { top: 25 },

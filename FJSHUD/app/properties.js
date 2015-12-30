@@ -7,12 +7,12 @@ fjs.CONFIG = {
       , ppsServer: "<%= ppsServer %>"
     }
     , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','voicemailbox','calllog','server','location_status', 
-            'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status','queue_stat_members',
-            'queue_call','queuepermissions', 'queue_stat_calls',  'queuemessagestats',
+            'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status',
+            'queue_call','queuepermissions', 'queue_stat_calls',
             'calldetails',  'grouppermissions', 'groupcontacts', 
             'contactpermissions', 'contactstatus', 'fdpImage',   'group_page_member',
-             'chatsmiles', 'weblauncher', 'weblaunchervariables',  
-            'streamevent','recent_talks','conferencemembers',
+            'weblauncher', 'weblaunchervariables',  
+            'streamevent','conferencemembers',
             'conferencepermissions','conferencestatus','callrecording','parkedcalls','mycalldetails','i18n_langs','quickinbox',]
     , 
     CALL_STATES:{
@@ -52,7 +52,7 @@ fjs.CONFIG = {
     DEBUG:true,
 };
 
-//fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
+// fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
 
-//fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
+// fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
 

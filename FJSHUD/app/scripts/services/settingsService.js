@@ -49,16 +49,6 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 			return item.id == settings['hudmw_launcher_config_id'];
 		})[0];
 	};
-	
-	service.reset_app_menu = function(){
-		var data = {};
-		$rootScope.$broadcast('reset_app_menu', data);
-	};
-
-	service.enable_box = function(){
-		// console.error('in setting service');
-		$rootScope.$broadcast('enable_box', {});
-	};
 
 	service.getMe = function(){
 		return deferMe.promise;	

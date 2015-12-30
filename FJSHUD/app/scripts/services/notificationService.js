@@ -35,7 +35,6 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             		return;
             	}else{
 					response = JSON.parse(evt.data);
-					console.log(response);
 					
 					if(response.notificationEventType == 'CLOSE')
 						context.setCancelled(true);
@@ -98,7 +97,6 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 
 		this.displayWebNotification = function(data){
 			if (!Notification) {
-				console.log('Desktop notifications not supported');
 				return;
 			}
       
@@ -134,7 +132,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		          break;
 	      	}
 	
-	      	message = message.replace(/&lt;/g, "<" ).replace(/&gt;/g, ">");
+	      	message = message.replace(/&lt;/g, "<" ).replace(/&gt;/g, ">").replace(/&amp;/g, '&');
 
 			var notification = new Notification(data.displayName, {
 				icon : iconUrl,
