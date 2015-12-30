@@ -4,8 +4,6 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	$scope.overlay = '';
 	$scope.number = "";
 	$scope.locations = [];
-  $scope.autoClearTime;
-  $scope.autoClearOn;
   $scope.language = 'us';
     
 	settingsService.getSettings().then(function(data) {		
