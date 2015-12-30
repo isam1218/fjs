@@ -846,19 +846,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         switch(field){
             case 'Date':
                 $scope.recentSelectSort = 'Date';
-                return calllog.startedAt;
                 break;
             case 'From':
                 $scope.recentSelectSort = 'From';
-                return calllog.fromDisplayValue;
                 break;
             case 'To':
                 $scope.recentSelectSort = 'To';
-                return calllog.toDisplayValue;
                 break;
             case 'Duration':
                 $scope.recentSelectSort = 'Duration';
-                return calllog.duration;
                 break;
         }
     };
