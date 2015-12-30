@@ -1,9 +1,10 @@
 <div id="InnerDock" class="InnerDock" droppable="Contact,Group,ConferenceRoom,QueueStat">
 	<div 
-		class="Gadget" 
+		class="Gadget"
 		ng-repeat="gadget in gadgets | orderBy:'value.index' track by gadget.name" 
 		ng-class="::{'Parked' : gadget.value.factoryId == 'GadgetParkedCalls'}"
 		droppable="{{::getDroppableType(gadget.value.factoryId)}}"
+		 ng-if="(gadget.value.factoryId == 'GadgetUserQueues' && in_queue && showCallCenter) || gadget.value.factoryId != 'GadgetUserQueues'"
 		dragger>
 	
 		<!-- my queues -->

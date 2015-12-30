@@ -93,6 +93,7 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 			if(data[i].propertyKey == 'personal_permissions'){			
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = service.isEnabled(data[i].propertyValue, 10);
+				$rootScope.showCallCenter = permissions.showCallCenter;
 				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = service.isEnabled(data[i].propertyValue, 1);
 				permissions.showIntellinote = false; //isEnabled(data[i].propertyValue, 15);

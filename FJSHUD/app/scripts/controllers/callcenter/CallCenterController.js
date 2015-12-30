@@ -18,6 +18,10 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 	} else {
 		// otherwise when route isn't defined, use the tabs set in app.js 
     $scope.selected = localStorage['CallCenter_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_tabs_of_' + $rootScope.myPid]) : 'myqueue';
+    
+    if(!$rootScope.in_queue)
+    	$scope.selected = 'allqueues';
+    
     $scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid]) : {item: 0};
 	}
 
