@@ -34,12 +34,7 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
             $scope.joinUrl = response.data.join_url;
             window.open($scope.startUrl, '_blank');
             $scope.inMeeting = true;
-            $scope.$safeApply();
-
         });
-        /*dataManager.sendFDPRequest("/v1/zoom", data, function(xhr, data, isOk) {
-               context.onAjaxResult(isOk, data)
-        });*/
     };
 
     $scope.bodyDisplay=true;
@@ -53,8 +48,10 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
     $scope.joinUrl = "";
     
     $scope.addedContacts = [];
+	
     $scope.searchContact = function(contact){
         $scope.addedContacts.push(contact);
+		$scope.$digest();
     };
 
      $scope.getAvatarUrl = function(xpid,width, height) {
@@ -71,28 +68,5 @@ hudweb.controller('ZoomWidgetController', ['$scope', '$http', 'HttpService', fun
                 iLen--;
             }
         }
-        $scope.$safeApply();
-    };
-
-    this.onAjaxResult = function(isOk, _data){
-        $scope.hasResult = true;
-        if(!isOk){
-            $scope.$safeApply(function(){
-                $scope.bodyDisplay=false;
-                $scope.bodyStartedDisplay=false;
-                $scope.bodyErrorDisplay=true;
-            });
-            return;
-        }
-        var data = JSON.parse(_data);
-        window.open(data["start_url"], '_blank');
-        $scope.$safeApply(function(){
-            $scope.startUrl = data["start_url"];
-            $scope.joinUrl = data["join_url"];
-
-            $scope.bodyDisplay=false;
-            $scope.bodyStartedDisplay=(data["start_url"]&&data["join_url"]);
-            $scope.bodyErrorDisplay=!$scope.bodyStartedDisplay;
-        });
     };
 }]);

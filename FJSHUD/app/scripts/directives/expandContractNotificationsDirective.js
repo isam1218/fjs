@@ -40,7 +40,7 @@ hudweb.directive('expandContractNotifications', function() {
 	       		if(!hoverFlag && content.length > 0){				
 	       			$('.LeftBar .NotificationDivider.firstHeaderDivider .headerText').hide();
 					$('.LeftBar .NotificationDivider.firstHeaderDivider').hide();
-	       			$scope.$safeApply(function(){
+	       			$scope.$digest(function(){
 	       			   $scope.showAllNotifications = true;
 	       			});   
 	       		    hoverFlag = true;	   
@@ -85,7 +85,7 @@ hudweb.directive('expandContractNotifications', function() {
               $('.LeftBar .NotificationDivider.firstHeaderDivider').show();
             	var content = $(element).find('.NotificationSection:not(.last)');
             	
-            	$scope.$safeApply(function(){
+            	$scope.$digest(function(){
             	   $scope.showAllNotifications = false;    
             	});
             	if(content.length > 0){
