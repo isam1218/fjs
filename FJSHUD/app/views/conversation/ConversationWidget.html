@@ -13,7 +13,7 @@
     </div>    
     <div class="WidgetBody" ng-switch="selected">
         <div class="WidgetTabBar">
-            <span ng-repeat="tab in tabs | filter: tabFilter()" ng-if="tab.lower != 'queues' || (tab.lower == 'queues' && showCallCenter && in_queue)">
+            <span ng-repeat="tab in tabs | filter: tabFilter()">
                 <a href="#/contact/{{ ::contactID + '/' + tab.lower}}" ng-click="saveCTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : selected == tab.lower}">
                     <div class="inner">{{ tab.upper}}</div>
                     <div class="arrow"></div>
@@ -38,7 +38,6 @@
 			
         <div ng-switch-when="queues" class="fj-content WidgetTabContent" 
 			include-once="views/conversation/ConversationQueues.html"
-			ng-if="showCallCenter && in_queue"
 			ng-controller="ConversationWidgetQueuesController"></div>
 			
         <div ng-switch-when="calllog" class="CallLog WidgetTabContent" 

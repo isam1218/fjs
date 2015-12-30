@@ -10,6 +10,18 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	
 	$rootScope.dockIndex = 0;
 	
+	$scope.filterQueues = function()
+	{
+		return function(item){
+			if((item.value.factoryId == 'GadgetUserQueues' && $rootScope.in_queue && $rootScope.showCallCenter) || item.value.factoryId != 'GadgetUserQueues')
+				return true;
+			else
+				return false;
+			
+            return true;
+		};
+	}
+	
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
 		request = data.xhr;	

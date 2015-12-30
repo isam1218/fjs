@@ -1,4 +1,4 @@
-hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactService', function($q, $rootScope, httpService, contactService) {	
+hudweb.service('SettingsService', ['$q', '$location', '$rootScope', 'HttpService', 'ContactService', function($q, $location, $rootScope, httpService, contactService) {	
 	var service = this;
 	
 	var deferSettings = $q.defer();
@@ -104,6 +104,16 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = service.isEnabled(data[i].propertyValue, 10);
 				$rootScope.showCallCenter = permissions.showCallCenter;
+							
+				if(!$rootScope.showCallCenter)
+				{
+					var locationArray = $location.path().split('/');
+					
+					if(locationArray[1] == 'contact')					
+						$location.path('/contact/' + locationArray[2] + '/chat');						
+				}
+				
+				localStorage['showCallCenter'] = $rootScope.showCallCenter;
 				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = service.isEnabled(data[i].propertyValue, 1);
 				permissions.showIntellinote = false; //isEnabled(data[i].propertyValue, 15);
