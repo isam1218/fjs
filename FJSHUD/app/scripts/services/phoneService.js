@@ -144,11 +144,17 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						}
 					}
 				}else{
-					if((settingsService.getSetting('alert_call_outgoing') == 'true' && !callsDetails[detail].incoming) || 
-			 		   (settingsService.getSetting('alert_call_incoming') == 'true' && callsDetails[detail].incoming))
-					{	
-						if(notificationCache.html && ($rootScope.currentNotificationLength > 0 || !$.isEmptyObject(callsDetails)) && isAlertShown){
-							displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+					if(!$.isEmptyObject(callsDetails)){
+						for(var detail in callsDetails){							
+							if((settingsService.getSetting('alert_call_outgoing') == 'true' && !callsDetails[detail].incoming) || 
+							   (settingsService.getSetting('alert_call_incoming') == 'true' && callsDetails[detail].incoming))
+							{	
+								if(notificationCache.html && isAlertShown){
+									displayNotification(notificationCache.html,notificationCache.width,notificationCache.height);
+									
+									break;
+								}
+							}	
 						}
 					}	
 				}
