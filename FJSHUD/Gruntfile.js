@@ -132,6 +132,10 @@ module.exports = function(grunt) {
         options:{
           standalone:false,
           module:'fjshudApp',
+		  htmlmin: {
+			collapseWhitespace: true,
+			conservativeCollapse: true
+		  }
         },
         cwd: 'app',
         src: ['views/**.html', 'views/**/**.html'],

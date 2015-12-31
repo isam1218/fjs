@@ -20,11 +20,11 @@
 	        <div class="vmsection" ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid">	       
 	        	<avatar profile="voicemail" context="voicemails:voicemail" type="4"></avatar>
 	        		             
-	            <div class="vminfo voicemails" ng-click="playVoicemail(voicemail)"> 
+	            <div class="vminfo voicemails" ng-click="playVoicemail(voicemail)">
 	                <div class="displayName">	                                   
 						<em>...{{::verbage.from}} &nbsp;</em>
 						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus ? 'bold' : 'normal'}">
-							{{ ::voicemail.displayName + ' <' + (voicemail.fullProfile.primaryExtension || voicemail.phone) + '>' }}
+							{{ ::voicemail.displayName + ' &lt;' + (voicemail.fullProfile.primaryExtension || voicemail.phone) + '&gt;' }}
 	                    </p>
 	                    <div class="vmalternate">
 	                        <div class="vmtime">{{ ::voicemail.date | fondate: 'YYYY MMMM D, hh:mm a':fon_lang_code }} </div>
