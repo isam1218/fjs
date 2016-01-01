@@ -25,10 +25,10 @@
 		<div class="ListRowContent" dockable="member.fullProfile"> 
             <div class="ListRowTitle">
     			<div class="name">
-    				<strong> {{::member.fullProfile == null ? member.phone : member.displayName}} </strong>
+    				<strong> {{member.fullProfile == null ? member.phone : member.displayName}} </strong>
                 </div>
                 <div class="vmtime" timer="member.started" ng-if="!member.ring"></div>
-                <div class="vmtime" ng-if="member.ring">{{ ::member.fullProfile.primaryExtension}}</div>
+                <div class="vmtime" ng-if="member.ring">{{ member.fullProfile.primaryExtension}}</div>
             </div>
             <div class="ListRowTitle">
                 <div class="ListRowStatusLeftSide">
@@ -65,7 +65,7 @@
             <div class="ListRowTitle">
                 <div class="ListRowStatusLeftSideNoJoin">
                     <div class="name">
-                        <strong> {{ ::member.displayName }} </strong>
+                        <strong> {{ member.displayName }} </strong>
                     </div>                 
                     <div class="QueueStatus IconDisplay" ng-class="member.muted ? 'XIconMuteMic' : 'XIconSetMic'"></div>                        
                     <div class=" ConferenceStatusIcon XIcon-QueueStatus-{{member.fullProfile.queue_status}}"></div>
