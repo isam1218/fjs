@@ -99,6 +99,10 @@
     .WidgetBody{
 		padding-bottom: 10px;
 		
+		input[type=range]::-ms-tooltip {
+            display: none;
+        }
+		
        .CurrentCall{
 			& + .RecentCallSection {
 			  flex: 1 1 0;
@@ -117,9 +121,6 @@
                     input[type=range]{
                         width: 70%;
                         margin-bottom: -8px;
-                        &::-ms-tooltip{
-                        	display: none;
-                        }
                     }
                     .XButtonToggleSmall{
                         margin-top: 0;
