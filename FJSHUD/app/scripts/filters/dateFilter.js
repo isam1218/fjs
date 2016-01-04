@@ -95,6 +95,9 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                 else if (chatSection === 'list_message_header' && yearInputted === yearToday){
                     return monthObj[monthInputted] + ' ' + dateInputted;
                 }
+                else if (chatSection === 'list_message_header' && yearInputted !== yearToday){
+                    return monthObj[monthInputted] + ' ' + dateInputted + ' ' + yearInputted;
+                }
                 else if (dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
                     return fjs.i18n[locale].today + ' ' + calcTime(milliseconds);
                 }
@@ -129,6 +132,9 @@ hudweb.filter('fondate', ['NtpService', function(ntpService) {
                 else if (chatSection === 'list_message_header' && yearInputted === yearToday){
                     return moment(milliseconds).lang(locale_code).format('MMMM D');
                 } 
+                else if (chatSection === 'list_message_header' && yearInputted !== yearToday){
+                    return moment(milliseconds).lang(locale_code).format('MMMM D YYYY');
+                }
                 else if (dateInputted === dateNumberToday && monthInputted === monthToday && yearInputted === yearToday){
                     return fjs.i18n[locale].today + moment(milliseconds).lang(locale_code).format('hh:mm a');
                 } 
