@@ -1056,8 +1056,6 @@ hudweb.controller('NotificationController',
 
   var updateNotificationLabel  = function(notification){
     var type = notification.type; 
-    //decode the notification message before stripping it's html tags
-    var decoded = $('<div/>').html(notification.message).text();
     
     switch(type){
       case 'q-alert-rotation':
@@ -1114,7 +1112,7 @@ hudweb.controller('NotificationController',
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + $sce.trustAsHtml(decoded);//.replace(/<\/?[^>]+(>|$)/g, '');
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;
         break;
       case 'wall':
         notification.label = "share";
