@@ -118,7 +118,7 @@ hudweb.directive('expandContractNotifications', function() {
 						}
 						
 	        	        $(item).removeClass('open');          
-	        	    }); 				
+	        	    } 				
      
         	        hoverFlag = false;  
             	}	
