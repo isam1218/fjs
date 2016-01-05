@@ -68,7 +68,7 @@ if($routeParams.route == 'videos'){
     var prevMonth = date.getMonth();
     var fromDate =  date.getFullYear() + '-' + prevMonth + '-' + date.getDate();
     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/completedMeetingList')+'&email='+$rootScope.meModel.email+'&fromDate='+fromDate+'&toDate='+toDate).success(function(response){
-            console.log("DATA",response);
+            
             $scope.meetingList = response.meetings;
            
           });
@@ -77,16 +77,3 @@ if($routeParams.route == 'videos'){
 
 }]);
 
- // $scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'},{upper: $scope.verbage.my_videos_tab, lower: 'videos'}];
-
-/* settingsService.getSettings().then(function() {
-    var date = new Date();
-    var month = date.getMonth() + 1;
-    var toDate = date.getFullYear() + '-' + month+ '-' + date.getDate();
-    var prevMonth = date.getMonth();
-    var fromDate =  date.getFullYear() + '-' + prevMonth + '-' + date.getDate();
-    $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/completedMeetingList')+'&email='+$rootScope.meModel.my_jid.split("@")[1]+'&fromDate='+fromDate+'&toDate='+toDate).success(function(response){
-            console.log("DATA",response);
-            $scope.meetingList = response.meetings;
-           
-          });*/

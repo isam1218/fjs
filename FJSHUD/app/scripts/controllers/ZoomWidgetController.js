@@ -296,11 +296,11 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     settingsService.getMe().then(function(data) {
       var DATA = data;
       if(data.email !== undefined){
-        console.log("MY EMAIL", data.email);
+        
         $scope.noEmail = false;
       }
       if(data.email === undefined | data.email == ""){
-        console.log("MY EMAIL", data.email);
+        
         $scope.noEmail = true;
 
         $modal.open({
@@ -439,7 +439,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
-        console.log("EMAIL ZOOM", $rootScope.meModel.email);
+        
 
         for(var i = 0; i<=30;i++){
            var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
