@@ -302,7 +302,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 	$scope.screenShare = function(contact){
 
 		        $scope.addedContacts.push(contact);
-		        console.log("ADDED CONTACTS",contact);
+		        
 
 
 		        
@@ -325,8 +325,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
             users = users + $scope.addedContacts[i].xpid + ",";
         }
     }
-console.log("Contact",contact);
-		console.log("USERS", users);
+
 
         data["topic"]="";
         data["users"]= users;
@@ -360,11 +359,11 @@ console.log("Contact",contact);
    	settingsService.getMe().then(function(data) {
    		var DATA = data;
    		if(data.email !== undefined){
-   			console.log("MY EMAIL", data.email);
+   			
    			$scope.noEmail = false;
    		}
    		if(data.email === undefined | data.email == ""){
-   			console.log("MY EMAIL", data.email);
+   			
    			$scope.noEmail = true;
    		}
    	});

@@ -212,7 +212,8 @@ module.exports = function(grunt) {
           "prod/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
           "prod/app/styles/firefox.css": "app/styles/firefox.less",
           "prod/app/styles/safari.css": "app/styles/safari.less",
-          "prod/app/styles/ie.css": "app/styles/ie.less"
+          "prod/app/styles/ie.css": "app/styles/ie.less",
+          "prod/app/styles/bootstrap.css": "app/styles/bootstrap.css"
         },
       },
       dev:{
@@ -224,7 +225,8 @@ module.exports = function(grunt) {
           "dest/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
           "dest/app/styles/firefox.css": "app/styles/firefox.less",
           "dest/app/styles/safari.css": "app/styles/safari.less",
-          "dest/app/styles/ie.css": "app/styles/ie.less"
+          "dest/app/styles/ie.css": "app/styles/ie.less",
+          "dest/app/styles/bootstrap.css": "app/styles/bootstrap.css"
         },
       },
       huc_dev:{
@@ -236,7 +238,8 @@ module.exports = function(grunt) {
           "huc_dev/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
           "huc_dev/app/styles/firefox.css": "app/styles/firefox.less",
           "huc_dev/app/styles/safari.css": "app/styles/safari.less",
-          "huc_dev/app/styles/ie.css": "app/styles/ie.less"
+          "huc_dev/app/styles/ie.css": "app/styles/ie.less",
+          "huc_dev/app/styles/bootstrap.css": "app/styles/bootstrap.css"
         },
       }
     },
