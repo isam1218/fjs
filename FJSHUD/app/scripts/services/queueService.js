@@ -1,8 +1,9 @@
-hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpService', 'NtpService','SettingsService', function ($rootScope, $q, contactService, httpService, ntpService,settingsService) {
+hudweb.service('QueueService', ['$rootScope', '$q', '$location', 'ContactService', 'HttpService', 'NtpService','SettingsService', function ($rootScope, $q, $location, contactService, httpService, ntpService,settingsService) {
 	var deferred = $q.defer();	
 	var queues = [];
 	var mine = [];
 	var total = {};
+	var agents = {};
 	var myLoggedIn = 0;
 	var reasons = [];
 	var selectedFlag = '';
@@ -152,6 +153,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 	});
 
 	$rootScope.$on('queuepermissions_synced', function (event, data){
+		$rootScope.in_queue = false;
 		for (var i = 0, iLen = queues.length; i < iLen; i++){
 			for (var j = 0, jLen = data.length; j < jLen; j++){
 				if (data[j].xpid == queues[i].xpid){
@@ -160,7 +162,24 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				}
 				
 			}
+			for(var n = 0, nLen = queues[i].members.length; n < nLen; n++)
+			{
+				if(queues[i].members[n].fullProfile && queues[i].members[n].fullProfile.xpid == $rootScope.myPid)
+					$rootScope.in_queue = true;
+			}
+			
+			if(queues[i].me)
+				$rootScope.in_queue = true;
 		}
+				
+		if(!$rootScope.in_queue)
+		{								
+			var locationArray = $location.path().split('/');
+			
+			if(locationArray[1] == 'callcenter')			
+				$location.path('/callcenter/allqueues');
+		}	
+		localStorage['in_queue'] = $rootScope.in_queue;
 	});
 
 	$rootScope.$on("queue_stat_calls_synced", function (event, data) {
@@ -301,11 +320,12 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 			queue.loggedInMembers = 0;
 			queue.loggedOutMembers = 0;
 
-			if (queue.members && queue.members.length > 0) {
-				total.members += queue.members.length;
-			
+			if (queue.members && queue.members.length > 0) {			
 				// current member list
 				for (var m = 0, mLen = queue.members.length; m < mLen; m++) {
+					// prepare for total count
+					agents[queue.members[m].contactId] = false;
+					
 					// member list from sync
 					for (var i = 0, iLen = data.length; i < iLen; i++) {
 						if (data[i].xpid == queue.members[m].xpid) {
@@ -313,8 +333,9 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 				
 							// logged totals
 							if (queue.members[m].status.status.indexOf('login') != -1) {
+								agents[queue.members[m].contactId] = true;
+								
 								queue.loggedInMembers++;
-								total.loggedIn++;
 								
 								if (queue.members[m].contactId == $rootScope.myPid)
 									myLoggedIn++;
@@ -331,6 +352,14 @@ hudweb.service('QueueService', ['$rootScope', '$q', 'ContactService', 'HttpServi
 					}
 				}
 			}
+		}
+		
+		// finalize totals
+		for (var key in agents) {
+			total.members++;
+			
+			if (agents[key] === true)
+				total.loggedIn++;
 		}
 	});
 	

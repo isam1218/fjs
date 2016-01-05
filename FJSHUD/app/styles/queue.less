@@ -573,7 +573,14 @@
         height: auto;
         
         .Avatar{
-              margin: .41em .25em;
+              margin: .41em .3em;
+              width: 40px;
+              height: 40px;
+
+              img{
+                width: 38px;
+                height: 38px;
+              }
               
               &.CallAvatar_Office,
               &.CallAvatar_External,
@@ -588,13 +595,52 @@
         .ListRowTitle{
            color: #222;
            max-width: 100%;
-           span{color: #888;}
+           span{
+              color: #888;
+              margin-left: -3px;
+            }
+           
+           .ListRowStatusIcon{
+              margin-left: -2px;
+           }
         }
         .ListRowStatus{
             .ListRowDesc{
                 text-decoration: none;
                 font-weight: bold;
             }
+        }
+        .ListRowContent{
+          margin-top: 6px;
+          margin-bottom: -4px;
+          
+          .AgentStatus{
+            display: inline-block;
+            text-overflow:  ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 85%;
+            margin-bottom: -4px;
+            color: #888;
+          }
+
+          .WidgetHeaderCallStatus{
+            
+            .Avatar{
+              width: 30px !important;
+              height: 30px !important;
+              
+              img{
+                width: 22px !important;
+                height: 22px !important;
+              }
+            }
+          }
+
+          .vmcallbtn{
+            margin-top: 5px;
+          }
+
         }
     }
 }

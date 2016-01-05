@@ -38,6 +38,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					workerStarted = true;
 					
 					console.timeEnd('worker');
+					console.log('syncing...');
 					console.time('sync');
 					
 		        	updateSettings('instanceId','update',localStorage.instance_id); 
@@ -52,12 +53,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 						
 						if (!synced) {
 							console.timeEnd('sync');
+							console.log('rendering...');
 							console.time('render');
 							synced = true;
 						}
 						
 						if ($rootScope.networkError)
-							$rootScope.$broadcast('network_issue', {show: false});
+							$rootScope.$broadcast('network_issue', null);
 		            }
 		            break;
 		        case "feed_request":
@@ -71,7 +73,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
       				break;
       			case "network_error":
       				if(!synced){
-      					$rootScope.$broadcast('network_issue', {show: true});
+      					$rootScope.$broadcast('network_issue', 'networkError');
 						worker.terminate();
 					}
       				break;
@@ -203,12 +205,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 						delete localStorage.me;
 						delete localStorage.nodeID;
 						delete localStorage.authTicket;
-						$rootScope.$broadcast('no_license', undefined);
+						$rootScope.$broadcast('no_license', 'networkError');
 
 						break;
 					case 404:
 					case 500:
-						$rootScope.$broadcast('network_issue',undefined);
+						$rootScope.$broadcast('network_issue', 'networkError');
 						break;
 					default:
 						attemptLogin();
@@ -216,15 +218,17 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				}
 			});
 	};
-	/**
-		SCOPE FUNCTIONS
-	*/
+	
 	if (localStorage.nodeID === undefined) {
 		clientRegistry();
 	}else {
 		nodeID = localStorage.nodeID;
 		authorizeWorker();
 	}
+	
+	/**
+		SCOPE FUNCTIONS
+	*/
 
 	this.logout = function() {
         var authURL = fjs.CONFIG.SERVER.loginURL
@@ -449,7 +453,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		})
 		.error(function() {
 			// network error
-			$rootScope.$broadcast('network_issue', {show: true});
+			$rootScope.$broadcast('network_issue', 'networkError');
 		});
 	};
 	

@@ -1,4 +1,4 @@
-hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactService', function($q, $rootScope, httpService, contactService) {	
+hudweb.service('SettingsService', ['$q', '$location', '$rootScope', 'HttpService', 'ContactService', function($q, $location, $rootScope, httpService, contactService) {	
 	var service = this;
 	
 	var deferSettings = $q.defer();
@@ -49,15 +49,6 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 			return item.id == settings['hudmw_launcher_config_id'];
 		})[0];
 	};
-	
-	service.reset_app_menu = function(){
-		var data = {};
-		$rootScope.$broadcast('reset_app_menu', data);
-	};
-
-	service.enable_box = function(){
-		$rootScope.$broadcast('enable_box', {});
-	};
 
 	service.getMe = function(){
 		return deferMe.promise;	
@@ -102,10 +93,21 @@ hudweb.service('SettingsService', ['$q', '$rootScope', 'HttpService', 'ContactSe
 			if(data[i].propertyKey == 'personal_permissions'){			
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = service.isEnabled(data[i].propertyValue, 10);
+				$rootScope.showCallCenter = permissions.showCallCenter;
+							
+				if(!$rootScope.showCallCenter)
+				{
+					var locationArray = $location.path().split('/');
+					
+					if(locationArray[1] == 'contact')					
+						$location.path('/contact/' + locationArray[2] + '/chat');						
+				}
+				
+				localStorage['showCallCenter'] = $rootScope.showCallCenter;
 				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = service.isEnabled(data[i].propertyValue, 1);
-				permissions.showIntellinote = service.isEnabled(data[i].propertyValue, 15);
-				permissions.showZipwhip = service.isEnabled(data[i].propertyValue, 16);
+				permissions.showIntellinote = false;//service.isEnabled(data[i].propertyValue, 15);
+				permissions.showZipwhip = false;//service.isEnabled(data[i].propertyValue, 16);
 				permissions.canTransferFrom = service.isEnabled(data[i].propertyValue, 4);
 
 				// group permissions from MyPermissions.java

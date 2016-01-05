@@ -40,18 +40,13 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
 
   $scope.queue_options = [
     {display_name: $scope.verbage.queue_name, orig_name:$scope.verbage.queue_name, type: "name"},
-    {display_name: $scope.verbage.queue_sort_calls_wait, orig_name:$scope.verbage.queue_sort_calls_wait, type: "info.waiting"},
     {display_name: $scope.verbage.queue_sort_longest_hold_time, orig_name:$scope.verbage.queue_sort_longest_hold_time, type: "longestWaitDuration"},
-    {display_name: $scope.verbage.queue_sort_avg_talk_time, orig_name:$scope.verbage.queue_sort_avg_talk_time, type: "info.avgTalk"},
+    {display_name: $scope.verbage.queue_sort_calls_wait, orig_name:$scope.verbage.queue_sort_calls_wait, type: "info.waiting"},
     {display_name: $scope.verbage.queue_sort_total_calls, orig_name:$scope.verbage.queue_sort_total_calls, type: "info.abandon + info.completed"},
+    {display_name: $scope.verbage.queue_sort_avg_talk_time, orig_name:$scope.verbage.queue_sort_avg_talk_time, type: "info.avgTalk"},
     {display_name: $scope.verbage.queue_abandoned_calls, orig_name:$scope.verbage.queue_abandoned_calls, type: "info.abandonPercent"},
     {display_name: $scope.verbage.queue_active_calls, orig_name:$scope.verbage.queue_active_calls, type: "info.active"}
   ];
-  
-  $scope.selectedQueue = localStorage.queue_option ? JSON.parse(localStorage.queue_option)['selectedQueue'] : $scope.queue_options[0];
-
-  $scope.isAscending = localStorage.queue_option ? JSON.parse(localStorage.queue_option)['isAscending'] : false;
-  $scope.sortColumn = localStorage.queue_option ? JSON.parse(localStorage.queue_option)['sortColumn'] : $scope.selectedQueue.type;
   
   $scope.queueThresholds = {};
   $scope.queueThresholds.waiting = parseInt(settingsService.getSetting('queueWaitingThreshold'));
@@ -60,10 +55,18 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
   $scope.queueThresholds.abandoned = parseInt(settingsService.getSetting('queueAbandonThreshold'));
   
   // default view
-  if ($scope.selected == 'myqueue')
+  if ($scope.selected == 'myqueue'){
     $scope.viewIcon = localStorage['myqueue_ViewIcon_of_' + $rootScope.myPid] ? JSON.parse(localStorage['myqueue_ViewIcon_of_' + $rootScope.myPid]) : true;
-  else
+    $scope.selectedQueue = localStorage.queue_option_myqueue_selectedQueue ? JSON.parse(localStorage.queue_option_myqueue_selectedQueue) : $scope.queue_options[0];
+    $scope.isAscending = localStorage.queue_option_myqueue_isAscending ? JSON.parse(localStorage.queue_option_myqueue_isAscending) : false;
+    $scope.sortColumn = localStorage.queue_option_myqueue_sortColumn ? JSON.parse(localStorage.queue_option_myqueue_sortColumn) : $scope.selectedQueue.type;
+  }
+  else{
     $scope.viewIcon = localStorage['allqueues_ViewIcon_of_' + $rootScope.myPid] ? JSON.parse(localStorage['allqueues_ViewIcon_of_' + $rootScope.myPid]) : true;
+    $scope.selectedQueue = localStorage.queue_option_allqueues_selectedQueue ? JSON.parse(localStorage.queue_option_allqueues_selectedQueue) : $scope.queue_options[0];
+    $scope.isAscending = localStorage.queue_option_allqueues_isAscending ? JSON.parse(localStorage.queue_option_allqueues_isAscending) : false;
+    $scope.sortColumn = localStorage.queue_option_allqueues_sortColumn ? JSON.parse(localStorage.queue_option_allqueues_sortColumn) : $scope.selectedQueue.type;
+  }
   
   $scope.setViewIcon = function(){
     $scope.viewIcon = !$scope.viewIcon;
@@ -71,6 +74,17 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
       localStorage['myqueue_ViewIcon_of_' + $rootScope.myPid] = JSON.stringify($scope.viewIcon);
     else
       localStorage['allqueues_ViewIcon_of_' + $rootScope.myPid] = JSON.stringify($scope.viewIcon);
+    
+    // load last chosen sort option 
+    if ($scope.selected == 'myqueue'){
+      $scope.selectedQueue = localStorage.queue_option_myqueue_selectedQueue ? JSON.parse(localStorage.queue_option_myqueue_selectedQueue) : $scope.queue_options[0];
+      $scope.isAscending = localStorage.queue_option_myqueue_isAscending ? JSON.parse(localStorage.queue_option_myqueue_isAscending) : false;
+      $scope.sortColumn = localStorage.queue_option_myqueue_sortColumn ? JSON.parse(localStorage.queue_option_myqueue_sortColumn) : $scope.selectedQueue.type;
+    } else {
+      $scope.selectedQueue = localStorage.queue_option_allqueues_selectedQueue ? JSON.parse(localStorage.queue_option_allqueues_selectedQueue) : $scope.queue_options[0];
+      $scope.isAscending = localStorage.queue_option_allqueues_isAscending ? JSON.parse(localStorage.queue_option_allqueues_isAscending) : false;
+      $scope.sortColumn = localStorage.queue_option_allqueues_sortColumn ? JSON.parse(localStorage.queue_option_allqueues_sortColumn) : $scope.selectedQueue.type;
+    }
   };
   
   var queue_option = {};
@@ -80,16 +94,23 @@ hudweb.controller('CallCenterQueueController', ['$scope', '$rootScope', 'HttpSer
     $scope.trancateSelectedName();
     if ($scope.sortColumn == queueSelectionType)
       $scope.isAscending = !$scope.isAscending;
-      else if (queueSelectionType == 'name')
+    else if (queueSelectionType == 'name')
       $scope.isAscending = false;
-      else
+    else
       $scope.isAscending = true;
     
     $scope.sortColumn = queueSelectionType;
-    queue_option.selectedQueue = $scope.selectedQueue;
-    queue_option.isAscending = $scope.isAscending;
-    queue_option.sortColumn = $scope.sortColumn;
-    localStorage.queue_option = JSON.stringify(queue_option);
+
+    // save last chosen sort option
+    if ($scope.selected == 'myqueue'){
+      localStorage.queue_option_myqueue_selectedQueue = JSON.stringify($scope.selectedQueue);
+      localStorage.queue_option_myqueue_isAscending = JSON.stringify($scope.isAscending);
+      localStorage.queue_option_myqueue_sortColumn = JSON.stringify($scope.sortColumn);
+    } else {
+      localStorage.queue_option_allqueues_selectedQueue = JSON.stringify($scope.selectedQueue);
+      localStorage.queue_option_allqueues_isAscending = JSON.stringify($scope.isAscending);
+      localStorage.queue_option_allqueues_sortColumn = JSON.stringify($scope.sortColumn);
+    }
   };
   
   $scope.resetStats = function() {

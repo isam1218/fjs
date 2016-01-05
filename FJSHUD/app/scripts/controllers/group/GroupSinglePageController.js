@@ -5,13 +5,13 @@ hudweb.controller('GroupSinglePageController', ['$scope', '$rootScope', '$routeP
 	$scope.action = {};
 	 
 	$scope.callOptions = [
-		{text: $scope.verbage.Call, type: ''},
+		{text: $scope.verbage.Call, type: 'call'},
 		{text: $scope.verbage.group_page, type: 'page'},
 		{text: $scope.verbage.group_intercom, type: 'intercom'},
 		{text: $scope.verbage.group_voicemail, type: 'voicemail'}
 	];
 	
-	$scope.action.selected = $scope.callOptions[0];
+	$scope.selectedAction = $scope.callOptions[0];
 	
 	$scope.memberFilter = function(){
 		return function(member){

@@ -1,18 +1,30 @@
-hudweb.controller('QueueWidgetStatsController', ['$scope', '$routeParams', '$location', 'QueueService', function ($scope, $routeParams, $location, queueService) {
+hudweb.controller('QueueWidgetStatsController', ['$scope', '$rootScope', '$routeParams', '$location', 'QueueService', 'SettingsService', function ($scope, $rootScope, $routeParams, $location, queueService, settingsService) {
   $scope.queueId = $routeParams.queueId;
   $scope.sortOrder = 'displayName';
   $scope.isAscending = false;
   $scope.queueMembers = [];
   $scope.iconSelected;
   
+  settingsService.getSettings().then(function(data){
+    $scope.sortOrder = localStorage['Queue_' + $routeParams.queueId + '_stat_sort_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Queue_' + $routeParams.queueId + '_stat_sort_of_' + $rootScope.myPid]) : 'displayName';
+    $scope.isAscending = localStorage['Queue_' + $routeParams.queueId + '_isAscending_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Queue_' + $routeParams.queueId + '_isAscending_of_' + $rootScope.myPid]) : true;
+  });
+
   $scope.setSort = function(select) {
-  	if ($scope.sortOrder == select)
+  	if ($scope.sortOrder == select){
   	  $scope.isAscending = !$scope.isAscending;
-      else if (select == 'displayName')
-  	  $scope.isAscending = false;
-      else
-  	  $scope.isAscending = true;
-  	$scope.sortOrder = select;
+    }
+    else if (select == 'displayName'){
+      $scope.isAscending = false;
+    }
+    else{
+      $scope.isAscending = true;
+    }
+
+    $scope.sortOrder = select;
+    localStorage['Queue_' + $routeParams.queueId + '_isAscending_of_' + $rootScope.myPid] = JSON.stringify($scope.isAscending);
+    localStorage['Queue_' + $routeParams.queueId + '_stat_sort_of_' + $rootScope.myPid] = JSON.stringify(select);
+
     if (select == 'fullProfile.hud_status')
       $scope.iconSelected = 'fullProfile.hud_status';
     else if (select == 'status.status')

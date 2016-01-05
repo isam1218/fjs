@@ -124,7 +124,6 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 	//this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
 	$scope.flow_cleanup = function($files){
 		$scope.upload.flow.cancel();
-		$scope.$safeApply();
 	};
 
 	$scope.uploadAttachments = function($files){
@@ -360,8 +359,8 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 			return true;
 		} else {
 			if(curMsgDate && prvMsgDate){
-        var curHour = parseInt(moment(curMsgDate).format('H mm').split(' ')[0]);
-        var prvHour = parseInt(moment(prvMsgDate).format('H mm').split(' ')[0]);
+        var curHour = curMsgDate.getHours();
+        var prvHour = prvMsgDate.getHours();
         var hourDiff = curHour - prvHour;
         // if same owner on same day + w/in 2hrs 59 min -> do not display name/avatar/time
 				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.fullProfile.xpid == prvMsg.fullProfile.xpid && hourDiff < 3){

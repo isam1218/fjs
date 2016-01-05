@@ -10,6 +10,18 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	
 	$rootScope.dockIndex = 0;
 	
+	$scope.filterQueues = function()
+	{
+		return function(item){
+			if((item.value.factoryId == 'GadgetUserQueues' && $rootScope.in_queue && $rootScope.showCallCenter) || item.value.factoryId != 'GadgetUserQueues')
+				return true;
+			else
+				return false;
+			
+            return true;
+		};
+	}
+	
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
 		request = data.xhr;	
@@ -86,7 +98,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		if (data.use_column_layout == 'true') {
 			$timeout(function() {
 				// update draggable status
-				$('#InnerDock .Gadget').draggable('disable');
+				$('#InnerDock .Gadget:not(.ui-sortable-placeholder)').draggable('disable');
 			
 				// turn sorting on for first time
 				if (!column) {
@@ -97,7 +109,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					else {
 						$('#InnerDock').sortable({
 							revert: 1,
-							handle: '.Header, .Content',
+							handle: '.Header, .List',
 							helper: 'clone',
 							appendTo: 'body',
 							cursorAt: { top: 25 },

@@ -27,13 +27,13 @@
 					
 					<div class="Barging" ng-if="onCall.call.barge > 0">{{::verbage.barging}}</div>
 					
-					<div class="Time">{{ timeElapsed }}</div>
+					<div class="Time" timer="onCall.call.startedAt ? onCall.call.startedAt : onCall.call.created"></div>
 					
 					<div class="Buttons">
 						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!topUserCanBargeFinal" />
 						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!topUserCanMonitorFinal" />
 						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.xpid)" ng-disabled="!topUserCanWhisperFinal" />
-						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="!determineTransferFrom(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.xpid)" ng-disabled="!determineTransferFrom(onCall)" />
 					</div>
 				</div>
 				<div class="Contact">
@@ -41,16 +41,16 @@
 					<div class="Name">
 						<strong>{{ ::onCall.call.displayName }}</strong>
 						<br/>
-						{{ ::onCall.call.phone }}
+						<span>{{ ::onCall.call.phone }}</span>
 					</div>
 					
-					<div class="Time">{{ timeElapsed }}</div>
+					<div class="Time" timer="onCall.call.startedAt ? onCall.call.startedAt : onCall.call.created"></div>
 					
 					<div class="Buttons">
 						<input type="button" class="XButton" value="{{::verbage.barge}}" ng-click="bargeCall('barge', onCall.xpid)" ng-disabled="!bottomUserCanBargeFinal" />
 						<input type="button" class="XButton" value="{{::verbage.monitor}}" ng-click="bargeCall('monitor', onCall.xpid)" ng-disabled="!bottomUserCanMonitorFinal" />
 						<input type="button" class="XButton" value="{{::verbage.whisper}}" ng-click="bargeCall('whisper', onCall.call.fullProfile.xpid)" ng-disabled="!bottomUserCanWhisperFinal" />
-						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.call.fullProfile.xpid)" ng-disabled="!determineTransferFrom(onCall.xpid)" />
+						<input type="button" class="XButton" value="{{::verbage.transfer}}" ng-click="changeScreen('transfer', onCall.call.fullProfile.xpid)" ng-disabled="!determineTransferFrom(onCall, true)" />
 					</div>
 				</div>
 			</div>
@@ -79,7 +79,7 @@
 		</div>
 		
 		<div class="Footer">
-			<div class="Error" ng-show="onCall.call.recorded">{{ recordingElapsed }}</div>
+			<div class="Error" ng-if="onCall.call.recordedStartTime" timer="onCall.call.recordedStartTime"></div>
 		
 			<input type="button" class="XButton" ng-show="canRecordOthers" value="{{ onCall.call.recorded ? 'Stop' : 'Start' }} Recording" ng-click="recordCall()" ng-model="onCall.call.recorded" />
 			<input type="button" class="XButton" value="Close" ng-click="showOverlay(false)" />

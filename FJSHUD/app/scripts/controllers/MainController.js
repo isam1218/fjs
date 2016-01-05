@@ -1,5 +1,7 @@
 hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', 'HttpService','SettingsService', 'ContactService', function($rootScope, $scope, $timeout, $q, myHttpService, settingsService, contactService) {
 	$rootScope.myPid = null;
+	$rootScope.in_queue = true;
+	$rootScope.showCallCenter = true;
 	
 	$scope.number = "";
 	$scope.currentPopup = {};
@@ -55,14 +57,6 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		}, 3000, false);
 	});
 
-    $scope.onBodyClick = function() {
-        $scope.currentPopup.url = null;
-        $scope.currentPopup.x = 0;
-        $scope.currentPopup.y = 0;
-        $scope.currentPopup.model = null;
-        $scope.currentPopup.target = null;
-    };
-
     $scope.broadcastDial = function(key){
         $scope.$broadcast("key_press",key);
     };
@@ -81,7 +75,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     $scope.barge_call = function(call,bargeType){
     	var xpid = call.fullProfile.xpid;
     	myHttpService.sendAction('contacts', bargeType + 'Call', {contactId: xpid});
-    	$scope.onBodyClick();
+    	$scope.closePopup();
 	};
 
 
@@ -96,6 +90,22 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
         $scope.currentPopup.target = $(target).attr("type") ? $(target).attr("type") : '';
+		
+		// set up ability to close pop-up
+		$('.PanelWrapper, .TopBar').bind('click', function() {
+			$scope.closePopup();
+			$scope.$digest();
+		});
+    };
+
+    $scope.closePopup = function() {
+        $scope.currentPopup.url = null;
+        $scope.currentPopup.x = 0;
+        $scope.currentPopup.y = 0;
+        $scope.currentPopup.model = null;
+        $scope.currentPopup.target = null;
+		
+		$('.PanelWrapper, .TopBar').unbind('click');
     };
 	
 	$scope.showOverlay = function(show, url, data) {

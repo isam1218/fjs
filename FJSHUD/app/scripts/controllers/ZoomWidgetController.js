@@ -393,12 +393,10 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
             sharedData.showMeetings=false;
             }
             
-            $scope.$safeApply();
+            //$scope.$safeApply();
+
 
         });
-        /*dataManager.sendFDPRequest("/v1/zoom", data, function(xhr, data, isOk) {
-               context.onAjaxResult(isOk, data)
-        });*/
     };
 
     $scope.bodyDisplay=true;
@@ -412,9 +410,11 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     $scope.joinUrl = "";
     
     $scope.addedContacts = [];
+	
     $scope.searchContact = function(contact){
      
         $scope.addedContacts.push(contact);
+		$scope.$digest();
     };
 
      $scope.getAvatarUrl = function(xpid,width, height) {
@@ -431,29 +431,6 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
                 iLen--;
             }
         }
-        $scope.$safeApply();
-    };
-
-    this.onAjaxResult = function(isOk, _data){
-        $scope.hasResult = true;
-        if(!isOk){
-            $scope.$safeApply(function(){
-                $scope.bodyDisplay=false;
-                $scope.bodyStartedDisplay=false;
-                $scope.bodyErrorDisplay=true;
-            });
-            return;
-        }
-        var data = JSON.parse(_data);
-        window.open(data["start_url"], '_blank');
-        $scope.$safeApply(function(){
-            $scope.startUrl = data["start_url"];
-            $scope.joinUrl = data["join_url"];
-
-            $scope.bodyDisplay=false;
-            $scope.bodyStartedDisplay=(data["start_url"]&&data["join_url"]);
-            $scope.bodyErrorDisplay=!$scope.bodyStartedDisplay;
-        });
     };
 
   settingsService.getSettings().then(function() {

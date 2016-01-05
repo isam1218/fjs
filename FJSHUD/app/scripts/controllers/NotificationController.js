@@ -10,6 +10,7 @@ hudweb.controller('NotificationController',
   var long_waiting_calls = {};
   var msgXpid;
   var numberOfMyCalls = 0;
+  var pbxErrorId = null;
   $scope.inCall = false;
   $scope.inRinging = false;
   $scope.path = $location.absUrl().split("#")[0];
@@ -48,14 +49,17 @@ hudweb.controller('NotificationController',
   $scope.clearOld;
   $scope.alertDuration = settingsService.getSetting('alert_call_duration');    
     
-  settingsService.getMe().then(function() {
-	// delayed so phoneService can do its thing
-	$timeout(function() {
-		// can't find plugin or it's outdated
-		if (!phoneService.isPluginInstalled() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
-			$scope.addError('browserPlugin');
-	}, 1000, false);
-  });
+  // does not apply to non-plugin browsers
+  if (!navigator.userAgent.match(/CrOS|Edge|Linux/)) {
+	  settingsService.getMe().then(function() {
+		// delayed so phoneService can do its thing
+		$timeout(function() {
+			// can't find plugin or it's outdated
+			if (!phoneService.isPluginInstalled() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
+				$scope.addError('browserPlugin');
+		}, 1000, false);
+	  });
+  }
 
   $scope.getAvatar = function(pid){
     return myHttpService.get_avatar(pid,40,40);
@@ -114,39 +118,42 @@ hudweb.controller('NotificationController',
             // find existing and remove
             if ($scope.errors[i].xpid == type) {
                 $scope.errors.splice(i, 1);
-              
+		
+				// update native alert
+				if (displayDesktopAlert && !nservice.isEnabled()) {
+					if ($scope.todaysNotifications.length > 0 || $scope.calls.length > 0 || $scope.errors.length > 0) {
+					  $scope.displayAlert = true;
+					  $timeout(displayNotification, 1500);    
+					}
+					else {
+					  phoneService.cacheNotification(undefined,0,0);
+					  phoneService.removeNotification();
+					}
+				}
+		
                 break;
             }
         }
-		
-		// update native alert
-		if (displayDesktopAlert && !nservice.isEnabled()) {
-			if ($scope.todaysNotifications.length > 0 || $scope.calls.length > 0 || $scope.errors.length > 0) {
-			  $scope.displayAlert = true;
-			  $timeout(displayNotification, 1500);    
-			}
-			else {
-			  phoneService.cacheNotification(undefined,0,0);
-			  phoneService.removeNotification();
-			}
-		}
     };
 
     // connectivity error
     $scope.$on('network_issue', function(event, data) {
-        if (data.show) {
+        if (data) {
             $scope.addError('networkError');
-            $rootScope.networkError = true;
+            $rootScope[data] = true;
         
             // show pop-up
-            if ($rootScope.isFirstSync || data.alert) {
+            if ($rootScope.isFirstSync) {
                 $scope.showOverlay(true,'NetworkErrorsOverlay', {});
 				$scope.$safeApply();
 			}
         }
         else {
             $scope.dismissError('networkError');
+			            
             $rootScope.networkError = false;
+            $rootScope.phoneError = false;
+            $rootScope.pbxError = false;
         }
     });
   
@@ -362,10 +369,6 @@ hudweb.controller('NotificationController',
     } 
 
     switch(message.type){
-      case 'error':
-        $rootScope.pbxError = message.receivedStatus == "offline";
-        $rootScope.$evalAsync($rootScope.$broadcast('network_issue',{}));
-        return;
       case 'chat':
       case 'wall':
       case 'description':
@@ -498,6 +501,11 @@ hudweb.controller('NotificationController',
     else
       $scope.overlay = 'groups';
   };
+  
+  $scope.$on('another_device', function() {
+	  // we already know device is unregistered, so just show error again
+	  $scope.addError('anotherDevice');
+  });
 
   $scope.$on('settings_updated',function(event,data){
     if(data['instanceId'] != undefined){
@@ -768,7 +776,7 @@ hudweb.controller('NotificationController',
 		var element = document.getElementById("Alert");
 		if(element){
 			var content = element.innerHTML;
-			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0){
+			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0 || $scope.errors.length > 0){
                phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
              }else{
                phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
@@ -890,6 +898,14 @@ hudweb.controller('NotificationController',
         displayDesktopAlert = false;
       }
     }
+	
+	if (item.incoming !== undefined) {
+		if((settingsService.getSetting('alert_call_outgoing') != 'true' && !item.incoming) || 
+		   (settingsService.getSetting('alert_call_incoming') != 'true' && item.incoming))
+		{
+			displayDesktopAlert = false;
+		}
+	}
 
     if(item.audience == 'queue')
 	{
@@ -1040,8 +1056,6 @@ hudweb.controller('NotificationController',
 
   var updateNotificationLabel  = function(notification){
     var type = notification.type; 
-    //decode the notification message before stripping it's html tags
-    var decoded = $('<div/>').html(notification.message).text();
     
     switch(type){
       case 'q-alert-rotation':
@@ -1098,7 +1112,7 @@ hudweb.controller('NotificationController',
         break; 
       case 'description':
         notification.label = "chat message";
-        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + $sce.trustAsHtml(decoded);//.replace(/<\/?[^>]+(>|$)/g, '');
+        notification.message = "<strong>Goodbye " + notification.data.groupId + "!</strong><br />" + notification.message;
         break;
       case 'wall':
         notification.label = "share";
@@ -1222,7 +1236,7 @@ hudweb.controller('NotificationController',
 				var notification = data[i];
 				var has_new_content =  false;
 				
-				if(notification.xef001type != "delete"){
+				if(notification.xef001type != "delete" && notification.type != 'error'){
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.label == '';
 					updateNotificationLabel(notification);
@@ -1290,14 +1304,28 @@ hudweb.controller('NotificationController',
 						addTodaysNotifications(notification);
 					}
 					//addTodaysNotifications(notification);
-
-				}else if(notification.xef001type == "delete"){
-          if (long_waiting_calls[notification.xpid]){
-            deleteLastLongWaitNotification();
-            long_waiting_calls[notification.xpid] = undefined;
-          } else {
-            deleteNotification(notification);
-          }
+				}
+				else if(notification.xef001type == "delete"){					
+                    if (notification.xpid == pbxErrorId) {
+                        // remove pbxtra error
+                        pbxErrorId = null;
+                        $rootScope.pbxError = false;
+                        $scope.dismissError('networkError');
+                    }
+					
+					if (long_waiting_calls[notification.xpid]){
+						deleteLastLongWaitNotification();
+						long_waiting_calls[notification.xpid] = undefined;
+					} 
+					else {
+						deleteNotification(notification);
+					}
+				}
+				else if (notification.type == 'error') {
+                    // add pbxtra error
+                    pbxErrorId = notification.xpid;
+                    $rootScope.pbxError = true;
+                    $scope.addError('networkError');
 				}
 			}
 			$scope.notifications.sort(function(a, b){

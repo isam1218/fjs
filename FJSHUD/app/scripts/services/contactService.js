@@ -99,7 +99,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 	});
 	
 	$rootScope.$on('calls_synced', function(event, data) {
-		for (var c = 0, cLen = contacts.length; c < cLen; c++) {
+		for (var c = 0, cLen = contacts.length; c < cLen; c++) {			
 			var match = false;
 			
 			// find caller
@@ -119,7 +119,11 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 						time = 0;
 					
 					// update call object
-					contacts[c].call = data[i];
+					if (contacts[c].call)
+						angular.extend(contacts[c].call, data[i]);
+					else
+						contacts[c].call = data[i];
+					
 					contacts[c].call.recordedStartTime = time;
 					
 					// attach full profile, if present

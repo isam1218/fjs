@@ -26,7 +26,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
   
   //show or hide nav icons based on browser size and display of voicemail widget
   $scope.showNavIcon = function(icon){
-	  if(icon.key != 'Me' && $scope.voicemail && $scope.smallScreen)
+	  if((icon.key != 'Me' && $scope.voicemail && $scope.smallScreen) || (icon.key == 'CallCenter' && !$rootScope.showCallCenter))
 		  return false;
 	  
 	  return true;	  		  		  		    

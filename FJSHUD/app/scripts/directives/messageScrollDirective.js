@@ -9,7 +9,7 @@ hudweb.directive('messagescroll', ['$compile',
         switch(message.type){
           case "vm":
             if(message.vm && message.vm.transcription != ""){
-              return vm.transcription;
+              return message.vm.transcription;
             }else{
               return "transcription is not available";
             }

@@ -6,23 +6,6 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $scope.tester = {};
     $scope.tester.query = "";
     $scope.fromTo = false;
-    //$scope.fromToClass = "";
-    
-	  $scope.vm = {};
-
-    	// single group widget
-		if ($routeParams.groupId) {
-			var group = groupService.getGroup($routeParams.groupId);
-			$scope.emptyVoiceLabel = group.name;
-		}
-		// conversation widget
-		else if ($routeParams.contactId) {
-			var contact = contactService.getContact($routeParams.contactId);
-			$scope.emptyVoiceLabel = contact.displayName;
-		}
-		// calls & recordings
-		else
-			$scope.emptyVoiceLabel = 'anyone else';
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
@@ -31,26 +14,33 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         {display_name:$scope.verbage.sort_read_status, type:"readStatusNum", desc: false}
     ];
 
-    $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
-
-    $scope.getVerbage = function(voicemail)
-    {
-    	if(voicemail)
-    	{
-    		if(voicemail.phone == $scope.meModel.primary_vm_box || voicemail.phone == $scope.meModel.primary_extension)
-    		{
-    			return true;    			
-    		}    		
-    		else
-    			return false;
-    	}
-    	return false;
-    	//{{ ::voicemail.phone == meModel.primary_vm_box || voicemail.phone == meModel.primary_extension ? verbage.me + ' ' + verbage.to + '...' :  verbage.from + '...' }}</em>    	
-    };
+      // single group widget
+    if ($routeParams.groupId) {
+      var group = groupService.getGroup($routeParams.groupId);
+      $scope.emptyVoiceLabel = group.name;
+      $scope.selectedVoice = localStorage['Group_' + $routeParams.groupId + '_saved_voice_option_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Group_' + $routeParams.groupId + '_saved_voice_option_of_' + $rootScope.myPid]) : $scope.voice_options[1];
+    }
+    // conversation widget
+    else if ($routeParams.contactId) {
+      var contact = contactService.getContact($routeParams.contactId);
+      $scope.emptyVoiceLabel = contact.displayName;
+      $scope.selectedVoice = localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid]) : $scope.voice_options[1];
+    }
+    // calls & recordings
+    else{
+      $scope.emptyVoiceLabel = 'anyone else';
+      $scope.selectedVoice = localStorage.saved_voice_option ? JSON.parse(localStorage.saved_voice_option) : $scope.voice_options[1];
+    }
     
     $scope.sortBy = function(selectedVoice){
         $scope.selectedVoice = selectedVoice;
-        localStorage.saved_voice_option = JSON.stringify($scope.selectedVoice);
+        if ($routeParams.contactId){
+          localStorage['Conversation_' + $routeParams.contactId + '_saved_voice_option_of_' + $rootScope.myPid] = JSON.stringify($scope.selectedVoice);
+        } else if ($routeParams.groupId){
+          localStorage['Group_' + $routeParams.groupId + '_saved_voice_option_of_' + $rootScope.myPid] = JSON.stringify($scope.selectedVoice);
+        } else {
+          localStorage.saved_voice_option = JSON.stringify($scope.selectedVoice);  
+        }
     };
 
     $scope.actions = [
@@ -62,49 +52,24 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     $scope.actionObj = {};
     $scope.actionObj.selectedAction = $scope.actionObj.currentAction = $scope.actions[0];
-            
-    // user's profile for their own voicemails
-	contactService.getContacts().then(function() {		
-		$scope.myProfile = contactService.getContact($rootScope.myPid);
-		$scope.vm.myProfile = 	$scope.myProfile;
-		
-		phoneService.getVm().then(function(data) {						
-			if (group || contact) {
-				// voicemails need to be filtered down
-				updateVoicemails(data);
-				
-				// set up listener
-				$scope.$on('voicemailbox_synced', function() {
-					phoneService.getVm().then(function(data2) {
-						// refresh
-						updateVoicemails(data2);
-					});
+            	
+	phoneService.getVm().then(function(data) {						
+		if (group || contact) {
+			// voicemails need to be filtered down
+			updateVoicemails(data);
+			
+			// set up listener
+			$scope.$on('voicemailbox_synced', function() {
+				phoneService.getVm().then(function(data2) {
+					// refresh
+					updateVoicemails(data2);
 				});
-			}
-			else
-				// pass by reference
-				$scope.voicemails = data;			   
-		});			
-		
-		switch($scope.actionObj.selectedAction.type){
-		    case "unknown":
-		    	$scope.actionObj.currentAction = $scope.actions[0];		    	
-	            break;
-	        case "read":
-	        	$scope.actionObj.currentAction = $scope.actions[1];
-	            MarkReadVoiceMails(true);
-	            break;
-	        case "unread":
-	        	$scope.actionObj.currentAction = $scope.actions[2];
-	            MarkReadVoiceMails(false);
-	            break;
-	        case "delete":
-	        	$scope.actionObj.currentAction = $scope.actions[3];
-	            DeleteReadVoiceMails();
-	            break;
-		} 
-		
-	});		
+			});
+		}
+		else
+			// pass by reference
+			$scope.voicemails = data;			   
+	});			
 	
 	var updateVoicemails = function(data) {		
 		// populate voicemails according to page
@@ -157,63 +122,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         };
     
     };
-    var locations = {};
-    phoneService.getLocationPromise().then(function(data){
-    	locations = data;
-    });
 
-    $scope.getVmProfile = function(voicemail){
-    	//loop through the locations checking to see if the voicemail phone matches any location otherwise just use the voicemail profile
-    	for (var loc in locations){
-    		if(voicemail.phone == locations[loc].phone){
-    			return $scope.vm.myProfile;
-    		}
-    	}
-		   return voicemail;
-    };
-
-    $rootScope.$on('voicemailbox_synced', function(event, data) {
-    	// first time
-    	$scope.myProfile = contactService.getContact($rootScope.myPid);
-		$scope.vm.myProfile = 	$scope.myProfile;
-		
-		if ($scope.voicemails.length == 0) {
-			$scope.voicemails = data.filter(function(item){
-				return item.xef001type != "delete"; 
-			});
-			
-			// add full profile
-			for (var v = 0, vLen = $scope.voicemails.length; v < vLen; v++) {
-				$scope.voicemails[v].fullProfile = contactService.getContact($scope.voicemails[v].contactId);
-			}	
-		}
-		else {
-			for (var i = 0, iLen = data.length; i < iLen; i++) {
-				var match = false;
-				
-				for (var v = 0, vLen = $scope.voicemails.length; v < vLen; v++) {
-					// find and update or delete
-					if ($scope.voicemails[v].xpid == data[i].xpid) {
-						if (data[i].xef001type == 'delete') {
-							$scope.voicemails.splice(v, 1);
-							vLen--;
-						}
-						else
-							$scope.voicemails[v].readStatus = data[i].readStatus;
-						
-						match = true;
-						break;
-					}
-				}
-				
-				if (!match && data[i].xef001type != 'delete') {
-					data[i].fullProfile = contactService.getContact(data[i].contactId);
-					$scope.voicemails.push(data[i]);
-
-				}
-			}
-		}
-    });
     var MarkReadVoiceMails = function(isRead){
         var voicemailIds = "";
         for (var i = 0, iLen = $scope.voicemails.length; i < iLen; i++) {

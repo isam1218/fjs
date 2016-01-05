@@ -128,10 +128,14 @@ module.exports = function(grunt) {
 
     },
     ngtemplates: {
-      dist: {
+      fjshudApp: {
         options:{
-          standalone:true,
-          
+          standalone:false,
+          module:'fjshudApp',
+		  htmlmin: {
+			collapseWhitespace: true,
+			conservativeCollapse: true
+		  }
         },
         cwd: 'app',
         src: ['views/**.html', 'views/**/**.html'],
@@ -182,10 +186,10 @@ module.exports = function(grunt) {
       huc_dev:{
         options:{
           data:{
-            serverUrl:"https://huc-dev.fonality.com:8081",
-            loginUrl: "https://huc-dev.fonality.com:5501",
-            ppsServer: getPpsServer(),
-            version: "HUDW" + getBuildNumber(),
+            serverUrl: getServerUrl(),
+            loginUrl: getLoginUrl(),
+            ppsServer: getPpsServer(),            
+	    version: "HUDW" + getBuildNumber(),
             WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
             MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
             WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
@@ -411,7 +415,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bower-concat');
 
   
-  grunt.registerTask('default', ['ngtemplates']);
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
   grunt.registerTask('build-dist', ['template:dist','concat','ngtemplates','bower_concat','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
   grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);

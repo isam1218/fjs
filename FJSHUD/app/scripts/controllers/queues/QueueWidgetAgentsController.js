@@ -1,8 +1,7 @@
-hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'QueueService', 'HttpService', 'StorageService', function ($scope, $rootScope, queueService, httpService, storageService) {
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'QueueService', 'HttpService', 'StorageService', '$routeParams', function ($scope, $rootScope, queueService, httpService, storageService, $routeParams) {
   $scope.que = {};
   $scope.que.query = '';
   $scope.query = "";
-  $scope.selectedSort = "displayName";
   $scope.agents = [];
   $scope.myself = $rootScope.myPid;
   var queueId = $scope.$parent.$parent.queueId;
@@ -19,6 +18,21 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
     }
   };
   };
+
+  $scope.selectedSort = localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid]) : 'displayName';
+
+  $scope.customAgentOrderBy = function(member){
+    localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid] = JSON.stringify($scope.selectedSort);     
+    switch($scope.selectedSort){
+      case 'displayName':
+        return member.displayName;
+      case 'queue_status':
+        return [!member.fullProfile.call, member.displayName];
+      case 'hud_status':
+        return [member.fullProfile.hud_status, member.displayName];
+    }
+  }
+
 
   queueService.getQueues().then(function() {  
      $scope.agents = $scope.queue.members;

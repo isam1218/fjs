@@ -1,5 +1,5 @@
-hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', 'ContactService', 'HttpService','NtpService', 
-function($q, $rootScope, $location, contactService, httpService,ntpService) {
+hudweb.service('ConferenceService', ['$q', '$rootScope', '$location', '$routeParams', 'ContactService', 'HttpService', 'NtpService', 
+function($q, $rootScope, $location, $routeParams, contactService, httpService, ntpService) {
 	var service = this;
 	var deferred = $q.defer();
 	
@@ -139,7 +139,7 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 					
 					// update or add
 					for (var m = 0, mLen = conference.members.length; m < mLen; m++) {
-						if (conference.members[m].xpid == data[i].xpid) {
+						if (conference.members[m].xpid == data[i].xpid || conference.members[m].contactId == data[i].contactId) {
 							conference.members[m] = angular.extend(conference.members[m], data[i]);
 							
 							match = true;
@@ -180,12 +180,32 @@ function($q, $rootScope, $location, contactService, httpService,ntpService) {
 		for (var c = 0, cLen = conferences.length; c < cLen; c++) {
 			for (var i = 0, iLen = data.length; i < iLen; i++) {
 				if(data[i].xpid == conferences[c].xpid){
-					conferences[c].status = data[i];
-					if(conferences[c].status.recorded){
-						conferences[c].status.recordedStartTime = ntpService.calibrateTime(new Date().getTime());
-					}else{
-						conferences[c].status.recordedStartTime = 0;
+					// removed conf room
+					if (data[i].xef001type == 'delete') {
+						// delete all remnants of this user
+						for (var m = 0, mLen = conferences[c].members.length; m < mLen; m++) {
+							if (conferences[c].members[m].contactId == $rootScope.myPid) {
+								conferences[c].members.splice(m, 1);
+								mLen--;
+							}
+						}
+						
+						// navigate away
+						if ($routeParams.conferenceId && $routeParams.conferenceId == data[i].xpid)
+							$location.path('/conferences/');
 					}
+					// update status
+					else {
+						conferences[c].status = data[i];
+						
+						if (conferences[c].status.recorded) {
+							conferences[c].status.recordedStartTime = ntpService.calibrateTime(new Date().getTime());
+						}
+						else{
+							conferences[c].status.recordedStartTime = 0;
+						}
+					}
+					
 					break;
 				}
 			}

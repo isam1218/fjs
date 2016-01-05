@@ -49,7 +49,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
 
     $scope.tabFilter = function(){
         var recordingPerm = settingsService.getPermission('showCallCenter');
-		
+     
         return function(tab){
             switch(tab.lower){
 				case "recordings":
@@ -74,11 +74,15 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
                     }
                     break;
                 case "queues":
-                    if($scope.contact.primaryExtension == ''){
+                	if(recordingPerm && $scope.contact.primaryExtension != '')
+                		return true;
+                	else
+                		return false;
+                    /*if($scope.contact.primaryExtension == ''){
                         return false;
                     }else{
                         return true;
-                    }
+                    }*/
                     break;
             }
 

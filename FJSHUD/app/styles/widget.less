@@ -62,7 +62,8 @@
 	  -webkit-flex: 1 1 0;
       overflow-y: auto;
       width: 100%;
-      margin-top: 5px;            
+      margin-top: 5px;     
+      overflow-x: hidden;       
       
       &.ChatView.WithToolBar{
         overflow: hidden;
@@ -403,10 +404,17 @@
         margin-left: 5px;
     }
   }
-  span.ChatStatus{
-     font-weight: normal !important;
-     font-size: 0.875em;
+  .ChatStatus{
+    font-weight: normal !important;
+    font-size: 0.87em;
+    max-width: 80%;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: -3px;
   }
+  
   .XIcon-ChatStatus-offline,
   .XIcon-ChatStatus-away,
   .XIcon-ChatStatus-available

@@ -220,8 +220,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.makeCall(calllog.phone);
         }
     };
-
-    $scope.recentSelectSort = 'Date';
 	
 	// only poll worker on subsequent page loads
 	if (!$rootScope.isFirstSync) {
@@ -230,10 +228,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		myHttpService.getFeed('locations');
 		myHttpService.getFeed('calllog');   
 		myHttpService.getFeed('calls');    
+		myHttpService.getFeed('calldetails');    
 		myHttpService.getFeed('weblauncher');    
 		myHttpService.getFeed('weblaunchervariables');
 		myHttpService.getFeed('i18n_langs');
-		//myHttpService.getFeed('settings');
 	}
 
     
@@ -524,19 +522,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             queueThresholdUpdateTimeout = undefined;
         },500);
     };
-
-    $scope.reset_app_menu = function(){
-        $scope.update_settings('HUDw_AppModel_callLog','delete');
-        $scope.update_settings('HUDw_AppModel_conferences','delete');
-        $scope.update_settings('HUDw_AppModel_callcenter','delete');
-        $scope.update_settings('HUDw_AppModel_search','delete');
-        $scope.update_settings('HUDw_AppModel_zoom','delete');
-        $scope.update_settings('HUDw_AppModel_box','delete');
-		
-        $scope.boxObj.enableBox = true;
-        settingsService.reset_app_menu();
-    };
-
     
     var update_settings = function(){
         if($scope.meModel.my_jid){
@@ -626,7 +611,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 $scope.fdpVersion = $scope.meModel["fdp_version"];
             }            
         }
-        $scope.$safeApply();
     };
 
     var alertFlags = {};
@@ -759,7 +743,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 				
 			}
 		}
-		$scope.$safeApply();
     };
 
     $scope.update_queue_settings = function(type,isActive){
@@ -806,6 +789,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		$scope.settings = settings = data;
 		update_queues();
         update_settings();
+        $scope.recentSelectSort = localStorage['MeWidget_RecentCalls_recentSelectSort_of_' + $rootScope.myPid] ? JSON.parse(localStorage['MeWidget_RecentCalls_recentSelectSort_of_' + $rootScope.myPid]) : 'Date';
+        $scope.isAscending = localStorage['MeWidget_RecentCalls_isAscending_of_' + $rootScope.myPid] ? JSON.parse(localStorage['MeWidget_RecentCalls_isAscending_of_' + $rootScope.myPid]) : true;
 	});
     
     $scope.$on('settings_updated',function(event,data){
@@ -819,7 +804,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     //this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
     $scope.flow_cleanup = function($files){
         $scope.avatar.flow.cancel();
-        $scope.$safeApply();
     };
     $scope.change_avatar = function($file){
         //$scope.avatar = $file;
@@ -852,19 +836,22 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }   
     });
 
-    $scope.sortCallLog = function(calllog){
-        switch($scope.recentSelectSort){
+    $scope.sortRecentCalls = function(field){
+        $scope.isAscending = !$scope.isAscending;
+        localStorage['MeWidget_RecentCalls_recentSelectSort_of_' + $rootScope.myPid] = JSON.stringify(field);
+        localStorage['MeWidget_RecentCalls_isAscending_of_' + $rootScope.myPid] = JSON.stringify($scope.isAscending);
+        switch(field){
             case 'Date':
-                return calllog.startedAt;
+                $scope.recentSelectSort = 'Date';
                 break;
             case 'From':
-                return calllog.fromDisplayValue;
+                $scope.recentSelectSort = 'From';
                 break;
             case 'To':
-                return calllog.toDisplayValue;
+                $scope.recentSelectSort = 'To';
                 break;
             case 'Duration':
-                return calllog.duration;
+                $scope.recentSelectSort = 'Duration';
                 break;
         }
     };
@@ -906,13 +893,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 }
         }
     };
-    
-    $scope.$on('groups_synced', function(event,data){
-        var meGroup = data.filter(function(item){
-            return item.xpid == $scope.meModel['my_pid'];
-        });
-
-    });
 
     $scope.holdCall = function(call){    	
     	var isHeld = (call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD) ? true : false;
