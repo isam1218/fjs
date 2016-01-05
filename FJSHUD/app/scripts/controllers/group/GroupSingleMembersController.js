@@ -12,6 +12,11 @@ hudweb.controller('GroupSingleMembersController', ['$q', '$scope', '$rootScope',
   ];
   
   $scope.selectedSort = $scope.sort_options[0];
+  
+  //pull current selected group from service
+  groupService.getGroup().then(function(data) {
+		$scope.group = data;	    	
+  });
 
   $scope.callExtension = function($event, contact){
     $event.stopPropagation();

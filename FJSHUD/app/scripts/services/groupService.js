@@ -4,18 +4,18 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 	var deferredSingle = $q.defer();
 	
 	var groups = [];
+	var members = [];
 	var favorites = {};
 	var favoriteID;
 	var mine;
-	var group = {};
+	/*var group = {};
 	
 	var getCurGroup = function()
 	{
 		var myObj = {};
 		var body = {};
 		var d = new Date();	
-		if($rootScope.sock == null)
-			$rootScope.sock = new WebSocket($rootScope.wsuri);	
+		
 		var current_user = settingsService.getMe().$$state.value;
 		var my_id = current_user.my_pid;//.split('_')[1];		
 		var server_id = current_user.server_id;			
@@ -28,6 +28,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 		
 		myObj.body = JSON.stringify(body);
 		var json = JSON.stringify(myObj);	
+		if($rootScope.sock == null)
+			$rootScope.sock = new WebSocket($rootScope.wsuri);	
 		if($rootScope.sock != null)
 			$rootScope.sock.send(json);	
 		
@@ -42,7 +44,7 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 			  getCurGroup();
 		  }).then(callSingleEmit);
 		});		 				  		
-	};  			
+	};  */			
 	
 	service.getGroup = function() {		
 		//deferredSingle = $q.defer();
@@ -71,16 +73,16 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 				break;
 			}
 		}
-	};
+	};	
 	
-	service.isMine = function(xpid) {
-		if (mine && mine.xpid == xpid)
+	/*service.isMine = function(id) {
+		if (mine && mine.id == id)
 			return true;
 		else {
 			for (var g = 0, gLen = groups.length; g < gLen; g++) {
 				var group = groups[g];
 				
-				if (group.xpid == xpid) {
+				if (group.id == id) {
 					for (var m = 0, mLen = group.members.length; m < mLen; m++) {
 						if (group.members[m].contactId == $rootScope.myPid)
 							return true;
@@ -90,7 +92,7 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 		}
 		
 		return false;
-	};
+	};*/
 	
 	service.isFavorite = function(xpid) {
 		if (favorites[xpid])
@@ -125,14 +127,14 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 		SYNCING
 	*/
 	
-	$rootScope.$on("groups_loaded", function(event, data) {		
-			groups = data;
-			$rootScope.$apply(deferred.resolve(groups));
+	$rootScope.$on("groups_loaded", function(event, data) {
+		    groups = data;
+			$rootScope.$apply(deferred.resolve(data));
 	});
 	
-	$rootScope.$on("single_group_loaded", function(event, data) {		
-		    group = data;
-			$rootScope.$apply(deferredSingle.resolve(group));
+	$rootScope.$on("single_group_loaded", function(event, data) {	
+		    members = data;
+			$rootScope.$apply(deferredSingle.resolve(data));
 	});
 
 	/*$rootScope.$on('groups_synced', function(event, data) {

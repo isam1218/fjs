@@ -10,10 +10,10 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	
 	$scope.contacts = [];
 	//$scope.sock = null;
-	$rootScope.sock = null;
+	$scope.sock = null;
 	var wsuri = "ws://10.10.12.125:1234";
 	//$scope.wsuri = "ws://dev-svc1.arch.fonality.com:1234";
-	$rootScope.wsuri = "ws://dev-svc1.arch.fonality.com:1234";
+	$scope.wsuri = "ws://dev-svc1.arch.fonality.com:1234";
 	$scope.contactList = [];
 	
 	$scope.overlay = {
@@ -88,23 +88,42 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
         {	        	
         	return chatMsg.body.Message;          	
         }
-    };        
+    };                 
+    
+    var getCurGroup = function(my_id, server_id, group_id)
+	{
+		var myObj = {};
+		var body = {};
+		var d = new Date();	
+	    myObj.reqType = "data/getUsersInGroup";						
+		myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815		
+		body.groupType = "group";
+		body.groupId = group_id;//$routeParams.groupId;
+		body.serverId = server_id;		
+		
+		myObj.body = JSON.stringify(body);
+		var json = JSON.stringify(myObj);	
+		$scope.sock.send(json);	
+	};
+	
+	var callSingleEmit = function(){		
+	};	    
     
     $scope.connectWS = function() {
 		console.log("onload");
-		if($rootScope.sock != null)	
-			$rootScope.sock = new WebSocket($rootScope.wsuri);
+		//if($rootScope.sock != null)	
+		$scope.sock = new WebSocket($scope.wsuri);
 			//$scope.sock = new WebSocket($scope.wsuri);
 		
 		var prev_msg_id = '';
 		var current_user = settingsService.getMe().$$state.value;
 		var my_id = current_user.my_pid;//.split('_')[1];		
 		var server_id = current_user.server_id;		
-				
+					
 	    //$scope.sock.onopen = function() {
-		$rootScope.sock.onopen = function() {
+		$scope.sock.onopen = function() {
 	            var d = new Date();	            
-	            console.log("connected to " + $rootScope.wsuri);
+	            console.log("connected to " + $scope.wsuri);
 	            
 				var contactsObj = {};
 				contactsObj.reqType = "data/getContacts";
@@ -115,21 +134,29 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 				contactsObj.body = JSON.stringify(body);
 				var contactsJson = JSON.stringify(contactsObj);			
 				//$scope.sock.send(contactsJson);	
-				$rootScope.sock.send(contactsJson);	
+				$scope.sock.send(contactsJson);	
+				
+				/*if($routeParams.groupId)
+				{	
+					var group_id = $routeParams.groupId;// current_user.my_department.split('_')[1];
+					var singlePromise = $q(function(resolve, reject) {
+						 getCurGroup(my_id, server_id, group_id);
+				    }).then(callSingleEmit);
+				}*/
 	     };
 
 	     //$scope.sock.onclose = function(e) {
-	     $rootScope.sock.onclose = function(e) {	 
+	     $scope.sock.onclose = function(e) {	 
 		    // $scope.sock = null;
-	    	 $rootScope.sock = null;
+	    	 $scope.sock = null;
 	         console.log("connection closed (" + e.code + ")");
 	         //$scope.connectWS();
 	         //$scope.sock = new WebSocket($scope.wsuri);
-	         $rootScope.sock = new WebSocket($rootScope.wsuri);
+	         $scope.sock = new WebSocket($scope.wsuri);
 	     };
 
 	     //$scope.sock.onmessage = function(e) {
-	     $rootScope.sock.onmessage = function(e) {
+	     $scope.sock.onmessage = function(e) {
 	         // console.log("message received: " + e.data);	
 	          var d = new Date();
 	          try{
@@ -177,10 +204,10 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	     }; 
 	        
 		 //$scope.sock.onerror = function(error){
-	     $rootScope.sock.onerror = function(error){
+	     $scope.sock.onerror = function(error){
 		     console.log('Error detected: ' + error);
 		     //$scope.sock.close();
-		     $rootScope.sock.close();
+		     $scope.sock.close();
 		 };
 	 };
 		

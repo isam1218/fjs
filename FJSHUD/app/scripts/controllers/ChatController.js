@@ -192,7 +192,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);			
 			//$scope.sock.send(json);
-			$rootScope.sock.send(json);
+			$scope.sock.send(json);
 			
 			scrollbox = $('#ListViewContent');
 			var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
@@ -429,7 +429,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);
 			//$scope.sock.send(json);
-			$rootScope.sock.send(json);
+			$scope.sock.send(json);
 		}		
 		
 		$scope.chat.message = '';		

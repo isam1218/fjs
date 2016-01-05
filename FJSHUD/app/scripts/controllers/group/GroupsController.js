@@ -24,7 +24,7 @@ hudweb.controller('GroupsController', ['$q', '$scope', '$rootScope', '$routePara
 			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);			
 			//$scope.sock.send(json);
-			$rootScope.sock.send(json);
+			$scope.sock.send(json);
   };
   var promise = $q(function(resolve, reject) {
 		$scope.getGroups();
