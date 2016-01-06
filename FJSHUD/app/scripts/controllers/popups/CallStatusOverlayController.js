@@ -237,7 +237,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		  // external vs private --> w/ requisite perms, you can transfer an external caller. But cannot transfer if private/don't have view-call-details perm
 	    if (bottom){
 	    	// if the bottom caller is private (remember private is different from bottom caller being external, cuz you can transfer an external) --> can't transfer
-		    if (originalCall.call.displayName == "Private" && !originalCall.call.fullProfile)
+		    if (originalCall.call && originalCall.call.displayName == "Private" && !originalCall.call.fullProfile)
 		    	return false;
 		    else
 		    	return settingsService.isEnabled(contact.permissions, 3);
