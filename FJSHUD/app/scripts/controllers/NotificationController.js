@@ -801,7 +801,11 @@ hudweb.controller('NotificationController',
 		if ($routeParam.route) {
 			for (var i = 0, len = $scope.todaysNotifications.length; i < len; i++) {
 				var note = $scope.todaysNotifications[i];
-				var context = note.context.split(':')[1];
+				
+				if (note.context)
+					var context = note.context.split(':')[1];
+				else
+					continue;
 				
 				// normal chats
 				if (note.type.indexOf('chat') != -1 && $routeParam.route == 'chat') {
