@@ -40,6 +40,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	var locations = {};
 	var activityChecker;
 	var lastActivityCheck = 0;
+	var statusTimeout;
 
 	var soundEstablished = false;
 	var selectedDevices = {};
@@ -567,39 +568,48 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
-
 	//call back to verify account status of the old softphone.
-   var accStatus = function(account_) {
+	var accStatus = function(account_) {
+        if (account_) {
+			$timeout.cancel(statusTimeout);
+			
+			if (account_.status == REG_STATUS_ONLINE) {
+                isRegistered = true;
+				
+				if ($rootScope.phoneError)
+					$rootScope.$broadcast('network_issue', null);
+            } 
+			else if(account_.status == REG_STATUS_UNKNOWN){
+				var unknown = true;
+                isRegistered = false;
+			}
+			else{
+                isRegistered = false;
+				
+				if ($rootScope.phoneError)
+					$rootScope.$broadcast('network_issue', null);
+			}
 
-            if (account_) {
-			   if (account_.status == REG_STATUS_ONLINE) {
-                    isRegistered = true;
-					
-					if ($rootScope.phoneError)
-						$rootScope.$broadcast('network_issue', null);
-                } 
-				else if(account_.status == REG_STATUS_UNKNOWN){
-                    isRegistered = false;
-					
-					// delay check in case user was simply switching devices
-					$timeout(function() {
-						if (!isRegistered)
-							$rootScope.$evalAsync($rootScope.$broadcast('network_issue', 'phoneError'));
-					}, 1000, false);
-				}
-				else{
-                    isRegistered = false;
-					
-					if ($rootScope.phoneError)
-						$rootScope.$broadcast('network_issue', null);
-				}
-
-				var data = {
-					event:'state',
-					registration: isRegistered,
-				};
-				$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
-	      }
+			var data = {
+				event:'state',
+				registration: isRegistered,
+			};
+			
+			// delay register check in case user was simply switching devices
+			if (unknown) {
+				statusTimeout = $timeout(function() {
+					// plus error
+					$rootScope.$broadcast('network_issue', 'phoneError');
+					$rootScope.$broadcast('phone_event', data);
+				}, 1000);
+			}
+			else {
+				// normal update
+				statusTimeout = $timeout(function() {
+					$rootScope.$broadcast('phone_event', data);
+				}, 1000);
+			}
+	    }
     };
 
 	var onVolumeChanged = function(spkVolume,microphoneLevel){
