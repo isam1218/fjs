@@ -1427,7 +1427,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			}
 
 			// don't add voicemails from myself
-			if (!match && data[i].xef001type != 'delete' && data[i].phone != $rootScope.meModel.primary_vm_box && data[i].phone != $rootScope.meModel.primary_extension) {
+			if (!match && data[i].xef001type != 'delete' && data[i].phone != $rootScope.meModel.primary_vm_box && data[i].phone != $rootScope.meModel.primary_extension && data[i].phone != $rootScope.meModel.mobile) {
 				data[i].fullProfile = contactService.getContact(data[i].contactId);
 				voicemails.push(data[i]);
 			}
