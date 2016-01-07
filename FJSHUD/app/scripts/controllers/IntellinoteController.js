@@ -74,7 +74,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 
 				  }).
 				  error(function(data, status, headers, config) {
-   						alert("Access error. Please contact your system administrator to Fonality Support.");
+   						alert("Access error. Please contact your system administrator or Fonality Support.");
 				  });
 	};
 	
