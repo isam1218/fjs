@@ -20,7 +20,7 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 		// search contacts by display name or primary extension
 		contactService.getContacts().then(function(data) {
 			for (var i = 0, len = data.length; i < len; i++) {
-				if (data[i].displayName.toLowerCase().indexOf(query) != -1 || data[i].primaryExtension.indexOf(query) != -1)
+				if (data[i].username.toLowerCase().indexOf(query) != -1 || data[i].extension.indexOf(query) != -1)
 					$scope.contacts.push(data[i]);
 			}
 		});

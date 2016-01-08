@@ -178,7 +178,14 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
             endPath = '/contact/' + finalContactId + '/' + tmpSelected;
             break;
           case 'group':
-            //tmpSelected = localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid]) : GroupService.isMine(finalGroupId) ? 'chat' : 'members';
+        	  //GroupService.isMine().then(function(data) {
+        	  $rootScope.$on("isMine", function(event, data) {
+        		  var isMine = data.isMine;
+        		  tmpSelected = localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid]) : isMine ? 'chat' : 'members';
+            	  endPath = '/group/' + finalGroupId + '/' + tmpSelected;
+            	  $location.path(endPath);
+        	  });
+        	  //tmpSelected = localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid]) : GroupService.isMine(finalGroupId) ? 'chat' : 'members';
         	  tmpSelected = localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid]) : true ? 'chat' : 'members';
               endPath = '/group/' + finalGroupId + '/' + tmpSelected;
             break;

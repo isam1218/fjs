@@ -26,6 +26,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	var my_id = $rootScope.meModel.my_pid;
 	var contactId = $routeParams.contactId;	
 	var server_id = $rootScope.meModel.server_id;
+	
 		
 	// set chat data
 	if ($routeParams.contactId) {
@@ -182,13 +183,19 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			var myObj = {};
 			var body = {};
 			var d = new Date();									
+			var chatType = "user";
+			var targetId = contactId;
+			
+			if ($routeParams.groupId) {
+				chatType = "group";
+				targetId = $routeParams.groupId;
+			}	
 			
 	        myObj.reqType = "chat/getChatMessageHistoryForSession";
-			//myObj.ts = parseInt(d.getTime().toString(), 10);			
-			myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815
-			body.chatType = "user";
+			myObj.sender = 'U:'+ server_id + ':' + my_id;
+			body.chatType = chatType;// "user";
 			body.userId = my_id;
-			body.targetId = contactId;//contact Id//username __5549_7042
+			body.targetId = targetId;//contactId;
 			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);			
 			$scope.sock.send(json);			
@@ -211,42 +218,27 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	var setScrollBox = function()
     {
 		scrollbox = document.getElementById('ListViewContent');
-		scrollbox.onscroll = function() {
-			// check scroll position
-			if (scrollbox.scrollTop == 0 && !$scope.loading && $scope.messages.length > 0) {
-				$scope.loading = true;
+		if($(scrollbox).length > 0)
+		{	
+			scrollbox.onscroll = function() {
+				// check scroll position
+				if (scrollbox.scrollTop == 0 && !$scope.loading && $scope.messages.length > 0) {
+					$scope.loading = true;
+				}
 				
-				// ping server
-				//httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
-				////////////////////////////////////////////////////////////////////////// updates
-					//version = data.h_ver;
+				$scope.loading = false;
+				addMessages(data);//data.items
 				
-				//	$scope.loading = false;			
-				//	addMessages(data);//data.items
-
-					// bump scroll down
-					//if (scrollbox.scrollTop == 0)
-				//		scrollbox.scrollTop = 100;
-					
-					// end of history
-					//if (version < 0)
-					//	scrollbox.onscroll = null;
-				//});
-				///////////////////////////////////////////////////////////////////////////////////	updates			
-			}
-			
-			$scope.loading = false;
-			addMessages(data);//data.items
-			
-			// kill watcher
-			$timeout(function() {
-				scrollWatch();
-			}, 100, false);
-			
-			// no more chats
-			if (version < 0)
-				scrollbox.onscroll = null;
-		};
+				// kill watcher
+				$timeout(function() {
+					scrollWatch();
+				}, 100, false);
+				
+				// no more chats
+				if (version < 0)
+					scrollbox.onscroll = null;
+			};
+		}
     };
     
 	// pull chat history from service
@@ -282,102 +274,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 		setScrollBox();
 		$scope.$safeApply();
 	});	
-    
-	/*httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
-		version = data.h_ver;
-		scrollbox = document.getElementById('ListViewContent');
-			
-		scrollbox.onscroll = function() {
-			// check scroll position
-			if (scrollbox.scrollTop == 0 && !$scope.loading && $scope.messages.length > 0) {
-				$scope.loading = true;
-				
-				// ping server
-				httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
-					version = data.h_ver;
-				
-					$scope.loading = false;			
-					addMessages(data.items);
-
-					// bump scroll down
-					if (scrollbox.scrollTop == 0)
-						scrollbox.scrollTop = 100;
-					
-					// end of history
-					if (version < 0)
-						scrollbox.onscroll = null;
-				});
-			}
-		};
-		
-		$scope.loading = false;
-		addMessages(data.items);
-		
-		// kill watcher
-		$timeout(function() {
-			scrollWatch();
-		}, 100, false);
-		
-		// no more chats
-		if (version < 0)
-			scrollbox.onscroll = null;
-	});
-
-   	// get additional messages from sync
-	$scope.$on('streamevent_synced', function(event, data) {
-		var found = [];
-		var incoming = false;
-		
-		for (var i = 0, iLen = data.length; i < iLen; i++) {
-			// prevent duplicates
-			var dupe = false;
-			
-			for (var m = 0, mLen = $scope.messages.length; m < mLen; m++) {
-				if (data[i].xpid == $scope.messages[m].xpid) {
-					// attachment was deleted
-					if (data[i].xef001type == 'delete') {
-						$scope.messages.splice(m, 1);
-						mLen--;
-					}
-					
-					dupe = true;
-					break;
-				}
-			}
-
-			if (dupe || data[i].xef001type == 'delete') 
-				continue;		
-
-			// only attach messages related to this page
-			var context = data[i].context.split(":")[1];
-			var streamType = data[i].type.replace('.auto', '').replace('.group.remove', '');
-
-			if ((streamType == chat.type || streamType == chat.attachmentType) && context == chat.targetId && data[i].created >= cutoff) {
-				var from = data[i].from.replace('contacts:', '');
-			
-				// mark as incoming				
-				if (from != $scope.meModel.my_pid)
-					incoming = true;
-				
-				found.push(data[i]);				
-			}
-		}
-
-		if (found.length > 0) {
-			addMessages(found);
-			
-			// only play sound once per sync
-			// isInFocus is required to avoid conflicts with notification sfx
-			if (phoneService.isInFocus() && incoming)
-				phoneService.playSound("received");
-			
-			// jump to bottom if new messages were found
-			$timeout(function() {
-				scrollbox.scrollTop = scrollbox.scrollHeight;
-			}, 100, false);
-		}
-	});*/
-	
+  	
 	$scope.$watch('chat.query', function(data) {
 		// jump to bottom on search clear
 		if (!data || data == '')
@@ -409,12 +306,18 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			var d = new Date();
 			var myObj = {};
 			var body = {};
+			var chatType = "user";
+			var targetId = contactId;
+			
+			if ($routeParams.groupId) {
+				chatType = "group";
+				targetId = $routeParams.groupId;
+			}	
 			
 			myObj.reqType = "chat/postMessage";
-			//myObj.ts = parseInt(d.getTime().toString(), 10);
 			myObj.sender = "U:" + server_id + ":" + my_id;
-			body.chatType = "user";
-			body.targetId = contactId;
+			body.chatType = chatType;//"user";
+			body.targetId = targetId;//contactId;
 			body.message = msg;
 			body.serverId = server_id;
 			body.senderId = my_id;

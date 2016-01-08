@@ -2,6 +2,7 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 	var service = this;
 	var deferred = $q.defer();
 	var deferredSingle = $q.defer();
+	var deferredIsMine = $q.defer();
 	
 	var groups = [];
 	var members = [];
@@ -13,6 +14,10 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 	service.getGroup = function() {	
 		deferredSingle = $q.defer();
 		return deferredSingle.promise;
+	};
+	
+	service.isMine = function() {	
+		return deferredIsMine.promise;
 	};
 	
 	service.getGroupById = function(id) {
@@ -70,6 +75,9 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 	/**
 		SYNCING
 	*/
+	$rootScope.$on("isMine", function(event, data) {	
+		deferredIsMine.resolve(data);
+	});
 	
 	$rootScope.$on("groups_loaded", function(event, data) {
 		    groups = data;
@@ -77,7 +85,10 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 	});
 	
 	$rootScope.$on("single_group_loaded", function(event, data) {	
-		    members = data;	
+		for(var key in data) 
+		     var groupId  = key;
+		
+		    members = data[groupId];	
 		    var newData = [];
 		    
 		    if(!deferredSingle)
@@ -96,7 +107,8 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 		    {
 			    contactService.getContacts().then(function(data) {
 			    	var length = data.length;
-			    	var mLen = members.length;
+			    	var mLen = members.length;			    	 
+			    	
 			    	for(var l = 0; l < length; l++)
 			    	{
 			    		var contact = data[l];
@@ -106,19 +118,26 @@ hudweb.service('GroupService', ['$q', '$rootScope', '$routeParams', 'ContactServ
 			    			if(member ==  contact.id)
 			    			{
 			    				newData.push(contact);
-			    			}	
-			    			
+			    			}		    						    			
 			    		}	
-			    	}	
-			    	//$rootScope.members = newData;
+			    	}
+			    	
+			    	if(members.length > newData.length){
+			    		var memLen = members.length;
+			    		for(var j=0; j < memLen; j++)
+			    		{
+			    			var member = members[j];
+			    			if(member == $rootScope.meModel.fullProfile.id)
+				    			newData.push($rootScope.meModel.fullProfile);
+			    		}				    		
+			    	}
+	    				
 			    	deferredSingle.resolve(newData);
-			    	//$rootScope.$apply(deferredSingle.resolve(newData));
 			    });	
 		    }
 		    else
-		    {
-		    	//$rootScope.members = members;
-		    	deferredSingle.resolve(data);
+		    {		    	
+		    	deferredSingle.resolve(members);
 		    }
 		    	
 	});

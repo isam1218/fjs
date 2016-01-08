@@ -8,7 +8,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.currentPopup.y = 0;
 	$scope.pluginDownloadUrl = $scope.browser != 'Chrome' ? fjs.CONFIG.PLUGINS[$scope.platform] : fjs.CONFIG.PLUGINS[$scope.platform + "_NEW"];
 	
-	$scope.contacts = [];
+	$scope.contacts = [];	
 	$scope.sock = null;
 	var wsuri = "ws://10.10.12.125:1234";	
 	$scope.wsuri = "ws://dev-svc1.arch.fonality.com:1234";

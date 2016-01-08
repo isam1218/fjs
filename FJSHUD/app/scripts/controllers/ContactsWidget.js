@@ -15,6 +15,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 			if(cur_id != '' && cur_id == $rootScope.meModel.my_pid)
 			{
 				$rootScope.meModel.username = data[l].username;
+				$rootScope.meModel.fullProfile = data[l];
 				data.splice(l, 1);
 			}	
 		}	

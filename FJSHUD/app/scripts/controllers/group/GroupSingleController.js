@@ -62,9 +62,9 @@ hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$rout
 	var json = JSON.stringify(myObj);
 	if($scope.sock == null)
 		$scope.sock = new WebSocket($scope.wsuri);
-	$timeout(function(){
+	//$timeout(function(){
 		$scope.sock.send(json);			
-	}, 500, false);		
+	//}, 500, false);		
  };	
 
  if($routeParams.groupId && current_user)
@@ -93,7 +93,7 @@ hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$rout
 		   
 		   for(l = 0; l < dataLength; l++)
 		   {	
-				var contactId = $rootScope.groups[n].members[l];
+				var contactId = $rootScope.groups[n].members[l].id;
 				if(contactId == $rootScope.myPid)
 				{	
 				  $scope.isMine = true;
@@ -103,17 +103,15 @@ hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$rout
 		   }	
 	   }	   
 		   
-    }	   			   
-   
-	
+    }   			      	
 	//if current user in the group, show the chat tab
-		if ($scope.isMine){
-		    $scope.chatTabEnabled = true;
-		} else {
-		    $scope.chatTabEnabled = false;
-		}
+	if ($scope.isMine){
+		$scope.chatTabEnabled = true;
+	} else {
+		$scope.chatTabEnabled = false;
+	}
    
-	   // if route is defined (click on specific tab or manaully enter url)...
+   // if route is defined (click on specific tab or manaully enter url)...
    if ($routeParams.route){
     $scope.selected = $routeParams.route;
     for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
@@ -129,7 +127,7 @@ hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$rout
     $scope.selected = localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_tabs_of_' + $rootScope.myPid]) : $scope.isMine ? 'chat' : 'members';
     $scope.toggleObject = localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + $routeParams.groupId + '_toggleObject_of_' + $rootScope.myPid]) : $scope.isMine ? 0 : 1;
    }
-   
+   $rootScope.$emit('isMine', {"isMine": $scope.isMine});
    $scope.$safeApply();
  });
   

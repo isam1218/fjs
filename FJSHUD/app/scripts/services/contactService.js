@@ -29,7 +29,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 			// add avatars
 			for (var i = 0, len = contacts.length; i < len; i++) {
 				contacts[i].getAvatar = function(size) {
-					return httpService.get_avatar(this.xpid, size, size, this.icon_version); 
+					return httpService.get_avatar(this.id, size, size, this.icon_version); 
 				};
 			}
 		}
@@ -38,16 +38,16 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 				var match = false;
 					
 				for (var c = 0, cLen = contacts.length; c < cLen; c++) {
-					if (contacts[c].xpid == data[i].xpid) {
+					if (contacts[c].id == data[i].id) {
 						// contact was deleted
-						if (data[i].xef001type == 'delete') {
+						/*if (data[i].xef001type == 'delete') {
 							$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetContact_' + contacts[c].xpid);
 					
 							contacts.splice(c, 1);
 							cLen--;
 						}
 						// regular update
-						else
+						else*/
 							angular.extend(contacts[c], data[i]);
 						
 						match = true;
@@ -56,7 +56,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 				}
 				
 				// add new contact
-				if (!match && data[i].xef001type != 'delete') {
+				if (!match){// && data[i].xef001type != 'delete') {
 					contacts.push(data[i]);
 					
 					// add avatar

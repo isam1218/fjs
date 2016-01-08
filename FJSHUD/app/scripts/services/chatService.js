@@ -39,7 +39,7 @@ hudweb.service('ChatService', ['$q', '$rootScope', function($q, $rootScope) {
 	//pull the messages
 	$rootScope.$on('message_loaded', function(event, data) {
 		var message = data;
-		message.id = message.message_id;
+		message.id = message.messageId;//message.message_id;
 		var is_in = false; 
 		
 		if(messages.length > 0)
