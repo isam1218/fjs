@@ -65,12 +65,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 					};
 				}
 			}
-		}
-		
-		// retrieve child data
-		/*httpService.getFeed('contactstatus');
-		httpService.getFeed('calls');
-		httpService.getFeed('contactpermissions');*/
+		}				
 		deferred.resolve(contacts);
 	});
 	

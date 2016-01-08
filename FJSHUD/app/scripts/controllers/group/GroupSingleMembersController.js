@@ -3,7 +3,8 @@ hudweb.controller('GroupSingleMembersController', ['$q', '$scope', '$rootScope',
 	$scope.grp = {};
 	$scope.grp.query = '';
 	$scope.query = "";
-  $scope.myself = $rootScope.myPid;
+	$scope.members = $rootScope.members;
+    $scope.myself = $rootScope.myPid;
 
   $scope.sort_options = [
   {name:$scope.verbage.sort_by_name, id:1,type:'fullProfile.displayName'},
@@ -11,18 +12,13 @@ hudweb.controller('GroupSingleMembersController', ['$q', '$scope', '$rootScope',
     {name:$scope.verbage.sort_by_chat_status,id:3, type:'fullProfile.hud_status'},
   ];
   
-  $scope.selectedSort = $scope.sort_options[0];
-  
-  //pull current selected group from service
-  groupService.getGroup().then(function(data) {
-		$scope.group = data;	    	
-  });
-
+  $scope.selectedSort = $scope.sort_options[0];  
+ 
   $scope.callExtension = function($event, contact){
     $event.stopPropagation();
     $event.preventDefault();
 	
-	   httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
+	   httpService.sendAction('me', 'callTo', {phoneNumber: contact.extension});
 	
 	   storageService.saveRecent('contact', contact.xpid);
   };
@@ -41,7 +37,7 @@ hudweb.controller('GroupSingleMembersController', ['$q', '$scope', '$rootScope',
   $scope.searchFilter = function(){
     var query = $scope.grp.query.toLowerCase();
     return function(member){
-      if (member.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
+      if (member.username.toLowerCase().indexOf(query) != -1 || member.extension.indexOf(query) != -1)
         return true;
     };
   };

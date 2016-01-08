@@ -59,7 +59,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
 				
 					break;
                 case "chat":
-                    if($scope.contact && $scope.contact.extension == '' && $scope.contact.jid && $scope.contact.jid == '' && $scope.contact.ims && $scope.contact.ims == ''){
+                    if($scope.contact && $scope.contact != null && $scope.contact.extension == '' && $scope.contact.jid && $scope.contact.jid == '' && $scope.contact.ims && $scope.contact.ims == ''){
                         return false;
                     }else{
                         return true;

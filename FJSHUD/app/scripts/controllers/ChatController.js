@@ -191,8 +191,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			body.targetId = contactId;//contact Id//username __5549_7042
 			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);			
-			//$scope.sock.send(json);
-			$scope.sock.send(json);
+			$scope.sock.send(json);			
 			
 			scrollbox = $('#ListViewContent');
 			var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
@@ -405,14 +404,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			});
 		}
 		// normal chat
-		else {
-			/*
-			httpService.sendAction('streamevent', 'sendConversationEvent', {
-				type: chat.type,
-				audience: chat.audience,
-				to: chat.targetId,
-				message: $scope.chat.message
-			});*/
+		else {			
 			var msg = $scope.chat.message;			
 			var d = new Date();
 			var myObj = {};
@@ -428,8 +420,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			body.senderId = my_id;
 			myObj.body = JSON.stringify(body);
 			var json = JSON.stringify(myObj);
-			//$scope.sock.send(json);
-			$scope.sock.send(json);
+			$scope.sock.send(json);			
 		}		
 		
 		$scope.chat.message = '';		

@@ -9,11 +9,11 @@
 	        </select>
         </div>
 </div>
-<!-- group: {//{group}//} -->
+
 <div class="ListView fj-scrollable"> 
     <div class="ListViewTopSpace"></div>
 	
-    <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in members | filter: searchFilter() | orderBy: [selectedSort.type, 'username'] track by member.id" droppable="Call"> <!-- 'fullProfile.displayName' -->       
+    <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in group.members | filter: searchFilter() | orderBy: [selectedSort.type, 'username'] track by member.id" droppable="Call"> <!-- 'fullProfile.displayName' -->       
         <a ng-href="#/contact/{{::member.contactId}}">
             <avatar profile="member.fullProfile"></avatar>
             <!-- <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null">  -->

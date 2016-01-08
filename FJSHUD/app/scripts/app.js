@@ -78,12 +78,13 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 		{
 			templateUrl: 'views/group/GroupSingleWidget.html',
 			controller: 'GroupSingleController',
-			resolve: {
+			/*resolve: {
 				resolve: function (GroupService) {
-					return GroupService.getGroups();
+					//return GroupService.getGroups();
+					return GroupService.getGroup();
 					//return GroupService.getSingleGroup();
 				}
-			}
+			}*/
 		})     
 		.when('/zoom',
 		{
@@ -109,6 +110,7 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 		});
 })
 .run(function ($http, $templateCache, $rootScope, $location, $routeParams, StorageService, SettingsService, GroupService, $timeout) {
+		
 	// cache native alert template
 	$http.get('views/nativealerts/Alert.html', { cache: $templateCache });
 	$http.get('views/nativealerts/CallAlert.html', { cache: $templateCache });
@@ -134,6 +136,7 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
             break;
           case '/group/':
             finalGroupId = typeId.split('/')[0];
+            $routeParams.groupId = finalGroupId;
             break;
           case '/queue/':
             finalQueueId = typeId.split('/')[0];
@@ -175,8 +178,9 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
             endPath = '/contact/' + finalContactId + '/' + tmpSelected;
             break;
           case 'group':
-            tmpSelected = localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid]) : GroupService.isMine(finalGroupId) ? 'chat' : 'members';
-            endPath = '/group/' + finalGroupId + '/' + tmpSelected;
+            //tmpSelected = localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid]) : GroupService.isMine(finalGroupId) ? 'chat' : 'members';
+        	  tmpSelected = localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['GroupSingle_' + finalGroupId + '_tabs_of_' + $rootScope.myPid]) : true ? 'chat' : 'members';
+              endPath = '/group/' + finalGroupId + '/' + tmpSelected;
             break;
           case 'queue':
             tmpSelected = localStorage['QueueWidget_' + finalQueueId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['QueueWidget_' + finalQueueId + '_tabs_of_' + $rootScope.myPid]) : 'agents';

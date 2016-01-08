@@ -26,7 +26,7 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 		});
 		
 		// search groups by name or description or extension number
-		groupService.getGroups().then(function(data) {
+		/*groupService.getGroups().then(function(data) {
 			var groups = data.groups;
 			
 			for (var i = 0, len = groups.length; i < len; i++) {
@@ -48,7 +48,7 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 				}
 			}
 
-		});
+		});*/
 
 		
 		// search queues by name

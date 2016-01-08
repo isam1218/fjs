@@ -1,8 +1,8 @@
-hudweb.controller('GroupsController', ['$q', '$scope', '$rootScope', '$routeParams', 'HttpService', 'GroupService', 'ContactService', function($q, $scope, $rootScope, $routeParams, myHttpService, groupService, contactService) {
+hudweb.controller('GroupsController', ['$q', '$scope', '$rootScope', '$routeParams', 'HttpService', 'GroupService', 'SettingsService', 'ContactService', function($q, $scope, $rootScope, $routeParams, myHttpService, groupService, settingsService, contactService) {
   $scope.query = "";
   $scope.sortField = "name";
   $scope.sortReverse = false;
-  $scope.groups = [];
+  $scope.groups = $rootScope.groups;//[];
   $scope.mine = null;
   $scope.favoriteID = null;
   $scope.my_id = $rootScope.meModel.my_pid;//.split('_')[1];
@@ -10,35 +10,6 @@ hudweb.controller('GroupsController', ['$q', '$scope', '$rootScope', '$routePara
   var contactId = $routeParams.contactId;	
   var server_id = $rootScope.meModel.server_id;
 
-    //request group data
-  $scope.getGroups = function()
-  {      	    	
-			var myObj = {};
-			var body = {};
-			var d = new Date();									
-			
-	        myObj.reqType = "data/getGroupsForServer";						
-			myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815					
-			body.serverId = server_id;
-			body.groupType = "group";
-			myObj.body = JSON.stringify(body);
-			var json = JSON.stringify(myObj);			
-			//$scope.sock.send(json);
-			$scope.sock.send(json);
-  };
-  var promise = $q(function(resolve, reject) {
-		$scope.getGroups();
-  }).then(callEmit);
-	
-  var callEmit = function(){};
-	
-  // pull group updates from service, including groups from local storage
-  groupService.getGroups().then(function(data) {
-    //$scope.groups = data.groups;
-    //$scope.mine = data.mine;
-   // $scope.favoriteID = data.favoriteID;
-	  $scope.groups = data;
-  });   
   
   $scope.sort = function(field) {
       if($scope.sortField!=field) {
