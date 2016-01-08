@@ -2,7 +2,7 @@ var fjs = {};
 
 fjs.CONFIG = {
     SERVER: {
-        serverURL: {{ server_url }}"
+        serverURL: {{ server_url }}
 	   	, loginURL: {{ login_url }}
       , ppsServer: {{ pps_url }}
     }
