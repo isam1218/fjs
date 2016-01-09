@@ -157,14 +157,17 @@ function sync_request(f){
 	});
 }
 
-function do_version_check(){
-	var newFeeds ='';
+function do_version_check() {
+	var params = '';
 
-	for (var i = 0, iLen = feeds.length; i < iLen; i++)
-		newFeeds += '&' + feeds[i] + '=';
+	// only need feed list on initial sync
+	if (!synced) {
+		for (var i = 0, iLen = feeds.length; i < iLen; i++)
+			params += '&' + feeds[i] + '=';
+	}
 			
 	var request = new httpRequest();
-	var url = fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + newFeeds;
+	var url = fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + params;
 	var header = construct_request_header();
 	
 	request.makeRequest(url,"POST",{},header,function(xmlhttp){
