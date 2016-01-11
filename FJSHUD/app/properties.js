@@ -2,19 +2,9 @@ var fjs = {};
 
 fjs.CONFIG = {
     SERVER: {
-      serverURL: {{ server_url }}
-      ,loginURL: {{ login_url }}
-      ,ppsServer: {{ pps_url }}
-       //loginURL:'https://auth.fonality.com',
-       // serverURL: 'https://fdp-huc-v5.fonality.com'
-//      serverURL: "https://lb-stage3.fonality.com:446"
-//      , loginURL: "https://lb-stage3.fonality.com:444"
-//      serverURL: "https://huc-dev.fonality.com:8081"
-//      , loginURL: "https://huc-dev.fonality.com:5501"
-//      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
-     // serverURL: "https://huc-qa.fonality.com:8080"
-     // , loginURL: "https://huc-qa.fonality.com:5501"
-
+        serverURL: {{ server_url }}
+                , loginURL: {{ login_url }}
+      , ppsServer: {{ pps_url }}
     }
     , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','voicemailbox','calllog','server','location_status', 
             'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status','queue_stat_members',
