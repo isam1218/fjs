@@ -13,7 +13,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	$scope.filterQueues = function()
 	{
 		return function(item){
-			if((item.value.factoryId == 'GadgetUserQueues' && $rootScope.in_queue && $rootScope.showCallCenter) || item.value.factoryId != 'GadgetUserQueues')
+			if((item.value.factoryId == 'GadgetUserQueues' && $rootScope.in_queue && $rootScope.showCallCenter) || (item.value.factoryId == 'GadgetQueueStat' && $rootScope.showCallCenter) || item.value.factoryId != 'GadgetUserQueues' && item.value.factoryId != 'GadgetQueueStat')
 				return true;
 			else
 				return false;
