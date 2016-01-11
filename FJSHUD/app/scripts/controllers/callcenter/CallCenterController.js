@@ -22,10 +22,14 @@ hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams
 	    $scope.toggleObject = localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['CallCenter_toggleObject_of_' + $rootScope.myPid]) : {item: 0};	    	    
 	}
 	
+	if(!$rootScope.showCallCenter)
+	    	$scope.selected = 'allqueues';  
+	
+	/*
 	if(localStorage['showCallCenter'] == 'false')//!$rootScope.in_queue
     {	
     	$scope.selected = 'allqueues';    	
-    }
+    }*/
     		
 	$scope.tabFilter = function(){		
 		return function(tab){
