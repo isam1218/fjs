@@ -2,9 +2,9 @@ var fjs = {};
 
 fjs.CONFIG = {
     SERVER: {
-        serverURL: "<%= serverUrl %>"
-	   	, loginURL: "<%= loginUrl %>"
-        , ppsServer: "<%= ppsServer %>"
+      serverURL: {{ server_url }}
+      ,loginURL: {{ login_url }}
+      ,ppsServer: {{ pps_url }}
        //loginURL:'https://auth.fonality.com',
        // serverURL: 'https://fdp-huc-v5.fonality.com'
 //      serverURL: "https://lb-stage3.fonality.com:446"
