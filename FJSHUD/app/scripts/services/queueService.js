@@ -179,7 +179,7 @@ hudweb.service('QueueService', ['$rootScope', '$q', '$location', 'ContactService
 			if(locationArray[1] == 'callcenter')			
 				$location.path('/callcenter/allqueues');
 		}	
-		localStorage['in_queue'] = $rootScope.in_queue;
+		//localStorage['in_queue'] = $rootScope.in_queue;
 	});
 
 	$rootScope.$on("queue_stat_calls_synced", function (event, data) {
