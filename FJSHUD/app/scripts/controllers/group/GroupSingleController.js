@@ -97,6 +97,7 @@ hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$rout
 				if(contactId == $rootScope.myPid)
 				{	
 				  $scope.isMine = true;
+				  $rootScope.groups.mine = $rootScope.groups[n];
 				  break;
 				}  
 				

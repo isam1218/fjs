@@ -66,14 +66,14 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
                     }
                     break;
                 case "groups":
-                    if($scope.contact.extension == ''){
+                    if($scope.contact && $scope.contact.extension == ''){
                         return false;
                     }else{
                         return true;
                     }
                     break;
                 case "queues":
-                    if($scope.contact.extension == ''){
+                    if($scope.contact && $scope.contact.extension == ''){
                         return false;
                     }else{
                         return true;

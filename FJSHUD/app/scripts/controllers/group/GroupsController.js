@@ -3,13 +3,9 @@ hudweb.controller('GroupsController', ['$q', '$scope', '$rootScope', '$routePara
   $scope.sortField = "name";
   $scope.sortReverse = false;
   $scope.groups = $rootScope.groups;//[];
-  $scope.mine = null;
+  //$scope.mine = $scope.groups.mine;
   $scope.favoriteID = null;
-  $scope.my_id = $rootScope.meModel.my_pid;//.split('_')[1];
-  var my_id = $rootScope.meModel.my_pid;
-  var contactId = $routeParams.contactId;	
-  var server_id = $rootScope.meModel.server_id;
-
+  $scope.my_id = $rootScope.meModel.my_pid;
   
   $scope.sort = function(field) {
       if($scope.sortField!=field) {
@@ -19,33 +15,39 @@ hudweb.controller('GroupsController', ['$q', '$scope', '$rootScope', '$routePara
       else {
           $scope.sortReverse = !$scope.sortReverse;
       }
-  };
+  };   
 	
 	// filter groups down
 	/*$scope.customFilter = function(type) {
 		return function(group) {
 			// remove mine
-			if (group != $scope.mine && $scope.favoriteID != group.xpid) {
+			if (group != $scope.mine && $scope.favoriteID != group.id) {
 				switch (type) {
 					case 'all':
 						return (group.type == 0);
 						break;
 					case 'mine':
-						return (group.ownerId == $rootScope.myPid);
+						return (group.ownerId == $scope.my_id);
 						break;
 					case 'shared':
 						// find groups i don't own but that i belong to
-						if (group.ownerId != $rootScope.myPid && group.members) {
-							for (var i = 0, iLen = group.members.length; i < iLen; i++) {
-								if (group.members[i].contactId == $rootScope.myPid)
+						if (group.ownerId != $scope.my_id && group.members) {
+							var members = group.members;
+							var mLen = members.length;
+							
+							for (var i = 0; i < mLen; i++) {
+								if (members[i].id == $scope.my_id)
 									return true;
 							}
 						}
 						break;
 					case 'others':
-						if (group.type == 4 && group.ownerId != $rootScope.myPid) {
-							for (var i = 0, iLen = group.members.length; i < iLen; i++) {
-								if (group.members[i].contactId == $rootScope.myPid)
+						if (group.type == 4 && group.owner != $scope.my_id) {
+							var members = group.members;
+							var mLen = members.length;
+							
+							for (var i = 0; i < mLen; i++) {
+								if (members.id == $scope.my_id)
 									return false;
 							}
 							

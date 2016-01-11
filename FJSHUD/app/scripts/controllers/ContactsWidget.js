@@ -7,7 +7,8 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	
 	// pull contact updates from service
 	contactService.getContacts().then(function(data) {
-		var length = data.length;
+		var length = data.length;		
+		
 		for(var l=0; l < length; l++)
 		{	
 			var contact = data[l];
@@ -16,7 +17,9 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 			{
 				$rootScope.meModel.username = data[l].username;
 				$rootScope.meModel.fullProfile = data[l];
-				data.splice(l, 1);
+				data[l].me = true;
+				
+				//data.splice(l, 1);
 			}	
 		}	
 		$scope.contacts = data;	
