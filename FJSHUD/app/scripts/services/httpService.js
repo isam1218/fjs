@@ -210,7 +210,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					case 404:
 					case 500:
 					case 503:
-						$rootScope.$broadcast('network_issue',undefined);
+						$rootScope.$broadcast('network_issue', {show: true}); // this line will create a merge conflict with sprints/12... DO NOT KEEP
 						break;
 					default:
 						attemptLogin();
