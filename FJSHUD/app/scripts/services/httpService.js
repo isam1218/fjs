@@ -209,6 +209,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 						break;
 					case 404:
 					case 500:
+					case 503:
 						$rootScope.$broadcast('network_issue',undefined);
 						break;
 					default:

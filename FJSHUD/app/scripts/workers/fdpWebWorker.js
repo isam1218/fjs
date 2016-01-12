@@ -189,7 +189,7 @@ function do_version_check(){
 }	
 
 function resume_sync(status) {
-	if (status == 404 || status == 500){
+	if (status == 404 || status == 500 || status == 503) {
 		self.postMessage({
 			"action": "network_error"
 		});
