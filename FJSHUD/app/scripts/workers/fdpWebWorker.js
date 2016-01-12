@@ -146,14 +146,8 @@ function sync_request(f){
 			self.postMessage(sync_response);
 			synced = true;
 		}
-		else{
-			self.postMessage({
-				"action": "auth_failed"
-			});
-		}
 		
-		// again, again!
-		setTimeout('do_version_check();', sync_delay);
+		resume_sync(xmlhttp.status);
 	});
 }
 
@@ -189,25 +183,29 @@ function do_version_check(){
             else
 				setTimeout('do_version_check();', sync_delay);
 		}
-		else {
-			if (xmlhttp.status == 404 || xmlhttp.status == 500){
-				self.postMessage({
-					"action": "network_error"
-				});
-			}
-			else if (xmlhttp.status != 0) {
-				self.postMessage({
-					"action": "auth_failed"
-				});
-				
-				// don't version check anymore
-				return;
-			}
-			
-			setTimeout('do_version_check();', sync_delay);
-		}
+		else
+			resume_sync(xmlhttp.status);
 	});
 }	
+
+function resume_sync(status) {
+	if (status == 404 || status == 500){
+		self.postMessage({
+			"action": "network_error"
+		});
+	}
+	else if (status != 0 && status != 200) {
+		self.postMessage({
+			"action": "auth_failed"
+		});
+		
+		// don't version check anymore
+		return;
+	}
+	
+	// continue le loop
+	setTimeout('do_version_check();', sync_delay);
+}
 
 function construct_request_header(){
 	var header = {

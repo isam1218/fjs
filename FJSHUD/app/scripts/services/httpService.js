@@ -148,8 +148,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
 			
+		worker.terminate();
+		
 		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-			
 		window.onbeforeunload = null;
 		location.href = authURL;
 	};
