@@ -60,10 +60,10 @@ fjs.CONFIG = {
         MAC_NEW:'<%= MAC_PLUGIN_VERSION %>'
     },
     DEBUG:true,
+	SYNC_DELAY: 300
 };
 /*fjs.CONFIG.SERVER.serverURL = "https://lb-stage3.fonality.com:446";
 fjs.CONFIG.SERVER.loginURL = "https://lb-stage3.fonality.com:444";
 fjs.CONFIG.SERVER.ppsServer = 'https://lb-stage3.fonality.com:8443/pps/';*/
 /*fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
 fjs.CONFIG.SERVER.serverURL ="https://dev4.fon9.com:8081";*/
-

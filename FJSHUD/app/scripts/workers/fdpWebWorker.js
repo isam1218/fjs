@@ -3,7 +3,7 @@ importScripts("fdpRequest.js");
 importScripts("../../properties.js");
 
 var synced = false;
-var sync_delay = 100;
+var sync_delay = fjs.CONFIG.SYNC_DELAY;
 
 var node = undefined;
 var auth = undefined;
