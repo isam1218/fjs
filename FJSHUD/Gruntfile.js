@@ -153,7 +153,7 @@ module.exports = function(grunt) {
             data:{
               serverUrl:"https://fdp-huc-v5.fonality.com",
               loginUrl:"https://auth.fonality.com",
-              ppsServer: "unknown_atm",
+              ppsServer: "https://pps.fonality.com:8443/pps/",
               version: "HUDW" + getBuildNumber(),
               WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
               MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
