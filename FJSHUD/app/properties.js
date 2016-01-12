@@ -5,15 +5,6 @@ fjs.CONFIG = {
         serverURL: "<%= serverUrl %>"
 	   	, loginURL: "<%= loginUrl %>"
         , ppsServer: "<%= ppsServer %>"
-       //loginURL:'https://auth.fonality.com',
-       // serverURL: 'https://fdp-huc-v5.fonality.com'
-//      serverURL: "https://lb-stage3.fonality.com:446"
-//      , loginURL: "https://lb-stage3.fonality.com:444"
-//      serverURL: "https://huc-dev.fonality.com:8081"
-//      , loginURL: "https://huc-dev.fonality.com:5501"
-//      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
-     // serverURL: "https://huc-qa.fonality.com:8080"
-     // , loginURL: "https://huc-qa.fonality.com:5501"
 
     }
     , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','voicemailbox','calllog','server','location_status', 
@@ -47,8 +38,8 @@ fjs.CONFIG = {
         WHISPER:3,
     },
     PLUGINS:{
-        MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
-        WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',
+        MAC:'webphone/FonalityPlugin-5.17.8986.dmg',
+        WINDOWS:'webphone/FonalityPlugin-5.17.8986.msi',
         WINDOWS_NEW:'<%= WINDOWS_PLUGIN %>',
         MAC_NEW:'<%= MAC_PLUGIN %>'
 
@@ -62,8 +53,3 @@ fjs.CONFIG = {
     DEBUG:true,
 	SYNC_DELAY: 300
 };
-/*fjs.CONFIG.SERVER.serverURL = "https://lb-stage3.fonality.com:446";
-fjs.CONFIG.SERVER.loginURL = "https://lb-stage3.fonality.com:444";
-fjs.CONFIG.SERVER.ppsServer = 'https://lb-stage3.fonality.com:8443/pps/';*/
-/*fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
-fjs.CONFIG.SERVER.serverURL ="https://dev4.fon9.com:8081";*/
