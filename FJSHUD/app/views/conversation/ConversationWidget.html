@@ -2,8 +2,8 @@
     <div class="WidgetHeader">
         <avatar profile="contact"></avatar>
         <div class="WidgetHeaderTitle WidgetHeaderTitleOverflow">
-			<span ng-if="::contact.primaryExtension">{{ ::contact.username }} ({{::contact.extension}})</span>
-			<span ng-if="::!contact.primaryExtension">{{ contact.username }}</span>
+			<span ng-if="::contact.primaryExtension">{{ ::contact.fullName }} ({{::contact.extension}})</span>
+			<span ng-if="::!contact.primaryExtension">{{ contact.fullName }}</span>
 			<br/>
             <div class="ListRowStatusIcon XIcon-QueueStatus-{{ contact.queue_status }}"></div>
             <div class="XIcon-ChatStatus-{{contact.hud_status || 'offline'}}"></div>

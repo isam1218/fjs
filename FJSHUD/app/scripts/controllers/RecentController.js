@@ -76,7 +76,8 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   });
 
   var groupGetter = function(){
-    var totalGroups = groupService.getGroups();
+   // var totalGroups = groupService.getGroups();
+	  var totalGroups = $rootScope.groups;
     return totalGroups.then(function(data){
       $scope.totalGroups = data.groups;
 

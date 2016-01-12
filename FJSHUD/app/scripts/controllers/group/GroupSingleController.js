@@ -50,15 +50,21 @@ hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$rout
 	var d = new Date();			
 	
 	var my_id = current_user.my_pid;//.split('_')[1];		
-	var server_id = current_user.server_id;					
+	var server_id = current_user.server_id;	
+	var username = current_user.login;
 	
-    myObj.reqType = "data/getUsersInGroup";						
+    myObj.reqType = "data/getUsersInGroup";	
+    myObj.ts = parseInt(new Date().getTime(),10);
 	myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815		
 	body.groupType = "group";
 	body.groupId = $routeParams.groupId;
 	body.serverId = server_id;		
+	var authInfo = {};
+	authInfo.username = username;
+	authInfo.token = $rootScope.token;
 	
 	myObj.body = JSON.stringify(body);
+	myObj.authInfo = JSON.stringify(authInfo);	
 	var json = JSON.stringify(myObj);
 	if($scope.sock == null)
 		$scope.sock = new WebSocket($scope.wsuri);

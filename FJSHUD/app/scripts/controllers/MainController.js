@@ -1,5 +1,6 @@
 hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '$routeParams', 'GroupService', 'HttpService','SettingsService', 'ContactService', function($rootScope, $scope, $timeout, $q, $routeParams, groupService, myHttpService, settingsService, contactService) {
 	$rootScope.myPid = null;
+	$rootScope.token = null;
 	
 	$scope.number = "";
 	$scope.currentPopup = {};
@@ -88,40 +89,56 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
         }
     };                         
     //get the group list
-	var getGroupList = function(my_id, server_id)
+	var getGroupList = function()
 	{      	    	
 				var myObj = {};
 				var body = {};
-				var d = new Date();									
+				var d = new Date();	
+				var current_user = settingsService.getMe().$$state.value;
+				var my_id = current_user.my_pid;//.split('_')[1];		
+				var server_id = current_user.server_id;		
+				var username = current_user.login;
 				
-		        myObj.reqType = "data/getGroupsForServer";						
+		        myObj.reqType = "data/getGroupsForServer";		
+		        myObj.ts = parseInt(new Date().getTime(),10);
 				myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815					
 				body.serverId = server_id;
 				body.groupType = "group";
+				var authInfo = {};
+				authInfo.username = username;
+				authInfo.token = $rootScope.token;
+				
 				myObj.body = JSON.stringify(body);
+				myObj.authInfo = JSON.stringify(authInfo);	
 				var json = JSON.stringify(myObj);			
 				$scope.sock.send(json);			
 	};	  
 		
-	var callEmit = function(){};
+	//var callEmit = function(){};
 	
 	//get current group (if url is a group url)
-	$scope.getSselectedGroup = function()
+	$scope.getSelectedGroup = function()
 	{
 		var myObj = {};
 		var body = {};
 		var d = new Date();			
 		var current_user = settingsService.getMe().$$state.value;
 		var my_id = current_user.my_pid;//.split('_')[1];		
-		var server_id = current_user.server_id;					
+		var server_id = current_user.server_id;		
+		var username = current_user.login;
 		
-	    myObj.reqType = "data/getUsersInGroup";						
+	    myObj.reqType = "data/getUsersInGroup";		
+		myObj.ts = parseInt(new Date().getTime(),10);
 		myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815		
 		body.groupType = "group";
 		body.groupId = $routeParams.groupId;
 		body.serverId = server_id;		
+		var authInfo = {};
+		authInfo.username = username;
+		authInfo.token = $rootScope.token;
 		
 		myObj.body = JSON.stringify(body);
+		myObj.authInfo = JSON.stringify(authInfo);	
 		var json = JSON.stringify(myObj);
 		if($scope.sock == null)
 			$scope.sock = new WebSocket($scope.wsuri);
@@ -138,12 +155,33 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	  if($routeParams.groupId)
 	  {							
 		var singlePromise = $q(function(resolve, reject) {
-			$scope.getSselectedGroup();
+			$scope.getSelectedGroup();
 		}).then(function(){});
 		
 	  }
 	});  
 	
+	$scope.getContactsList = function(){
+		var current_user = settingsService.getMe().$$state.value;
+		var my_id = current_user.my_pid;//.split('_')[1];		
+		var server_id = current_user.server_id;		
+		var username = current_user.login;
+		
+		var contactsObj = {};
+		contactsObj.reqType = "data/getContacts";	
+		contactsObj.ts = parseInt(new Date().getTime(),10);
+		contactsObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//+nameValue;//156815
+		var body = {};
+		body.serverId = server_id;
+		var authInfo = {};
+		authInfo.username = username;
+		authInfo.token = $rootScope.token;
+		
+		contactsObj.body = JSON.stringify(body);
+		contactsObj.authInfo = JSON.stringify(authInfo);				
+		var contactsJson = JSON.stringify(contactsObj);					
+		$scope.sock.send(contactsJson);	
+	};
 	
     $scope.connectWS = function() {
 		console.log("onload");			
@@ -151,25 +189,22 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		
 		var prev_msg_id = '';
 		var current_user = settingsService.getMe().$$state.value;
-		var my_id = current_user.my_pid;//.split('_')[1];		
-		var server_id = current_user.server_id;		
+		//var my_id = current_user.my_pid;//.split('_')[1];		
+		//var server_id = current_user.server_id;		
+		var username = current_user.login;
 		
-		$scope.sock.onopen = function() {
-	            var d = new Date();	            
+		$scope.sock.onopen = function() {	                    
 	            console.log("connected to " + $scope.wsuri);
 	            
-				var contactsObj = {};
-				contactsObj.reqType = "data/getContacts";							
-				contactsObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//+nameValue;//156815
-				var body = {};
-				body.serverId = server_id;
-				contactsObj.body = JSON.stringify(body);
-				var contactsJson = JSON.stringify(contactsObj);			
-				$scope.sock.send(contactsJson);	
-				
-				var promise = $q(function(resolve, reject) {
-					getGroupList(my_id, server_id);
-			    }).then(callEmit);								
+	            var myObj = {};
+				var objBody = {};
+				myObj.reqType = "auth/login";
+				myObj.ts = parseInt(new Date().getTime(),10);				
+				objBody.username = username;
+				objBody.password = 'test1234';
+				myObj.body = JSON.stringify(objBody);
+				var json = JSON.stringify(myObj);
+				$scope.sock.send(json);	            								
 	     };
 	    
 	     $scope.sock.onclose = function(e) {	 
@@ -213,6 +248,17 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		        	  case "data/getUsersInGroup":
 		        		  console.log("message received: group list ");
 			        	  $rootScope.$broadcast('single_group_loaded', responseBody);
+			        	  break; 
+		        	  case "auth/login":
+		        		  console.log("message received: login sucessful ");
+		        		  $rootScope.token = responseBody.token;
+		        		  var contactsPromise = $q(function(resolve, reject) {
+		  					$scope.getContactsList();
+		  			      }).then(function(){});
+		  				
+		  				  var promise = $q(function(resolve, reject) {
+		  					getGroupList();
+		  			      }).then(function(){});	
 			        	  break; 
 		        	  }
 		          }

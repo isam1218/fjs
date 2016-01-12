@@ -26,7 +26,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	var my_id = $rootScope.meModel.my_pid;
 	var contactId = $routeParams.contactId;	
 	var server_id = $rootScope.meModel.server_id;
-	
+	var username = $rootScope.meModel.login;
 		
 	// set chat data
 	if ($routeParams.contactId) {
@@ -192,11 +192,17 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			}	
 			
 	        myObj.reqType = "chat/getChatMessageHistoryForSession";
+	        myObj.ts = parseInt(new Date().getTime(),10);
 			myObj.sender = 'U:'+ server_id + ':' + my_id;
 			body.chatType = chatType;// "user";
 			body.userId = my_id;
 			body.targetId = targetId;//contactId;
+			var authInfo = {};
+			authInfo.username = username;
+			authInfo.token = $rootScope.token;
+			
 			myObj.body = JSON.stringify(body);
+			myObj.authInfo = JSON.stringify(authInfo);
 			var json = JSON.stringify(myObj);			
 			$scope.sock.send(json);			
 			
@@ -315,13 +321,19 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			}	
 			
 			myObj.reqType = "chat/postMessage";
+			myObj.ts = parseInt(new Date().getTime(),10);
 			myObj.sender = "U:" + server_id + ":" + my_id;
 			body.chatType = chatType;//"user";
 			body.targetId = targetId;//contactId;
 			body.message = msg;
 			body.serverId = server_id;
 			body.senderId = my_id;
+			var authInfo = {};
+			authInfo.username = username;
+			authInfo.token = $rootScope.token;
+			
 			myObj.body = JSON.stringify(body);
+			myObj.authInfo = JSON.stringify(authInfo);	
 			var json = JSON.stringify(myObj);
 			$scope.sock.send(json);			
 		}		

@@ -26,8 +26,13 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 		if (contacts.length == 0) {
 			contacts = data;
 			
+			var len = contacts.length;
 			// add avatars
-			for (var i = 0, len = contacts.length; i < len; i++) {
+			for (var i = 0; i < len; i++) {
+				if(contacts[i].firstName == '' && contacts[i].lastName == '')
+					contacts[i].fullName = contacts[i].username;
+				else
+					contacts[i].fullName = contacts[i].firstName+" "+contacts[i].lastName;
 				contacts[i].getAvatar = function(size) {
 					return httpService.get_avatar(this.id, size, size, this.icon_version); 
 				};

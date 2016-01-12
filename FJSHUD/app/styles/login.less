@@ -1,0 +1,386 @@
+#login{
+	* {
+		font-family: Arial, Tahoma;
+		font-size: small;
+	}
+	a {
+	  color: #15c;
+	  text-decoration: none;
+	}
+	a:active {
+	  color: #d14836;
+	}
+	a:hover {
+	  text-decoration: underline;
+	}
+	form
+	{
+		margin: 0px;
+		padding: 0px;
+		display: block;
+	}
+	input[type="checkbox"]{
+		margin: 3px 3px 3px 0px;
+		padding: 0px;
+		height: 13px;
+		width: 13px;
+	}
+	.page-header {
+		background-color: #F2F2F2;
+		height: 100px;
+		border-bottom: solid 6px #00AD33;
+		
+		.logo {
+			background-image: url("img/Fonality_logo.png");
+			background-size: cover;		 
+			width: 200px;
+			height: 60px;
+			position: absolute;
+			left: 30px;
+			top: 25px;
+			text-indent: -9999px;
+	    }
+	}
+	
+	.page-header-error {
+		border-bottom: solid 6px #ce4024;
+	}
+	
+	/*.page-header .logo {
+		background-image: url("img/Fonality_logo.png");
+		background-size: cover;		 
+		width: 200px;
+		height: 60px;
+		position: absolute;
+		left: 30px;
+		top: 25px;
+		text-indent: -9999px;
+	}*/
+	
+	.page-header-product {
+		text-align: right;
+		height: 60px;
+		position: absolute;
+		right: 40px;
+		top: 35px;
+		font-size: 26px;
+		color: #ce4024;
+	}
+	
+	.big-block
+	{
+		position:relative;
+		margin: 0px auto;
+		min-width: 600px;
+		max-width: 1000px;
+		
+		background-color: #F5F5F5;
+		border: 1px solid #ccc;
+		border-radius: 10px;
+		overflow: auto;
+	}
+	.pointer-b
+	{
+		position: absolute;
+		left: 301px;
+		top: 15px;
+		width: 0px;
+		height: 0px;
+		border-color: transparent transparent transparent #ccc;
+		border-style: solid;
+		border-width: 10px;
+	}
+	.pointer
+	{
+		position: absolute;
+		left: 300px;
+		top: 15px;
+		width: 0px;
+		height: 0px;
+		border-color: transparent transparent transparent #eee;
+		border-style: solid;
+		border-width: 10px;
+	}
+	.login-form {
+		margin: 0px;
+		width: 300px;
+		height: 100%;
+		background-color: #eee;
+		border-top-left-radius: 8px;
+		border-bottom-left-radius: 8px;
+		border-right: 1px solid #ccc;
+	}
+	
+	.section-title {
+		font-size: 18px;		
+		height: 50px;
+		line-height: 50px;
+		padding-left: 20px;
+	}
+	.app-info-content-title{
+		color: #00ad33;
+	}
+	.login-form-label {
+		font-weight: bold;
+		margin: 20px;
+		margin-bottom: 0px;
+	}
+	.login-form-checkbox-label {	
+		margin-left: 20px;	
+	}
+	
+	.login-form-input {
+		font-weight: normal;
+		margin: 20px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		padding-left: 8px;
+		background: white;
+		width: 260px;
+		height: 32px;
+		font-size: 15px;
+		border: 1px solid #D9D9D9;
+		border-top: 1px solid silver;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-border-radius: 1px;
+		-moz-border-radius: 1px;
+		border-radius: 1px;
+		line-height: 26px;
+	}
+	.login-form-input.Recaptcha{
+		width: 225px;
+		margin-right: 5px;	
+	}
+	.login-form-submit-area
+	{
+		height: 80px;
+	}
+	.login-form-submit {
+		color: white;
+		text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+		height: 32px;
+		width: 80px;
+		text-decoration: none;
+		
+		&.ok {
+			border: 1px solid #3079ED;
+			background-color: #4D90FE;
+			float: right;
+			clear: right;
+		}
+		
+		&.cancel {
+			border: 1px solid #7B7D7B;
+			background-color: #9C9C9C;
+			float: left;
+			clear: left;	
+		}
+	}
+	
+	/*.login-form-submit.ok {
+		border: 1px solid #3079ED;
+		background-color: #4D90FE;
+		float: right;
+		clear: right;
+	}
+	
+	.login-form-submit.cancel {
+		border: 1px solid #7B7D7B;
+		background-color: #9C9C9C;
+		float: left;
+		clear: left;	
+	}*/
+	
+	.login-form-submit-controls{
+		margin: 20px;
+	}
+	
+	.login-form-text
+	{
+		margin: 5px 20px 0px;	
+		height: 36px;
+	}
+	
+	.a-button {  
+	  text-decoration: none;
+	}
+	.a-button:active {
+	  text-decoration: none;
+	}
+	.a-button:hover {
+	  text-decoration: none;
+	}
+	
+	.app-info {
+		position: absolute;
+		left: 300px;
+		right: 0px;
+		top: 0px;
+		bottom: 0px;
+	}
+	.app-info-content {
+		position: absolute;
+		left: 20px;
+		right: 10px;
+		top: 50px;
+		bottom: 10px;
+		
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 14px;
+		color: #666;
+		line-height: 25px;
+		overflow: auto;
+	}
+	.app-info-content-subtitle
+	{
+		margin-bottom: 20px;
+	}
+	.app-info-content-row
+	{
+		color: #666;
+		font-weight: normal;
+		margin: 10px 0;
+	}
+	.app-info-content-row-title{
+		color: #595959;
+		font-weight: bold;	
+	}
+	.app-info-content::-webkit-scrollbar {
+		height: 8px;
+		width: 8px;
+		background-color: #eee;
+		border-radius: 4px;
+	}
+	
+	.app-info-content::-webkit-scrollbar-thumb {
+		background-color: #888888;
+		background: linear-gradient(left top, right top, #777, color-stop(0.5, #888888), color-stop(0.5, #909090), #999999 );
+		border-radius: 4px;
+	}
+	
+	.error-message-label {
+		margin: 5px;
+		margin-left: 20px;
+		color: #d14836;	
+	}
+	
+	.error-message-label-empty {
+		margin: 5px;
+		margin-left: 20px;
+		color: #d14836;
+		display: none;	
+	}
+	
+	.recaptcha-image {
+		margin-left: 20px;
+		margin-right: 20px;
+		margin-top: 20px;
+	}
+	
+	#recaptcha_image img {
+	    width: 258px;
+	    height: 48px;
+	    border: 1px solid #D9D9D9;
+		border-top: 1px solid silver;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-border-radius: 1px;
+		-moz-border-radius: 1px;
+		border-radius: 1px;
+	}
+	
+	.recaptcha-input-label
+	{
+		margin-top: 5px;
+	}
+	.RecaptchaButtons
+	{
+		float: right;
+		margin-right: 20px;
+		margin-top: 10px;
+		width: 25px;
+		height: 48px;
+	}
+	.RecaptchaButton
+	{	
+		display: inline-block;
+		width: 25px;
+		height: 16px;
+		float: left;	
+	}
+	.RecaptchaHref{
+		display: inline-block;
+		width: 25px;
+		height: 16px;	
+	}
+	
+	.RecaptchaButtonImg
+	{	
+		display: inline-block;
+		width: 25px;
+		height: 16px;
+		float: left;
+	}
+	.RecaptchaButtonImg.Reload
+	{
+		background-image: url("img/refresh.gif");
+	}
+	.RecaptchaButtonImg.Audio
+	{
+		background-image: url("img/audio.gif");
+	}
+	.RecaptchaButtonImg.Text
+	{
+		background-image: url("img/text.gif");
+	}
+	.RecaptchaButtonImg.Help
+	{
+		background-image: url("img/help.gif");
+	}
+	
+	.error-form-submit {
+		color: white;
+		text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+		height: 30px;
+		width: 100px;
+		text-decoration: none;
+		border-radius: 4px;
+		font-size: 14px; 
+	}
+	.error-form-submit.continue {
+		border: 1px solid #7B7D7B;
+		border-radius: 4px; 
+		background-color: #CE4024;
+		float: left;
+		clear: left;
+		margin-left: 100px;	
+	}
+	
+	
+	.error-message {
+		margin: 100px;
+		border-radius: 6px;
+		border: solid 1px #999;
+		padding: 10px;
+		min-height: 100px;
+	}
+	.login-form {
+		margin: 0px;
+		width: 300px;
+		height: 100%;
+		background-color: #eee;
+		border-top-left-radius: 8px;
+		border-bottom-left-radius: 8px;
+		border-right: 1px solid #ccc;
+	}
+	
+	.error-message-label-empty {
+		margin: 5px;
+		margin-left: 20px;
+		color: #d14836;
+		display: none;	
+	}
+}

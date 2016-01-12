@@ -2,9 +2,9 @@ var fjs = {};
 
 fjs.CONFIG = {
     SERVER: {
-        serverURL: {{ server_url }}
-                , loginURL: {{ login_url }}
-      , ppsServer: {{ pps_url }}
+        serverURL: "<%= serverUrl %>"
+	   	, loginURL: "<%= loginUrl %>"
+      , ppsServer: "<%= ppsServer %>"
     }
     , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','voicemailbox','calllog','server','location_status', 
             'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status','queue_stat_members',

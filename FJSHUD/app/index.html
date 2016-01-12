@@ -87,7 +87,95 @@
 			<img src="img/ajax-loader.gif" />
 		</div>
     </div>
-	
+	<!-- <div id="login">
+		<script type="text/javascript">
+			var RecaptchaOptions = {
+				theme : 'custom',
+				custom_theme_widget: 'recaptcha_widget'
+			};
+		</script>
+		<form method="post" name="login-form" action="/oauth/authentication" onsubmit="return validateLoginForm(this);">
+
+		  <div style="margin:60px;">
+			<div class="big-block">		
+				<div class="login-form">
+						<div class="section-title">
+							Sign In
+						</div>
+						<label>
+							<div class="login-form-label" name="username">
+								Username
+							</div>
+							<div class="login-input-div"><input autocomplete="on" autofocus="autofocus" name="username" id="username" type="text" class="login-form-input" maxlength="255" tabindex="1"></div>
+							<!-[if IE]>
+								<script type="text/javascript">
+									this.document.getElementById('username').focus();
+								</script>
+							<![endif]->
+							<div class="error-message-label-empty" id="usernameEmpty">
+								Enter your username
+							</div>
+						</label>
+						<label>
+							<div class="login-form-label">
+								Password
+							</div>
+							<input autocomplete="on" name="password" type="password" class="login-form-input" maxlength="255" tabindex="3">
+							<div class="error-message-label-empty" id="passwordEmpty">
+								Enter your password
+							</div>
+						</label>																								
+												
+						<div class="login-form-submit-area">	
+																										
+							<label class="login-form-checkbox-label">
+								<input type="checkbox" class="login-form-checkbox" name="publicComputer" tabindex="15">						
+								<span>
+									Public computer
+								</span>
+							</label>
+								
+							<div class="login-form-submit-controls">					
+								<input type="submit" class="login-form-submit ok" name="signIn" value="Sign In" tabindex="17">	
+								<a class="a-button" href="https://dev4.fon9.com:5501/oauth/authorize?response_type=token&amp;redirect_uri=https%3A%2F%2Fhuc-qa.fonality.com%2Frepository%2Fstable%2F&amp;display=page&amp;client_id=web.hud.fonality.com&amp;assertion=d35985386db614826561e26602702e7eab69cbc4&amp;CANCELED=true&amp;instance_id=6b4c9f7eed547c29ae59e6fce5a15aee3a1bca01a699ef6c">
+									<input type="button" class="login-form-submit cancel" name="cancel" value="Cancel" tabindex="19">
+								</a>						
+							</div>
+						</div>
+				
+						<div class="login-form-text">				
+							<a href="http://cp52.fonality.com">
+								Forgot your password?
+							</a>
+						</div>
+										
+						<input type="hidden" name="redirect_uri" value="https://huc-qa.fonality.com/repository/stable/">
+						<input type="hidden" name="response_type" value="token">				
+						<input type="hidden" name="scope" value="">
+						<input type="hidden" name="state" value="">
+						<input type="hidden" name="display" value="page">
+						<input type="hidden" name="instance_id" value="6b4c9f7eed547c29ae59e6fce5a15aee3a1bca01a699ef6c">
+						<input type="hidden" name="client_id" value="web.hud.fonality.com">
+						<input type="hidden" name="assertion" value="d35985386db614826561e26602702e7eab69cbc4">
+						<input type="hidden" name="lang" value="eng">
+						<input type="hidden" name="revoke_token" value="e46ad3f36bd464edc117304c5b7957c93832f900f34cb79e">
+						<input type="hidden" name="secondTry" value="false">
+						<input type="hidden" name="useCaptcha" value="false">
+						<input type="hidden" name="assertion_a" value="4a788de0d9848ea4c1784b0d3142d1351498b295">
+			</div>
+					
+			<div class="app-info">
+				<div class="section-title app-info-content-title">Welcome to Fonality HUD 1.4!</div>
+				<div class="app-info-content">
+					<div class="app-info-content-row">We are excited to have improved our HUDWeb infrastructure enabling Fonality to deliver more functionality along with an updated user experience in the near future. In addition to the updated infrastructure, we have a made number of small changes that you may or may not notice. If you are interested in learning about these small changes, you can find it <a href="http://help.fonality.com/Release_Notes/HUD_Release_Notes">here</a>.</div>
+					<div class="app-info-content-row">Impact to you today:<br>Recent Tab (left column) - will be reset upon first login.</div>
+					<div class="app-info-content-row">Happy Holidays and we look forward to bringing you more efficiency and productivity through HUD in 2016!</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	</form>
+    </div> -->
 	<div id="App">
 		<div class="TopBar" include-once="views/TopNavigationBar.html" data-ng-click="onBodyClick()" ng-controller="TopNavigationController" top-nav-behavior></div> <!--  -->
 

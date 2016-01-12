@@ -22,17 +22,17 @@
 <div class="ContactList">
 	<div class="LeftBarTabContentList">
 		<!-- <a href="#contact/{{::contact.xpid}}" ng-repeat="contact in contacts | orderBy: 'displayName'  | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.xpid}}" droppable="Call"> -->		
-		<a href="#contact/{{::contact.id}}" ng-repeat="contact in contacts | filter: {me: '!true'} | orderBy: 'username'  | orderBy: sortField: sortReverse track by contact.id" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.id}}" droppable="Call"><!-- ng-click="getChatHistory($event)" -->	
+		<a href="#contact/{{::contact.id}}" ng-repeat="contact in contacts | filter: {me: '!true'} | orderBy: 'fullName'  | orderBy: sortField: sortReverse track by contact.id" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.id}}" droppable="Call"><!-- ng-click="getChatHistory($event)" -->	
 			<avatar profile="contact" context="contacts:$parent.tab"></avatar>
 			
 			<div class="ListRowContent" dockable="contact">
 				<div class="ListRowTitle">
 					<div class="name" ng-if="::contact.extension">
-						<strong ng-bind-html="::contact.username"></strong>
+						<strong ng-bind-html="::contact.fullName"></strong>
 						<span class="ListRowTitleExtension">#{{ ::contact.extension }}</span>
 					</div>
 					<div class="name" ng-if="::!contact.extension" >
-						<strong ng-bind-html="contact.username"></strong>
+						<strong ng-bind-html="contact.fullName"></strong>
 					</div>
 				</div>	
 				
