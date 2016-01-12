@@ -24,7 +24,7 @@
 	                <div class="displayName" ng-init="fromTo = getVerbage(voicemail)">	                                   
 						<em ng-class="fromTo ? '' : 'from' ">{{ fromTo ? verbage.me + ' ...' + verbage.to  : '...' + verbage.from}} &nbsp;</em>
 						<p class="vmdisplay" ng-style="{'font-weight': !voicemail.readStatus && (voicemail.phone != meModel.primary_extension  || (voicemail.phone == meModel.primary_extension && voicemail.fullProfile.xpid == meModel.my_pid)) ? 'bold' : 'normal'}">
-							{{ ::voicemail.displayName + ' <' + (voicemail.fullProfile.primaryExtension || voicemail.phone) + '>' }}
+							{{ ::voicemail.displayName + ' &lt;' + (voicemail.fullProfile.primaryExtension || voicemail.phone) + '&gt;' }}
 	                    </p>
 	                    <div class="vmalternate">
 	                        <div class="vmtime">{{ ::voicemail.date | fondate: 'YYYY MMMM D, hh:mm a':fon_lang_code }} </div>
