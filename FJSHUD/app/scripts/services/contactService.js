@@ -29,7 +29,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 			var len = contacts.length;
 			// add avatars
 			for (var i = 0; i < len; i++) {
-				if(contacts[i].firstName == '' && contacts[i].lastName == '')
+				if(contacts[i].firstName.replace(/\s/g, '') == '' && contacts[i].lastName.replace(/\s/g, '') == '')
 					contacts[i].fullName = contacts[i].username;
 				else
 					contacts[i].fullName = contacts[i].firstName+" "+contacts[i].lastName;
