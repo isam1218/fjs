@@ -131,7 +131,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			localStorage.removeItem("nodeID");
 			attemptLogin();
 		}
-	}, 40000, false);
+	}, 120000, false);
 	
 	/**
 		AUTHORIZATION
