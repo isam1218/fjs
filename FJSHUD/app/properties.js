@@ -2,9 +2,9 @@ var fjs = {};
 
 fjs.CONFIG = {
     SERVER: {
-        serverURL: "<%= serverUrl %>"
-	   	, loginURL: "<%= loginUrl %>"
-      , ppsServer: "<%= ppsServer %>"
+        serverURL: {{ server_url }}
+                , loginURL: {{ login_url }}
+      , ppsServer: {{ pps_url }}
     }
     , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','voicemailbox','calllog','server','location_status', 
             'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status','queue_stat_members',
@@ -37,8 +37,8 @@ fjs.CONFIG = {
         WHISPER:3,
     },
     PLUGINS:{
-        MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
-        WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',
+        MAC:'webphone/FonalityPlugin-5.17.8986.dmg',
+        WINDOWS:'webphone/FonalityPlugin-5.17.8986.msi',
         WINDOWS_NEW:'<%= WINDOWS_PLUGIN %>',
         MAC_NEW:'<%= MAC_PLUGIN %>'
 
@@ -50,9 +50,8 @@ fjs.CONFIG = {
         MAC_NEW:'<%= MAC_PLUGIN_VERSION %>'
     },
     DEBUG:true,
+	SYNC_DELAY: 300
 };
-
 fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
-
 fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
 
