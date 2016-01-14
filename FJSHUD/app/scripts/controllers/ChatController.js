@@ -221,7 +221,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	};
 	
 	//set the scrollBox after messages updated
-	var setScrollBox = function()
+	var setScrollBox = function(data)
     {
 		scrollbox = document.getElementById('ListViewContent');
 		if($(scrollbox).length > 0)
@@ -233,7 +233,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 				}
 				
 				$scope.loading = false;
-				addMessages(data);//data.items
+				//addMessages(data);//data.items
 				
 				// kill watcher
 				$timeout(function() {
@@ -250,7 +250,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	// pull chat history from service
 	chatService.getChatHistory().then(function(data) {
 		$scope.messages = data;	
-	    setScrollBox();	
+	    setScrollBox(data);	
 	    
 		$scope.loading = false;			
 	});
@@ -277,7 +277,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			else
 				$scope.messages.push(message);								
 		}		
-		setScrollBox();
+		setScrollBox(data);
 		$scope.$safeApply();
 	});	
   	
@@ -379,14 +379,14 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	// apply name and avatar and push to view
 	var addMessages = function(data) {
 		for (var i = 0, len = data.length; i < len; i++) {
-			data[i].fullProfile = contactService.getContact(data[i].from.replace('contacts:', ''));			
+			data[i].fullProfile = contactService.getContact(data[i].senderId);			
 			
-			if (data[i].type == 'f.conversation.chat.group.remove'){
+			if (data[i].type && data[i].type == 'f.conversation.chat.group.remove'){
 				data[i].message = "<strong>Goodbye " + data[i].data.groupId + "!</strong><br/>" + data[i].message;
 			}
 			
 			// keep track of which messages should be on screen based on date
-			if (data[i].created < cutoff)
+			if (data[i].created && data[i].created < cutoff)
 				cutoff = data[i].created;
 			
 			// update html per message
@@ -394,6 +394,27 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			
 			$scope.messages.push(data[i]);
 		}
+		
+		var mLen = $scope.messages.length;
+		var dups = [];
+		for(var m = 0; m < mLen; m++)
+	    {
+			var idA = $scope.messages[m]; 
+			for(var n = m+1; n < mLen; n++)
+			{
+				idB = $scope.messages[n];
+				if(idA == idB)
+					dups.push(n);
+			}	
+	    }
+	    
+		var dLen = dups.length;
+		for(var d = 0; d < dLen; d++)
+		{
+			var idx = dups[d];
+			$scope.messages.splice(idx, 1);
+		}	
+	
 	};
 	
 	$scope.getMonth = function(num)
@@ -459,7 +480,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 		        var prvHour = parseInt(moment(prvMsgDate).format('H mm').split(' ')[0]);
 		        var hourDiff = curHour - prvHour;
 	        // if same owner on same day + w/in 2hrs 59 min -> do not display name/avatar/time
-				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.sender_id == prvMsg.sender_id && hourDiff < 3){
+				if (curMsgDate.getDate() === prvMsgDate.getDate() && curMsg.senderId == prvMsg.senderId && hourDiff < 3){
 					return false;
 				} else {
 					// otherwise display
