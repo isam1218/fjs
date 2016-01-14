@@ -22,29 +22,11 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 	*/
 
 	$rootScope.$on('contacts_synced', function(event, data) {
-		// first time
-		if (contacts.length == 0) {
-			contacts = data;
-			
-			for (var i = 0, len = contacts.length; i < len; i++) {
-				// add avatars
-				contacts[i].getAvatar = function(size) {
-					return httpService.get_avatar(this.xpid, size, size, this.icon_version); 
-				};
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
+			var match = false;
 				
-				// fill in missing meModel data
-				if (contacts[i].xpid == $rootScope.myPid) {
-					$rootScope.meModel.first_name = contacts[i].firstName;
-					$rootScope.meModel.last_name = contacts[i].lastName;
-					$rootScope.meModel.email = contacts[i].email;
-					$rootScope.meModel.ims = contacts[i].ims;
-				}
-			}
-		}
-		else {
-			for (var i = 0, iLen = data.length; i < iLen; i++) {
-				var match = false;
-					
+			// initial sync doesn't need to do this comparison
+			if (!$rootScope.isFirstSync) {
 				for (var c = 0, cLen = contacts.length; c < cLen; c++) {
 					if (contacts[c].xpid == data[i].xpid) {
 						// contact was deleted
@@ -62,23 +44,26 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 						break;
 					}
 				}
+			}
+			
+			// add new contact
+			if (!match && data[i].xef001type != 'delete') {
+				contacts.push(data[i]);
 				
-				// add new contact
-				if (!match && data[i].xef001type != 'delete') {
-					contacts.push(data[i]);
-					
-					// add avatar
-					contacts[contacts.length-1].getAvatar = function(size) {
-						return httpService.get_avatar(this.xpid, size, size, this.icon_version); 
-					};
-				}
+				// add avatar
+				contacts[contacts.length-1].getAvatar = function(size) {
+					return httpService.get_avatar(this.xpid, size, size, this.icon_version); 
+				};
+			}
+			
+			// fill in missing meModel data
+			if (data[i].xpid == $rootScope.myPid) {
+				$rootScope.meModel.first_name = data[i].firstName;
+				$rootScope.meModel.last_name = data[i].lastName;
+				$rootScope.meModel.email = data[i].email;
+				$rootScope.meModel.ims = data[i].ims;
 			}
 		}
-		
-		// retrieve child data
-		/*httpService.getFeed('contactstatus');
-		httpService.getFeed('calls');
-		httpService.getFeed('contactpermissions');*/
 	});
 	
 	$rootScope.$on('contactstatus_synced', function(event, data) {
