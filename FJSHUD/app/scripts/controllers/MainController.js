@@ -68,14 +68,24 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     	{	    	  
     	  historyObj.sort(dateCompare);
     	  
-    	  $.each(historyObj, function(){
-    		  var chat_obj = this;
-    		 $.each($scope.contactList, function(){
-    			if($(this)[0].id ==  $(chat_obj)[0].senderId)
-    				$(chat_obj)[0].username = $(this)[0].username;
-    		 });    		
-    	  });
+    	  var historyLen = historyObj.length;
+    	  var contactsLen = $scope.contactList.length;
     	 
+    	  for(var c = 0; c < contactsLen; c++)
+		  {
+			  var contact = $scope.contactList[c];
+			  
+			  for(var h = 0; h < historyLen; h++)
+			  {
+    		  	  var chat_obj = historyObj[h];
+    		  
+    			  if(contact.id == chat_obj.senderId)
+    			  {
+    				  chat_obj.username = contact.username;
+    				  chat_obj.fullName = contact.firstName + ' ' + contact.lastName;
+    			  }	  
+    		  }	  
+    	  }    	      	      	 
     	  return historyObj;
     	} 
     };

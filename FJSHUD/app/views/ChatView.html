@@ -22,8 +22,8 @@
         </div>
         <div class="ListMessageContent AttachmentsHolder" >
             <div class="ListMessageHeader"  ng-if="::nameDisplay(message, $index)" >
-                <em>...{{::verbage.from}}</em>
-                <span class="ListMessageHeaderName">{{::message.id == my_id ? 'Me' : message.fullName}}</span>
+                <em>...{{::verbage.from}}</em>              
+                <span class="ListMessageHeaderName">{{::message.senderId == my_id ? 'Me' : message.fullName}}</span>
                 <div class="time">{{getDate(message.created)}}</div><!--  | fondate:'MMMM D YYYY':fon_lang_code:'list_message_header' -->
             
             </div>
