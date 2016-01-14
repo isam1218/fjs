@@ -55,15 +55,34 @@ hudweb.directive('contactFilters', function ($rootScope) {
 						$('.ContactList .ListRow').show();
 					// filter down
 					else {
-						for (var i = 0, len = scope.contacts.length; i < len; i++) {
-							var contact = scope.contacts[i];
-							var row = element[0].getElementsByClassName('ContactRow-' + contact.id)[0];
-							
-							//if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
-							if (contact.username.toLowerCase().indexOf(query) != -1 || contact.extension.indexOf(query) != -1 || contact.extension.replace(/\D/g,'').indexOf(query) != -1)
-								$(row).show();
-							else
-								$(row).hide();
+						
+						switch(tab)						
+						{
+						 case 'all':
+							for (var i = 0, len = scope.contacts.length; i < len; i++) {
+								var contact = scope.contacts[i];
+								var row = element[0].getElementsByClassName('ContactRow-' + contact.id)[0];
+								
+								//if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
+								if (contact.fullName.toLowerCase().indexOf(query) != -1 || contact.extension.indexOf(query) != -1 || contact.extension.replace(/\D/g,'').indexOf(query) != -1)
+									$(row).show();
+								else
+									$(row).hide();
+							}
+							break;
+						 case 'groups':
+							 for (var i = 0, len = $rootScope.groups.length; i < len; i++) {
+									var group = $rootScope.groups[i];
+									//var row = document.getElementsByClassName('listRow-Group-' + group.id)[0];
+									var row = $('.listRow-Group-' + group.id);
+									
+									//if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
+									if (group.name.toLowerCase().indexOf(query) != -1 || (group.extensionId).toString().indexOf(query) != -1 || (group.extensionId).toString().replace(/\D/g,'').indexOf(query) != -1)
+										$(row).show();
+									else
+										$(row).hide();
+							 }
+							 break;
 						}
 					
 						row = null;

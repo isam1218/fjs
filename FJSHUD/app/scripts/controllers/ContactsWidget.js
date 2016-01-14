@@ -53,7 +53,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	
 	// add favorites action (via directive)
 	$scope.searchContact = function(contact) {
-		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: contact.xpid});
+		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: contact.id});
 	};
 
     $scope.$on("$destroy", function() {

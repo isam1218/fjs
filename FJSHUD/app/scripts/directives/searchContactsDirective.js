@@ -5,8 +5,8 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 		contacts = data;
 		
 		contacts.sort(function(a, b) {
-			var nameA = a.username.toLowerCase();
-			var nameB = b.username.toLowerCase();
+			var nameA = a.fullName.toLowerCase();
+			var nameB = b.fullName.toLowerCase();
 			
 			if (nameA < nameB)
 				return -1;
