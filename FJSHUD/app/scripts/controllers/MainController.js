@@ -94,10 +94,10 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 				var myObj = {};
 				var body = {};
 				var d = new Date();	
-				var current_user = settingsService.getMe().$$state.value;
-				var my_id = current_user.my_pid;//.split('_')[1];		
-				var server_id = current_user.server_id;		
-				var username = current_user.login;
+				var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
+				var my_id = $rootScope.meModel.fullProfile.id;//current_user.my_pid;//.split('_')[1];		
+				var server_id = (current_user.serverId).toString();//current_user.server_id;		
+				var username = current_user.username;//current_user.login;
 				
 		        myObj.reqType = "data/getGroupsForServer";		
 		        myObj.ts = parseInt(new Date().getTime(),10);
@@ -122,10 +122,10 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		var myObj = {};
 		var body = {};
 		var d = new Date();			
-		var current_user = settingsService.getMe().$$state.value;
-		var my_id = current_user.my_pid;//.split('_')[1];		
-		var server_id = current_user.server_id;		
-		var username = current_user.login;
+		var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
+		var my_id = current_user.id;//current_user.my_pid;//.split('_')[1];		
+		var server_id = (current_user.serverId).toString();		
+		var username = current_user.username;//current_user.login;
 		
 	    myObj.reqType = "data/getUsersInGroup";		
 		myObj.ts = parseInt(new Date().getTime(),10);
@@ -161,11 +161,31 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	  }
 	});  
 	
-	$scope.getContactsList = function(){
-		var current_user = settingsService.getMe().$$state.value;
-		var my_id = current_user.my_pid;//.split('_')[1];		
-		var server_id = current_user.server_id;		
+	$scope.getUserInfo = function(username){
+		var current_user = settingsService.getMe().$$state.value;			
 		var username = current_user.login;
+		
+		var userObj = {};
+		userObj.reqType = "data/getUserInfo";
+		userObj.ts = parseInt(new Date().getTime(),10);
+		var body = {};
+		body.username = username;
+		body.token = $rootScope.token;
+		var authInfo = {};
+		authInfo.username = username;
+		authInfo.token = $rootScope.token;
+		
+		userObj.body = JSON.stringify(body);
+		userObj.authInfo = JSON.stringify(authInfo);				
+		var userJson = JSON.stringify(userObj);					
+		$scope.sock.send(userJson);		
+	};
+	
+	$scope.getContactsList = function(){
+		var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
+		var my_id = current_user.id;//current_user.my_pid;//.split('_')[1];		
+		var server_id = (current_user.serverId).toString();//current_user.server_id;		
+		var username = current_user.username;//current_user.login;
 		
 		var contactsObj = {};
 		contactsObj.reqType = "data/getContacts";	
@@ -252,6 +272,28 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		        	  case "auth/login":
 		        		  console.log("message received: login sucessful ");
 		        		  $rootScope.token = responseBody.token;
+		        		  
+		        		  var userInfoPromise = $q(function(resolve, reject) {
+		        			  $scope.getUserInfo();
+		        		  }).then(function(){});
+		        		  break; 
+		        	  case "data/getUserInfo": 		
+		        		  if(!$rootScope.meModel)
+		        			  $rootScope.meModel = {};
+		        		  
+		        		  $rootScope.meModel.fullProfile = responseBody;
+		        		  $rootScope.meModel.username = responseBody.username;
+		        		  if(responseBody.firstName == '' && responseBody.lastName == '')
+		        			  $rootScope.meModel.fullName = responseBody.username;
+		        		  else
+		        		  {
+		        			  if(responseBody.firstName == '')
+		        				  $rootScope.meModel.fullName = responseBody.lastName;
+		        			  else
+		        				  $rootScope.meModel.fullName = responseBody.firstName + ' ' + responseBody.lastName;
+		        		  }	  
+		        			  
+		        		  
 		        		  var contactsPromise = $q(function(resolve, reject) {
 		  					$scope.getContactsList();
 		  			      }).then(function(){});

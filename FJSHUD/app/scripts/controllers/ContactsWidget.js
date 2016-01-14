@@ -13,10 +13,10 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 		{	
 			var contact = data[l];
 			var cur_id = contact && contact.id ? contact.id : '';
-			if(cur_id != '' && cur_id == $rootScope.meModel.my_pid)
+			if(cur_id != '' && cur_id == $rootScope.meModel.fullProfile.id)
 			{
-				$rootScope.meModel.username = data[l].username;
-				$rootScope.meModel.fullProfile = data[l];
+				//$rootScope.meModel.username = data[l].username;
+				//$rootScope.meModel.fullProfile = data[l];
 				data[l].me = true;
 				
 				//data.splice(l, 1);
