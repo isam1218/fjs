@@ -111,9 +111,16 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			}
 			else if (profile.name) {
 				showGroup();
-				
 				for (var i = 0; i < 4; i++){
-					if (i.icon_version)
+					var iconFlag = false;
+					// if a group has members and one of those members has an avatar already set flag and load avatar for group
+					if (profile.members){
+						for (var j = 0; j < profile.members.length; j++){
+							if (profile.members[j].fullProfile && profile.members[j].fullProfile.icon_version)
+								iconFlag = true;
+						}
+					}
+					if (iconFlag)
 						loadImage(element.find('.GroupAvatarItem_' + i + ' img'), profile.getAvatar(i, 28));
 				}
 			}
