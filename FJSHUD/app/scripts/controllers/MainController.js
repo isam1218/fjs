@@ -49,7 +49,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 					// prevent ajax call from firing too often
 					activityTimeout = setTimeout(function() {
 						activityTimeout = null;
-					}, 10000);
+					}, fjs.CONFIG.ACTIVITY_DELAY);
 				}
 			};
 		}, 3000, false);
