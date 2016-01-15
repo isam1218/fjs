@@ -464,12 +464,7 @@ hudweb.controller('NotificationController',
         $scope.calls[call].state = $scope.callState.CALL_ACCEPTED;
       }
     }
-    if (message && message.type == 'zoom'){
-      var urlPath = message.message.split(': ')[1];
-      $scope.remove_notification(message.xpid);
-      window.open(urlPath, "_blank");
-      return;
-    }
+	
     phoneService.acceptCall(xpid);
   };
 
@@ -483,6 +478,13 @@ hudweb.controller('NotificationController',
       $scope.remove_notification(message.xpid);
       $scope.showOverlay(false);
     }
+  };
+  
+  $scope.joinZoom = function(message) {
+      var urlPath = message.message.split(': ')[1];
+      window.open(urlPath, "_blank");
+	  
+      $scope.remove_notification(message.xpid);
   };
 
   $scope.showNotificationOverlay = function(show) {
