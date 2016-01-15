@@ -106,13 +106,16 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			// single vs group
 			else if (profile.firstName) {
 				showSingle();
-				loadImage(element.find('img'), profile.getAvatar(28));
+				if (profile.icon_version)
+					loadImage(element.find('img'), profile.getAvatar(28));
 			}
 			else if (profile.name) {
 				showGroup();
 				
-				for (var i = 0; i < 4; i++)
-					loadImage(element.find('.GroupAvatarItem_' + i + ' img'), profile.getAvatar(i, 28));
+				for (var i = 0; i < 4; i++){
+					if (i.icon_version)
+						loadImage(element.find('.GroupAvatarItem_' + i + ' img'), profile.getAvatar(i, 28));
+				}
 			}
 			else
 				showSingle();
