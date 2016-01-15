@@ -51,5 +51,6 @@ fjs.CONFIG = {
         MAC_NEW:'<%= MAC_PLUGIN_VERSION %>'
     },
     DEBUG:true,
-	SYNC_DELAY: 300
+	SYNC_DELAY: 1000,
+	ACTIVITY_DELAY: 30000
 };
