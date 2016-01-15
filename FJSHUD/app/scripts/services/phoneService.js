@@ -151,7 +151,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					}
 					else
 						lastActivityCheck = session.getLastUserActivity();
-				}, 5000);
+				}, fjs.CONFIG.ACTIVITY_DELAY);
 			}
 		}else{
 			tabInFocus = true;
@@ -1620,7 +1620,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 			switch(data.notificationEventType){
         case 'ACTIVITY_REPORTED':
           // Only process activity from webphone when not in focus.
-          if (! isInFocus()) {
+          if (!browser_on_focus) {
             reportActivity();
           }
           return;
