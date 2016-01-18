@@ -99,7 +99,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		ALTERNATE POP-UP SCREENS
 	*/
 	
-	$scope.changeScreen = function(screen, xpid) {
+	$scope.changeScreen = function(screen, onCallObj, topOrBottom) {
 		if(toClose){
 			$scope.showOverlay(false);
 			return;
@@ -130,10 +130,20 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		}
 		else if (screen == 'transfer') {
 			// for queue calls, always use main call object
-			if ($scope.onCall.call.type == 3)
+			if ($scope.onCall.call.type == 3){
 				$scope.transferFrom = $scope.onCall.call;
-			else
-				$scope.transferFrom = contactService.getContact(xpid);
+			}
+			else{
+				if (topOrBottom == 'top'){
+					$scope.transferFrom = contactService.getContact(onCallObj.xpid);
+				} else if (topOrBottom == 'bottom'){
+					// if party being transferred is bottom user and external...
+					if (onCallObj.call.phone)
+						$scope.transferFrom = onCallObj.call;
+					else
+						$scope.transferFrom = contactService.getContact(onCallObj.call.xpid);
+				}
+			}
 				
 			$scope.tranQuery = '';
 			$scope.transferTo = null;
@@ -242,8 +252,14 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		    else
 		    	return settingsService.isEnabled(contact.permissions, 3);
 	    }
-		  else
-		  	return settingsService.isEnabled(contact.permissions, 3);
+		  else{
+		  	// top contact permission...
+		  	// if other contact (the bottom contact) is external, cannot transfer top internal contact (verified on dev4 and w/ Jong on 1/18/16)
+		  	if (!contact.call.fullProfile || !contact.call.fullProfile.primaryExtension)
+		  		return false;
+		  	else
+		  		return settingsService.isEnabled(contact.permissions, 3);
+		  }
 	  } else
 	    return true;
 	};
@@ -314,11 +330,11 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			}
 			else {
 				feed = 'calls';
-				
+
 				if ($scope.transferFrom.call && $scope.transferFrom.call.contactId)
 					params.fromContactId = $scope.transferFrom.call.contactId;
 				else
-					params.fromContactId = $scope.transferFrom.xpid;
+					params.fromContactId = $scope.transferFrom.xpid;				
 			}
 			
 			// receiver
