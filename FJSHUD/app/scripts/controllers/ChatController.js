@@ -22,21 +22,22 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	$scope.filteredMessages = [];
 	$scope.messages = [];
 	$scope.message_time = '';
-	$scope.my_id = $rootScope.meModel.my_pid;//.split('_')[1];
-	var my_id = $rootScope.meModel.my_pid;
+	$scope.my_id = ($rootScope.meModel.fullProfile.id).toString();
+	var my_id = ($rootScope.meModel.fullProfile.id).toString();
 	var contactId = $routeParams.contactId;	
-	var server_id = $rootScope.meModel.server_id;
-	var username = $rootScope.meModel.login;
+	var server_id = ($rootScope.meModel.fullProfile.serverId).toString();
+	var username = $rootScope.meModel.username;
 		
 	// set chat data
 	if ($routeParams.contactId) {
-		chat.name = $scope.contact.displayName;
+		chat.name = $rootScope.meModel.fullName;
 		chat.audience = 'contact';
 		chat.targetId = $routeParams.contactId;
 		chat.type = 'f.conversation.chat';
 		chat.attachmentType = 'f.conversation.wall';
 		
-		$scope.enableChat = settingsService.isEnabled($scope.contact.permissions, 8);
+		//$scope.enableChat = settingsService.isEnabled($rootScope.meModel.fullProfile.permissions, 8);
+		$scope.enableChat = true;
 	}
 	else if ($routeParams.conferenceId) {
 		chat.name = $scope.conference.name;
@@ -45,12 +46,13 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 		chat.type = 'f.conversation.chat';
 		chat.attachmentType = 'f.conversation.wall';
 		
-		$scope.enableChat = $scope.conference.status.isMeJoined;
+		/*$scope.enableChat = $scope.conference.status.isMeJoined;
 		
 		// unfortunately, we'll need to watch this value
 		$scope.$watch('conference.status.isMeJoined', function(val) {
 			$scope.enableChat = val;
-		});
+		});*/
+		$scope.enableChat = true;
 	}
 	else if ($routeParams.groupId) {
 		chat.name = $scope.group.name;
@@ -189,7 +191,9 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			if ($routeParams.groupId) {
 				chatType = "group";
 				targetId = $routeParams.groupId;
-			}	
+			}
+			
+			targetId = targetId.toString()
 			
 	        myObj.reqType = "chat/getChatMessageHistoryForSession";
 	        myObj.ts = parseInt(new Date().getTime(),10);
@@ -204,7 +208,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			myObj.body = JSON.stringify(body);
 			myObj.authInfo = JSON.stringify(authInfo);
 			var json = JSON.stringify(myObj);			
-			$scope.sock.send(json);			
+			$rootScope.sock.send(json);			
 			
 			scrollbox = $('#ListViewContent');
 			var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
@@ -308,16 +312,15 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 		}
 		// normal chat
 		else {			
-			var msg = $scope.chat.message;			
-			var d = new Date();
+			var msg = $scope.chat.message;					
 			var myObj = {};
 			var body = {};
 			var chatType = "user";
-			var targetId = contactId;
+			var targetId = contactId.toString();
 			
 			if ($routeParams.groupId) {
 				chatType = "group";
-				targetId = $routeParams.groupId;
+				targetId = ($routeParams.groupId).toString();
 			}	
 			
 			myObj.reqType = "chat/postMessage";
@@ -335,7 +338,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			myObj.body = JSON.stringify(body);
 			myObj.authInfo = JSON.stringify(authInfo);	
 			var json = JSON.stringify(myObj);
-			$scope.sock.send(json);			
+			$rootScope.sock.send(json);			
 		}		
 		
 		$scope.chat.message = '';		

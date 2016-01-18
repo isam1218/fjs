@@ -1,16 +1,17 @@
-hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '$routeParams', 'GroupService', 'HttpService','SettingsService', 'ContactService', function($rootScope, $scope, $timeout, $q, $routeParams, groupService, myHttpService, settingsService, contactService) {
+hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '$routeParams', 'GroupService', 'HttpService','SettingsService', 'ContactService', '$location', function($rootScope, $scope, $timeout, $q, $routeParams, groupService, myHttpService, settingsService, contactService, $location) {
 	$rootScope.myPid = null;
-	$rootScope.token = null;
-	
+	$rootScope.token = localStorage.authTicket || null;
+	$rootScope.myName = localStorage.username || null;
+	$scope.loginError = false;
 	$scope.number = "";
 	$scope.currentPopup = {};
 	$scope.currentPopup.url = null;
 	$scope.currentPopup.x = 0;
 	$scope.currentPopup.y = 0;
 	$scope.pluginDownloadUrl = $scope.browser != 'Chrome' ? fjs.CONFIG.PLUGINS[$scope.platform] : fjs.CONFIG.PLUGINS[$scope.platform + "_NEW"];
-	
+	$scope.isLoaded = false;
 	$scope.contacts = [];	
-	$scope.sock = null;
+	$rootScope.sock = null;
 	var wsuri = "ws://10.10.12.125:1234";	
 	$scope.wsuri = "ws://dev-svc1.arch.fonality.com:1234";
 	$scope.contactList = [];
@@ -21,6 +22,33 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		data: null
 	};
 	
+	$scope.checkValidToken = function(){
+		var me = JSON.parse(localStorage.me);
+        var username = me.username;
+        var server_id = (me.serverId).toString();
+        var my_id = (me.id).toString();
+		
+		var tokenObj = {};
+		tokenObj.reqType = "auth/validateToken";
+		tokenObj.ts = parseInt(new Date().getTime(),10);
+		tokenObj.sender = 'U:'+ server_id + ':' + my_id;
+		var body = {};
+		body.username = username;
+		body.token = $rootScope.token;		
+		
+		tokenObj.body = JSON.stringify(body);
+				
+		var tokenJson = JSON.stringify(tokenObj);	
+		//if($rootScope.sock == null)
+		//	$rootScope.sock = new WebSocket($scope.wsuri);	
+		
+		$rootScope.sock.send(tokenJson);	
+	};
+	/*
+	if($rootScope.token != null)
+	{
+		$scope.checkValidToken();
+	};	*/
 	//sort by username
 	var compare = function(a,b) {
     	if (a.username < b.username)
@@ -37,7 +65,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
    		    return 1;
    		  return 0;
    	}
-	
+   		
 	// prevents overlapping digest cycles
     $scope.$safeApply = function(fn) {
         var phase = $scope.$root.$$phase;
@@ -63,13 +91,13 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     		return [];
     		
     	var historyObj = responseBody;//JSON.parse(responseBody);//.replace(/[^\w\s]/gi, '').toLowerCase();
+    	var contactsLen = $scope.contactList.length;
     	
     	if($.isArray(historyObj))
     	{	    	  
     	  historyObj.sort(dateCompare);
     	  
-    	  var historyLen = historyObj.length;
-    	  var contactsLen = $scope.contactList.length;
+    	  var historyLen = historyObj.length;    	  
     	 
     	  for(var c = 0; c < contactsLen; c++)
 		  {
@@ -88,6 +116,21 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     	  }    	      	      	 
     	  return historyObj;
     	} 
+    	else //one message
+    	{
+    		if(typeof historyObj == 'object')
+    		{	
+	    		for(var c = 0; c < contactsLen; c++)
+	  		    {
+	    			var contact = $scope.contactList[c];
+	    			if(contact.id == historyObj.id)
+	    				historyObj.username = contact.username;
+	    			    historyObj.fullName = contact.firstName + ' ' + contact.lastName;
+	  		    }
+	    		return historyObj;
+    		}
+    	}
+    	return [];
     };
     
     //get chat message
@@ -101,27 +144,27 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     //get the group list
 	var getGroupList = function()
 	{      	    	
-				var myObj = {};
-				var body = {};
-				var d = new Date();	
-				var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
-				var my_id = $rootScope.meModel.fullProfile.id;//current_user.my_pid;//.split('_')[1];		
-				var server_id = (current_user.serverId).toString();//current_user.server_id;		
-				var username = current_user.username;//current_user.login;
-				
-		        myObj.reqType = "data/getGroupsForServer";		
-		        myObj.ts = parseInt(new Date().getTime(),10);
-				myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815					
-				body.serverId = server_id;
-				body.groupType = "group";
-				var authInfo = {};
-				authInfo.username = username;
-				authInfo.token = $rootScope.token;
-				
-				myObj.body = JSON.stringify(body);
-				myObj.authInfo = JSON.stringify(authInfo);	
-				var json = JSON.stringify(myObj);			
-				$scope.sock.send(json);			
+		var myObj = {};
+		var body = {};
+		var d = new Date();	
+		var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
+		var my_id = ($rootScope.meModel.fullProfile.id).toString();//current_user.my_pid;//.split('_')[1];		
+		var server_id = (current_user.serverId).toString();//current_user.server_id;		
+		var username = current_user.username;//current_user.login;
+		
+        myObj.reqType = "data/getGroupsForServer";		
+        myObj.ts = parseInt(new Date().getTime(),10);
+		myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815					
+		body.serverId = server_id;
+		body.groupType = "group";
+		var authInfo = {};
+		authInfo.username = username;
+		authInfo.token = $rootScope.token;
+		
+		myObj.body = JSON.stringify(body);
+		myObj.authInfo = JSON.stringify(authInfo);	
+		var json = JSON.stringify(myObj);			
+		$rootScope.sock.send(json);			
 	};	  
 		
 	//var callEmit = function(){};
@@ -133,7 +176,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		var body = {};
 		var d = new Date();			
 		var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
-		var my_id = current_user.id;//current_user.my_pid;//.split('_')[1];		
+		var my_id = (current_user.id).toString();//current_user.my_pid;//.split('_')[1];		
 		var server_id = (current_user.serverId).toString();		
 		var username = current_user.username;//current_user.login;
 		
@@ -150,10 +193,10 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		myObj.body = JSON.stringify(body);
 		myObj.authInfo = JSON.stringify(authInfo);	
 		var json = JSON.stringify(myObj);
-		if($scope.sock == null)
-			$scope.sock = new WebSocket($scope.wsuri);
+		if($rootScope.sock == null)
+			$rootScope.sock = new WebSocket($scope.wsuri);
 		$timeout(function(){
-			$scope.sock.send(json);			
+			$rootScope.sock.send(json);			
 		}, 500, false);		
 	};
 	
@@ -172,15 +215,17 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	});  
 	
 	$scope.getUserInfo = function(username){
-		var current_user = settingsService.getMe().$$state.value;			
-		var username = current_user.login;
+		//var current_user = settingsService.getMe().$$state.value;			
+		//var username = current_user.login;
+		var username = localStorage.username;
+		var token = localStorage.authTicket;
 		
 		var userObj = {};
 		userObj.reqType = "data/getUserInfo";
 		userObj.ts = parseInt(new Date().getTime(),10);
 		var body = {};
 		body.username = username;
-		body.token = $rootScope.token;
+		body.token = token;
 		var authInfo = {};
 		authInfo.username = username;
 		authInfo.token = $rootScope.token;
@@ -188,12 +233,12 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		userObj.body = JSON.stringify(body);
 		userObj.authInfo = JSON.stringify(authInfo);				
 		var userJson = JSON.stringify(userObj);					
-		$scope.sock.send(userJson);		
+		$rootScope.sock.send(userJson);		
 	};
 	
 	$scope.getContactsList = function(){
 		var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
-		var my_id = current_user.id;//current_user.my_pid;//.split('_')[1];		
+		var my_id = (current_user.id).toString();//current_user.my_pid;//.split('_')[1];		
 		var server_id = (current_user.serverId).toString();//current_user.server_id;		
 		var username = current_user.username;//current_user.login;
 		
@@ -210,41 +255,28 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		contactsObj.body = JSON.stringify(body);
 		contactsObj.authInfo = JSON.stringify(authInfo);				
 		var contactsJson = JSON.stringify(contactsObj);					
-		$scope.sock.send(contactsJson);	
-	};
+		$rootScope.sock.send(contactsJson);	
+	};       
 	
-    $scope.connectWS = function() {
-		console.log("onload");			
-		$scope.sock = new WebSocket($scope.wsuri);
+    $scope.connectWS = function(refresh) {
 		
-		var prev_msg_id = '';
-		var current_user = settingsService.getMe().$$state.value;
-		//var my_id = current_user.my_pid;//.split('_')[1];		
-		//var server_id = current_user.server_id;		
-		var username = current_user.login;
-		
-		$scope.sock.onopen = function() {	                    
-	            console.log("connected to " + $scope.wsuri);
-	            
-	            var myObj = {};
-				var objBody = {};
-				myObj.reqType = "auth/login";
-				myObj.ts = parseInt(new Date().getTime(),10);				
-				objBody.username = username;
-				objBody.password = 'test1234';
-				myObj.body = JSON.stringify(objBody);
-				var json = JSON.stringify(myObj);
-				$scope.sock.send(json);	            								
-	     };
-	    
-	     $scope.sock.onclose = function(e) {	 
-		    // $scope.sock = null;
-	    	 $scope.sock = null;
+    	 if(refresh)
+    	 {	 
+    		 $rootScope.sock = new WebSocket($scope.wsuri);
+    		 $scope.sock.onopen = function() {	                    
+ 	            console.log("connected to " + $scope.wsuri); 	               	
+ 	      		$scope.checkValidToken();
+ 	      	 
+    		 }; 
+    	 }	 
+    	 
+    	 $rootScope.sock.onclose = function(e) { 		   
+    		 $rootScope.sock = null;
 	         console.log("connection closed (" + e.code + ")");	         
-	         $scope.sock = new WebSocket($scope.wsuri);
+	         $rootScope.sock = new WebSocket($scope.wsuri);
 	     };
 
-	     $scope.sock.onmessage = function(e) {
+	     $rootScope.sock.onmessage = function(e) {
 	         // console.log("message received: " + e.data);	
 	          var d = new Date();
 	          try{
@@ -255,16 +287,18 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	          {	  
 		          if(responseData.body && responseData.contentName != "chat/postMessage")
 		          {	
-		        	  var responseBody = responseData.body.toString().replace(/(\r\n|\n|\r)/gm,"");		
-		        	  responseBody = JSON.parse(responseBody);
-			          //if(responseBody.contactList)
+		        	  var responseBody = responseData.body.toString().replace(/(\r\n|\n|\r)/gm,"");	
+		        	  try{
+		        		  responseBody = JSON.parse(responseBody);
+		        	  }catch(e){}  
+		        	  
 		        	  switch(responseData.contentName)
 		        	  {
-		        	  case "data/getContacts"://if(responseData.ContentName)			            
+		        	  case "data/getContacts":			            
 			        	  console.log("message received: contact list ");
-			        	  $scope.contactList = responseBody;//.contactList;
+			        	  $scope.contactList = responseBody;
 			        	  $scope.contactList.sort(compare);
-			              $rootScope.$broadcast('contacts_synced', responseBody);//.contactList				            	  
+			              $rootScope.$broadcast('contacts_synced', responseBody);			            	  
 			              break;
 			          
 		        	  case "chat/getChatMessageHistoryForSession": 		        	      
@@ -281,18 +315,35 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 			        	  break; 
 		        	  case "auth/login":
 		        		  console.log("message received: login sucessful ");
-		        		  $rootScope.token = responseBody.token;
-		        		  
-		        		  var userInfoPromise = $q(function(resolve, reject) {
-		        			  $scope.getUserInfo();
-		        		  }).then(function(){});
+		        		  if(responseBody.token)
+		        		  {	  
+			        		  $rootScope.token = responseBody.token;
+			        		  $scope.token = responseBody.token;
+			        		  //store the token
+			        		  localStorage.authTicket = responseBody.token;
+			        		  $location.path('/settings/');
+			        		  
+			        		  var userInfoPromise = $q(function(resolve, reject) {
+			        			  $scope.getUserInfo();
+			        		  }).then(function(){});
+		        		  }
+		        		  else{
+		        			  $scope.displayedError = 'username or password is incorrect.';
+		        			  $scope.loginError = true;
+		        			  $scope.$safeApply();
+		        		  }
 		        		  break; 
 		        	  case "data/getUserInfo": 		
 		        		  if(!$rootScope.meModel)
 		        			  $rootScope.meModel = {};
 		        		  
+		        		  $scope.isLoaded = true;
 		        		  $rootScope.meModel.fullProfile = responseBody;
 		        		  $rootScope.meModel.username = responseBody.username;
+		        		  $rootScope.myPid = responseBody.id;
+		        		  
+		        		  localStorage.me = JSON.stringify(responseBody);		        	      
+		        		  
 		        		  if(responseBody.firstName == '' && responseBody.lastName == '')
 		        			  $rootScope.meModel.fullName = responseBody.username;
 		        		  else
@@ -312,6 +363,16 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		  					getGroupList();
 		  			      }).then(function(){});	
 			        	  break; 
+		        	  case "auth/validateToken":
+		        		  if(responseBody.valid)
+		        			  $scope.getUserInfo();
+		        		  else
+		        		  {
+		        			  $rootScope.token = null;
+		        			  localStorage.authTicket = null;		        			 
+		        			  $scope.isLoaded = true;
+		        		  }
+		        		  break;
 		        	  }
 		          }
 		          
@@ -319,18 +380,28 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		          {        	
 		        	 var chatMsg = JSON.parse(responseData.Message);	        	        	 
 		        	 console.log("message received: chat message ");
-		        	 $rootScope.$broadcast('message_loaded', chatMsg.body);//$scope.getChatMessage(chatMsg)	        	
+		        	 var chatBody = chatMsg.body;
+		        	 $rootScope.$broadcast('message_loaded', $scope.getHistoryObject(chatBody));	        	
 		          }	
 	          } 
 	     }; 
 	  
-	     $scope.sock.onerror = function(error){
+	     $rootScope.sock.onerror = function(error){
 		     console.log('Error detected: ' + error);
-		     $scope.sock.close();		 
+		     $rootScope.sock.close();		 
 		 };
-	 };
+	};
+	
+	if($rootScope.token != null)
+    {       	
+    	$scope.connectWS(true);				
+    }
+	else
+	{
+		$scope.isLoaded = true;
+	}
 		
-	var activityTimeout;
+		 /*var activityTimeout;
 	
 	$q.all([settingsService.getSettings()]).then(function() {//contactService.getContacts()		
 		// show app
@@ -340,7 +411,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 			myHttpService.setUnload();
 			
 			//////////////////////////////////////////////////////////////////////////////						
-			$scope.connectWS();
+			//$scope.connectWS();
 			/////////////////////////////////////////////////////////////////////////////
 			// wake status
 			document.onmousemove = function() {
@@ -354,7 +425,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 				}
 			};
 		}, 3000, false);
-	});
+	});*/
 
     $scope.onBodyClick = function() {
         $scope.currentPopup.url = null;

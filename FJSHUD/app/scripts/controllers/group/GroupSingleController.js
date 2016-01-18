@@ -41,7 +41,7 @@ hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$rout
  // } else {
    // $scope.pageTab = true;
  // }
- var current_user = settingsService.getMe().$$state.value;     
+ var current_user = $rootScope.meModel.fullProfile;     
  
  $scope.getCurGroup = function()
  {
@@ -49,15 +49,15 @@ hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$rout
 	var body = {};
 	var d = new Date();			
 	
-	var my_id = current_user.my_pid;//.split('_')[1];		
-	var server_id = current_user.server_id;	
-	var username = current_user.login;
+	var my_id = (current_user.id).toString();//.split('_')[1];		
+	var server_id = (current_user.serverId).toString();	
+	var username = current_user.username;
 	
     myObj.reqType = "data/getUsersInGroup";	
     myObj.ts = parseInt(new Date().getTime(),10);
 	myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815		
 	body.groupType = "group";
-	body.groupId = $routeParams.groupId;
+	body.groupId = ($routeParams.groupId).toString();
 	body.serverId = server_id;		
 	var authInfo = {};
 	authInfo.username = username;
@@ -66,22 +66,18 @@ hudweb.controller('GroupSingleController', ['$q', '$scope', '$rootScope', '$rout
 	myObj.body = JSON.stringify(body);
 	myObj.authInfo = JSON.stringify(authInfo);	
 	var json = JSON.stringify(myObj);
-	if($scope.sock == null)
-		$scope.sock = new WebSocket($scope.wsuri);
+	if($rootScope.sock == null)
+		$rootScope.sock = new WebSocket($scope.wsuri);
 	//$timeout(function(){
-		$scope.sock.send(json);			
+	$rootScope.sock.send(json);			
 	//}, 500, false);		
  };	
 
  if($routeParams.groupId && current_user)
- {
-	settingsService.getMe().then(function(data) {
-			
-			var singlePromise = $q(function(resolve, reject) {
-				  $scope.getCurGroup();
-			}).then(function(){});
-		
-	});	
+ {				
+	var singlePromise = $q(function(resolve, reject) {
+		  $scope.getCurGroup();
+	}).then(function(){});
  }
 
  groupService.getGroup().then(function(data) {		

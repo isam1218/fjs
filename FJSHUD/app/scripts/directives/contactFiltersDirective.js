@@ -91,10 +91,11 @@ hudweb.directive('contactFilters', function ($rootScope) {
 			}
 			
 			function filterContacts() {
+				var my_id = $rootScope.myPid;//.split('_')[1];	
+				
 				for (var i = 0, len = scope.contacts.length; i < len; i++) {
 					var contact = scope.contacts[i];
-					var row = element[0].getElementsByClassName('ContactRow-' + contact.id)[0];
-					var my_id = $rootScope.myPid.split('_')[1];	
+					var row = element[0].getElementsByClassName('ContactRow-' + contact.id)[0];					
 					
 					if (tab == 'all' && contact.id != my_id)
 						$(row).removeClass('Hide');

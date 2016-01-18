@@ -81,20 +81,20 @@
 
   </head>
   <body data-ng-controller="MainController" flow-prevent-drop>
-    <div id="AppLoading">
+    <div id="AppLoading" ng-if="!isLoaded">
 		<div ng-cloak>
 			<div ng-bind="::verbage.loading"></div>
 			<img src="img/ajax-loader.gif" />
 		</div>
-    </div>
-	<!-- <div id="login">
+    </div> 
+	<div id="login"  ng-if="!token && isLoaded">
 		<script type="text/javascript">
 			var RecaptchaOptions = {
 				theme : 'custom',
 				custom_theme_widget: 'recaptcha_widget'
 			};
 		</script>
-		<form method="post" name="login-form" action="/oauth/authentication" onsubmit="return validateLoginForm(this);">
+		<form method="post" name="login-form" ng-controller="LoginController" novalidate login-submit="login(user)"><!-- /oauth/authentication onsubmit="return validateLoginForm(this);"-->
 
 		  <div style="margin:60px;">
 			<div class="big-block">		
@@ -106,13 +106,13 @@
 							<div class="login-form-label" name="username">
 								Username
 							</div>
-							<div class="login-input-div"><input autocomplete="on" autofocus="autofocus" name="username" id="username" type="text" class="login-form-input" maxlength="255" tabindex="1"></div>
-							<!-[if IE]>
+							<div class="login-input-div" ng-class="{'RedText': login-form.username.$invalid && (login-form.username.$dirty  || login.login-form.attempted)}"><input autocomplete="on" autofocus="autofocus" ng-model="user.username" name="username" id="username" type="text" class="login-form-input" maxlength="255" tabindex="1" ng-required="true" ng-focus="resetError($event)"></div>
+							<!--[if IE]>
 								<script type="text/javascript">
 									this.document.getElementById('username').focus();
 								</script>
-							<![endif]->
-							<div class="error-message-label-empty" id="usernameEmpty">
+							<![endif]-->							
+							<div class="error-message-label-empty" id="usernameEmpty" ng-show="emptyUserLoginField">
 								Enter your username
 							</div>
 						</label>
@@ -120,10 +120,14 @@
 							<div class="login-form-label">
 								Password
 							</div>
-							<input autocomplete="on" name="password" type="password" class="login-form-input" maxlength="255" tabindex="3">
-							<div class="error-message-label-empty" id="passwordEmpty">
+							<div ng-class="{'RedText': login-form.password.$invalid && (login-form.password.$dirty  || login.login-form.attempted)}">
+								<input autocomplete="on" ng-model="user.password"  name="password" type="password" class="login-form-input" maxlength="255" tabindex="3" ng-required="true" ng-focus="resetError($event)">
+							</div>
+							<div ng-show="loginError" class="login-error-message">{{ displayedError }}</div>
+							<div class="error-message-label-empty" id="passwordEmpty" ng-show="emptyPWLoginField">
 								Enter your password
 							</div>
+							
 						</label>																								
 												
 						<div class="login-form-submit-area">	
@@ -136,32 +140,18 @@
 							</label>
 								
 							<div class="login-form-submit-controls">					
-								<input type="submit" class="login-form-submit ok" name="signIn" value="Sign In" tabindex="17">	
-								<a class="a-button" href="https://dev4.fon9.com:5501/oauth/authorize?response_type=token&amp;redirect_uri=https%3A%2F%2Fhuc-qa.fonality.com%2Frepository%2Fstable%2F&amp;display=page&amp;client_id=web.hud.fonality.com&amp;assertion=d35985386db614826561e26602702e7eab69cbc4&amp;CANCELED=true&amp;instance_id=6b4c9f7eed547c29ae59e6fce5a15aee3a1bca01a699ef6c">
+								<input type="submit" class="login-form-submit ok" name="signIn" value="Sign In" tabindex="17"> <!-- ng-disabled="!login-form.$valid" -->	
+								<a class="a-button" href="" ng-click="resetLogin()"><!-- https://dev4.fon9.com:5501/oauth/authorize?response_type=token&amp;redirect_uri=https%3A%2F%2Fhuc-qa.fonality.com%2Frepository%2Fstable%2F&amp;display=page&amp;client_id=web.hud.fonality.com&amp;assertion=d35985386db614826561e26602702e7eab69cbc4&amp;CANCELED=true&amp;instance_id=6b4c9f7eed547c29ae59e6fce5a15aee3a1bca01a699ef6c -->
 									<input type="button" class="login-form-submit cancel" name="cancel" value="Cancel" tabindex="19">
 								</a>						
 							</div>
 						</div>
 				
 						<div class="login-form-text">				
-							<a href="http://cp52.fonality.com">
+							<a href=""><!-- http://cp52.fonality.com -->
 								Forgot your password?
 							</a>
-						</div>
-										
-						<input type="hidden" name="redirect_uri" value="https://huc-qa.fonality.com/repository/stable/">
-						<input type="hidden" name="response_type" value="token">				
-						<input type="hidden" name="scope" value="">
-						<input type="hidden" name="state" value="">
-						<input type="hidden" name="display" value="page">
-						<input type="hidden" name="instance_id" value="6b4c9f7eed547c29ae59e6fce5a15aee3a1bca01a699ef6c">
-						<input type="hidden" name="client_id" value="web.hud.fonality.com">
-						<input type="hidden" name="assertion" value="d35985386db614826561e26602702e7eab69cbc4">
-						<input type="hidden" name="lang" value="eng">
-						<input type="hidden" name="revoke_token" value="e46ad3f36bd464edc117304c5b7957c93832f900f34cb79e">
-						<input type="hidden" name="secondTry" value="false">
-						<input type="hidden" name="useCaptcha" value="false">
-						<input type="hidden" name="assertion_a" value="4a788de0d9848ea4c1784b0d3142d1351498b295">
+						</div>							
 			</div>
 					
 			<div class="app-info">
@@ -175,8 +165,9 @@
 		</div>
 	  </div>
 	</form>
-    </div> -->
-	<div id="App">
+    </div>
+    <!-- <script src="common.js"></script>-->    
+	<div id="App" ng-if="token && isLoaded">
 		<div class="TopBar" include-once="views/TopNavigationBar.html" data-ng-click="onBodyClick()" ng-controller="TopNavigationController" top-nav-behavior></div> <!--  -->
 
 		<div class="PanelWrapper" data-ng-click="onBodyClick()">
@@ -308,9 +299,11 @@
     <script src="scripts/directives/contactFiltersDirective.js"></script>
     <script src="scripts/directives/messageScrollDirective.js"></script>
     <script src="scripts/directives/autofocusDirective.js"></script>
+    <script src="scripts/directives/loginDirective.js"></script>
 
-    <!--controllers-->
+    <!--controllers-->   
     <script src="scripts/controllers/MainController.js"></script>
+    <script src="scripts/controllers/LoginController.js"></script>
     <script src="scripts/controllers/TopNavigationController.js"></script>
     <script src="scripts/controllers/LeftBarController.js"></script>
     <script src="scripts/controllers/NotificationController.js"></script>

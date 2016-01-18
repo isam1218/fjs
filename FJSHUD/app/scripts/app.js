@@ -105,6 +105,11 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			templateUrl: 'views/Intellinote.html',
 			controller: 'IntellinoteController'
 		})
+		.when('/login',
+		{
+			redirectTo: '/login',
+			controller: 'LoginController'
+		})	
 		.otherwise({
 			redirectTo: '/settings'
 		});
@@ -167,6 +172,8 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
       } else if ($location.path().indexOf('/calllog') != -1){
         typeFlag = 'calllog';
         finalSelected = $location.path().split('/calllog/')[1];
+      } else if ($location.path().indexOf('/login') != -1){          
+          $location.path('/login');
       }
 
       // this logic is for when the route (finalSelected tab) is not defined --> use saved LS tab, or default to applicable tab (groups have diff permissions thus diff access to various tabs)...

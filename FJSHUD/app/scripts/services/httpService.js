@@ -9,15 +9,17 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	var isSWSupport = browser == "Chrome" || browser == "Firefox";
 	var isIE = browser == "MSIE";
 	var synced = false;
-	var workerStarted = false;
+	//var workerStarted = false;
 	var appVersion = navigator.appVersion;
 	var upload_progress = 0;
 	var upload_taskId = 0;
-	var feeds = fjs.CONFIG.FEEDS;
+	//var feeds = fjs.CONFIG.FEEDS;
 	var deferred_progress = $q.defer();
-    var VERSIONS_PATH = "/v1/versions";
-    var VERSIONSCACHE_PATH = "/v1/versionscache";
-	var worker = undefined;
+   // var VERSIONS_PATH = "/v1/versions";
+   // var VERSIONSCACHE_PATH = "/v1/versionscache";
+	//var worker = undefined;
+	var authTicket = localStorage.authTicket;
+	var nodeID = 'fdp1.dev4.fon9.com';
 	
 	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN');
 	$rootScope.browser = browser;
@@ -25,6 +27,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	$rootScope.isFirstSync = true;
 	
 	// check for second tab before starting web worker
+	/*
 	if (document.cookie.indexOf('tab=') == -1) {		
 		worker = new Worker("scripts/workers/fdpWebWorker.js");
 		
@@ -118,9 +121,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		}
 	}, 20000, false);
 	
-	/**
+	/
 		AUTHORIZATION
-	*/
+	/
 	var authTicket = '';
 	var nodeID = '';
 	
@@ -195,13 +198,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					$rootScope.$broadcast('network_issue',undefined);
 					break;
 				default:
-					/*
+					/
 					localStorage.removeItem('me');
 					localStorage.removeItem('nodeID');
 					localStorage.removeItem('authTicket');
 					$rootScope.networkError = true;
 					$rootScope.$broadcast('network_issue',undefined);
-					*/
+					/
 					attemptLogin();
 					break;
 			}
@@ -212,12 +215,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		authorizeWorker();
 	}
 	
-	/**
+	/
 		SCOPE FUNCTIONS
+	/
 	*/
-	
 	this.logout = function() {
-        var authURL = fjs.CONFIG.SERVER.loginURL
+      /*  var authURL = fjs.CONFIG.SERVER.loginURL
             + '/oauth/authorize'
             + "?response_type=token"
             + "&redirect_uri=" + encodeURIComponent(location.href.replace(location.hash, ''))
@@ -225,21 +228,24 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
             + "&client_id=web.hud.fonality.com"
             + "&lang=eng"
             + "&revoke_token=" + authTicket
-            + "&instance_id=" + localStorage.instance_id;
+            + "&instance_id=" + localStorage.instance_id;*/
 			
 		localStorage.removeItem("me");
     	localStorage.removeItem("authTicket");
+    	localStorage.removeItem("username");
     	localStorage.removeItem("nodeID");
     	localStorage.removeItem("data_obj");
-    	localStorage.removeItem("instance_id");
-		
+    	localStorage.removeItem("instance_id");    
+    	$rootScope.token = null;
+    	//$rootScope.isLoaded = false;
 		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     	
 		// shut off web worker
-		worker.terminate();
+		//worker.terminate();
 		
-		window.onbeforeunload = null;		
-		location.href = authURL;
+		window.onbeforeunload = null;	
+		$location.path('/login/');
+		location.reload();		
 	};
 	
 	this.setUnload = function() {
@@ -254,7 +260,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	};
 
 	// get feed data from web worker
-    this.getFeed = function(feed) {
+   /* this.getFeed = function(feed) {
 		if (worker) {
 			worker.postMessage({
 	            "action": "feed_request",
@@ -291,7 +297,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
         });
     };
     
-    this.updateSettings = updateSettings;
+    this.updateSettings = updateSettings;*/
 
     this.get_avatar = function(pid,width,height,xversion){
     	if (pid)
