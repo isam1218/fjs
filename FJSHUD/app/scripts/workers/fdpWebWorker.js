@@ -4,6 +4,7 @@ importScripts("../../properties.js");
 
 var synced = false;
 var sync_delay = fjs.CONFIG.SYNC_DELAY;
+var sync_failures = 0;
 
 var node = undefined;
 var auth = undefined;
@@ -186,8 +187,22 @@ function do_version_check() {
             else
 				setTimeout('do_version_check();', sync_delay);
 		}
-		else
+		else {
+			// first sync may be stuck, so try to re-auth after 5 tries
+			if (!synced) {
+				sync_failures++;
+				
+				if (sync_failures >= 5) {
+					self.postMessage({
+						"action": "auth_failed"
+					});
+					
+					return;
+				}
+			}
+			
 			resume_sync(xmlhttp.status);
+		}
 	});
 }	
 
