@@ -38,17 +38,10 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		
 		tokenObj.body = JSON.stringify(body);
 				
-		var tokenJson = JSON.stringify(tokenObj);	
-		//if($rootScope.sock == null)
-		//	$rootScope.sock = new WebSocket($scope.wsuri);	
-		
+		var tokenJson = JSON.stringify(tokenObj);				
 		$rootScope.sock.send(tokenJson);	
 	};
-	/*
-	if($rootScope.token != null)
-	{
-		$scope.checkValidToken();
-	};	*/
+	
 	//sort by username
 	var compare = function(a,b) {
     	if (a.username < b.username)
@@ -369,7 +362,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		        		  else
 		        		  {
 		        			  $rootScope.token = null;
-		        			  localStorage.authTicket = null;		        			 
+		        			  localStorage.removeItem('authTicket');		        			 
 		        			  $scope.isLoaded = true;
 		        		  }
 		        		  break;
@@ -399,6 +392,8 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	else
 	{
 		$scope.isLoaded = true;
+		$location.path('/login/');
+		
 	}
 		
 		 /*var activityTimeout;

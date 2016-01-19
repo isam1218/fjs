@@ -210,9 +210,10 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			var json = JSON.stringify(myObj);			
 			$rootScope.sock.send(json);			
 			
-			scrollbox = $('#ListViewContent');
-			var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
-			$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');			
+			scrollbox = $('#ListViewContent');		
+			//var scroll_height = $(scrollbox).outerHeight() * 3;							
+			var scroll_height = $(scrollbox)[0].scrollHeight;		
+			$(scrollbox).stop().animate({ scrollTop: scroll_height }, 'slow');			
 	};
 	
 	var promise = $q(function(resolve, reject) {
@@ -227,12 +228,12 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	//set the scrollBox after messages updated
 	var setScrollBox = function(data)
     {
-		scrollbox = document.getElementById('ListViewContent');
+		scrollbox = $('#ListViewContent');
 		if($(scrollbox).length > 0)
 		{	
-			scrollbox.onscroll = function() {
+			scrollbox[0].onscroll = function() {
 				// check scroll position
-				if (scrollbox.scrollTop == 0 && !$scope.loading && $scope.messages.length > 0) {
+				if (scrollbox[0].scrollTop == 0 && !$scope.loading && $scope.messages.length > 0) {
 					$scope.loading = true;
 				}
 				
@@ -246,7 +247,7 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 				
 				// no more chats
 				if (version < 0)
-					scrollbox.onscroll = null;
+					scrollbox[0].onscroll = null;
 			};
 		}
     };
@@ -316,13 +317,14 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 			var myObj = {};
 			var body = {};
 			var chatType = "user";
-			var targetId = contactId.toString();
+			var targetId = contactId;
 			
 			if ($routeParams.groupId) {
 				chatType = "group";
-				targetId = ($routeParams.groupId).toString();
+				targetId = $routeParams.groupId;
 			}	
 			
+			targetId = targetId.toString();
 			myObj.reqType = "chat/postMessage";
 			myObj.ts = parseInt(new Date().getTime(),10);
 			myObj.sender = "U:" + server_id + ":" + my_id;
