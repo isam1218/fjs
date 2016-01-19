@@ -21,26 +21,99 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		url: '',
 		data: null
 	};
-	
-	$scope.checkValidToken = function(){
-		var me = JSON.parse(localStorage.me);
-        var username = me.username;
-        var server_id = (me.serverId).toString();
-        var my_id = (me.id).toString();
-		
-		var tokenObj = {};
-		tokenObj.reqType = "auth/validateToken";
-		tokenObj.ts = parseInt(new Date().getTime(),10);
-		tokenObj.sender = 'U:'+ server_id + ':' + my_id;
-		var body = {};
-		body.username = username;
-		body.token = $rootScope.token;		
-		
-		tokenObj.body = JSON.stringify(body);
+	//a global method to send socket request
+	$scope.sendSocketRequest = function(reqType, current_user)	{		        
+        var obj = {};
+        var body = {};
+        //set up the request type and the timestamp
+        obj.reqType = reqType;
+        obj.ts = parseInt(new Date().getTime(),10);  
+                
+    	var username, token, me;        	        	  	        	
+    	//get user information
+    	if(reqType != "data/getUserInfo")
+        {	        	
+	        if(localStorage.me)
+    		  me = JSON.parse(localStorage.me);
+	        else
+	          me = $rootScope.meModel.fullProfile;
+	        
+	        var server_id = (me.serverId).toString();
+	        var my_id = (me.id).toString();
+	        username = me.username;
+	        token = $rootScope.token;
+	        obj.sender = 'U:'+ server_id + ':' + my_id;			        
+	        
+	        //chats - set chat type (user/group) and the target id
+	        if(reqType.toLowerCase().indexOf('chat') != -1)
+	        {
+	        	var chatType = "user";
+				var targetId = $routeParams.contactId;	
 				
-		var tokenJson = JSON.stringify(tokenObj);				
-		$rootScope.sock.send(tokenJson);	
-	};
+				if ($routeParams.groupId) {
+					chatType = "group";
+					targetId = $routeParams.groupId;
+				}
+				
+				targetId = targetId.toString();
+				
+				body.chatType = chatType;
+				body.targetId = targetId;
+	        }
+	        //for group list and individual group 
+	        if(reqType.toLowerCase().indexOf('group') != -1)
+	        {
+	        	body.serverId = server_id;
+	        	body.groupType = "group";
+	        }
+        }
+    	else
+    	{
+    		username = localStorage.username;
+    		token = localStorage.authTicket;
+    	}        	        	
+    	
+        switch(reqType){
+        	case "data/getUserInfo":
+        		body.username = localStorage.username;
+        		body.token = localStorage.authTicket;
+        		break;
+	        case "auth/validateToken": 
+	        	body.username = username;
+	        	body.token = $rootScope.token;
+	        	break;		        
+	        case "data/getUsersInGroup":		        	
+	        	body.groupId = $routeParams.groupId;		        	
+	        	break;
+	        case "data/getContacts":
+	        	body.serverId = server_id;		        	
+	        	break;
+	        case "chat/getChatMessageHistoryForSession":	        								        	
+	        	body.userId = my_id;		        			        			        	
+	        	break;
+	        case "chat/postMessage":
+	        	var msg = $scope.chat.message;								
+	        	
+	        	body.message = msg;
+	        	body.serverId = server_id;
+	        	body.senderId = my_id;		        			        	
+	        	break;
+        }        	    		
+         
+        //set up the authInfo object
+    	if(reqType != "auth/validateToken")
+	    {
+    		var authInfo = {};
+        	authInfo.username = username;
+        	authInfo.token = token;
+	    }      
+    	
+		obj.body = JSON.stringify(body);
+		if(authInfo)
+			obj.authInfo = JSON.stringify(authInfo);
+		var json = JSON.stringify(obj);				
+		$rootScope.sock.send(json);
+	};	
 	
 	//sort by username
 	var compare = function(a,b) {
@@ -133,66 +206,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
         {	        	
         	return chatMsg.body.Message;          	
         }
-    };                         
-    //get the group list
-	var getGroupList = function()
-	{      	    	
-		var myObj = {};
-		var body = {};
-		var d = new Date();	
-		var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
-		var my_id = ($rootScope.meModel.fullProfile.id).toString();//current_user.my_pid;//.split('_')[1];		
-		var server_id = (current_user.serverId).toString();//current_user.server_id;		
-		var username = current_user.username;//current_user.login;
-		
-        myObj.reqType = "data/getGroupsForServer";		
-        myObj.ts = parseInt(new Date().getTime(),10);
-		myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815					
-		body.serverId = server_id;
-		body.groupType = "group";
-		var authInfo = {};
-		authInfo.username = username;
-		authInfo.token = $rootScope.token;
-		
-		myObj.body = JSON.stringify(body);
-		myObj.authInfo = JSON.stringify(authInfo);	
-		var json = JSON.stringify(myObj);			
-		$rootScope.sock.send(json);			
-	};	  
-		
-	//var callEmit = function(){};
-	
-	//get current group (if url is a group url)
-	$scope.getSelectedGroup = function()
-	{
-		var myObj = {};
-		var body = {};
-		var d = new Date();			
-		var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
-		var my_id = (current_user.id).toString();//current_user.my_pid;//.split('_')[1];		
-		var server_id = (current_user.serverId).toString();		
-		var username = current_user.username;//current_user.login;
-		
-	    myObj.reqType = "data/getUsersInGroup";		
-		myObj.ts = parseInt(new Date().getTime(),10);
-		myObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//serverId:current user id//156815		
-		body.groupType = "group";
-		body.groupId = $routeParams.groupId;
-		body.serverId = server_id;		
-		var authInfo = {};
-		authInfo.username = username;
-		authInfo.token = $rootScope.token;
-		
-		myObj.body = JSON.stringify(body);
-		myObj.authInfo = JSON.stringify(authInfo);	
-		var json = JSON.stringify(myObj);
-		if($rootScope.sock == null)
-			$rootScope.sock = new WebSocket($scope.wsuri);
-		$timeout(function(){
-			$rootScope.sock.send(json);			
-		}, 500, false);		
-	};
-	
+    };                          	
 	
 	//get groups
 	groupService.getGroups().then(function(data) {	  
@@ -200,65 +214,21 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		
 	  if($routeParams.groupId)
 	  {							
-		var singlePromise = $q(function(resolve, reject) {
-			$scope.getSelectedGroup();
+		var singlePromise = $q(function(resolve, reject) {			
+			$scope.sendSocketRequest('data/getUsersInGroup');
 		}).then(function(){});
 		
 	  }
-	});  
-	
-	$scope.getUserInfo = function(username){
-		//var current_user = settingsService.getMe().$$state.value;			
-		//var username = current_user.login;
-		var username = localStorage.username;
-		var token = localStorage.authTicket;
-		
-		var userObj = {};
-		userObj.reqType = "data/getUserInfo";
-		userObj.ts = parseInt(new Date().getTime(),10);
-		var body = {};
-		body.username = username;
-		body.token = token;
-		var authInfo = {};
-		authInfo.username = username;
-		authInfo.token = $rootScope.token;
-		
-		userObj.body = JSON.stringify(body);
-		userObj.authInfo = JSON.stringify(authInfo);				
-		var userJson = JSON.stringify(userObj);					
-		$rootScope.sock.send(userJson);		
-	};
-	
-	$scope.getContactsList = function(){
-		var current_user = $rootScope.meModel.fullProfile;//settingsService.getMe().$$state.value;
-		var my_id = (current_user.id).toString();//current_user.my_pid;//.split('_')[1];		
-		var server_id = (current_user.serverId).toString();//current_user.server_id;		
-		var username = current_user.username;//current_user.login;
-		
-		var contactsObj = {};
-		contactsObj.reqType = "data/getContacts";	
-		contactsObj.ts = parseInt(new Date().getTime(),10);
-		contactsObj.sender = 'U:'+ server_id + ':' + my_id;//"U:5549:126114";//+nameValue;//156815
-		var body = {};
-		body.serverId = server_id;
-		var authInfo = {};
-		authInfo.username = username;
-		authInfo.token = $rootScope.token;
-		
-		contactsObj.body = JSON.stringify(body);
-		contactsObj.authInfo = JSON.stringify(authInfo);				
-		var contactsJson = JSON.stringify(contactsObj);					
-		$rootScope.sock.send(contactsJson);	
-	};       
+	});     
 	
     $scope.connectWS = function(refresh) {
-		
+    	
     	 if(refresh)
     	 {	 
     		 $rootScope.sock = new WebSocket($scope.wsuri);
     		 $scope.sock.onopen = function() {	                    
- 	            console.log("connected to " + $scope.wsuri); 	               	
- 	      		$scope.checkValidToken();
+ 	            console.log("connected to " + $scope.wsuri);	               	 	      		
+ 	      		$scope.sendSocketRequest('auth/validateToken');
  	      	 
     		 }; 
     	 }	 
@@ -316,8 +286,8 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 			        		  localStorage.authTicket = responseBody.token;
 			        		  $location.path('/settings/');
 			        		  
-			        		  var userInfoPromise = $q(function(resolve, reject) {
-			        			  $scope.getUserInfo();
+			        		  var userInfoPromise = $q(function(resolve, reject) {			        			 
+			        			  $scope.sendSocketRequest('data/getUserInfo');
 			        		  }).then(function(){});
 		        		  }
 		        		  else{
@@ -348,17 +318,17 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		        		  }	  
 		        			  
 		        		  
-		        		  var contactsPromise = $q(function(resolve, reject) {
-		  					$scope.getContactsList();
+		        		  var contactsPromise = $q(function(resolve, reject) {		  					
+		        			  $scope.sendSocketRequest('data/getContacts');
 		  			      }).then(function(){});
 		  				
-		  				  var promise = $q(function(resolve, reject) {
-		  					getGroupList();
+		  				  var promise = $q(function(resolve, reject) {		  					
+		  					$scope.sendSocketRequest('data/getGroupsForServer');
 		  			      }).then(function(){});	
 			        	  break; 
 		        	  case "auth/validateToken":
-		        		  if(responseBody.valid)
-		        			  $scope.getUserInfo();
+		        		  if(responseBody.valid)		        			  
+		        		      $scope.sendSocketRequest('data/getUserInfo');
 		        		  else
 		        		  {
 		        			  $rootScope.token = null;

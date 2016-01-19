@@ -9,8 +9,7 @@ hudweb.controller('LoginController', ['$q', '$rootScope', '$scope', '$routeParam
 		if($(event.target).attr('id') == 'username') 
 			$scope.emptyUserLoginField = false;
 		else
-			$scope.emptyPWLoginField = false;
-		//$scope.$safeApply();
+			$scope.emptyPWLoginField = false;		
 	};
 	
 	$scope.login = function(user) {		
