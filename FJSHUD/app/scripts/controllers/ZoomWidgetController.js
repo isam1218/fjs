@@ -61,11 +61,15 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
        
       + '?fonalityUserId=' + $rootScope.myPid.split('_')[1]
       + '&serverId=' + $rootScope.meModel.server_id
-      + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+      + '&serverType=' + ($rootScope.meModel.my_jid.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
       + '&authToken=' + localStorage.authTicket;
     
     return url;
   };
+
+  settingsService.getMe().then(function(data) {
+    console.log("ME DATA",data);
+  });
  
   var authTicket = localStorage.authTicket;
   $scope.authTicket = authTicket;
@@ -1039,7 +1043,7 @@ var tzName = jstz.determine().name(); // America/Los_Angeles
        action
       + '?fonalityUserId=' + $rootScope.myPid.split('_')[1]
       + '&serverId=' + $rootScope.meModel.server_id
-      + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+      + '&serverType=' + ($rootScope.meModel.my_jid.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
       + '&authToken=' + localStorage.authTicket;
     
     return url;
@@ -1341,7 +1345,7 @@ hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http
            action
           + '?fonalityUserId=' + $rootScope.myPid.split('_')[1]
           + '&serverId=' + $rootScope.meModel.server_id
-          + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+          + '&serverType=' + ($rootScope.meModel.my_jid.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
           + '&authToken=' + localStorage.authTicket;
         
         return url;

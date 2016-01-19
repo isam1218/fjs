@@ -12,7 +12,7 @@ hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'Settin
 			+ '?callback=JSON_CALLBACK'
 			+ '&fonalityUserId=' + $rootScope.myPid.split('_')[1]
 			+ '&serverId=' + $rootScope.meModel.server_id
-			+ '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+			+ '&serverType=' + ($rootScope.meModel.my_jid.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
 			+ '&authToken=' + localStorage.authTicket;
 		
 		return url;
