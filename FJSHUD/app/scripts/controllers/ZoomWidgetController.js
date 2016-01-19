@@ -443,10 +443,9 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
-        
 
-        for(var i = 0; i<=30;i++){
-           var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
+        for(var i = 0; i<=$scope.meetingList.length-1;i++){
+           
 
 
            
@@ -576,8 +575,8 @@ $scope.loading.meetingLoaded = true;
         $scope.loading.meetingLoaded = false;
         
 
-        for(var i = 0; i<=30;i++){
-          var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mma");
+        for(var i = 0; i<=$scope.meetingList.length-1;i++){
+          
 
 
            var jun = moment($scope.meetingList[i].start_time).lang('en');
@@ -707,9 +706,9 @@ $scope.loading.meetingLoaded = true;
         $scope.meetingList = response.meetings;
 
 
-        for(var i = 0; i<=30;i++){
+        for(var i = 0; i<=$scope.meetingList.length-1;i++){
 
-          var dateFilter = $filter('date')($scope.meetingList[i].start_time,"hh:mm a");
+          
           
           //alert(dateFilter.toString().substr(0,2));
 
