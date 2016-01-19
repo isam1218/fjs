@@ -31,7 +31,7 @@ hudweb.service("sharedData",function(){
     }; 
 });
 
-hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$log','$filter',function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$log,$filter) {
+hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$log','$filter', '$location', function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$log,$filter,$location) {
 $scope.setScheduleTab = sharedData.setScheduleTab;
      $scope.tab = 'Home';
     
@@ -67,8 +67,10 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     return url;
   };
 
-  settingsService.getMe().then(function(data) {
-    console.log("ME DATA",data);
+  settingsService.getPermissions().then(function(data) {
+    if(data.showVideoCollab == false){
+      $location.path('/settings/');
+    }
   });
  
   var authTicket = localStorage.authTicket;

@@ -1,4 +1,4 @@
-hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'SettingsService', function($scope, $rootScope, $http, settingsService) {
+hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'SettingsService', '$location', function($scope, $rootScope, $http, settingsService, $location) {
 	$scope.addedContacts = [];
 	$scope.workspaces = [];
 	$scope.showInvite = false;
@@ -18,6 +18,11 @@ hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'Settin
 		return url;
 	};
 	
+	 settingsService.getPermissions().then(function(data) {
+	    if(data.showZipwhip == false){
+	      $location.path('/settings/');
+	    }
+	  });
 	
 	$scope.verifyLicense = function() {
 		//window.open(getURL('loadApp'));

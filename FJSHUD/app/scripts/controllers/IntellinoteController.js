@@ -1,4 +1,4 @@
-hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '$http', 'SettingsService', function($scope,$timeout, $rootScope, $http, settingsService) {
+hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '$http', 'SettingsService', '$location', function($scope,$timeout, $rootScope, $http, settingsService, $location) {
 	$scope.addedContacts = [];
 	$scope.workspaces = [];
 	$scope.showInvite = false;
@@ -38,6 +38,12 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 		
 		return url;
 	};
+
+	 settingsService.getPermissions().then(function(data) {
+	    if(data.showIntellinote == false){
+	      $location.path('/settings/');
+	    }
+	  });
 	
 	// init
 	settingsService.getSettings().then(function() {
