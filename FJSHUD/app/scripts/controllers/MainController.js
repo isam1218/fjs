@@ -35,8 +35,13 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
         {	        	
 	        if(localStorage.me)
     		  me = JSON.parse(localStorage.me);
-	        else
+	        else if($rootScope.meModel)
 	          me = $rootScope.meModel.fullProfile;
+	        
+	        if(!me)
+	        {
+	        	myHttpService.logout();
+	        }	
 	        
 	        var server_id = (me.serverId).toString();
 	        var my_id = (me.id).toString();

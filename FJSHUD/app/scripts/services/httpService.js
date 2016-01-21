@@ -219,17 +219,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		SCOPE FUNCTIONS
 	/
 	*/
-	this.logout = function() {
-      /*  var authURL = fjs.CONFIG.SERVER.loginURL
-            + '/oauth/authorize'
-            + "?response_type=token"
-            + "&redirect_uri=" + encodeURIComponent(location.href.replace(location.hash, ''))
-            + "&display=page"
-            + "&client_id=web.hud.fonality.com"
-            + "&lang=eng"
-            + "&revoke_token=" + authTicket
-            + "&instance_id=" + localStorage.instance_id;*/
-			
+	this.logout = function() {     			
 		localStorage.removeItem("me");
     	localStorage.removeItem("authTicket");
     	localStorage.removeItem("username");
@@ -239,10 +229,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     	$rootScope.token = null;
     	//$rootScope.isLoaded = false;
 		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-    	
-		// shut off web worker
-		//worker.terminate();
-		
+    			
 		window.onbeforeunload = null;	
 		$location.path('/login/');
 		location.reload();		
