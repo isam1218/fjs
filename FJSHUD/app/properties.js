@@ -37,8 +37,8 @@ fjs.CONFIG = {
         WHISPER:3,
     },
     PLUGINS:{
-        MAC:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.dmg',
-        WINDOWS:'https://hudweb.fonality.com/repository/fj.phone/1.3/res/FonalityPlugin-5.17.8986.msi',
+        MAC:'webphone/FonalityPlugin-5.17.8986.dmg',
+        WINDOWS:'webphone/FonalityPlugin-5.17.8986.msi',
         WINDOWS_NEW:'<%= WINDOWS_PLUGIN %>',
         MAC_NEW:'<%= MAC_PLUGIN %>'
 
@@ -51,7 +51,5 @@ fjs.CONFIG = {
     },
     DEBUG:true,
 	SYNC_DELAY: 1000,
-	ACTIVITY_DELAY: 30000
+	ACTIVITY_DELAY: 60000
 };
-
-
