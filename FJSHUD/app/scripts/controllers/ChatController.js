@@ -1,4 +1,4 @@
-hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', function($scope,httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService) {
+hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', function($scope, $rootScope, httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService) {
 	
 	// redirect if not allowed
 	if ($scope.$parent.chatTabEnabled !== undefined && $scope.$parent.chatTabEnabled === false) {
@@ -227,6 +227,15 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 					dupe = true;
 					break;
 				}
+				else if (data[i].data && data[i].data.timestamp && data[i].data.timestamp == $scope.messages[m].xpid) {
+					// update temp message
+					$scope.messages[m].xpid = data[i].xpid;
+					$scope.messages[m].created = data[i].created;
+					data[i].data = {};
+					
+					dupe = true;
+					break;
+				}
 			}
 
 			if (dupe || data[i].xef001type == 'delete') 
@@ -284,13 +293,29 @@ hudweb.controller('ChatController', ['$scope','HttpService', '$routeParams', 'Co
 		}
 		// normal chat
 		else {
+			var timestamp = ntpService.calibrateTime(new Date().getTime());
+			
+			// send to server
 			httpService.sendAction('streamevent', 'sendConversationEvent', {
 				type: chat.type,
 				audience: chat.audience,
 				to: chat.targetId,
-				message: $scope.chat.message
+				message: $scope.chat.message,
+				data: '{"timestamp":' + timestamp + '}'
 			});
-		}		
+			
+			// immediately show temp message
+			$scope.messages.push({
+				message: $filter('chatify')($scope.chat.message.replace(/&/g, '&amp;').replace(/</g, "&lt;").replace(/>/g, "&gt;")),
+				fullProfile: contactService.getContact($rootScope.myPid),
+				created: timestamp,
+				xpid: timestamp
+			});
+			
+			$timeout(function() {
+				scrollbox.scrollTop = scrollbox.scrollHeight;
+			}, 100, false);
+		}
 		
 		$scope.chat.message = '';
 		storageService.saveChatMessage(chat.targetId);		
