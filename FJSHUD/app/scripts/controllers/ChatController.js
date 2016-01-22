@@ -171,8 +171,8 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 	var scrollWatch = $scope.$watch(function() {
 		if (scrollbox.scrollHeight)
 		{	
-			//scrollbox.scrollTop = scrollbox.scrollHeight;			
-			var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
+			scrollbox = $('#ListViewContent');
+			var scroll_height = $(scrollbox).outerHeight() * 4;			
 			$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');		
 		}	
 	});
@@ -290,8 +290,8 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 		// jump to bottom on search clear
 		if (!data || data == '')
 		{
-			//scrollbox.scrollTop = scrollbox.scrollHeight;
-			var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
+			scrollbox = $('#ListViewContent');
+			var scroll_height = $(scrollbox).outerHeight() * 4;			
 			$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');		
 		}	
 			
@@ -346,8 +346,9 @@ hudweb.controller('ChatController', ['$q', '$rootScope', '$scope','HttpService',
 		$scope.chat.message = '';		
 		storageService.saveChatMessage(chat.targetId);			
 		$('#ChatMessageText').css('height', '1px');
+		
 		scrollbox = $('#ListViewContent');
-		var scroll_height = $(scrollbox).outerHeight() * 3;//2.5;			
+		var scroll_height = $(scrollbox).outerHeight() * 4;			
 		$(scrollbox).animate({ scrollTop: scroll_height }, 'slow');			
 		// play sfx
 		phoneService.playSound("sent");
