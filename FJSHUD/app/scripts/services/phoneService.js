@@ -1477,11 +1477,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 	});
 
 	$rootScope.$on("mycalls_synced",function(event,data){
-
-		var displayHangUpLauncher = false;
-		var displayLauncher = false;
-		weblauncher = settingsService.getActiveWebLauncher();
-
 		if(data){
 			var i = 0;
 			for(var i = 0, iLen = data.length; i < iLen; i++){
@@ -1492,29 +1487,6 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					nservice.dismiss('INCOMING_CALL',data[i].xpid);
 
 					if(call){
-						if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && call.state != fjs.CONFIG.CALL_STATES.CALL_HOLD || call.type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
-							if(call.incoming){
-								if(weblauncher.inboundHangupAuto){
-										var url = weblauncher.inboundHangup;
-										url = settingsService.formatWebString(url,call);
-										if(weblauncher.inboundHangupSilent){
-											$.ajax(url,{});
-										}else{
-											window.open(url, "_blank");
-										}
-								}
-							}else{
-								if(weblauncher.outboundHangupAuto){
-										var url = weblauncher.outboundHangup;
-										url = settingsService.formatWebString(url,call);
-										if(weblauncher.outboundHangupSilent){
-											$.ajax(url,{});
-										}else{
-											window.open(url, "_blank");
-										}
-								}
-							}
-						}
 						delete sipCalls[callsDetails[data[i].xpid].sipId];
 						delete callsDetails[data[i].xpid];
 					}
@@ -1535,48 +1507,15 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 					callsDetails[data[i].xpid].sipCall = sipCalls[callsDetails[data[i].xpid].sipId];
 					if(data[i].contactId){
 						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
+					}	
+					
+					// launch web task on final answer?
+					if (data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED && weblauncher[data[i].htCallId]) {
+						launchWebTask(weblauncher[data[i].htCallId]);
+						delete weblauncher[data[i].htCallId];
 					}
-
-					if((data[i].type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL && !data[i].record) || data[i].type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
-							if(data[i].incoming){
-								if(weblauncher.inboundAuto){
-									if(weblauncher.launchWhenCallAnswered){
-										if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-											var url = weblauncher.inbound;
-											url = settingsService.formatWebString(url,data[i]);
-											if(weblauncher.inboundSilent){
-												$.ajax(url,{});
-											}else{
-												window.open(url, "_blank");
-											}
-										}
-									}else{
-										if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
-											var url = weblauncher.inbound;
-											url = settingsService.formatWebString(url,data[i]);
-											if(weblauncher.inboundSilent){
-												$.ajax(url,{});
-											}else{
-												window.open(url, "_blank");
-											}
-										}
-									}
-
-
-								}
-							}else{
-								if(weblauncher.outboundAuto && data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-										var url = weblauncher.outbound;
-										url = settingsService.formatWebString(url,data[i]);
-										if(weblauncher.outboundSilent){
-											$.ajax(url,{});
-										}else{
-											window.open(url, "_blank");
-										}
-								}
-							}
-						}
 				}
+				
 				if(settingsService.getSetting('alert_call_duration') != "entire"){
 					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && data[i].xef001type != 'delete')
 		            	  context.displayCallAlert(data[i]);
@@ -1591,8 +1530,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 						nservice.dismiss("INCOMING_CALL",data[i].xpid);
 					else
 						context.displayCallAlert(data[i]);
-				}	
-					
+				}
 			}
 		}
 		if (data[0].incoming){
@@ -1602,6 +1540,38 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 		deferred.resolve(formatData());
 		$rootScope.$broadcast('calls_updated', callsDetails);
 	});
+	
+	$rootScope.$on('weblauncher_task_synced', function(event, data) {		
+		for (var i = 0, len = data.length; i < len; i++) {
+			if (data[i].xef001type != 'delete') {
+				// launch task now
+				if (data[i].key.indexOf('newCall') == -1 || !settingsService.getActiveWebLauncher().launchWhenCallAnswered) {
+					launchWebTask(data[i]);
+				}
+				// save for later
+				else {
+					weblauncher[data[i].key.substring(0, data[i].key.lastIndexOf(':'))] = data[i];
+				}
+			}
+		}
+	});
+	
+	var launchWebTask = function(task) {
+		// format final url
+		var url = task.url.replace(/&amp;/g, '&').replace('username=', 'username=' + $rootScope.meModel.login).replace('my_extension=', 'my_extension=' + $rootScope.meModel.primary_extension);
+		
+		// launch
+		if (task.silent === true) {
+			$.ajax(url, {});
+		}
+		else {
+			window.open(url, "_blank");
+		}
+		
+		// force removal to avoid repeats
+		httpService.deleteFromWorker('weblauncher_task', task.xpid);
+	};
+	
 	this.registerPhone = registerPhone;
 
 	var storeIncomingCallToRecent = function(incomingCallerXpid){
