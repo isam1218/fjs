@@ -4,19 +4,12 @@ FJ_ROOT_DIR=..
 
 pushd $FJ_ROOT_DIR/FJSHUD
 npm install
+rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 popd
 
 pushd $FJ_ROOT_DIR/FJSHUD/app
 bower install
+rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 popd
-
-
-pushd $FJ_ROOT_DIR/FJSHUD/app/styles
-lessc main.less > main.css
-lessc nativeAlert.less > nativeAlert.css
-lessc ie.less > ie.css
-lessc firefox.less > firefox.css
-lessc safari.less > safari.css
-popd 
 
 popd > /dev/null
