@@ -23,6 +23,9 @@ p {
 .ng-cloak {
   display: none !important;
 }
+body{
+  font-size:1em;
+}
 .upper {
   text-transform: uppercase;
 }
