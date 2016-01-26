@@ -1,4 +1,4 @@
-hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', '$timeout', '$q', 'ContactService', '$location' function($scope, $rootScope, httpService, phoneService, settingsService ,storageService, $timeout, $q, contactService, $location) {
+hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', '$timeout', '$q', 'ContactService', '$location', function($scope, $rootScope, httpService, phoneService, settingsService ,storageService, $timeout, $q, contactService, $location) {
 	$scope.query = '';
   $scope.tab;
 	$scope.overlay = '';
@@ -39,12 +39,4 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 		$scope.number = '';
   };
 
-  $scope.$on('locations_synced', function(event,data){
-      if(data){
-          var me = {};
-          for (var i = 0, iLen = data.length; i < iLen; i++) {
-              $scope.locations[data[i].xpid] = data[i];
-          }
-      }
-  });
 }]);
