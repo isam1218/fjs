@@ -11,7 +11,7 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
       $scope.language =  $rootScope.language;
       // load last accessed contact panel tab
       $scope.tab = localStorage['LeftBar_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_tabs_of_' + $rootScope.myPid]) : 'all';
-    }, 100);
+    }, 2000);
   });
   
     $scope.setTab = function(tab) {
