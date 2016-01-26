@@ -1,4 +1,4 @@
-hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', '$timeout', '$q', 'ContactService', function($scope, $rootScope, httpService, phoneService, settingsService ,storageService, $timeout, $q, contactService) {
+hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', '$timeout', '$q', 'ContactService', '$location' function($scope, $rootScope, httpService, phoneService, settingsService ,storageService, $timeout, $q, contactService, $location) {
 	$scope.query = '';
   $scope.tab;
 	$scope.overlay = '';
