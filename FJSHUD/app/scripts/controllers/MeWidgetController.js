@@ -15,7 +15,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.avatar ={};
     $scope.phoneType = false;
     $scope.settings = {};
-	
+
 	// listens for route param to populate current call object
 	$scope.$on('$routeChangeSuccess', function() {    
 		$scope.currentCall = phoneService.getCallDetail(callId);
@@ -246,11 +246,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
      }
 
+    //Starting with the webphone version 1.1.011769 it will no longer keep track of what device the user selected to alleviate issue HUDF-899
+    //So we need manually set it (even though we were doing it before) so that means the getInputDevice ffrom phone service will be null when the 
+    //softphone is intialized
+        
 	var setInputAudioDevice = function(){
-		$scope.selectedInput = $scope.inputDevices.filter(function(item){
-                 return item.id == phoneService.getSelectedDevice('inpdefid');
-       	 })[0];
-
+		if(localStorage.phone && localStorage.inputDeviceId){
+            $scope.selectedInput = $scope.inputDevices.filter(function(item){
+                 return item.id == localStorage.inputDeviceId; 
+            })[0];
+        }
         if($scope.selectedInput == undefined){
             $scope.selectedInput = $scope.inputDevices[0];
 		}
@@ -259,13 +264,21 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 	};
 
 	var setOutputAudioDevice = function(){
-		$scope.selectedOutput = $scope.outputDevices.filter(function(item){
-                 return item.id == phoneService.getSelectedDevice('outdefid'); 
-         })[0];
-            
-         $scope.selectedRingput = $scope.outputDevices.filter(function(item){
-                return item.id == phoneService.getSelectedDevice('ringdefid'); 
-          })[0];
+		
+
+          if(localStorage.phone && localStorage.outputDeviceId){
+            $scope.selectedOutput = $scope.outputDevices.filter(function(item){
+                 return item.id == localStorage.outputDeviceId; 
+            })[0];
+          }
+
+         if(localStorage.phone && localStorage.phone.ringDeviceId){
+                $scope.selectedOutput = $scope.outputDevices.filter(function(item){
+                     return item.id == localStorage.phone.ringDeviceId; 
+                })[0];
+          }
+
+
 
           if($scope.selectedRingput == undefined){
                 $scope.selectedRingput = $scope.outputDevices[0];
@@ -275,7 +288,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 $scope.selectedOutput = $scope.outputDevices[0];
           }
           $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
-	       $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+	      $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
           
     };	
 
