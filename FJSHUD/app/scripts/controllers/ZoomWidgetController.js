@@ -84,7 +84,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
     $scope.joinScheduledMeeting = function(meetingId){
 
-       $http.get(fjs.CONFIG.SERVER.ppsServer +'zoom/pmiStartUrl'+'?meetingId='+meetingId+'&hostId='+$scope.host_id+'&authToken='+$scope.authTicket).success(function(response){
+       $http.post(fjs.CONFIG.SERVER.ppsServer +'zoom/pmiStartUrl'+'?meetingId='+meetingId+'&hostId='+$scope.host_id+'&authToken='+$scope.authTicket).success(function(response){
         
         window.open(response.start_url);
 
@@ -194,7 +194,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     $scope.copy = function(startDate, startTime,topic,meeting,timezone,password){
                 
 
-           $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
+           $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+"&hostId="+"&pmi=").success(function(response){
             
             response.meetings.meeting_id = meeting;
             sharedData.meeting.meeting_id = response.meetings.meeting_id;
@@ -267,7 +267,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
        $scope.copyPmi = function(topic,meeting){
                         $scope.Time = "Time: Your meeting will start immediately";
 
-           $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
+           $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+"&hostId="+"&pmi=").success(function(response){
             
             response.meetings.meeting_id = meeting;
             sharedData.meeting.meeting_id = response.meetings.meeting_id;
@@ -441,7 +441,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
   settingsService.getSettings().then(function() {
      
-   $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+"&T="+ new Date().getTime(),{cache:false}).success(function(response){
+   $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+'&hostId='+'&pmi='+"&T="+ new Date().getTime()).success(function(response){
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
@@ -570,7 +570,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 $scope.$on('modalInstance', function() {
 $scope.loading.meetingLoaded = true;
- $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+"&T="+ new Date().getTime(),{cache:false}).success(function(response){
+ $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+'&hostId='+'&pmi='+"&T="+ new Date().getTime()).success(function(response){
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
@@ -702,7 +702,7 @@ $scope.loading.meetingLoaded = true;
   $scope.getData = function(){
   
   
-     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+"&T="+ new Date().getTime(),{cache:false}).success(function(response){
+     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+'&hostId='+'&pmi='+"&T="+ new Date().getTime()).success(function(response){
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
