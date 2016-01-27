@@ -193,85 +193,54 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
           
     $scope.copy = function(startDate, startTime,topic,meeting,timezone,password){
                 
-
-           $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+"&hostId="+"&pmi=").success(function(response){
-            
-            response.meetings.meeting_id = meeting;
-            sharedData.meeting.meeting_id = response.meetings.meeting_id;
-
-            sharedData.meeting.start_url = response.meetings.start_url;
-            sharedData.meeting.meetingTopic = topic;
-            sharedData.meeting.timeSelect = startTime;
-            sharedData.meeting.dt = startDate;
-            sharedData.meeting.password = password;
-            sharedData.meeting.AmPm = "";
-            sharedData.meeting.timezone = timezone;
-          });
-
       
       sharedData.meeting.AmPm = "";
       
-
+      $scope.startDate = startDate;
+      $scope.startTime = startTime;
+      $scope.topic = topic;
+      $scope.meeting_Id = meeting;
+      $scope.timezone = timezone;
+      $scope.password = password;
       
     
 
      $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'copyToClipboard.html',
-      controller: 'ModalInstanceCtrl',
+      controller: 'ModalInstanceCtrlTwo',
       size: 'lg',
       resolve: {
-        schedule: function () {
-          
-        },
-        update:function(){
+        pmiId:function(){
 
         },
-        shared: function(){
-
+        startDate:function(){
+          return $scope.startDate;
         },
-        host: function(){
-
+        startTime:function(){
+          return $scope.startTime;
         },
-        topic: function(){
-
+        topic:function(){
+          return $scope.topic;
         },
-        time: function(){
-
+        meeting_Id:function(){
+          return $scope.meeting_Id;
         },
         timezone:function(){
-            
+          return $scope.timezone;
         },
         password:function(){
-            
-        },
-        option:function(){
-            
-        },
-        start_hour: function(){
-           
-        },
-        AmPm: function(){
-            
-        },
-        hourDuration: function(){
-          
-        },
-        minDuration: function(){
-          
+          return $scope.password;
         }
+
       }
     });
     };
 
-       $scope.copyPmi = function(topic,meeting){
-                        $scope.Time = "Time: Your meeting will start immediately";
+       $scope.copyPmi = function(topic,pmiId){
+                        $scope.pmiId = pmiId;
 
-           $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+"&hostId="+"&pmi=").success(function(response){
-            
-            response.meetings.meeting_id = meeting;
-            sharedData.meeting.meeting_id = response.meetings.meeting_id;
-});
+   
 
       sharedData.meeting.meetingTopic = $rootScope.meModel.my_jid.split("@")[0] + " Personal Meeting Room";
       sharedData.meeting.timeSelect = $scope.Time;
@@ -287,7 +256,24 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       resolve: {
         items: function () {
           return $scope.items;
+        },
+        pmiId:function(){
+            return $scope.pmiId;
+          },
+        startDate:function(){
+          
+        },
+        startTime:function(){
+        },
+        topic:function(){
+        },
+        meeting_Id:function(){
+        },
+        timezone:function(){
+        },
+        password:function(){
         }
+        
       }
     });
     };
@@ -1317,6 +1303,9 @@ else{
       resolve: {
         schedule: function () {
           return $scope.scheduleBtn;
+        },
+        pmiId:function(){
+
         }
       }
     });
@@ -1337,7 +1326,9 @@ $scope.$on('$destroy', function() {
 
 
 
-hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http,$rootScope,$modal,sharedData,$route) {
+hudweb.controller('ModalInstanceCtrlTwo', function ($scope,pmiId,startDate,startTime,topic,meeting_Id,timezone,password,$modalInstance,$http,$rootScope,$modal,sharedData,$route) {
+
+
     $scope.loadingGif1 = false;
     $scope.loadingGif2 = true;
     var getURL = function(action) {
@@ -1362,6 +1353,13 @@ hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http
   $scope.meeting.minDuration = sharedData.meeting.minDuration;
   $scope.meeting.timezone = sharedData.meeting.timezone;
   $scope.meeting.meeting_id = sharedData.meeting_meeting_id;
+  $scope.pmiId = pmiId;
+    $scope.startDate = startDate;
+    $scope.startTime = startTime;
+    $scope.topic = topic;
+    $scope.meeting_Id = meeting_Id;
+    $scope.timezone = timezone;
+    $scope.password = password;
  
    
 

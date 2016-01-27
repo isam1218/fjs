@@ -276,17 +276,17 @@
 
     <li>{{userName}} is inviting you to a scheduled Zoom meeting.</li>
 
-    <li>Topic: {{meeting.meetingTopic}}</li>
+    <li>Topic: {{topic}}</li>
 
-    <li>Time: {{meeting.dt|date:"MMM dd, yyyy "}} {{meeting.timeSelect|date:'h:mma'}}{{meeting.AmPm}}  {{meeting.timezone}}</li></li>
-    <li ng-hide="!meeting.password">Password: {{meeting.password}}</li>
+    <li>Time: {{startDate|date:"MMM dd, yyyy "}} {{startTime|date:'h:mma'}}{{meeting.AmPm}}  {{timezone}}</li></li>
+    <li ng-hide="!password">Password: {{password}}</li>
 
-    <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}<img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
+    <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting_Id}}<img ng-if="!meeting_Id" src="img/XLoading.gif" /></li>
 
     <li>Or join by phone:</li>
 
     <li>+1 646 568 7788 (US Toll) or +1 415 762 9988 (US Toll)<br>
-    Meeting ID:{{meeting.meeting_id}} <img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
+    Meeting ID:{{meeting_Id}} <img ng-if="!meeting_Id" src="img/XLoading.gif" /></li>
     </ul>
     </div>
 
@@ -321,12 +321,12 @@
 
     <li>Topic: {{meeting.meetingTopic}}</li>
 
-    <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting.meeting_id}}<img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
+    <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{pmiId}}<img ng-if="!pmiId" src="img/XLoading.gif" /></li>
 
     <li>Or join by phone:</li>
 
     <li>+1 646 568 7788 (US Toll) or +1 415 762 9988 (US Toll)<br>
-    Meeting ID:{{meeting.meeting_id}}<img ng-if="!meeting.meeting_id" src="img/XLoading.gif" /></li>
+    Meeting ID:{{pmiId}}<img ng-if="!pmiId" src="img/XLoading.gif" /></li>
     </ul>
     </div>
 
