@@ -1051,21 +1051,21 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
                 };
             	context.setInputDeviceId = function(devId) {
                 	var devices = context.getDevices();
-                    if(context.webphone  && context.getInputDeviceId() != devId) {
+                    if(context.webphone) {
                     	if(devices.length <= devId || !devices[devId] || devices[devId].input_count <= 0)devId = -1;
                 		context.webphone.send(JSON.stringify({a : 'inpdevs', value : devId}));
                     }
             	}
             	context.setOutputDeviceId = function(devId) {
                 	var devices = context.getDevices();
-                    if(context.webphone  && context.getOutputDeviceId() != devId) {
+                    if(context.webphone) {
                     	if(devices.length <= devId || !devices[devId] || devices[devId].output_count <= 0)devId = -2;
                 		context.webphone.send(JSON.stringify({a : 'outdevs', value : devId}));
                     }
             	}
             context.setRingDeviceId = function(devId) {
                 var devices = context.getDevices();
-                  if(context.webphone && context.getRingDeviceId() != devId) {
+                  if(context.webphone) {
                     	if(devices.length <= devId || !devices[devId] || devices[devId].output_count <= 0)devId = -2;
                 		context.webphone.send(JSON.stringify({a : 'ringdevs', value : devId}));
                     }
@@ -1245,11 +1245,15 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
+	//this method updates the audio device 
+	//starting with webphone 1.1.011769 we will need to store the deviceIds in localstorage
+	//unfortunately if the user clears the cache it will default to the first device in the user list.
 	this.setAudioDevice = function(type, value){
 		switch(type){
             case 'Ring':
                 if(context.webphone){
                 	context.setRingDeviceId(value);
+                	localStorage.ringDeviceId = value;
                 }else{
                 	soundManager.ringdefid = value;
                 }
@@ -1257,6 +1261,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
             case 'Input':
                 if(context.webphone){
                 	 context.setInputDeviceId(value);
+                	 localStorage.inputDeviceId = value;
+
                }else{
                 	soundManager.inpdefid = value;
                 }
@@ -1264,6 +1270,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
             case 'Output':
                 if(context.webphone){
                 	context.setOutputDeviceId(value);
+                	localStorage.outputDeviceId = value;
+
                 }else{
                 	soundManager.outdefid = value;
                 }
