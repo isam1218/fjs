@@ -366,13 +366,36 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
-	var holdCall = function(xpid,isHeld){
+	/*var holdCall = function(xpid,isHeld){
 		if(isHeld){
         	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
 		}else{
 	       	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
 		}
+	};*/
+
+	var holdCall = function(xpid, isHeld){
+		var call = context.getCall(xpid);
+		
+		if (call) {
+			if (context.webphone)
+				messageSoftphone({a: 'hold', value: call.sip_id});
+			else
+				call.hold = isHeld;
+		}
+		else {		
+			if (isHeld) {
+				httpService.sendAction('mycalls', 'transferToHold', {mycallId: xpid});
+			}
+			else {
+				httpService.sendAction('mycalls', 'transferFromHold', {
+					mycallId: xpid,
+					toContactId: $rootScope.meModel.my_pid
+				});
+			}
+		}
 	};
+
 
 	var makeCall = function(number){
 		if(!isRegistered && $rootScope.meModel.location.locationType == 'w'){
