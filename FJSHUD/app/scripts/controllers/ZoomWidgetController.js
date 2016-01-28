@@ -446,12 +446,10 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
           
           
-          //alert(dateFilter.toString().substr(0,2));
 
           var jun = moment($scope.meetingList[i].start_time).lang('en');
           $scope.meetingList[i].timeDate = jun.tz('Etc/GMT+12').format("dddd , MMM DD, YYYY");
           $scope.meetingList[i].startHour = jun.tz('Etc/GMT+12').format('hh:mmA');
-         //alert(t);
           
            var duration = $scope.meetingList[i].duration.toString();
            if($scope.meetingList[i].duration == 0){
@@ -502,7 +500,6 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
                 if(strHourString > 24 || (strHourString == 24 && parseInt(strMin) > 0)){
                   
                   
-                  //var sx = parseInt($scope.meetingList[i].duration.toString().substr(0,2)) + (24 - strHourString);
                   var sx = parseInt(strHourString) - 24;
                   
                   strHourString = sx;
@@ -529,8 +526,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 
                 if($scope.meetingList[i].duration.toString().length == 2){
-              //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
-              //alert($scope.meetingList[i].duration.toString().substr(0,2));
+             
               var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
               if(strMin == 60){
                 
@@ -583,7 +579,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
   settingsService.getSettings().then(function() {
      
-   $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+'&hostId='+'&pmi='+"&T="+ new Date().getTime()).success(function(response){
+   $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+'&hostId=&pmi='+"&T="+ new Date().getTime()).success(function(response){
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
@@ -936,11 +932,8 @@ $scope.hourOption = ['00','01','02','03','04','05','06','07','08','09','10','11'
 $scope.minOption = ['00','15','30','45'];
 
 
- /* $scope.selected = {
-    item: $scope.items[0]
-  };*/
+ 
 $scope.times = ["01:00","01:30","02:00","02:30","03:00","03:30","04:00","04:30","05:00","05:30","06:00","06:30","07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30"];
-//$scope.times =[00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 
 // makes sure the default time for the schedule modal is greater than 
 var d = new Date();
@@ -1149,7 +1142,6 @@ $scope.meeting.dt = $scope.meeting.times;
 
   $scope.setScheduleTab = sharedData.setScheduleTab;
 
-     //$scope.setScheduleTab('Meetings');
 
 
 
@@ -1204,7 +1196,6 @@ var dates = $filter('date')($scope.startTime,'Z');
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+$scope.startMinute+":00Z";
     sharedData.meeting.update_meeting_id = shared;
 
-   //alert($scope.starts);
   if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
     alert("Looks like you did not select a Duration. Please select a Duration for your meeting.");
   }
@@ -1283,9 +1274,7 @@ else{
 
 
     $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&hostId='+hostId+'&topic='+$scope.meeting.meetingTopic+'&email='+$rootScope.meModel.email+'&startTime='+$scope.starts+'&startHour='+$scope.AmPm+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh+"&T="+ new Date().getTime()).success(function(data, status, headers, config){
-      $scope.meeting_Id = data.meeting.meeting_id;
      
-         //+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear();
     
 
 $modal.open({
@@ -1310,7 +1299,7 @@ $modal.open({
           return $scope.meeting.meetingTopic;
         },
         meeting_Id:function(){
-          return $scope.meeting_Id;
+          return data.meeting.meeting_id;
         },
         timezone:function(){
           return $scope.meeting.timezone;
@@ -1378,7 +1367,6 @@ hudweb.controller('ModalInstanceCtrlTwo', function ($scope,pmiId,startDate,start
   $scope.meeting.hourDuration = sharedData.meeting.hourDuration;
   $scope.meeting.minDuration = sharedData.meeting.minDuration;
   $scope.meeting.timezone = sharedData.meeting.timezone;
-  //$scope.meeting.meeting_id = sharedData.meeting_meeting_id;
   $scope.pmiId = pmiId;
     $scope.startDate = startDate;
     $scope.startTime = startTime;
@@ -1407,7 +1395,6 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
   $scope.today = function() {
     $scope.meeting.dt = new Date();
   };
-  //$scope.today();
 
   
 
