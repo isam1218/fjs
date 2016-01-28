@@ -340,46 +340,50 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		}
 	};
 	
-	$scope.transferCall = function() {
-		if ($scope.transferTo) {
-			var feed, action;
-			var params = {};
-			
-			// set up feed and sender
-			if ($scope.onCall.xpid == $rootScope.myPid) {
-				feed = 'mycalls';
-				params.mycallId = $scope.onCall.call.xpid;
-			}
-			else {
-				feed = 'calls';
-				params.fromContactId = $scope.transferFrom.call.contactId;
-			}
-			
-			// receiver
-			if ($scope.transferType == 'external')
-				params.toNumber = $scope.transferTo.contactNumber;
-			else
-				params.toContactId = $scope.transferTo.xpid;
-			
-			// feed action
-			if ($scope.transferType == 'external')
-				action = 'transferTo';
-			else if ($scope.transferTo.primaryExtension == '')
-				action = 'transferToMobile';
-			else if ($scope.who.sendToPrimary)
-				action = 'transferToContact';
-			else
-				action = 'transferToVoicemail';
-			
-			httpService.sendAction(feed, action, params);
-			
-			recentXpids[$scope.transferTo.xpid] = $scope.transferTo.xpid;
-			localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(recentXpids);
-			$scope.showOverlay(false);
-		}
-		else
-			$scope.addError = 'Select destination';
-	};
+  $scope.transferCall = function() {
+    if ($scope.transferTo) {
+      var feed, action;
+      var params = {};
+      
+      // set up feed and sender
+      if ($scope.onCall.xpid == $rootScope.myPid) {
+        feed = 'mycalls';
+        params.mycallId = $scope.onCall.call.xpid;
+      }
+      else {
+        feed = 'calls';
+
+        if ($scope.transferFrom.call && $scope.transferFrom.call.contactId)
+          params.fromContactId = $scope.transferFrom.call.contactId;
+        else
+          params.fromContactId = $scope.transferFrom.xpid;        
+      }
+      
+      // receiver
+      if ($scope.transferType == 'external')
+        params.toNumber = $scope.transferTo.contactNumber;
+      else
+        params.toContactId = $scope.transferTo.xpid;
+      
+      // feed action
+      if ($scope.transferType == 'external')
+        action = 'transferTo';
+      else if ($scope.transferTo.primaryExtension == '')
+        action = 'transferToMobile';
+      else if ($scope.who.sendToPrimary)
+        action = 'transferToContact';
+      else
+        action = 'transferToVoicemail';
+      
+      httpService.sendAction(feed, action, params);
+      
+      recentXpids[$scope.transferTo.xpid] = $scope.transferTo.xpid;
+      localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(recentXpids);
+      $scope.showOverlay(false);
+    }
+    else
+      $scope.addError = 'Select destination';
+  };
 
 	contactService.getContacts().then(function(data){
 		// get recent transfers
