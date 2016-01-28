@@ -279,7 +279,7 @@
     <li>Topic: {{::topic}}</li>
 
     <li>Time: {{::startDate|date:"MMM dd, yyyy "}} {{::startTime|date:'h:mma'}}{{::meeting.AmPm}}  {{::timezone}}</li></li>
-    <li ng-hide="!password">Password: {{::password}}</li>
+    <li ng-if="::password">Password: {{::password}}</li>
 
     <li>Join from PC, Mac, iOS or Android: https://zoom.us/j/{{meeting_Id}}</li>
 

@@ -714,7 +714,7 @@ $scope.loading.meetingLoaded = true;
         $scope.meetingList = response.meetings;
         $scope.loading.meetingLoaded = false;
         
-
+        if($scope.meetingList){
         for(var i = 0; i<=$scope.meetingList.length-1;i++){
           
 
@@ -825,6 +825,7 @@ $scope.loading.meetingLoaded = true;
            
 
         }
+      }
         
            
         
