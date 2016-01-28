@@ -29,7 +29,7 @@
                             <div class="inner">Home</div>
                             <div class="arrow"></div>
                         </a>
-                        <a href="" class="ScheduleTabBarButton Ready" ng-click="setScheduleTab('Meetings'); getData()" ng-class="tab == 'Meetings' ? 'fj-selected-item' : ''" >
+                        <a href="" class="ScheduleTabBarButton Ready" ng-click="setScheduleTab('Meetings');" ng-class="tab == 'Meetings' ? 'fj-selected-item' : ''" >
                             <div class="inner">Meetings</div>
                             <div class="arrow"></div>
                         </a>
@@ -66,7 +66,7 @@
     <div class="ListSectionBtn">
         <div id="scheduleMeetingBtn" >
        <!--  <button data-ng-click="open('lg')" class="XButton XButton XButtonWide XButtonBlue">Schedule Meeting<div>&#9654;</div></button> -->
-        <div class="WorkspaceButton" ng-click="noEmail || open('lg')" ng-disabled="noEmail" style="padding-left:40px">
+        <div class="WorkspaceButton" ng-click="noEmail || open('lg',host_id)" ng-disabled="noEmail" style="padding-left:40px">
                         Schedule Meeting
                         <div class="line"><div class="rightArrow">&#9654;</div></div>
                     </div>
@@ -164,7 +164,7 @@
                        <button ng-click="openEditModal(x.meeting_id,x.topic,x.timeDate,x.startHour,x.timezone,x.password,x.option_jbh,x.duration)">Edit</button>
                        <button ng-click="startScheduledMeeting(x.start_url)">Start</button><br>
                        <button ng-click="copy(x.timeDate,x.startHour,x.topic,x.meeting_id,x.timezone,x.password)">Copy</button>
-                       <button ng-click="deleteMeeting(x.meeting_id); getData()">Delete</button>
+                       <button ng-click="deleteMeeting(x.meeting_id,pmi_id.pmi,host_id)">Delete</button>
                     </div>
                 </li>
 
