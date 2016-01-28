@@ -28,18 +28,16 @@ hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'Settin
 		//window.open(getURL('loadApp'));
 
 
-		  $http.get(fjs.CONFIG.SERVER.ppsServer + getURL('loginZipwhipURL') + '&workspaceId=').
+		  $http.post(fjs.CONFIG.SERVER.ppsServer + getURL('loginZipwhipURL') + '&workspaceId=').
 				  success(function(data, status, headers, config) {
 						  if (data && data.url) {
 							window.open(data.url);
 						}
-						console.log("SUCCESS " + fjs.CONFIG.SERVER.ppsServer + getURL('loginZipwhipURL') + '&workspaceId=');
 
 				  }).
 				  error(function(data, status, headers, config) {
 				    // called asynchronously if an error occurs
 				    // or server returns response with an error status.
-						console.log("NOT SUCCESS " + fjs.CONFIG.SERVER.ppsServer + getURL('loginZipwhipURL') + '&workspaceId=');
 
 				  });
 	};

@@ -106,8 +106,8 @@ hudweb.service('SettingsService', ['$q', '$location', '$rootScope', 'HttpService
 				localStorage['showCallCenter'] = $rootScope.showCallCenter;
 				// Call Center license determines whether or not a user can record
 				permissions.showVideoCollab = service.isEnabled(data[i].propertyValue, 1);
-				permissions.showIntellinote = false;//service.isEnabled(data[i].propertyValue, 15);
-				permissions.showZipwhip = false;//service.isEnabled(data[i].propertyValue, 16);
+				permissions.showIntellinote = service.isEnabled(data[i].propertyValue, 15);
+				permissions.showZipwhip = service.isEnabled(data[i].propertyValue, 16);
 				permissions.canTransferFrom = service.isEnabled(data[i].propertyValue, 4);
 
 				// group permissions from MyPermissions.java
