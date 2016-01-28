@@ -84,7 +84,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
     $scope.joinScheduledMeeting = function(meetingId){
 
-       $http.get(fjs.CONFIG.SERVER.ppsServer +'zoom/pmiStartUrl'+'?meetingId='+meetingId+'&hostId='+$scope.host_id+'&authToken='+$scope.authTicket).success(function(response){
+       $http.post(fjs.CONFIG.SERVER.ppsServer +'zoom/pmiStartUrl'+'?meetingId='+meetingId+'&hostId='+$scope.host_id+'&authToken='+$scope.authTicket).success(function(response){
         
         window.open(response.start_url);
 
@@ -184,7 +184,11 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         },
         minDuration: function(){
           return $scope.minDuration;
+        },
+        hostId:function(){
+
         }
+
       }
     });
     };
@@ -193,85 +197,54 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
           
     $scope.copy = function(startDate, startTime,topic,meeting,timezone,password){
                 
-
-           $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
-            
-            response.meetings.meeting_id = meeting;
-            sharedData.meeting.meeting_id = response.meetings.meeting_id;
-
-            sharedData.meeting.start_url = response.meetings.start_url;
-            sharedData.meeting.meetingTopic = topic;
-            sharedData.meeting.timeSelect = startTime;
-            sharedData.meeting.dt = startDate;
-            sharedData.meeting.password = password;
-            sharedData.meeting.AmPm = "";
-            sharedData.meeting.timezone = timezone;
-          });
-
       
       sharedData.meeting.AmPm = "";
       
-
+      $scope.startDate = startDate;
+      $scope.startTime = startTime;
+      $scope.topic = topic;
+      $scope.meeting_Id = meeting;
+      $scope.timezone = timezone;
+      $scope.password = password;
       
     
 
      $modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'copyToClipboard.html',
-      controller: 'ModalInstanceCtrl',
+      controller: 'ModalInstanceCtrlTwo',
       size: 'lg',
       resolve: {
-        schedule: function () {
-          
-        },
-        update:function(){
+        pmiId:function(){
 
         },
-        shared: function(){
-
+        startDate:function(){
+          return $scope.startDate;
         },
-        host: function(){
-
+        startTime:function(){
+          return $scope.startTime;
         },
-        topic: function(){
-
+        topic:function(){
+          return $scope.topic;
         },
-        time: function(){
-
+        meeting_Id:function(){
+          return $scope.meeting_Id;
         },
         timezone:function(){
-            
+          return $scope.timezone;
         },
         password:function(){
-            
-        },
-        option:function(){
-            
-        },
-        start_hour: function(){
-           
-        },
-        AmPm: function(){
-            
-        },
-        hourDuration: function(){
-          
-        },
-        minDuration: function(){
-          
+          return $scope.password;
         }
+
       }
     });
     };
 
-       $scope.copyPmi = function(topic,meeting){
-                        $scope.Time = "Time: Your meeting will start immediately";
+       $scope.copyPmi = function(topic,pmiId){
+                        $scope.pmiId = pmiId;
 
-           $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')).success(function(response){
-            
-            response.meetings.meeting_id = meeting;
-            sharedData.meeting.meeting_id = response.meetings.meeting_id;
-});
+   
 
       sharedData.meeting.meetingTopic = $rootScope.meModel.my_jid.split("@")[0] + " Personal Meeting Room";
       sharedData.meeting.timeSelect = $scope.Time;
@@ -287,7 +260,24 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
       resolve: {
         items: function () {
           return $scope.items;
+        },
+        pmiId:function(){
+            return $scope.pmiId;
+          },
+        startDate:function(){
+          
+        },
+        startTime:function(){
+        },
+        topic:function(){
+        },
+        meeting_Id:function(){
+        },
+        timezone:function(){
+        },
+        password:function(){
         }
+        
       }
     });
     };
@@ -439,9 +429,157 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
         }
     };
 
+      $scope.deleteMeeting = function(meetingId,pmi,hostId){
+    var result = confirm("Are you sure you want to delete?");
+    if (result) {
+    //Logic to delete the item
+
+    $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket}).success(function(data){
+       
+      $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+'&hostId='+hostId+'&pmi='+pmi+"&T="+ new Date().getTime()).success(function(response){
+        $scope.pmi_id.pmi = response.pmi;
+        $scope.host_id = response.host_id;
+        $scope.meetingList = response.meetings;
+        
+
+        for(var i = 0; i<=$scope.meetingList.length-1;i++){
+
+          
+          
+
+          var jun = moment($scope.meetingList[i].start_time).lang('en');
+          $scope.meetingList[i].timeDate = jun.tz('Etc/GMT+12').format("dddd , MMM DD, YYYY");
+          $scope.meetingList[i].startHour = jun.tz('Etc/GMT+12').format('hh:mmA');
+          
+           var duration = $scope.meetingList[i].duration.toString();
+           if($scope.meetingList[i].duration == 0){
+                $scope.meetingList[i].duration = "00";
+              }
+              if($scope.meetingList[i].duration.toString().length == 3){
+                $scope.meetingList[i].duration = "0"+ $scope.meetingList[i].duration ;
+              }
+            
+
+          
+                 if($scope.meetingList[i].duration.toString().length == 4){
+                $scope.meetingList[i].end_time = $scope.meetingList[i].start_time;
+                 
+              var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
+              if($scope.meetingList[i].start_time.substr(11,2)>=0){
+              var strHourString =  strHour;
+             
+               }
+
+
+            
+              var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(2,2));
+
+              
+
+              if(strMin == 0){
+                strMin = "00";
+              }
+               if(strMin == 60 && strHourString <24){
+                
+                strMin = "00";
+                var strHourString = parseInt(strHour) +1;
+ 
+              }
+               if(strMin == 75){
+                
+                strMin = "15";
+                var strHourString = parseInt(strHour) +1;
+
+              }
+              
+              if(strHourString <10){
+                  strHourString = "0"+strHourString;
+                }
+
+              
+                if(strHourString > 24 || (strHourString == 24 && parseInt(strMin) > 0)){
+                  
+                  
+                  var sx = parseInt(strHourString) - 24;
+                  
+                  strHourString = sx;
+                  if(strHourString <10){
+                    strHourString = "0" + sx;
+                  }
+                  if(strHourString == 0){
+                    strHourString = "00";
+                  }
+                }
+               
+               
+                
+
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+
+
+              var end = moment($scope.meetingList[i].end_time).lang('en');
+          $scope.meetingList[i].endHour = end.tz('Etc/GMT+12').format('hh:mmA');
+          
+               }
+
+
+
+                if($scope.meetingList[i].duration.toString().length == 2){
+             
+              var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
+              if(strMin == 60){
+                
+                strMin = "00";
+                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
+                if(hourIncrement <10){
+                  hourIncrement = "0"+hourIncrement;
+                }
+                
+              }
+              else if(strMin == 75){
+                
+                strMin = "15";
+                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
+                if(hourIncrement <10){
+                  hourIncrement = "0"+hourIncrement;
+                }
+                
+              }
+              else{hourIncrement = $scope.meetingList[i].start_time.substr(11,2);}
+              
+              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ hourIncrement+":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
+              
+
+              
+              var newEnd = moment($scope.meetingList[i].end_time).lang('en');
+          $scope.meetingList[i].endHour = newEnd.tz('Etc/GMT+12').format('hh:mmA');
+          
+               }
+              
+
+
+            
+
+        }
+        
+           
+        
+
+      }).error(function(data){
+        $scope.messages = data;
+        
+      });
+        
+
+      });
+    
+    }
+  };
+
   settingsService.getSettings().then(function() {
      
-   $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+"&T="+ new Date().getTime(),{cache:false}).success(function(response){
+   $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+'&hostId=&pmi='+"&T="+ new Date().getTime()).success(function(response){
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
@@ -570,13 +708,13 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 $scope.$on('modalInstance', function() {
 $scope.loading.meetingLoaded = true;
- $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+"&T="+ new Date().getTime(),{cache:false}).success(function(response){
+ $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+'&hostId='+$scope.host_id+'&pmi='+$scope.pmi_id.pmi+"&T="+ new Date().getTime()).success(function(response){
         $scope.pmi_id.pmi = response.pmi;
         $scope.host_id = response.host_id;
         $scope.meetingList = response.meetings;
         $scope.loading.meetingLoaded = false;
         
-
+        if($scope.meetingList){
         for(var i = 0; i<=$scope.meetingList.length-1;i++){
           
 
@@ -687,6 +825,7 @@ $scope.loading.meetingLoaded = true;
            
 
         }
+      }
         
            
         
@@ -699,166 +838,6 @@ $scope.loading.meetingLoaded = true;
       });
 
 
-  $scope.getData = function(){
-  
-  
-     $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/meetingList')+'&email='+$rootScope.meModel.email+"&T="+ new Date().getTime(),{cache:false}).success(function(response){
-        $scope.pmi_id.pmi = response.pmi;
-        $scope.host_id = response.host_id;
-        $scope.meetingList = response.meetings;
-
-
-        for(var i = 0; i<=$scope.meetingList.length-1;i++){
-
-          
-          
-          //alert(dateFilter.toString().substr(0,2));
-
-          var jun = moment($scope.meetingList[i].start_time).lang('en');
-          $scope.meetingList[i].timeDate = jun.tz('Etc/GMT+12').format("dddd , MMM DD, YYYY");
-          $scope.meetingList[i].startHour = jun.tz('Etc/GMT+12').format('hh:mmA');
-         //alert(t);
-          
-           var duration = $scope.meetingList[i].duration.toString();
-           if($scope.meetingList[i].duration == 0){
-                $scope.meetingList[i].duration = "00";
-              }
-              if($scope.meetingList[i].duration.toString().length == 3){
-                $scope.meetingList[i].duration = "0"+ $scope.meetingList[i].duration ;
-              }
-            
-
-          
-                 if($scope.meetingList[i].duration.toString().length == 4){
-                $scope.meetingList[i].end_time = $scope.meetingList[i].start_time;
-                 
-              var strHour = parseInt($scope.meetingList[i].end_time.substr(11,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
-              if($scope.meetingList[i].start_time.substr(11,2)>=0){
-              var strHourString =  strHour;
-             
-               }
-
-
-            
-              var strMin =parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(2,2));
-
-              
-
-              if(strMin == 0){
-                strMin = "00";
-              }
-               if(strMin == 60 && strHourString <24){
-                
-                strMin = "00";
-                var strHourString = parseInt(strHour) +1;
- 
-              }
-               if(strMin == 75){
-                
-                strMin = "15";
-                var strHourString = parseInt(strHour) +1;
-
-              }
-              
-              if(strHourString <10){
-                  strHourString = "0"+strHourString;
-                }
-
-              
-                if(strHourString > 24 || (strHourString == 24 && parseInt(strMin) > 0)){
-                  
-                  
-                  //var sx = parseInt($scope.meetingList[i].duration.toString().substr(0,2)) + (24 - strHourString);
-                  var sx = parseInt(strHourString) - 24;
-                  
-                  strHourString = sx;
-                  if(strHourString <10){
-                    strHourString = "0" + sx;
-                  }
-                  if(strHourString == 0){
-                    strHourString = "00";
-                  }
-                }
-               
-               
-                
-
-              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
-              
-
-
-              var end = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = end.tz('Etc/GMT+12').format('hh:mmA');
-          
-               }
-
-
-
-                if($scope.meetingList[i].duration.toString().length == 2){
-              //var strMin = parseInt($scope.meetingList[i].end_time.substr(14,2)) + parseInt($scope.meetingList[i].duration.toString().substr(0,2));
-              //alert($scope.meetingList[i].duration.toString().substr(0,2));
-              var strMin =parseInt($scope.meetingList[i].start_time.substr(14,2))+ parseInt($scope.meetingList[i].duration.toString().substr(0,2));
-              if(strMin == 60){
-                
-                strMin = "00";
-                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
-                if(hourIncrement <10){
-                  hourIncrement = "0"+hourIncrement;
-                }
-                
-              }
-              else if(strMin == 75){
-                
-                strMin = "15";
-                var hourIncrement = parseInt($scope.meetingList[i].start_time.substr(11,2)) +1;
-                if(hourIncrement <10){
-                  hourIncrement = "0"+hourIncrement;
-                }
-                
-              }
-              else{hourIncrement = $scope.meetingList[i].start_time.substr(11,2);}
-              
-              $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ hourIncrement+":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
-              
-
-              
-              var newEnd = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = newEnd.tz('Etc/GMT+12').format('hh:mmA');
-          
-               }
-              
-
-
-            
-
-        }
-        
-           
-        
-
-      }).error(function(data){
-        $scope.messages = data;
-        
-      });
-
-
-  }
-
-
-  $scope.deleteMeeting = function(meetingId){
-    var result = confirm("Are you sure you want to delete?");
-    if (result) {
-    //Logic to delete the item
-
-    $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/deleteMeeting'+'?hostId='+$scope.host_id+'&meetingId='+meetingId+'&authToken='+localStorage.authTicket}).success(function(data){
-       
-
-        
-
-      });
-    
-    }
-  };
 
 
   $scope.items = ['item1', 'item2', 'item3'];
@@ -866,7 +845,8 @@ $scope.loading.meetingLoaded = true;
   $scope.animationsEnabled = true;
 
 
-  $scope.open = function (size) {
+  $scope.open = function (size,hostId) {
+    $scope.hostId = hostId;
     $scope.scheduleBtn = true;
     $scope.updateBtn = false;
     
@@ -916,8 +896,10 @@ $scope.loading.meetingLoaded = true;
         },
         minDuration: function(){
           
+        },
+        hostId:function(){
+           return $scope.hostId;
         }
-
       }
     });
 
@@ -939,7 +921,7 @@ $scope.loading.meetingLoaded = true;
 /*Please note that $modalInstance represents a modal window (instance) dependency.
 It is not the same as the $modal service used above.
 */
-hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance, schedule,update,shared,host,topic,time,timezone,password,option,start_hour,AmPm,hourDuration,minDuration,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
+hudweb.controller('ModalInstanceCtrl', function ($scope, $modalInstance,schedule,update,shared,host,topic,time,timezone,password,option,start_hour,AmPm,hourDuration,minDuration,hostId,$http,$rootScope,$modal,sharedData,$timeout,$route,$filter) {
 
 /*  $scope.items = items;
 */$scope.scheduleBtn = schedule;
@@ -951,11 +933,8 @@ $scope.hourOption = ['00','01','02','03','04','05','06','07','08','09','10','11'
 $scope.minOption = ['00','15','30','45'];
 
 
- /* $scope.selected = {
-    item: $scope.items[0]
-  };*/
+ 
 $scope.times = ["01:00","01:30","02:00","02:30","03:00","03:30","04:00","04:30","05:00","05:30","06:00","06:30","07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30"];
-//$scope.times =[00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 
 // makes sure the default time for the schedule modal is greater than 
 var d = new Date();
@@ -1164,7 +1143,6 @@ $scope.meeting.dt = $scope.meeting.times;
 
   $scope.setScheduleTab = sharedData.setScheduleTab;
 
-     //$scope.setScheduleTab('Meetings');
 
 
 
@@ -1219,20 +1197,19 @@ var dates = $filter('date')($scope.startTime,'Z');
    $scope.starts = $scope.startTime.getFullYear() + "-"+ $scope.startMonth+"-"+$scope.startDay+"T"+$scope.hourUTC+$scope.startMinute+":00Z";
     sharedData.meeting.update_meeting_id = shared;
 
-   //alert($scope.starts);
   if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
     alert("Looks like you did not select a Duration. Please select a Duration for your meeting.");
   }
   else{
-          $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh}).success(function(data){
+          $http({method:"POST",url: fjs.CONFIG.SERVER.ppsServer +'zoom/updateMeeting'+'?hostId='+$scope.host_id+'&meetingId='+sharedData.meeting.update_meeting_id+'&authToken='+localStorage.authTicket+'&topic='+$scope.meeting.meetingTopic+'&startTime='+$scope.starts+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh+"&T="+ new Date().getTime()}).success(function(data){
               
               
-              
+              $modalInstance.close();
               
 
           });
 
-                     $modalInstance.close();
+                     
 
     }
   };
@@ -1295,21 +1272,13 @@ if($scope.meeting.hourDuration ==0 && $scope.meeting.minDuration == 0){
   alert("Looks like you did not select a Duration. Please select a Duration for your meeting.");
 }
 else{
-    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&topic='+$scope.meeting.meetingTopic+'&email='+$rootScope.meModel.email+'&startTime='+$scope.starts+'&startHour='+$scope.AmPm+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh).success(function(data, status, headers, config){
-      
-      sharedData.meeting.meeting_id = data.meeting.meeting_id;
-
-      
 
 
-        
-        
-         //+','+$scope.day[$scope.meeting.dt.getDay()] + ',' + $scope.month[$scope.meeting.dt.getMonth()] + "" +$scope.meeting.dt.getDay() + "," + $scope.meeting.dt.getFullYear();
-    });
+    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/createScheduledMeeting')+'&hostId='+hostId+'&topic='+$scope.meeting.meetingTopic+'&email='+$rootScope.meModel.email+'&startTime='+$scope.starts+'&startHour='+$scope.AmPm+'&duration='+$scope.meeting.hourDuration+''+$scope.meeting.minDuration +'&timezone='+$scope.meeting.timezone+'&password='+$scope.meeting.password+'&jbh='+$scope.meeting.jbh+"&T="+ new Date().getTime()).success(function(data, status, headers, config){
+     
+    
 
-
-    $modalInstance.close();
-    $modal.open({
+$modal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'copyToClipboard.html',
       controller: 'ModalInstanceCtrlTwo',
@@ -1317,9 +1286,45 @@ else{
       resolve: {
         schedule: function () {
           return $scope.scheduleBtn;
+        },
+        pmiId:function(){
+
+        },
+        startDate:function(){
+           return $scope.meeting.dt;
+        },
+        startTime:function(){
+         return $scope.meeting.timeSelect;
+        },
+        topic:function(){
+          return $scope.meeting.meetingTopic;
+        },
+        meeting_Id:function(){
+          return data.meeting.meeting_id;
+        },
+        timezone:function(){
+          return $scope.meeting.timezone;
+        },
+        password:function(){
+          return $scope.meeting.password;
         }
       }
     });
+
+        $modalInstance.close();
+
+
+  });
+
+
+
+
+
+
+
+
+    
+    
   }
   };
 
@@ -1337,7 +1342,9 @@ $scope.$on('$destroy', function() {
 
 
 
-hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http,$rootScope,$modal,sharedData,$route) {
+hudweb.controller('ModalInstanceCtrlTwo', function ($scope,pmiId,startDate,startTime,topic,meeting_Id,timezone,password,$modalInstance,$http,$rootScope,$modal,sharedData,$route) {
+
+
     $scope.loadingGif1 = false;
     $scope.loadingGif2 = true;
     var getURL = function(action) {
@@ -1361,7 +1368,13 @@ hudweb.controller('ModalInstanceCtrlTwo', function ($scope, $modalInstance,$http
   $scope.meeting.hourDuration = sharedData.meeting.hourDuration;
   $scope.meeting.minDuration = sharedData.meeting.minDuration;
   $scope.meeting.timezone = sharedData.meeting.timezone;
-  $scope.meeting.meeting_id = sharedData.meeting_meeting_id;
+  $scope.pmiId = pmiId;
+    $scope.startDate = startDate;
+    $scope.startTime = startTime;
+    $scope.topic = topic;
+    $scope.meeting_Id = meeting_Id;
+    $scope.timezone = timezone;
+    $scope.password = password;
  
    
 
@@ -1383,7 +1396,6 @@ hudweb.controller('DatepickerDemoCtrl', function ($scope) {
   $scope.today = function() {
     $scope.meeting.dt = new Date();
   };
-  //$scope.today();
 
   
 

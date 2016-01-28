@@ -67,7 +67,7 @@ if($routeParams.route == 'videos'){
     var toDate = date.getFullYear() + '-' + month+ '-' + date.getDate();
     var prevMonth = date.getMonth();
     var fromDate =  date.getFullYear() + '-' + prevMonth + '-' + date.getDate();
-    $http.get(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/completedMeetingList')+'&email='+$rootScope.meModel.email+'&fromDate='+fromDate+'&toDate='+toDate).success(function(response){
+    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/completedMeetingList')+'&email='+$rootScope.meModel.email+'&fromDate='+fromDate+'&toDate='+toDate).success(function(response){
             
             $scope.meetingList = response.meetings;
            
