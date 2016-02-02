@@ -1047,13 +1047,8 @@ var tzName = jstz.determine().name(); // America/Los_Angeles
 $scope.meeting.meetingTopic = topic;
 if(time != undefined){
 var clock = moment(time).lang('en');
-var day = clock.tz('Etc/GMT+12').format('DD');
-day = parseInt(day) +1;
-if(day < 10){
-  day = "0"+day;
-}
+$scope.date = clock.utc().format('MM/DD/YYYY');
 
-$scope.date = clock.tz('Etc/GMT+12').format('MM/'+day+'/YYYY');
 }
 else{ $scope.date = new Date();}
 $scope.meeting.times = $scope.date;
