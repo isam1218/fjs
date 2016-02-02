@@ -86,11 +86,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					break;
 			}
 		}, false);
-		
-		
-		worker.onerror = function(evt){
-			console.error("error with worker port, line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
-		};
 	}
 	else {
 		window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
@@ -485,7 +480,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			transformResponse: false
 		})
 		.then(function(response) {
-			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
+			// account for characters that may break parse
+			var data = JSON.parse(response.data
+				.replace(/\\'/g, "'")
+				.replace(/([\u0000-\u001F])/g, function(match) {
+					var c = match.charCodeAt();
+					return "\\u00" + Math.floor(c/16).toString(16) + (c%16).toString(16);
+				})
+			);
 	
 			for (var key in data) {
 				// create xpid for each record

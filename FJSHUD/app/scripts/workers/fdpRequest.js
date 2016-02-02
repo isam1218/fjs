@@ -79,21 +79,8 @@ httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
 		
         xmlhttp.onreadystatechange = function() {
 			// waaaaiiiiiit!
-            if (xmlhttp.readyState == 4) {
-				if (callback) {
-					try {
-						if (xmlhttp.status === 200) {
-							callback(xmlhttp, xmlhttp.responseText, true);
-						}
-						else {
-							callback(xmlhttp, xmlhttp.responseText, false);
-						}
-					}
-					catch (e) {
-						callback({"status":0, responseText:"", aborted:true}, "", false);
-					}
-				}
-			}
+            if (xmlhttp.readyState == 4 && callback)
+				callback(xmlhttp);
         };
 
         xmlhttp.send(this.getParamData(data));
