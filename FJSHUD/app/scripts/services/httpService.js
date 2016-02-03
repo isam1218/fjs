@@ -60,6 +60,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 						
 						if ($rootScope.networkError)
 							$rootScope.$broadcast('network_issue', null);
+						
+						document.cookie = 'tab=true; path=/';
 		            }
 		            break;
 		        case "feed_request":
