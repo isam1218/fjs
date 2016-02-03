@@ -6,7 +6,7 @@ fjs.CONFIG = {
                 , loginURL: {{ login_url }}
       , ppsServer: {{ pps_url }}
     }
-    , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','mycalls','groups','voicemailbox','calllog','server','location_status', 
+    , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','weblauncher_task','mycalls','groups','voicemailbox','calllog','server','location_status', 
             'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status',
             'queue_call','queuepermissions', 'queue_stat_calls',
             'calldetails',  'grouppermissions', 'groupcontacts', 
