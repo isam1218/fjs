@@ -112,6 +112,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 							handle: '.Header, .List',
 							helper: 'clone',
 							appendTo: 'body',
+							delay: 150,
 							cursorAt: { top: 25 },
 							start: function(event, ui) {
 								// visual cues
