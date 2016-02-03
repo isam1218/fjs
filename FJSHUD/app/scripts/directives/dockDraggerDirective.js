@@ -21,6 +21,7 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 				handle: '.Header, .List',
 				helper: 'clone',
 				appendTo: 'body',
+				delay: 150,
 				scroll: false,
 				iframeFix: true,
 				cursorAt: { top: 25 },
