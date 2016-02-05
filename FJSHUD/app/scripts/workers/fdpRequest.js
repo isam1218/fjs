@@ -62,7 +62,13 @@ httpRequest.prototype.getParamData = function(data) {
  };
 
 httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
-	   var xmlhttp = this.getXmlHttp();
+		var xmlhttp = this.getXmlHttp();
+	   
+		this.abort = function() {
+			// only abort non-sync requests
+			if (url.indexOf(this.SYNC_PATH) == -1)
+				xmlhttp.abort();
+		};
 
         xmlhttp.open(method,url);
 

@@ -2,26 +2,32 @@ var fjs = {};
 importScripts("fdpRequest.js");
 importScripts("../../properties.js");
 
+var request = new httpRequest();
+var header = {};
+
 var synced = false;
 var sync_delay = fjs.CONFIG.SYNC_DELAY;
 var sync_failures = 0;
 
-var node = undefined;
-var auth = undefined;
-
 var data_obj = {};
 var feeds = fjs.CONFIG.FEEDS;
 var timestamp_flag = false;
+var temp_feed;
 
 self.addEventListener('message',function(event){
 	if(event.data.action){
 		switch(event.data.action){
 			case 'authorized':
-				node = event.data.data.node;
-				auth = event.data.data.auth;
+				// server url was updated
 				if(event.data.data.serverURL && event.data.data.serverURL != undefined){
 					fjs.CONFIG.SERVER.serverURL = event.data.data.serverURL;
 				}
+				
+				// ajax request headers
+				header = {
+					"Authorization": event.data.data.auth,
+					"node": event.data.data.node,
+				};
 				
 				self.postMessage({"action":"init"});
 				
@@ -46,6 +52,11 @@ self.addEventListener('message',function(event){
 					}
 				}
 			
+				break;
+			case 'add':
+				request.abort();
+				temp_feed = event.data.feed;
+				
 				break;
 		}
 	}
@@ -80,9 +91,7 @@ function sync_request(f){
 	for (var i = 0; i < f.length; i++)
 		newFeeds += '&' + f[i] + '=';
 	
-	var request = new httpRequest();
 	var url = fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds;
-	var header = construct_request_header();
 	
 	request.makeRequest(url,"POST",{},header,function(xmlhttp){
 		if (xmlhttp.status && xmlhttp.status == 200){
@@ -97,7 +106,7 @@ function sync_request(f){
 			
 			for (var feed in synced_data) {
 				// first time
-				if (!synced)
+				if (!data_obj[feed])
 					data_obj[feed] = synced_data[feed];
 				else {
 					for (var key in synced_data[feed]) {
@@ -160,17 +169,23 @@ function sync_request(f){
 }
 
 function do_version_check() {
-	var params = '';
+	var url = fjs.CONFIG.SERVER.serverURL;
 
-	// only need feed list on initial sync
+	// only need full list on initial sync
 	if (!synced) {
+		url += request.VERSIONS_PATH + '?t=web';
+		
 		for (var i = 0, iLen = feeds.length; i < iLen; i++)
-			params += '&' + feeds[i] + '=';
+			url += '&' + feeds[i] + '=';
 	}
-			
-	var request = new httpRequest();
-	var url = fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + params;
-	var header = construct_request_header();
+	// new feed entered the game
+	else if (temp_feed) {
+		url += request.VERSIONS_PATH + '?t=web&' + temp_feed + '=';
+		temp_feed = null;
+	}
+	// normal version check
+	else
+		url += request.VERSIONSCACHE_PATH + '?t=web';
 	
 	request.makeRequest(url,"POST",{},header,function(xmlhttp){
 		if (xmlhttp.status == 200){
@@ -230,13 +245,4 @@ function resume_sync(status) {
 	
 	// continue le loop
 	setTimeout('do_version_check();', sync_delay);
-}
-
-function construct_request_header(){
-	var header = {
-		"Authorization":auth,
-    	"node":node,
-  	};
-
-  	return header;
 }
