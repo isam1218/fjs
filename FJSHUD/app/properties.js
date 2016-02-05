@@ -13,7 +13,7 @@ fjs.CONFIG = {
             'contactpermissions', 'contactstatus', 'fdpImage',   'group_page_member',
             'weblauncher', 'weblaunchervariables',  
             'streamevent','conferencemembers',
-            'conferencepermissions','conferencestatus','callrecording','parkedcalls','mycalldetails','i18n_langs','quickinbox',]
+            'conferencepermissions','conferencestatus','parkedcalls','mycalldetails','i18n_langs','quickinbox',]
     , 
     CALL_STATES:{
         CALL_UNKNOWN:-1,
