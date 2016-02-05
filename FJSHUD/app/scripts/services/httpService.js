@@ -536,6 +536,24 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		return deferred.promise;
 	};
 	
+	this.addFeedToSync = function(f) {
+		// make sure it's not already there
+		for (var i = 0, len = feeds.length; i < len; i++) {
+			if (feeds[i] == f)
+				return false;
+		}
+		
+		// add new feed here and in worker
+		feeds.push(f);
+		
+		worker.postMessage({
+			"action": "add",
+			"feed": f
+		});
+		
+		return true;
+	};
+	
 	// manually override 'delete' status in web worker
 	this.deleteFromWorker = function(feed, xpid) {
 		if (worker) {

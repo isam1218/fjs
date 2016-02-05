@@ -4,6 +4,8 @@
 
 <div class="ListView fj-scrollable"> 
 	<div>
+		<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
+		
 		<div class="vmsection recording" ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid">
 			<avatar profile="recording" context="recordings" type="{{::recording.type}}"></avatar>
 			<div class="vminfo recording" ng-click="playRecording(recording)"> 
