@@ -538,20 +538,24 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	
 	this.addFeedToSync = function(f) {
 		// make sure it's not already there
+		var found = false;
+		
 		for (var i = 0, len = feeds.length; i < len; i++) {
-			if (feeds[i] == f)
-				return false;
+			if (feeds[i] == f) {
+				found = true;
+				break;
+			}
 		}
 		
-		// add new feed here and in worker
-		feeds.push(f);
+		// remember feed locally
+		if (!found)
+			feeds.push(f);
 		
+		// ping worker to re-do version check
 		worker.postMessage({
 			"action": "add",
 			"feed": f
 		});
-		
-		return true;
 	};
 	
 	// manually override 'delete' status in web worker
