@@ -34,9 +34,8 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 				
 				setUpWatcher();
 				
-				// add to sync (return false means it's already in there)
-				if (!httpService.addFeedToSync(syncFilter))
-					httpService.getFeed(syncFilter);
+				// add to sync
+				httpService.addFeedToSync(syncFilter);
 			}
 		})
 		.finally(function() {
