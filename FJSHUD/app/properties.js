@@ -49,7 +49,8 @@ fjs.CONFIG = {
         WINDOWS_NEW:'<%= WINDOWS_PLUGIN_VERSION %>',
         MAC_NEW:'<%= MAC_PLUGIN_VERSION %>'
     },
-    DEBUG:true,
+   BUILD_NUMBER: <%= BUILD_NUMBER %>',
+   DEBUG:true,
 	SYNC_DELAY: 1500,
 	ACTIVITY_DELAY: 60000
 };
