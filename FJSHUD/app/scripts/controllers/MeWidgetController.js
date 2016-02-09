@@ -870,15 +870,13 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.showCallOvery = function(screen){
-        var data = contactService.getContact($scope.meModel.my_pid);
-        if(!data){
-            data = {};
-            data.displayName = $scope.currentCall.displayName;
-            data.xpid = $scope.currentCall.xpid;
-        }
-        data.screen = screen;
-        data.call = $scope.currentCall;
-        data.close = true;
+		// create temp object for overlay
+        var data = {
+			xpid: $rootScope.myPid,
+			call: $scope.currentCall,
+			screen: screen,
+			close: true
+		};
         
         $scope.showOverlay(true, 'CallStatusOverlay', data);
     };
