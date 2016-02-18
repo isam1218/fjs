@@ -8,6 +8,15 @@
 .Widget.FileShare .Intro {
   margin: 0px 0 10px 10px;
 }
+.Widget.FileShare .WidgetHeader {
+  height: 80px;
+}
+.Widget.FileShare .WidgetHeader img {
+  float: left;
+}
+.Widget.FileShare .WidgetHeader h1 {
+  float: left;
+}
 .Widget.FileShare .Logo {
   margin-left: 20px;
 }
@@ -28,6 +37,14 @@
   width: 230px;
   padding-left: 10px;
   background-color: #f9f9f9;
+}
+.Widget.FileShare .Left .Section img {
+  float: left;
+}
+.Widget.FileShare .Left .Section h3 {
+  width: 140px;
+  float: left;
+  margin-left: 20px;
 }
 .Widget.FileShare .Left .SectionInvite {
   min-height: 110px;
