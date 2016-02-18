@@ -87,6 +87,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			key:"Zipwhip", 
 			enabled:false, 
 			title: "Zipwhip"
+		},
+		{
+			url:"#/fileshare", 
+			key:"FileShare", 
+			enabled:false, 
+			title: "FileShare"
 		}
     ];
 	
@@ -98,6 +104,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 					$scope.appIcons[i].enabled = data.showIntellinote;
 				else if ($scope.appIcons[i].key == 'Zipwhip')
 					$scope.appIcons[i].enabled = data.showZipwhip;
+				else if ($scope.appIcons[i].key == 'FileShare')
+					$scope.appIcons[i].enabled = data.showFileShare;
 				else if ($scope.appIcons[i].key == 'Zoom')
 					$scope.appIcons[i].enabled = data.showVideoCollab;
 				else if ($scope.appIcons[i].key == 'CallCenter')

@@ -1,4 +1,4 @@
-hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '$http', 'SettingsService', function($scope,$timeout, $rootScope, $http, settingsService) {
+hudweb.controller('FileShareController', ['$scope','$timeout', '$rootScope', '$http', 'SettingsService', function($scope,$timeout, $rootScope, $http, settingsService) {
 	$scope.addedContacts = [];
 	$scope.workspaces = [];
 	$scope.showInvite = false;

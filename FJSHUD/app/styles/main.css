@@ -15,6 +15,9 @@ html {
   user-select: none;
   overflow: hidden;
 }
+body {
+  font-size: 1em;
+}
 p {
   font-size: 11px;
 }
@@ -22,9 +25,6 @@ p {
 [ng-cloak],
 .ng-cloak {
   display: none !important;
-}
-body{
-  font-size:1em;
 }
 .upper {
   text-transform: uppercase;
@@ -386,6 +386,10 @@ body{
 .TopBarItemAppIcon.Zipwhip,
 .TopBar2ItemAppIcon.Zipwhip {
   background: url("../img/zipwhipIcon.png") no-repeat 1px 6px;
+}
+.TopBarItemAppIcon.FileShare,
+.TopBar2ItemAppIcon.FileShare {
+  background: url("../img/fileshare.png") no-repeat 1px 6px;
 }
 .TopBarItemAppIcon.more {
   background-position: -280px -40px;
@@ -1565,6 +1569,7 @@ body{
   width: 100%;
   margin: 0 auto;
   padding: 10px 0;
+  min-height: 45px;
 }
 .ToolBar .XButton {
   width: 32.5%;
@@ -2191,6 +2196,7 @@ body{
   width: 100%;
   padding-bottom: 10px;
   -ms-flex: 1;
+  -webkit-flex: 1;
 }
 .WidgetMe .Preferences-Holder .SettingsPanel.DialogContentMainBlock_List > div.padding {
   padding-bottom: 30px;
@@ -5969,6 +5975,225 @@ form ul li {
   text-align: center;
 }
 .Widget.Intellinote .Right .WorkspaceButtonDisabled div.Down {
+  padding-top: 4px;
+}
+.Widget.FileShare {
+  font-size: 12px;
+  padding: 10px;
+}
+.Widget.FileShare input[type="search"] {
+  float: none;
+}
+.Widget.FileShare .Intro {
+  margin: 0px 0 10px 10px;
+}
+.Widget.FileShare .Logo {
+  margin-left: 20px;
+}
+.Widget.FileShare .Left {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  float: left;
+  width: 48%;
+}
+.Widget.FileShare .Left .Section {
+  min-height: 70px;
+  width: 230px;
+  padding-left: 10px;
+  background-color: #f9f9f9;
+}
+.Widget.FileShare .Left .SectionInvite {
+  min-height: 110px;
+  width: 230px;
+  padding-left: 10px;
+  background-color: #f9f9f9;
+}
+.Widget.FileShare .Left h4 {
+  font-size: 14px;
+  color: #015d73;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+.Widget.FileShare .Right {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: 1;
+  flex: 1 1 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  float: right;
+  width: 48%;
+  clear: right;
+}
+.Widget.FileShare .Right .Section {
+  min-height: 70px;
+  width: 240px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  margin-left: -10px;
+  background-color: white;
+}
+.Widget.FileShare .Right .SearchBox.Add {
+  color: gray;
+  background: url("../img/add-blue.png") no-repeat;
+  background-position: 2%;
+}
+.Widget.FileShare .Right .SectionWorkspace {
+  min-height: 110px;
+  width: 240px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  margin-left: -10px;
+  background-color: white;
+}
+.Widget.FileShare .Right .SearchHolder {
+  position: relative;
+}
+.Widget.FileShare .Right .SectionWorkspace .SearchContactOverlay {
+  left: -10px;
+  width: 240px;
+  padding-left: 10px;
+  border-radius: 0px;
+  border-color: #015d73;
+  padding-right: 10px;
+}
+.Widget.FileShare .Right .SectionWorkspace .SearchContactOverlay .Header {
+  color: #015d73;
+  width: 220px;
+  margin-left: 13px;
+  padding-bottom: 9px;
+}
+.Widget.FileShare .Right .SectionWorkspace .SearchContactOverlay .Avatar {
+  border-color: #015d73;
+}
+.Widget.FileShare .Right .SearchHolder input {
+  width: 100%;
+  border-radius: 0px;
+}
+@-moz-document url-prefix() {
+  .Widget.FileShare .Right .SearchHolder {
+    position: relative;
+  }
+}
+.Widget.FileShare .Right .Contacts {
+  font-size: 14px;
+}
+.Widget.FileShare .Right .widget-zoom-contacts {
+  top: 0px;
+}
+.Widget.FileShare .Right .Workspaces {
+  position: relative;
+}
+.Widget.FileShare .Right .Workspaces .List {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px #ccc;
+}
+.Widget.FileShare .Right .Workspaces .List .Header {
+  position: relative;
+  font-weight: bold;
+  padding: 7px 0 7px 30px;
+}
+.Widget.FileShare .Right .Workspaces .List .Header .Down {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  height: 80%;
+  width: 15%;
+  padding-top: 4px;
+  text-align: center;
+}
+.Widget.FileShare .Right .Workspaces .List .Items {
+  font-size: 13px;
+  border-top: 1px solid #333;
+  margin: 0 10px 10px 10px;
+  max-height: 75px;
+  overflow-y: auto;
+}
+.Widget.FileShare .Right .Workspaces .List .Items div {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 5px;
+}
+.Widget.FileShare .Right .Workspaces .List .Items div:hover {
+  background-color: #eee;
+}
+.Widget.FileShare .Right .WorkspaceButton {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #015d73;
+  margin: 15px 0;
+  cursor: pointer;
+}
+.Widget.FileShare .Right .WorkspaceButton div {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.FileShare .Right .WorkspaceButton div.Down {
+  padding-top: 4px;
+}
+.Widget.FileShare .Right .WorkspaceButtonEnabled {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #015d73;
+  margin: 15px 0;
+  cursor: pointer;
+}
+.Widget.FileShare .Right .WorkspaceButtonEnabled div {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.FileShare .Right .WorkspaceButtonEnabled div.Down {
+  padding-top: 4px;
+}
+.Widget.FileShare .Right .WorkspaceButtonDisabled {
+  position: relative;
+  font-weight: bold;
+  color: white;
+  padding: 7px 0 7px 30px;
+  background-color: #b5b5b5;
+  margin: 15px 0;
+  cursor: pointer;
+}
+.Widget.FileShare .Right .WorkspaceButtonDisabled div {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 80%;
+  border-left: 1px solid white;
+  width: 15%;
+  text-align: center;
+}
+.Widget.FileShare .Right .WorkspaceButtonDisabled div.Down {
   padding-top: 4px;
 }
 .Widget.Zipwhip {

@@ -103,6 +103,11 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			templateUrl: 'views/Intellinote.html',
 			controller: 'IntellinoteController'
 		})
+		.when('/fileshare',
+		{
+			templateUrl: 'views/FileShare.html',
+			controller: 'FileShareController'
+		})
 		.when('/zipwhip',
 		{
 			templateUrl: 'views/Zipwhip.html',

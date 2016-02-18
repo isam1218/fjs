@@ -1,18 +1,29 @@
-<div class="Widget Intellinote" ng-click="showInvite = false">
+<div class="Widget FileShare" ng-click="showInvite = false">
     <div class="WidgetHeader">
-		<img src="img/Int-logo-icon.png" />
+		<img style="float:left" src="img/fileshareLg.png" /> <h1 style="float:left">Fonality File Sharing</h1>
     </div>
 
     <div class="WidgetBody">
 		<div class="Intro">
-			You are licensed to use the Fonality for Intellinote service. With this feature, you and your teams can get work done by capturing contextual information, collaborating and managing projects to completion on a powerful, versatile and integrated platform.
+			<h3>Share Files with your contacts and groups.</h3>
 		</div>
+
+		
 		
 		<div class="Content">
 			<div class="Left">
+				<div class="SectionInvite">
+				<h3>Select people from your HUD that you wish to</h3>
+			<!--<i style="font-size:11px">Users can add individuals and groups.</i>-->				</div>
 				<div class="Section">
-					<h4>Intellinote Home</h4>
-					<i style="font-size:11px">Users can directly access their Intellinote home page.</i>
+					<img src="img/dropbox.gif" style="float:left">
+					<h3 style="width:140px;float: left;margin-left: 20px;">Share your Dropbox files</h3>
+					<!-- <i style="font-size:11px">Users can directly access their Intellinote home page.</i> -->
+				</div>
+				<div class="Section">
+					<img src="img/folderIcon.png" style="float:left">
+					<h3 style="width:140px;float: left;margin-left: 20px;">Share files from your computer</h3>
+					<!-- <i style="font-size:11px">Users can directly access their Intellinote home page.</i> -->
 				</div>
 				<!-- <div class="SectionInvite">
 				<h4>Invite</h4>
@@ -21,9 +32,39 @@
 			</div>
 			
 			<div class="Right">
+				<div class="SectionWorkspace">
+		<div class="SearchHolder" >
+					<input type="search" ng-focus="removeText()"  ng-model-options="{debounce: 200}" style="border:1px solid #015d73" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search="all|addedContacts" />
+				</div>				
+				<div id="contacts-height" style="max-height:120px;overflow-y:auto">
+				<div class="Contacts widget-zoom-contacts" style="float:none;width:100%;max-height:none">
+					<div class="ListRow Small " data-ng-repeat="contact in addedContacts | orderBy:'displayName' track by contact.xpid ">
+						<avatar profile="contact" widget="zoom"></avatar>
+						<div class="ListRowContent" dockable="contact">
+							<div class="ZoomRowTitle">
+								<div class="name">{{::contact.displayName}}</div>
+								<div class="link">#{{::contact.primaryExtension }}</div>
+							</div>
+							<div class="ZoomRowStatus">
+								
+								<div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.hud_status}}"></div>
+								<div class="ListRowDesc">{{contact.hud_status}}</div>
+							</div>
+						</div>
+						<button data-ng-click="deleteContact(contact.xpid)" class="ListRowItemDel XButton XButtonRed">Delete</button>
+					</div>
+				</div>
+			</div>
+		</div>
 				<div class="Section">
 					<div class="WorkspaceButton" ng-click="verifyLicense()">
-						Go to Intellinote
+						Share Dropbox files
+						<div style="padding-top:2px">&#9654;</div>
+					</div>
+				</div>
+				<div class="Section">
+					<div class="WorkspaceButton" ng-click="verifyLicense()">
+						Share computer files
 						<div style="padding-top:2px">&#9654;</div>
 					</div>
 				</div>
@@ -77,6 +118,6 @@
 			</div>
 
 		</div>
-		<div style="margin-top: 20px;margin-left: 5px;">*Please check your popup settings in your browser to ensure that the collaboration application launches.</div>
+		<!-- <div style="margin-top: 20px;margin-left: 5px;">*Please check your popup settings in your browser to ensure that the collaboration application launches.</div> -->
     </div>
 </div>

@@ -1,17 +1,17 @@
-.Widget.Intellinote {
+.Widget.FileShare {
   font-size: 12px;
   padding: 10px;
 }
-.Widget.Intellinote input[type="search"] {
+.Widget.FileShare input[type="search"] {
   float: none;
 }
-.Widget.Intellinote .Intro {
-  margin: 0px 0 20px 0;
+.Widget.FileShare .Intro {
+  margin: 0px 0 10px 10px;
 }
-.Widget.Intellinote .Logo {
+.Widget.FileShare .Logo {
   margin-left: 20px;
 }
-.Widget.Intellinote .Left {
+.Widget.FileShare .Left {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
@@ -23,27 +23,26 @@
   float: left;
   width: 48%;
 }
-.Widget.Intellinote .Left .Section {
+.Widget.FileShare .Left .Section {
   min-height: 70px;
   width: 230px;
   padding-left: 10px;
   background-color: #f9f9f9;
 }
-.Widget.Intellinote .Left .SectionInvite {
+.Widget.FileShare .Left .SectionInvite {
   min-height: 110px;
   width: 230px;
   padding-left: 10px;
   background-color: #f9f9f9;
-  margin-top: 30px;
 }
-.Widget.Intellinote .Left h4 {
+.Widget.FileShare .Left h4 {
   font-size: 14px;
   color: #015d73;
   margin-bottom: 5px;
   margin-top: 10px;
   text-transform: uppercase;
 }
-.Widget.Intellinote .Right {
+.Widget.FileShare .Right {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
@@ -56,7 +55,7 @@
   width: 48%;
   clear: right;
 }
-.Widget.Intellinote .Right .Section {
+.Widget.FileShare .Right .Section {
   min-height: 70px;
   width: 240px;
   padding-left: 10px;
@@ -65,12 +64,12 @@
   margin-left: -10px;
   background-color: white;
 }
-.Widget.Intellinote .Right .SearchBox.Add {
+.Widget.FileShare .Right .SearchBox.Add {
   color: gray;
   background: url("../img/add-blue.png") no-repeat;
   background-position: 2%;
 }
-.Widget.Intellinote .Right .SectionWorkspace {
+.Widget.FileShare .Right .SectionWorkspace {
   min-height: 110px;
   width: 240px;
   padding-left: 10px;
@@ -78,12 +77,11 @@
   padding-top: 10px;
   margin-left: -10px;
   background-color: white;
-  margin-top: 30px;
 }
-.Widget.Intellinote .Right .SearchHolder {
+.Widget.FileShare .Right .SearchHolder {
   position: relative;
 }
-.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay {
+.Widget.FileShare .Right .SectionWorkspace .SearchContactOverlay {
   left: -10px;
   width: 240px;
   padding-left: 10px;
@@ -91,34 +89,34 @@
   border-color: #015d73;
   padding-right: 10px;
 }
-.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay .Header {
+.Widget.FileShare .Right .SectionWorkspace .SearchContactOverlay .Header {
   color: #015d73;
   width: 220px;
   margin-left: 13px;
   padding-bottom: 9px;
 }
-.Widget.Intellinote .Right .SectionWorkspace .SearchContactOverlay .Avatar {
+.Widget.FileShare .Right .SectionWorkspace .SearchContactOverlay .Avatar {
   border-color: #015d73;
 }
-.Widget.Intellinote .Right .SearchHolder input {
+.Widget.FileShare .Right .SearchHolder input {
   width: 100%;
   border-radius: 0px;
 }
 @-moz-document url-prefix() {
-  .Widget.Intellinote .Right .SearchHolder {
+  .Widget.FileShare .Right .SearchHolder {
     position: relative;
   }
 }
-.Widget.Intellinote .Right .Contacts {
+.Widget.FileShare .Right .Contacts {
   font-size: 14px;
 }
-.Widget.Intellinote .Right .widget-zoom-contacts {
+.Widget.FileShare .Right .widget-zoom-contacts {
   top: 0px;
 }
-.Widget.Intellinote .Right .Workspaces {
+.Widget.FileShare .Right .Workspaces {
   position: relative;
 }
-.Widget.Intellinote .Right .Workspaces .List {
+.Widget.FileShare .Right .Workspaces .List {
   position: absolute;
   top: 0;
   left: 0;
@@ -127,12 +125,12 @@
   border: 1px solid #ccc;
   box-shadow: 0 0 5px #ccc;
 }
-.Widget.Intellinote .Right .Workspaces .List .Header {
+.Widget.FileShare .Right .Workspaces .List .Header {
   position: relative;
   font-weight: bold;
   padding: 7px 0 7px 30px;
 }
-.Widget.Intellinote .Right .Workspaces .List .Header .Down {
+.Widget.FileShare .Right .Workspaces .List .Header .Down {
   position: absolute;
   top: 10%;
   right: 0;
@@ -141,22 +139,22 @@
   padding-top: 4px;
   text-align: center;
 }
-.Widget.Intellinote .Right .Workspaces .List .Items {
+.Widget.FileShare .Right .Workspaces .List .Items {
   font-size: 13px;
   border-top: 1px solid #333;
   margin: 0 10px 10px 10px;
   max-height: 75px;
   overflow-y: auto;
 }
-.Widget.Intellinote .Right .Workspaces .List .Items div {
+.Widget.FileShare .Right .Workspaces .List .Items div {
   cursor: pointer;
   font-size: 13px;
   padding: 5px;
 }
-.Widget.Intellinote .Right .Workspaces .List .Items div:hover {
+.Widget.FileShare .Right .Workspaces .List .Items div:hover {
   background-color: #eee;
 }
-.Widget.Intellinote .Right .WorkspaceButton {
+.Widget.FileShare .Right .WorkspaceButton {
   position: relative;
   font-weight: bold;
   color: white;
@@ -165,7 +163,7 @@
   margin: 15px 0;
   cursor: pointer;
 }
-.Widget.Intellinote .Right .WorkspaceButton div {
+.Widget.FileShare .Right .WorkspaceButton div {
   position: absolute;
   top: 15%;
   right: 0;
@@ -174,10 +172,10 @@
   width: 15%;
   text-align: center;
 }
-.Widget.Intellinote .Right .WorkspaceButton div.Down {
+.Widget.FileShare .Right .WorkspaceButton div.Down {
   padding-top: 4px;
 }
-.Widget.Intellinote .Right .WorkspaceButtonEnabled {
+.Widget.FileShare .Right .WorkspaceButtonEnabled {
   position: relative;
   font-weight: bold;
   color: white;
@@ -186,7 +184,7 @@
   margin: 15px 0;
   cursor: pointer;
 }
-.Widget.Intellinote .Right .WorkspaceButtonEnabled div {
+.Widget.FileShare .Right .WorkspaceButtonEnabled div {
   position: absolute;
   top: 15%;
   right: 0;
@@ -195,10 +193,10 @@
   width: 15%;
   text-align: center;
 }
-.Widget.Intellinote .Right .WorkspaceButtonEnabled div.Down {
+.Widget.FileShare .Right .WorkspaceButtonEnabled div.Down {
   padding-top: 4px;
 }
-.Widget.Intellinote .Right .WorkspaceButtonDisabled {
+.Widget.FileShare .Right .WorkspaceButtonDisabled {
   position: relative;
   font-weight: bold;
   color: white;
@@ -207,7 +205,7 @@
   margin: 15px 0;
   cursor: pointer;
 }
-.Widget.Intellinote .Right .WorkspaceButtonDisabled div {
+.Widget.FileShare .Right .WorkspaceButtonDisabled div {
   position: absolute;
   top: 15%;
   right: 0;
@@ -216,6 +214,6 @@
   width: 15%;
   text-align: center;
 }
-.Widget.Intellinote .Right .WorkspaceButtonDisabled div.Down {
+.Widget.FileShare .Right .WorkspaceButtonDisabled div.Down {
   padding-top: 4px;
 }
