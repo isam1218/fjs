@@ -1,6 +1,5 @@
-var fjs = {};
-importScripts("fdpRequest.js");
 importScripts("../../properties.js");
+importScripts("fdpRequest.js?v=" + fjs.CONFIG.BUILD_NUMBER);
 
 var request = new httpRequest();
 var header = {};

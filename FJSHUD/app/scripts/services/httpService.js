@@ -30,7 +30,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	
 	// check for second tab before starting web worker
 	if (document.cookie.indexOf('tab=true') == -1) {		
-		worker = new Worker("scripts/workers/fdpWebWorker.js");
+		worker = new Worker("scripts/workers/fdpWebWorker.js?v=" + fjs.CONFIG.BUILD_NUMBER);
 		
 		worker.addEventListener("message", function(event) {
 		    switch (event.data.action) {
