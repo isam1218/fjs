@@ -62,7 +62,13 @@ httpRequest.prototype.getParamData = function(data) {
  };
 
 httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
-	   var xmlhttp = this.getXmlHttp();
+		var xmlhttp = this.getXmlHttp();
+	   
+		this.abort = function() {
+			// only abort non-sync requests
+			if (url.indexOf(this.SYNC_PATH) == -1)
+				xmlhttp.abort();
+		};
 
         xmlhttp.open(method,url);
 
@@ -79,21 +85,8 @@ httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
 		
         xmlhttp.onreadystatechange = function() {
 			// waaaaiiiiiit!
-            if (xmlhttp.readyState == 4) {
-				if (callback) {
-					try {
-						if (xmlhttp.status === 200) {
-							callback(xmlhttp, xmlhttp.responseText, true);
-						}
-						else {
-							callback(xmlhttp, xmlhttp.responseText, false);
-						}
-					}
-					catch (e) {
-						callback({"status":0, responseText:"", aborted:true}, "", false);
-					}
-				}
-			}
+            if (xmlhttp.readyState == 4 && callback)
+				callback(xmlhttp);
         };
 
         xmlhttp.send(this.getParamData(data));

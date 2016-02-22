@@ -21,7 +21,8 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
     {upper: $scope.verbage.group, lower: 'groups'}, 
     {upper: $scope.verbage.queues, lower: 'queues'}, 
     {upper: $scope.verbage.call_log_tab, lower: 'calllog'}, 
-    {upper: $scope.verbage.recordings, lower: 'recordings'}];
+    {upper: $scope.verbage.recordings, lower: 'recordings'},
+    {upper: $scope.verbage.my_videos_tab, lower: 'videos'}];
 	
     // if route is defined (click on specific tab or manaully enter url)...
     if ($routeParams.route){
@@ -48,7 +49,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
 
     $scope.tabFilter = function(){
         var recordingPerm = settingsService.getPermission('showCallCenter');
-		
+     
         return function(tab){
             switch(tab.lower){
 				case "recordings":
@@ -73,11 +74,15 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
                     }
                     break;
                 case "queues":
-                    if($scope.contact.primaryExtension == ''){
+                	if(recordingPerm && $scope.contact.primaryExtension != '')
+                		return true;
+                	else
+                		return false;
+                    /*if($scope.contact.primaryExtension == ''){
                         return false;
                     }else{
                         return true;
-                    }
+                    }*/
                     break;
             }
 

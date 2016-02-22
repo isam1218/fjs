@@ -42,12 +42,12 @@
     overflow-y: hidden;
 	height: 100%;
 	width: 100%;
-    column-width: 170px;
-    -webkit-column-width: 170px;
-    -moz-column-width: 170px;
-    column-gap: 5px;
-    -webkit-column-gap: 5px;
-    -moz-column-gap: 5px;
+	display: flex;
+	display: -webkit-flex;
+	flex-flow: column wrap;
+	-webkit-flex-flow: column wrap;
+	align-content: flex-start;
+	-webkit-align-content: flex-start;
 	-webkit-transform: translateZ(0);
   
     &.ui-sortable:not(.ui-sortable-disabled) .Gadget {

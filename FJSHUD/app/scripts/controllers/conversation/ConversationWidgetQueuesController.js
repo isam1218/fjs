@@ -79,10 +79,11 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     {name:$scope.verbage.queue_active_calls, orig_name:$scope.verbage.queue_active_calls, id:7, type:'active'}
     ];
 
-    $scope.selectedConversationQueueOption = localStorage.selectedConversationQueueOption ? JSON.parse(localStorage.selectedConversationQueueOption) : $scope.sort_options[0];    
+    $scope.selectedConversationQueueOption = localStorage['Conversation_' + $routeParams.contactId + '_selectedConversationQueueOption_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Conversation_' + $routeParams.contactId + '_selectedConversationQueueOption_of_' + $rootScope.myPid]) : $scope.sort_options[0];
 
     $scope.sortConversationQueue = function(queueSelection){
         $scope.selectedConversationQueueOption = queueSelection;
+        localStorage['Conversation_' + $routeParams.contactId + '_selectedConversationQueueOption_of_' + $rootScope.myPid] = JSON.stringify(queueSelection);
         $scope.trancateSelectedName();
         
         switch(queueSelection.type){
@@ -90,43 +91,36 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
                 $scope.queues.sort(function(a,b){
                     return a.name.localeCompare(b.name);
                 });                    
-                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'waiting':
                 $scope.queues.sort(function(a,b){
                     return b.info.waiting - a.info.waiting;
                 }); 
-                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'avgwaiting':
                 $scope.queues.sort(function(a,b){
                     return b.info.esa - a.info.esa;
                 }); 
-                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case "avgtalk":
                 $scope.queues.sort(function(a,b){
                     return b.info.avgTalk - a.info.avgTalk;
                 });
-                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'total':
                 $scope.queues.sort(function(a,b){
                     return (b.info.completed + b.info.abandon + b.info.active) - (a.info.completed + a.info.abandon + a.info.active);
                 }); 
-                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'abandoned':
                 $scope.queues.sort(function(a,b){
                     return  b.info.abandonPercent - a.info.abandonPercent;
                 }); 
-                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
             case 'active':
                 $scope.queues.sort(function(a,b){
                     return  b.info.active - a.info.active ;
                 });
-                localStorage.selectedConversationQueueOption = JSON.stringify(queueSelection);
                 break;
         }
     };

@@ -1,6 +1,6 @@
 <div class="ToolBar">        
         <div class="SelectBox selectWrapper members">
-            <select class="HideFirst" ng-model="action.selected" ng-options="option.text for option in callOptions track by option.type" ng-change="makeCall(action.selected.type)"></select>
+            <select class="HideFirst" ng-model="selectedAction" ng-options="option.text for option in callOptions" ng-change="makeCall(selectedAction.type)"></select>
         </div>
 </div>
 
@@ -14,16 +14,17 @@
         </div>
 
         <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in members | filter: memberFilter() track by member.xpid" droppable="Call">        
-            <a ng-href="#/contact/{{::member.contactId}}">
                 <avatar profile="member.fullProfile"></avatar>
                 <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null"> 
-                    <a class="ListRowTitle GroupListRowTitle" ng-href="#/contact/{{::member.contactId}}">
+                    <a class="ListRowTitle GroupListRowTitle GroupPageListRowTitle" ng-href="#/contact/{{::member.contactId}}">
                         <span class="GroupPageDisplayName"> {{ ::member.fullProfile.displayName }} </span>
                         <br/>
-                        <div class="ListRowStatusIcon ListRowStatusIconGroupPage XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
-                        {{( member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}
+                        <div class="GroupPageStatus">
+                            <div class="ListRowStatusIcon ListRowStatusIconGroupPage XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
+                            <span>{{( member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}</span>
+                        </div>
                     </a>
-                    <div class="ListRowStatus extension">#{{ ::member.fullProfile.primaryExtension }}</div>
+                    <div class="ListRowStatus extension GroupPageListRowStatus">#{{ ::member.fullProfile.primaryExtension }}</div>
                 </div>
             </a>
         </div>

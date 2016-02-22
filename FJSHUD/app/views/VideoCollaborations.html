@@ -1,0 +1,54 @@
+<div class="ToolBar">
+	<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-model="calllog.query" ng-attr-placeholder="{{::verbage.search}}" />
+</div>
+
+<div class="WidgetTabContent">
+	<div class="ListLineContent Header LeftContactsColumns">
+		<div data-ng-click="sort('displayName')"
+			 class="ListLineContentCell Topic {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span class="upper">Topic</span>
+
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('duration')"
+			 class="ListLineContentCell Meeting_Id {{(sortField == 'duration' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span class="upper">Meeting ID</span>
+
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('startedAt')"
+			 class="ListLineContentCell videoStartedAt {{(sortField == 'startedAt' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span class="upper">{{::verbage.date}}</span>
+
+			<div class="DirectionArrow"></div>
+		</div>
+		<div data-ng-click="sort('incoming')"
+			 class="ListLineContentCell Start_Time {{(sortField == 'incoming' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span class="upper">Start Time</span>
+
+		
+			<div class="DirectionArrow"></div>
+		</div>
+	</div>
+
+	<div class="ListView">	
+		<div class="rows">
+			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in meetingList">
+				<!-- <div>
+					<avatar profile="call.fullProfile" type="{{::call.type}}"></avatar>
+				</div> -->
+				<div class="Name SmallFont-{{ :: call.displayName.length > 15 ? true : false}}"><div> {{ call.topic }}</div></div>
+				
+				<div class="MeetingId"> <span>{{ call.meeting_id }}</span></div>
+				
+ <div class="Date"> <span>{{ call.start_time |  date:'MMMM dd,yyyy':fon_lang_code }}</span></div>
+ <div class="Time"> <span>{{ call.start_time |  date:'hh:mm a':fon_lang_code }}</span></div>
+    			
+			</div>
+			<img src="img/XLoading.gif" ng-if="!meetingList" />
+			
+			
+			<div class="Empty" ng-if="!loading && calls.length == 0">{{::verbage.no_recent_calls_in_view}}</div>
+		</div>
+	</div>
+</div>

@@ -30,7 +30,7 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
     $scope.chatTabEnabled = false;
 
     settingsService.getPermissions().then(function(data){
-        $scope.recordingPermission = data.showCallCenter;
+        $scope.recordingPermission = data.showCallCenter;        
     });
 
     if (myQueues.queues.length > 0){

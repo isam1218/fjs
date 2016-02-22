@@ -1,5 +1,5 @@
 hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', 'HttpService','SettingsService', 'ContactService', function($rootScope, $scope, $timeout, $q, myHttpService, settingsService, contactService) {
-	$rootScope.myPid = null;
+	$rootScope.myPid = null;	
 	
 	$scope.number = "";
 	$scope.currentPopup = {};
@@ -37,6 +37,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		// show app
 		$timeout(function() {
 			angular.element(document.getElementById('AppLoading')).remove();
+			console.timeEnd('render');
 			
 			myHttpService.setUnload();
 	
@@ -48,19 +49,11 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 					// prevent ajax call from firing too often
 					activityTimeout = setTimeout(function() {
 						activityTimeout = null;
-					}, 10000);
+					}, fjs.CONFIG.ACTIVITY_DELAY);
 				}
 			};
 		}, 3000, false);
 	});
-
-    $scope.onBodyClick = function() {
-        $scope.currentPopup.url = null;
-        $scope.currentPopup.x = 0;
-        $scope.currentPopup.y = 0;
-        $scope.currentPopup.model = null;
-        $scope.currentPopup.target = null;
-    };
 
     $scope.broadcastDial = function(key){
         $scope.$broadcast("key_press",key);
@@ -80,7 +73,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
     $scope.barge_call = function(call,bargeType){
     	var xpid = call.fullProfile.xpid;
     	myHttpService.sendAction('contacts', bargeType + 'Call', {contactId: xpid});
-    	$scope.onBodyClick();
+    	$scope.closePopup();
 	};
 
 
@@ -95,6 +88,22 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
         $scope.currentPopup.position = {top:data.y+"px", left:data.x+"px"};
         $scope.currentPopup.model = data.model;
         $scope.currentPopup.target = $(target).attr("type") ? $(target).attr("type") : '';
+		
+		// set up ability to close pop-up
+		$('.PanelWrapper, .TopBar').bind('click', function() {
+			$scope.closePopup();
+			$scope.$digest();
+		});
+    };
+
+    $scope.closePopup = function() {
+        $scope.currentPopup.url = null;
+        $scope.currentPopup.x = 0;
+        $scope.currentPopup.y = 0;
+        $scope.currentPopup.model = null;
+        $scope.currentPopup.target = null;
+		
+		$('.PanelWrapper, .TopBar').unbind('click');
     };
 	
 	$scope.showOverlay = function(show, url, data) {

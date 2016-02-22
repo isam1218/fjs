@@ -18,6 +18,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     var VERSIONS_PATH = "/v1/versions";
     var VERSIONSCACHE_PATH = "/v1/versionscache";
 	var worker = undefined;
+
+	if(localStorage.serverHost != undefined){
+		fjs.CONFIG.SERVER.serverURL = localStorage.serverHost;
+	}
 	
 	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN');
 	$rootScope.browser = browser;
@@ -25,13 +29,17 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	$rootScope.isFirstSync = true;
 	
 	// check for second tab before starting web worker
-	if (document.cookie.indexOf('tab=') == -1) {		
+	if (document.cookie.indexOf('tab=true') == -1) {		
 		worker = new Worker("scripts/workers/fdpWebWorker.js");
 		
 		worker.addEventListener("message", function(event) {
 		    switch (event.data.action) {
 		        case "init":
 					workerStarted = true;
+					
+					console.timeEnd('worker');
+					console.log('syncing...');
+					console.time('sync');
 					
 		        	updateSettings('instanceId','update',localStorage.instance_id); 
 
@@ -42,10 +50,18 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		        case "sync_completed":
 		            if (event.data.data) {
 		                broadcastSyncData(event.data.data);
-						synced = true;
+						
+						if (!synced) {
+							console.timeEnd('sync');
+							console.log('rendering...');
+							console.time('render');
+							synced = true;
+						}
 						
 						if ($rootScope.networkError)
-							$rootScope.$broadcast('network_issue', {show: false});
+							$rootScope.$broadcast('network_issue', null);
+						
+						document.cookie = 'tab=true; path=/';
 		            }
 		            break;
 		        case "feed_request":
@@ -59,7 +75,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
       				break;
       			case "network_error":
       				if(!synced){
-      					$rootScope.$broadcast('network_issue', {show: true});
+      					$rootScope.$broadcast('network_issue', 'networkError');
 						worker.terminate();
 					}
       				break;
@@ -70,11 +86,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					break;
 			}
 		}, false);
-		
-		worker.onerror = function(evt){
-			console.log("error with shared worker port");
-			console.log("Line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
-		};
 	}
 	else {
 		window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
@@ -103,6 +114,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	        "data": {
 	            "node": nodeID,
 	            "auth": "auth=" + authTicket,
+	            "serverURL":fjs.CONFIG.SERVER.serverURL
 	        }
 
 	    };
@@ -116,7 +128,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			localStorage.removeItem("nodeID");
 			attemptLogin();
 		}
-	}, 20000, false);
+	}, 120000, false);
 	
 	/**
 		AUTHORIZATION
@@ -135,8 +147,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
             + "&lang=eng"
             + "&revoke_token="; // + authTicket;
 			
+		worker.terminate();
+		
 		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-			
 		window.onbeforeunload = null;
 		location.href = authURL;
 	};
@@ -159,55 +172,55 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		authTicket = localStorage.authTicket;
 		
 	// get node id
+	var clientRegistry = function(){
+			$http({
+				url:fjs.CONFIG.SERVER.serverURL 
+				+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
+				+ authTicket,
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded'
+				},
+				data:'',
+				method:'POST'
+			})
+			.success(function(response) {
+				var nodes = response.match(/node=([^\n]+)/);
+				if(nodes && nodes.length > 0){
+					nodeID = nodes[1];
+					localStorage.nodeID = nodeID;
+				}else{
+					localStorage.serverHost = response.match(/RedirectHost=([^\n]+)/)[1];
+					fjs.CONFIG.SERVER.serverURL = localStorage.serverHost;
+					clientRegistry();			
+				}
+				// start shared worker
+				authorizeWorker();
+			})
+			.error(function(response, status) {
+				switch(status){
+					case 403:
+					case 402:
+						delete localStorage.me;
+						delete localStorage.nodeID;
+						delete localStorage.authTicket;
+						$rootScope.$broadcast('no_license', 'networkError');
+
+						break;
+					case 404:
+					case 500:
+					case 503:
+						$rootScope.$broadcast('network_issue', 'networkError');
+						break;
+					default:
+						attemptLogin();
+						break;
+				}
+			});
+	};
+	
 	if (localStorage.nodeID === undefined) {
-		$http({
-			url:fjs.CONFIG.SERVER.serverURL 
-			+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
-			+ authTicket,
-			headers:{
-				'Content-Type':'application/x-www-form-urlencoded'
-			},
-			data:'',
-			method:'POST'
-		})
-		.success(function(response) {
-			nodeID = response.match(/node=([^\n]+)/)[1];
-			localStorage.nodeID = nodeID;
-
-			
-			// start shared worker
-			authorizeWorker();
-		})
-		.error(function(response, status) {			
-			switch(status){
-				case 402:
-					//alert("bad authentication");
-					delete localStorage.me;
-					delete localStorage.nodeID;
-					delete localStorage.authTicket;
-					$rootScope.$broadcast('no_license', undefined);
-
-					break;
-				case 404:
-					$rootScope.$broadcast('network_issue',undefined);
-					break;
-				case 500:
-					$rootScope.$broadcast('network_issue',undefined);
-					break;
-				default:
-					/*
-					localStorage.removeItem('me');
-					localStorage.removeItem('nodeID');
-					localStorage.removeItem('authTicket');
-					$rootScope.networkError = true;
-					$rootScope.$broadcast('network_issue',undefined);
-					*/
-					attemptLogin();
-					break;
-			}
-		});
-	}
-	else {
+		clientRegistry();
+	}else {
 		nodeID = localStorage.nodeID;
 		authorizeWorker();
 	}
@@ -215,7 +228,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	/**
 		SCOPE FUNCTIONS
 	*/
-	
+
 	this.logout = function() {
         var authURL = fjs.CONFIG.SERVER.loginURL
             + '/oauth/authorize'
@@ -232,6 +245,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     	localStorage.removeItem("nodeID");
     	localStorage.removeItem("data_obj");
     	localStorage.removeItem("instance_id");
+    	localStorage.removeItem("serverHost");
 		
 		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     	
@@ -364,7 +378,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				progress: 100,
 			};
 			deferred_progress.notify(data);
-			console.log(evt);
 		},false);
 		request.open("POST",requestURL, true);
 		request.send(fd);
@@ -405,7 +418,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				progress: 100,
 			};
 			deferred_progress.notify(data);
-			console.log(evt);
 		},false);
 		
 		request.open("POST",requestURL, true);
@@ -440,7 +452,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		})
 		.error(function() {
 			// network error
-			$rootScope.$broadcast('network_issue', {show: true});
+			$rootScope.$broadcast('network_issue', 'networkError');
 		});
 	};
 	
@@ -468,7 +480,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			transformResponse: false
 		})
 		.then(function(response) {
-			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
+			// account for characters that may break parse
+			var data = JSON.parse(response.data
+				.replace(/\\'/g, "'")
+				.replace(/([\u0000-\u001F])/g, function(match) {
+					var c = match.charCodeAt();
+					return "\\u00" + Math.floor(c/16).toString(16) + (c%16).toString(16);
+				})
+			);
 	
 			for (var key in data) {
 				// create xpid for each record
@@ -521,6 +540,39 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		});
 		
 		return deferred.promise;
+	};
+	
+	this.addFeedToSync = function(f) {
+		// make sure it's not already there
+		var found = false;
+		
+		for (var i = 0, len = feeds.length; i < len; i++) {
+			if (feeds[i] == f) {
+				found = true;
+				break;
+			}
+		}
+		
+		// remember feed locally
+		if (!found)
+			feeds.push(f);
+		
+		// ping worker to re-do version check
+		worker.postMessage({
+			"action": "add",
+			"feed": f
+		});
+	};
+	
+	// manually override 'delete' status in web worker
+	this.deleteFromWorker = function(feed, xpid) {
+		if (worker) {
+			worker.postMessage({
+	            "action": "delete",
+	            "feed": feed,
+				"xpid": xpid
+	        });
+		}
 	};
 
 	// preload images

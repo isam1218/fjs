@@ -8,13 +8,19 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
 	$scope.query = "";
   $scope.myself = $rootScope.myPid;
 
-  $scope.sort_options = [
-  {name:$scope.verbage.sort_by_name, id:1,type:'fullProfile.displayName'},
-    {name:$scope.verbage.sort_by_call_status,id:2, type:'fullProfile.call'},
-    {name:$scope.verbage.sort_by_chat_status,id:3, type:'fullProfile.hud_status'},
-  ];
-  
-  $scope.selectedSort = $scope.sort_options[0];
+  $scope.selectedSort = localStorage['Group_' + $routeParams.groupId + '_member_sort_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Group_' + $routeParams.groupId + '_member_sort_of_' + $rootScope.myPid]) : 'displayName';
+
+  $scope.customMemberOrderBy = function(member){
+    localStorage['Group_' + $routeParams.groupId + '_member_sort_of_' + $rootScope.myPid] = JSON.stringify($scope.selectedSort);
+    switch($scope.selectedSort){
+      case 'displayName':
+        return member.fullProfile.displayName;
+      case 'fullProfile.call':
+        return [!member.fullProfile.call, member.fullProfile.displayName];
+      case 'fullProfile.hud_status':
+        return [member.fullProfile.hud_status, member.fullProfile.displayName];
+    }
+  }
 
   $scope.callExtension = function($event, contact){
     $event.stopPropagation();

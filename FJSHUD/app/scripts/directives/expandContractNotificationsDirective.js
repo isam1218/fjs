@@ -40,29 +40,36 @@ hudweb.directive('expandContractNotifications', function() {
 	       		if(!hoverFlag && content.length > 0){				
 	       			$('.LeftBar .NotificationDivider.firstHeaderDivider .headerText').hide();
 					$('.LeftBar .NotificationDivider.firstHeaderDivider').hide();
-	       			$scope.$safeApply(function(){
+	       			$scope.$digest(function(){
 	       			   $scope.showAllNotifications = true;
 	       			});   
 	       		    hoverFlag = true;	   
 	       		    
 	       		    var scroll_height = 0;
-       		        $.each(content, function(idx){                       
-	       			    var targetHeight = $(this).find('.chatNotification').outerHeight() + 20;
-	       			    if($(this).find('.NotificationZoomBtn').length > 0)
+	       		    var nLen = $(content).length;
+       		        //$.each(content, function(idx){ 
+	       		    for(var n = 0; n < nLen; n++)
+	       		    {	
+	       			    var item = $(content)[n];
+	       		    	var targetHeight = $(item).find('.chatNotification').outerHeight() + 20;
+	       		    	
+	       			    if($(item).find('.NotificationZoomBtn').length > 0)
 	       			    {	
-	       			    	targetHeight += $(this).find('.NotificationZoomBtn').outerHeight();
-	       			    }	
+	       			    	targetHeight += $(item).find('.NotificationZoomBtn').outerHeight();
+	       			    }
+	       			    
 	       			    var origHeight = (browser == "Firefox") ? 15 : 0;
-	       			    var topPos = (browser == "Firefox") ? $(this).hasClass('firstsection') ? 0 : -10 : -targetHeight;
-	       			    if(idx == 0)
-	       			    	$(this).closest('.Messages').addClass('firstMessage');
-	       		        
-	       			    $(this).stop().animate({ top: 0, height: origHeight }, animTime);	
-       				    $(this).stop().animate({top: topPos, height: targetHeight }, animTime);			       			    
+	       			    var topPos = (browser == "Firefox") ? $(item).hasClass('firstsection') ? 0 : -10 : -targetHeight;
 	       			   
-	       		         $(this).addClass('open'); 	
+	       			    if(n == 0)
+	       			    	$(item).closest('.Messages').addClass('firstMessage');
+	       		        
+	       			    $(item).stop().animate({ top: 0, height: origHeight }, animTime);	
+       				    $(item).stop().animate({top: topPos, height: targetHeight }, animTime);			       			    
+	       			   
+	       		         $(item).addClass('open'); 	
 	       		         scroll_height += targetHeight;
-       		        }); 
+       		        } 
        		        
        		        scroll_height += $(last).outerHeight() + 20;
        		        
@@ -85,28 +92,33 @@ hudweb.directive('expandContractNotifications', function() {
               $('.LeftBar .NotificationDivider.firstHeaderDivider').show();
             	var content = $(element).find('.NotificationSection:not(.last)');
             	
-            	$scope.$safeApply(function(){
+            	$scope.$digest(function(){
             	   $scope.showAllNotifications = false;    
             	});
             	if(content.length > 0){
-	        	    $.each(content, function(idx){	
-	        	    	if(idx == 0)
-	        	    	  $(this).closest('.Messages').removeClass('firstMessage');
+            		var lLen = $(content).length;
+	        	    //$.each(content, function(idx){	
+            		for(var l = 0; l < lLen; l++)
+	       		    {
+            			var item = $(content)[l];
+            			
+	        	    	if(l == 0)
+	        	    	  $(item).closest('.Messages').removeClass('firstMessage');
 	        	    	
 	        	    	if(browser == "Firefox") {	
-							var topPos = $(this).hasClass('firstsection') ? 0 : -10;
-	        				$(this).stop().animate({ top: topPos, height: 15 }, animTime, function() {
+							var topPos = $(item).hasClass('firstsection') ? 0 : -10;
+	        				$(item).stop().animate({ top: topPos, height: 15 }, animTime, function() {
 								$('.LeftBar .NotificationMessages .scroller').css('max-height', '');
 							});	
 	        	    	}
 	        	    	else {
-	        	    		$(this).stop().animate({top: 0, height: 0 }, animTime, function() {
+	        	    		$(item).stop().animate({top: 0, height: 0 }, animTime, function() {
 								$('.LeftBar .NotificationMessages .scroller').css('max-height', '');
 							});   
 						}
 						
-	        	        $(this).removeClass('open');          
-	        	    }); 				
+	        	        $(item).removeClass('open');          
+	        	    } 				
      
         	        hoverFlag = false;  
             	}	

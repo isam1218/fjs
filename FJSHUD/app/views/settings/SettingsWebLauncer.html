@@ -93,6 +93,7 @@
 	              > {{::verbage.silent}}</label>
 	              <label><input name="in.auto" type="checkbox" ng-model="currentWebLauncher.inboundAuto"
 	                ng-disabled="currentWebLauncher.id != 'user_default'"
+					ng-change="update_weblauncher_settings()"
 	              > {{::verbage.auto_launch}}</label>
 	          </div>
             </div>

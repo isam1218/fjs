@@ -2,31 +2,60 @@ var fjs = {};
 importScripts("fdpRequest.js");
 importScripts("../../properties.js");
 
-var synced = false;
-var sync_delay = 100;
+var request = new httpRequest();
+var header = {};
 
-var node = undefined;
-var auth = undefined;
+var synced = false;
+var sync_delay = fjs.CONFIG.SYNC_DELAY;
+var sync_failures = 0;
 
 var data_obj = {};
 var feeds = fjs.CONFIG.FEEDS;
 var timestamp_flag = false;
+var temp_feed;
 
 self.addEventListener('message',function(event){
 	if(event.data.action){
 		switch(event.data.action){
 			case 'authorized':
-				node = event.data.data.node;
-				auth = event.data.data.auth;
+				// server url was updated
+				if(event.data.data.serverURL && event.data.data.serverURL != undefined){
+					fjs.CONFIG.SERVER.serverURL = event.data.data.serverURL;
+				}
+				
+				// ajax request headers
+				header = {
+					"Authorization": event.data.data.auth,
+					"node": event.data.data.node,
+				};
+				
 				self.postMessage({"action":"init"});
 				
 				break;	
 			case 'sync':
 				do_version_check();
-
-				break;
+				break;	
 			case 'feed_request':
 				get_feed_data(event.data.feed);
+				break;
+			case 'delete':
+				var feed = event.data.feed;
+				var key = event.data.xpid.split('_')[0];
+				
+				if (data_obj[feed] && data_obj[feed][key]) {
+					for (var i = 0, len = data_obj[feed][key].items.length; i < len; i++) {
+						if (data_obj[feed][key].items[i].xpid == event.data.xpid) {
+							// force delete flag
+							data_obj[feed][key].items[i].xef001type = 'delete';
+							break;
+						}
+					}
+				}
+			
+				break;
+			case 'add':
+				request.abort();
+				temp_feed = event.data.feed;
 				
 				break;
 		}
@@ -62,17 +91,22 @@ function sync_request(f){
 	for (var i = 0; i < f.length; i++)
 		newFeeds += '&' + f[i] + '=';
 	
-	var request = new httpRequest();
 	var url = fjs.CONFIG.SERVER.serverURL + request.SYNC_PATH+"?t=web"+ newFeeds;
-	var header = construct_request_header();
 	
 	request.makeRequest(url,"POST",{},header,function(xmlhttp){
-		if (xmlhttp.status && xmlhttp.status == 200){		
-			var synced_data = JSON.parse(xmlhttp.responseText.replace(/\\'/g, "'"));
+		if (xmlhttp.status && xmlhttp.status == 200){
+			// account for characters that may break parse
+			var synced_data = JSON.parse(xmlhttp.responseText
+				.replace(/\\'/g, "'")
+				.replace(/([\u0000-\u001F])/g, function(match) {
+					var c = match.charCodeAt();
+					return "\\u00" + Math.floor(c/16).toString(16) + (c%16).toString(16);
+				})
+			);
 			
 			for (var feed in synced_data) {
 				// first time
-				if (!synced)
+				if (!data_obj[feed])
 					data_obj[feed] = synced_data[feed];
 				else {
 					for (var key in synced_data[feed]) {
@@ -129,26 +163,29 @@ function sync_request(f){
 			self.postMessage(sync_response);
 			synced = true;
 		}
-		else{
-			self.postMessage({
-				"action": "auth_failed"
-			});
-		}
 		
-		// again, again!
-		setTimeout('do_version_check();', sync_delay);
+		resume_sync(xmlhttp.status);
 	});
 }
 
-function do_version_check(){
-	var newFeeds ='';
+function do_version_check() {
+	var url = fjs.CONFIG.SERVER.serverURL;
 
-	for (var i = 0, iLen = feeds.length; i < iLen; i++)
-		newFeeds += '&' + feeds[i] + '=';
-			
-	var request = new httpRequest();
-	var url = fjs.CONFIG.SERVER.serverURL + (synced ? request.VERSIONSCACHE_PATH : request.VERSIONS_PATH) +"?t=web" + newFeeds;
-	var header = construct_request_header();
+	// only need full list on initial sync
+	if (!synced) {
+		url += request.VERSIONS_PATH + '?t=web';
+		
+		for (var i = 0, iLen = feeds.length; i < iLen; i++)
+			url += '&' + feeds[i] + '=';
+	}
+	// new feed entered the game
+	else if (temp_feed) {
+		url += request.VERSIONS_PATH + '?t=web&' + temp_feed + '=';
+		temp_feed = null;
+	}
+	// normal version check
+	else
+		url += request.VERSIONSCACHE_PATH + '?t=web';
 	
 	request.makeRequest(url,"POST",{},header,function(xmlhttp){
 		if (xmlhttp.status == 200){
@@ -173,30 +210,39 @@ function do_version_check(){
 				setTimeout('do_version_check();', sync_delay);
 		}
 		else {
-			if (xmlhttp.status == 404 || xmlhttp.status == 500){
-				self.postMessage({
-					"action": "network_error"
-				});
-			}
-			else if (xmlhttp.status != 0) {
-				self.postMessage({
-					"action": "auth_failed"
-				});
+			// first sync may be stuck, so try to re-auth after 5 tries
+			if (!synced) {
+				sync_failures++;
 				
-				// don't version check anymore
-				return;
+				if (sync_failures >= 5) {
+					self.postMessage({
+						"action": "auth_failed"
+					});
+					
+					return;
+				}
 			}
 			
-			setTimeout('do_version_check();', sync_delay);
+			resume_sync(xmlhttp.status);
 		}
 	});
 }	
 
-function construct_request_header(){
-	var header = {
-		"Authorization":auth,
-    	"node":node,
-  	};
-
-  	return header;
+function resume_sync(status) {
+	if (status == 404 || status == 500 || status == 503) {
+		self.postMessage({
+			"action": "network_error"
+		});
+	}
+	else if (status != 0 && status != 200) {
+		self.postMessage({
+			"action": "auth_failed"
+		});
+		
+		// don't version check anymore
+		return;
+	}
+	
+	// continue le loop
+	setTimeout('do_version_check();', sync_delay);
 }

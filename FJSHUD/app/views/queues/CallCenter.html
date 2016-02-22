@@ -41,11 +41,10 @@
       </div>		
     </div>
   </div>
-
   <div class="WidgetBody" ng-switch="selected">
-    <div class="WidgetTabBar">
-      <span ng-repeat="tab in tabs">
-      	<a href="#/callcenter/{{ ::tab.lower }}" ng-click="saveTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
+    <div class="WidgetTabBar">    
+      <span ng-repeat="tab in tabs | filter: tabFilter()"> 
+      	<a href="#/callcenter/{{ ::tab.lower }}" ng-click="saveTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : tab.lower == selected}">
       		<div class="inner">{{ ::tab.upper }}</div>
       		<div class="arrow"></div>
       	</a>
@@ -53,7 +52,7 @@
     </div>
 
     <!-- ng-views -->
-    <div ng-switch-when="myqueue" class="ListView WithToolBar"
+    <div ng-switch-when="myqueue" ng-if="in_queue" class="ListView WithToolBar"
          include-once="views/queues/AllQueues.html" 
 		 ng-controller="CallCenterQueueController"></div>
     <div ng-switch-when="allqueues" class="ListView WithToolBar"
@@ -61,7 +60,7 @@
 		 ng-controller="CallCenterQueueController"></div>
     <div ng-switch-when="mystatus" class="MyStatus ListView WithToolBar"
          include-once="views/queues/MyStatus.html" 
-		 ng-controller="CallCenterMyStatusController"></div>
+		 ng-controller="CallCenterMyStatusController"></div><!-- ng-if="in_queue"  -->
   </div>
 
 </div>

@@ -127,13 +127,33 @@ module.exports = function(grunt) {
       }
 
     },
+    ngtemplates: {
+      fjshudApp: {
+        options:{
+          standalone:false,
+          module:'fjshudApp',
+		  htmlmin: {
+			collapseWhitespace: true,
+			conservativeCollapse: true
+		  }
+        },
+        cwd: 'app',
+        src: ['views/**.html', 'views/**/**.html'],
+        dest: 'prod/app/scripts/templates.js'
+      }
+    },
+    bower_concat: {
+      dist: {
+        dest: 'app/scripts/bower.js'
+      }
+    },
     template:{
       dist:{
           options:{
             data:{
               serverUrl:"https://fdp-huc-v5.fonality.com",
               loginUrl:"https://auth.fonality.com",
-              ppsServer: "unknown_atm",
+              ppsServer: "https://pps.fonality.com:8443/pps/",
               version: "HUDW" + getBuildNumber(),
               WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
               MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
@@ -166,10 +186,10 @@ module.exports = function(grunt) {
       huc_dev:{
         options:{
           data:{
-            serverUrl:"https://huc-dev.fonality.com:8081",
-            loginUrl: "https://huc-dev.fonality.com:5501",
-            ppsServer: getPpsServer(),
-            version: "HUDW" + getBuildNumber(),
+            serverUrl: getServerUrl(),
+            loginUrl: getLoginUrl(),
+            ppsServer: getPpsServer(),            
+	    version: "HUDW" + getBuildNumber(),
             WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
             MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
             WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
@@ -192,7 +212,8 @@ module.exports = function(grunt) {
           "prod/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
           "prod/app/styles/firefox.css": "app/styles/firefox.less",
           "prod/app/styles/safari.css": "app/styles/safari.less",
-          "prod/app/styles/ie.css": "app/styles/ie.less"
+          "prod/app/styles/ie.css": "app/styles/ie.less",
+          "prod/app/styles/bootstrap.css": "app/styles/bootstrap.css"
         },
       },
       dev:{
@@ -204,7 +225,8 @@ module.exports = function(grunt) {
           "dest/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
           "dest/app/styles/firefox.css": "app/styles/firefox.less",
           "dest/app/styles/safari.css": "app/styles/safari.less",
-          "dest/app/styles/ie.css": "app/styles/ie.less"
+          "dest/app/styles/ie.css": "app/styles/ie.less",
+          "dest/app/styles/bootstrap.css": "app/styles/bootstrap.css"
         },
       },
       huc_dev:{
@@ -216,7 +238,8 @@ module.exports = function(grunt) {
           "huc_dev/app/styles/nativeAlert.css": "app/styles/nativeAlert.less",
           "huc_dev/app/styles/firefox.css": "app/styles/firefox.less",
           "huc_dev/app/styles/safari.css": "app/styles/safari.less",
-          "huc_dev/app/styles/ie.css": "app/styles/ie.less"
+          "huc_dev/app/styles/ie.css": "app/styles/ie.less",
+          "huc_dev/app/styles/bootstrap.css": "app/styles/bootstrap.css"
         },
       }
     },
@@ -225,9 +248,11 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: [ 
+        src: [
         'app/languageMap.js',
         'app/scripts/app.js',
+        'app/jstz-1.0.4.min.js',
+        'app/scripts/ui-bootstrap-tpls.js',
         'app/scripts/filters/**/*.js',
         'app/scripts/directives/**/*.js',
         'app/scripts/controllers/**/*.js',
@@ -245,16 +270,20 @@ module.exports = function(grunt) {
           beautify:true,
         },
         files:{
-          'dest/fjsmin.js': '<%= concat.dist.src %>'
+          'dest/fjsmin.js': '<%= concat.dist.src %>',
+
         }
       },
       dist:{
         options:{
           mangle:false,
           beautify:false,
+          compress:true,
         },
         files:{
-          'prod/app/scripts/fjs.min.js':['<%= concat.dist.dest %>']}
+          'prod/app/scripts/fjs.min.js':['<%= concat.dist.dest %>'],
+          'prod/app/scripts/bower.min.js':['app/scripts/bower.js']
+        }
       },
       huc_dev:{
         options:{
@@ -312,7 +341,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/res/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
-          {expand: true, src: ['app/styles/*.css'], dest: 'dest/'},
+          {expand: true, src: ['app/styles/bootstrap.css'], dest: 'prod/'},
 
         ]
       },
@@ -328,10 +357,13 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/res/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'dest/'},
-          {expand: true, src: ['app/styles/*.css'], dest: 'dest/'},
+          {expand: true, src: ['app/styles/bootstrap.css'], dest: 'dest/'},
+          
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
+              'app/jstz-1.0.4.min.js',
+              'app/scripts/ui-bootstrap-tpls.js',
               'app/scripts/filters/**/*.js',
               'app/scripts/directives/**/*.js',
               'app/scripts/controllers/**/*.js',
@@ -353,11 +385,13 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/res/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'huc_dev/'},
-          {expand: true, src: ['app/styles/*.css'], dest: 'dest/'},
+          {expand: true, src: ['app/styles/boostrap.css'], dest: 'huc_dev/'},
           
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
+              'app/jstz-1.0.4.min.js',
+              'app/scripts/ui-bootstrap-tpls.js',
               'app/scripts/filters/**/*.js',
               'app/scripts/directives/**/*.js',
               'app/scripts/controllers/**/*.js',
@@ -381,11 +415,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-template');
+  grunt.loadNpmTasks('grunt-angular-templates');
+  grunt.loadNpmTasks('grunt-bower-concat');
 
+  
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
-  grunt.registerTask('build-dist', ['concat','template:dist','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
+  grunt.registerTask('build-dist', ['template:dist','concat','ngtemplates','bower_concat','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
   grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);
   grunt.registerTask('build-huc-dev', ['concat','template:huc_dev','preprocess:huc_dev','less:huc_dev','uglify:huc_dev','copy:huc_dev','zip']);
-  
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };

@@ -52,7 +52,7 @@
 	  
 		<div ng-repeat="call in queue.calls | filter: filterActive(true) | filter: {agent: {displayName: query}}">
 			<div class="ActiveCall">
-				<div class="Info">
+				<div class="Info" dockable="call">
 					<div class="Arrow"></div>
 					<avatar profile="call" context="queue:call" type="3"></avatar>
 					<div class="Name">{{ ::call.displayName + ' (' + call.phone + ')' }}</div>
