@@ -108,6 +108,11 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			templateUrl: 'views/Zipwhip.html',
 			controller: 'ZipwhipController'
 		})
+		.when('/fileshare',
+		{
+			templateUrl: 'views/FileShare.html',
+			controller: 'FileShareController'
+		})
 		.otherwise({
 			redirectTo: '/settings'
 		});
