@@ -63,7 +63,6 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
       } else if (chosenTab == 'favorites'){
         localStorage['LeftBar_FavoriteContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
         localStorage['LeftBar_FavoriteContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
-	  		console.error('saving fave sort tab as - ', field);
       } else if (chosenTab == 'external'){
       	localStorage['LeftBar_ExternalContacts_sortTab_of_' + $rootScope.myPid] = JSON.stringify(field);
       	localStorage['LeftBar_ExternalContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);

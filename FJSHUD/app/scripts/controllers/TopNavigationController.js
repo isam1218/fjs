@@ -120,8 +120,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 	$scope.checkEmail = function(key,url){
 			
 		if(($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined) && (key === "Zoom" && key != "Box") && (url === '#/zoom' && url != '#/box')){
-			console.log("email is undefined", key);
-
 		
 		$modal.open({
       animation: $scope.animationsEnabled,
