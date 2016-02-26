@@ -120,7 +120,13 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		// show mysterious image
 		else
 			return 'img/XIcon-UnknownDocument.png';
+	};
+
+	$scope.showAttachmentsBox = function(){
+		$scope.attachmentItems = !$scope.attachmentItems;
+
 	};	
+	
 	
 	//this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
 	$scope.flow_cleanup = function($files){
