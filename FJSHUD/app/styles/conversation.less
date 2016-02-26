@@ -367,7 +367,7 @@
   border-top: solid 1px #ccc;
   position: relative;
   min-height: 35px;
-  margin: 10px;
+  margin-bottom: 10px;
   padding-top: 10px;
   
   .ChatAlertOptions {
@@ -392,8 +392,9 @@
 	-webkit-flex-direction: row;
 
 	.text.ChatInputBoxInput {
-	  margin-right: 10px;
-      font-size: 13px;	
+	  margin-right: 1px;
+    margin-left: 1px;
+    font-size: 13px;	
 	  padding:5px;
 	  overflow:auto;
 	  background-color: #fff;
@@ -401,8 +402,10 @@
 	  -webkit-flex: 1;
 	  max-width: 80%;
 	  height: 29px;
-	  min-height: 29px;
+	  min-height: 61px;
 	  max-height: 200px;
+
+
 	}
 	
 	.XButton.ChatInputBoxSend {
@@ -414,6 +417,54 @@
 	}
   }
 }
+#ChatMessageText{
+  padding-top:15px;
+  border: 0px;
+}
+#ChatMessageText[placeholder]{
+ color:#959595;
+}
+#attachmentBox{
+  border:1px solid black;
+  padding:14px 14px 10px 14px;
+  position:absolute;
+  top:-65px;
+  background-color:white;
+  border:1px solid grey;
+  box-shadow: 0 4px 10px grey;
+}
+.attachmentTitle{
+  font-size:14px;
+  padding-bottom:5px
+
+}
+.attachmentTitle img{
+    margin-right:5px;
+    height:16px;
+    width:16px;
+  }
+  #attachBtn{
+    border:0px solid black;
+    height:61px;
+    width:71px;
+    text-align:center;
+    padding-top:13px;
+    cursor:pointer
+  }
+  #sendBtn{
+    border:0px solid black;
+    height:61px;
+    width:71px;
+    text-align:center;
+    padding-top:8px;
+    cursor:pointer;
+  }
+  #sendBtn i{
+    color:white;
+    background: #858585;
+    padding: 7px 5px 7px 9px;
+    border-radius: 20px;
+  }
 
 .ListMessageChatWidget
 {

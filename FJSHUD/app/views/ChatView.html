@@ -66,7 +66,13 @@
 	</div>
 	
 	<div class="ChatInputFields" ng-if="enableChat">
-		<textarea id="ChatMessageText" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}" auto-focus></textarea>
-        <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()"><span>{{::verbage.send}}</span></div>
+		<div id="attachmentBox" ng-if="attachmentItems">
+			<div class="attachmentTitle">Upload From Computer</div>
+			<div class="attachmentTitle"><img src="img/dropbox.gif">Link From Dropbox</div>
+		</div>
+		<div id="attachBtn" ng-click="showAttachmentsBox()"><i class="material-icons">attach_file</i></div>
+		<textarea id="ChatMessageText"  placeholder="Type Your Message" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}" auto-focus></textarea>
+		<div id="sendBtn" ng-click="sendMessage()"><i class="material-icons" >send</i></div>
+        <!-- <div class="XButton XButtonNormal ChatInputBoxSend" ng-click="sendMessage()"><span>{{::verbage.send}}</span></div> -->
 	</div>
 </div>
