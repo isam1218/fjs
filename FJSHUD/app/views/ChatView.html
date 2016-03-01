@@ -25,15 +25,15 @@
                 <div class="time">{{::message.created | fondate:'MMMM D YYYY':fon_lang_code:'list_message_header'}}</div>
             
             </div>
-            <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag">
-                <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query"></div>
-                <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="showDownloadAttachmentOverlay(attachment)" >
+            <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag" ng-repeat="attachment in ::message.data.attachment">
+                <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query" ></div>
+                <div class="AttachmentContainer"  ng-click="!attachment.dropbox ? showDownloadAttachmentOverlay(attachment) : ''">
                     <img class="AttachmentImg" ng-src="{{::getAttachment(attachment)}}" />               
                     <p> {{ ::attachment.fileName }}</p>
+                    <p>{{::attachment.dropboxFile}}</p>
                 </div> 
-                <div class="AttachmentContainer" ng-repeat="file in ::message.data">
-                    <img class="AttachmentImg" ng-src="{{::getDropboxFile(file)}}" />               
-                </div> 
+                <a id="dropboxFile" href="{{::attachment.dropboxLink}}" target="_blank"> {{ ::attachment.dropboxFile }}</a>
+                <p> {{::attachment.fileBytes}}</p>
             </div>
         </div>
     </div>
