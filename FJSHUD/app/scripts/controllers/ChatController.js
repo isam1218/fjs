@@ -23,6 +23,44 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	$scope.filteredMessages = [];
 	$scope.messages = [];
 
+	
+	options = {
+
+    // Required. Called when a user selects an item in the Chooser.
+    success: function(files) {
+        //alert("Here's the file link: " + files[0].link);
+        httpService.sendAction('streamevent', 'sendConversationEvent', {
+				type: chat.type,
+				audience: chat.audience,
+				to: chat.targetId,
+				message: files[0].link,
+				data: '{"file":[{"dropbox":true}]}'
+			});
+       
+    },
+
+    // Optional. Called when the user closes the dialog without selecting a file
+    // and does not include any parameters.
+    cancel: function() {
+
+    },
+
+    // Optional. "preview" (default) is a preview link to the document for sharing,
+    // "direct" is an expiring link to download the contents of the file. For more
+    // information about link types, see Link types below.
+    linkType: "preview", // or "direct"
+
+    // Optional. A value of false (default) limits selection to a single file, while
+    // true enables multiple file selection.
+    multiselect: false, // or true
+
+    // Optional. This is a list of file extensions. If specified, the user will
+    // only be able to select files with these extensions. You may also specify
+    // file types, such as "video" or "images" in the list. For more information,
+    // see File types below. By default, all extensions are allowed.
+    extensions: ['.pdf', '.doc', '.docx'],
+};
+
 	// set chat data
 	if ($routeParams.contactId) {
 		chat.name = $scope.contact.displayName;
@@ -110,22 +148,34 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		});
 	};
 
-	$scope.getAttachment = function(url,fileName){
+	$scope.getAttachment = function(attachment){
 		// show image as is
-		if (fileName.match(/\.(png|jpg|jpeg|gif)$/i))
-			return httpService.get_attachment(url,fileName);
+		if (attachment.fileName.match(/\.(png|jpg|jpeg|gif)$/i))
+			return httpService.get_attachment(attachment.url,attachment.fileName);
 		// show document image
-		else if (fileName.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|js)$/i))
+		else if (attachment.fileName.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|js)$/i))
 			return 'img/XIcon-PreviewDocument.png';
 		// show mysterious image
 		else
 			return 'img/XIcon-UnknownDocument.png';
 	};
 
+	 $scope.getDropboxFile = function(attachment){
+		// show image as is
+		if(attachment[0].dropbox)
+			return 'img/dropbox.gif';
+		};
+
 	$scope.showAttachmentsBox = function(){
 		$scope.attachmentItems = !$scope.attachmentItems;
 
 	};	
+	$scope.chooseDropbox = function(){
+		Dropbox.choose(options);
+	};
+	$scope.uploadFile = function(file){
+		console.log("UPLOADED",file);
+	};
 	
 	
 	//this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
