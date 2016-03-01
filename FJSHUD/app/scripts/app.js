@@ -182,8 +182,7 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 		          case 'contact':
 		            tmpSelected = localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + finalContactId + '_tabs_of_' + $rootScope.myPid]) : 'chat';
 		            
-		            if(tmpSelected == 'queues' && $rootScope.showCallCenter)             	
-		            	//(localStorage['showCallCenter'] && localStorage['showCallCenter'] == 'false'))
+		            if(tmpSelected == 'queues' && !$rootScope.showCallCenter)            			            	
 		            	tmpSelected = 'chat';
 		            endPath = '/contact/' + finalContactId + '/' + tmpSelected;
 		            break;
