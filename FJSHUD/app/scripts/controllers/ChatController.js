@@ -23,18 +23,24 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	$scope.filteredMessages = [];
 	$scope.messages = [];
 
-	
 	options = {
 
     // Required. Called when a user selects an item in the Chooser.
     success: function(files) {
         //alert("Here's the file link: " + files[0].link);
+       var fileName = files[0].name;
+       fileName = fileName + "";
+       var fileLink = files[0].link;
+       fileLink = fileLink + "";
+       var fileBytes = files[0].bytes;
+       fileBytes = formatBytes(fileBytes);
+       fileBytes = fileBytes + "";
         httpService.sendAction('streamevent', 'sendConversationEvent', {
 				type: chat.type,
 				audience: chat.audience,
 				to: chat.targetId,
 				message: files[0].link,
-				data: '{"file":[{"dropbox":true}]}'
+				data: '{"attachment":[{"dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
        
     },
@@ -58,8 +64,17 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     // only be able to select files with these extensions. You may also specify
     // file types, such as "video" or "images" in the list. For more information,
     // see File types below. By default, all extensions are allowed.
-    extensions: ['.pdf', '.doc', '.docx'],
-};
+    extensions: ['.pdf', '.doc', '.docx','.zip','.txt'],
+	};
+
+	function formatBytes(bytes,decimals) {
+	   if(bytes == 0) return '0 Byte';
+	   var k = 1000;
+	   var dm = decimals + 1 || 3;
+	   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+	   var i = Math.floor(Math.log(bytes) / Math.log(k));
+	   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+	}
 
 	// set chat data
 	if ($routeParams.contactId) {
@@ -138,6 +153,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 					// mark the one that was clicked
 					if (attachments[a] == selected)
 						current = downloadables.length-1;
+					if(attachments.dropbox == true)
+						break;
 				}
 			}
 		}
@@ -150,21 +167,18 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
 	$scope.getAttachment = function(attachment){
 		// show image as is
-		if (attachment.fileName.match(/\.(png|jpg|jpeg|gif)$/i))
+		if(attachment && attachment.dropbox == true)
+			return 'img/dropbox.gif';
+		else if (attachment && attachment.fileName.match(/\.(png|jpg|jpeg|gif)$/i))
 			return httpService.get_attachment(attachment.url,attachment.fileName);
 		// show document image
-		else if (attachment.fileName.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|js)$/i))
+		else if (attachment && attachment.fileName.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|js)$/i))
 			return 'img/XIcon-PreviewDocument.png';
 		// show mysterious image
 		else
 			return 'img/XIcon-UnknownDocument.png';
 	};
 
-	 $scope.getDropboxFile = function(attachment){
-		// show image as is
-		if(attachment[0].dropbox)
-			return 'img/dropbox.gif';
-		};
 
 	$scope.showAttachmentsBox = function(){
 		$scope.attachmentItems = !$scope.attachmentItems;
@@ -172,9 +186,6 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	};	
 	$scope.chooseDropbox = function(){
 		Dropbox.choose(options);
-	};
-	$scope.uploadFile = function(file){
-		console.log("UPLOADED",file);
 	};
 	
 	
@@ -272,6 +283,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
+		console.log("DATA",data);
 		var found = [];
 		var incoming = false;
 		
