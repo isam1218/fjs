@@ -7,7 +7,7 @@
 			<input type="button" class="ChatSearchDownArrow"  ng-click="searchChat(1)" />
 		</div>
     </div>
-    <button class="XButton XButtonNormal group" ng-if="::!showAlerts" ng-disabled="!enableChat" ng-click="showAttachmentOverlay()"><span>{{::verbage.file_share}}</span></button>
+    <!-- <button class="XButton XButtonNormal group" ng-if="::!showAlerts" ng-disabled="!enableChat" ng-click="showAttachmentOverlay()"><span>{{::verbage.file_share}}</span></button> -->
 
 	<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
 </div>
@@ -25,15 +25,17 @@
                 <div class="time">{{::message.created | fondate:'MMMM D YYYY':fon_lang_code:'list_message_header'}}</div>
             
             </div>
-            <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag" ng-repeat="attachment in ::message.data.attachment">
+            <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag" >
                 <div class="ListMessageText" ng-bind-html="message.message | highlight:chat.query" ></div>
-                <div class="AttachmentContainer"  ng-click="!attachment.dropbox ? showDownloadAttachmentOverlay(attachment) : ''">
+                <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="!attachment.dropbox ? showDownloadAttachmentOverlay(attachment) : ''">
                     <img class="AttachmentImg" ng-src="{{::getAttachment(attachment)}}" />               
                     <p> {{ ::attachment.fileName }}</p>
                     <p>{{::attachment.dropboxFile}}</p>
                 </div> 
+                <div ng-repeat="attachment in ::message.data.attachment">
                 <a id="dropboxFile" href="{{::attachment.dropboxLink}}" target="_blank"> {{ ::attachment.dropboxFile }}</a>
                 <p> {{::attachment.fileBytes}}</p>
+            	</div>
             </div>
         </div>
     </div>
@@ -70,7 +72,7 @@
 	
 	<div class="ChatInputFields" ng-if="enableChat">
 		<div id="attachmentBox" ng-if="attachmentItems">
-			<div class="attachmentTitle">Upload From Computer</div>
+			<div class="attachmentTitle" flow-btn>Upload From Computer</div>
 			<div class="attachmentTitle" ng-click="chooseDropbox()"><img src="img/dropbox.gif">Link From Dropbox</div>
 		</div>
 		<div id="attachBtn" ng-click="showAttachmentsBox()"><span class="material-icons">attach_file</span></div>
