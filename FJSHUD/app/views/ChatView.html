@@ -30,7 +30,7 @@
                 <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="!attachment.dropbox ? showDownloadAttachmentOverlay(attachment) : ''">
                     <img class="AttachmentImg" ng-src="{{::getAttachment(attachment)}}" />               
                     <p> {{ ::attachment.fileName }}</p>
-                    <p>{{::attachment.dropboxFile}}</p>
+                    
                 </div> 
                 <div ng-repeat="attachment in ::message.data.attachment">
                 <a id="dropboxFile" href="{{::attachment.dropboxLink}}" target="_blank"> {{ ::attachment.dropboxFile }}</a>
@@ -73,7 +73,7 @@
 	<div class="ChatInputFields" ng-if="enableChat">
 		<div id="attachmentBox" ng-if="attachmentItems">
 			<div class="attachmentTitle" flow-btn>Upload From Computer</div>
-			<div class="attachmentTitle" ng-click="chooseDropbox()"><img src="img/dropbox.gif">Link From Dropbox</div>
+			<div class="attachmentTitle" ng-click="chooseDropbox()"><img src="img/dropbox-logo-16.png">Link From Dropbox</div>
 		</div>
 		<div id="attachBtn" ng-click="showAttachmentsBox()"><span class="material-icons">attach_file</span></div>
 		<textarea id="ChatMessageText"  placeholder="Type Your Message" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}" auto-focus></textarea>

@@ -167,7 +167,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	$scope.getAttachment = function(attachment){
 		// show image as is
 		if(attachment && attachment.dropbox == true)
-			return 'img/dropbox.gif';
+			return 'img/dropbox-logo-90.png';
 		else if (attachment && attachment.fileName.match(/\.(png|jpg|jpeg|gif)$/i))
 			return httpService.get_attachment(attachment.url,attachment.fileName);
 		// show document image
