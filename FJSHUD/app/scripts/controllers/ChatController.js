@@ -74,7 +74,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 	   var i = Math.floor(Math.log(bytes) / Math.log(k));
 	   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-	}
+	};
 
 	// set chat data
 	if ($routeParams.contactId) {
@@ -283,7 +283,6 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
-		console.log("DATA",data);
 		var found = [];
 		var incoming = false;
 		
