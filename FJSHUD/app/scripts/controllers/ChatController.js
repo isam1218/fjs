@@ -22,6 +22,23 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	$scope.enableChat = true;
 	$scope.filteredMessages = [];
 	$scope.messages = [];
+	$scope.upload_time = 0;	
+	$scope.upload_progress = 0;
+
+	httpService.get_upload_progress().then(function(data){
+		$scope.upload_progress = data.progress;
+		request = data.xhr;	
+	},function(error){},function(data){
+		$scope.upload_progress = data.progress;
+		request = data.xhr;	
+		if(data.started){
+			$scope.upload_time = new Date().getTime();
+		}
+		if(data.progress == 100){
+			$timeout(function(){$scope.upload_progress = 0;},1000);
+		}	
+		
+	});
 
 	options = {
 

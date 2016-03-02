@@ -443,6 +443,7 @@
 .attachmentTitle img{
     margin-right:5px;
   }
+
   #attachBtn{
     border:0px solid black;
     height:61px;
@@ -468,6 +469,35 @@
   #dropboxFile{
   position: relative;
     top: 10px;
+  }
+     progress,                   
+  progress[role][aria-valuenow] {   
+      appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+      background-size: auto;
+        border-radius:50px;
+    height:.5em;
+      background: #000066 !important; /* !important is needed by the polyfill */
+  }
+  progress::-webkit-progress-bar {
+      -webkit-border-radius:50px;
+
+  }
+  progress {
+      color: #72E673;
+  }
+  progress::-moz-progress-bar { 
+      background: #72E673;   
+    -moz-border-radius:50px;
+  }
+  progress::-webkit-progress-value {
+      background: #72E673;
+     -webkit-border-radius:50px;
+
+  }
+  progress[aria-valuenow]:before  {
+      background: #72E673;
   }
 
 .ListMessageChatWidget
