@@ -78,7 +78,7 @@
 		</div>
 		<div id="attachBtn" ng-click="attachmentItems=!attachmentItems" click-anywhere="attachmentItems=false" ><span class="material-icons">attach_file</span></div>
 		<textarea id="ChatMessageText"  placeholder="Type Your Message" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}" auto-focus></textarea>
-		<progress style="position: absolute;top: 30px;left: 70px;width: 320px;height:10px" ng-if="upload_progress > 0" ng-value="upload_progress" max="100"  > </progress>
+		<progress ng-if="upload_progress > 0" ng-value="upload_progress" max="100"  > </progress>
 		<div id="sendBtn" ng-click="sendMessage()"><span class="material-icons" >send</span></div>
        
 	</div>
