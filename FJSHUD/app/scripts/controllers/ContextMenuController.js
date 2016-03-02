@@ -253,47 +253,15 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		window.open('mailto:' + emails.join(';'));
 	};
 	
-	$scope.fileShare = function(repost) {
-		if (repost) {
-			// need to find information for original audience
-			var context = $scope.original.context.split(':');
-			var audience = context[0].replace(/s$/g, '');
-			var xpid = context[1];
-			var name = '';
-			
-			// what a ridiculous way to get the name...
-			switch(audience) {
-				case 'contact':
-					name = contactService.getContact(xpid).displayName;
-					break;
-				case 'conference':
-					name = conferenceService.getConference(xpid).name;
-					break;
-				case 'queue':
-					name = queueService.getQueue(xpid).name;
-					break;
-				case 'group':
-					name = groupService.getGroup(xpid).name;
-					break;
-			}
-			
-			var data = {
-				name: name,
-				audience: audience,
-				xpid: xpid,
-				original: $scope.original
-			};
-		}
-		else {
-			var data = {
-				name: $scope.profile.displayName || $scope.profile.name,
-				audience: $scope.type.split(/(?=[A-Z])/)[0].toLowerCase(),
-				xpid: $scope.profile.xpid
-			};
-		}
-		
-		$scope.$parent.showOverlay(true, 'FileShareOverlay', data);
+	$scope.fileShare = function() {
+    var fsAudience = $scope.type.split(/(?=[A-Z])/)[0].toLowerCase();
+    var fsXpid = $scope.profile.xpid;
+    $location.path('/' + fsAudience + '/' + fsXpid + '/chat');
+    $timeout(function(){
+      $rootScope.showAttachmentsBoxWithBG();
+    }, 500);
 	};
+
  $scope.addedContacts = [];
 	$scope.screenShare = function(contact){
 
