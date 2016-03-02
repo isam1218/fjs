@@ -8,6 +8,7 @@ hudweb.directive('clickAnywhere', function($document){
       });
       $document.bind('click', function() {
         // magic here.
+        scope.showBG = false;
         scope.$apply(attr.clickAnywhere);
       })
     }
