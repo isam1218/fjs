@@ -21,8 +21,7 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
     {upper: $scope.verbage.group, lower: 'groups'}, 
     {upper: $scope.verbage.queues, lower: 'queues'}, 
     {upper: $scope.verbage.call_log_tab, lower: 'calllog'}, 
-    {upper: $scope.verbage.recordings, lower: 'recordings'},
-    {upper: $scope.verbage.my_videos_tab, lower: 'videos'}];
+    {upper: $scope.verbage.recordings, lower: 'recordings'}];
 	
     // if route is defined (click on specific tab or manaully enter url)...
     if ($routeParams.route){
