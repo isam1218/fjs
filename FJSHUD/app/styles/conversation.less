@@ -472,8 +472,14 @@
     border-radius: 20px;
   }
   #dropboxFile{
-  position: relative;
+    position: relative;
     top: 10px;
+    font-size: 14px;
+    font-family: Arial;
+    color: #009cff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
      progress,                   
   progress[role][aria-valuenow] {   
@@ -686,7 +692,8 @@
   float:left;
   width:90px;
   height:100px;
-  text-align:center;border:1px solid #ccc;
+  text-align:center;
+  // border:.5px solid #ccc;
   display:inline-block;
   overflow:hidden;
   margin-right: 5px;
@@ -694,6 +701,18 @@
 } 
 
 .AttachmentImg{
-  max-width:70px;
-  max-height:70px;
+  max-width: 90px;
+  max-height: 90px;
 } 
+
+.DropboxAttachmentContainer{
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-left: 10px;
+}
+#dropboxFileSize{
+  font-size: 14px;
+  color: #333333;
+}

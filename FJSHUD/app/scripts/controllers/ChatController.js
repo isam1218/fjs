@@ -58,7 +58,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				type: chat.type,
 				audience: chat.audience,
 				to: chat.targetId,
-				message: files[0].link,
+				message: '',
+				// message: files[0].link,
 				data: '{"attachment":[{"dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
        
@@ -83,7 +84,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     // only be able to select files with these extensions. You may also specify
     // file types, such as "video" or "images" in the list. For more information,
     // see File types below. By default, all extensions are allowed.
-    extensions: ['.pdf', '.doc', '.docx','.zip','.txt', '.png', '.jpg', '.jpeg'],
+    extensions: ['.pdf', '.doc', '.docx','.zip','.txt', '.png', '.jpg', '.jpeg', '.gif'],
 	};
 
 	function formatBytes(bytes,decimals) {
