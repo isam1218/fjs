@@ -58,7 +58,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				type: chat.type,
 				audience: chat.audience,
 				to: chat.targetId,
-				message: '',
+				message: ' ',
 				// message: files[0].link,
 				data: '{"attachment":[{"dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
