@@ -42,7 +42,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		
 	});
 
-	options = {
+	var options = {
 
     // Required. Called when a user selects an item in the Chooser.
     success: function(files) {
@@ -207,6 +207,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
 	$scope.chooseDropbox = function(){
 		Dropbox.choose(options);
+		ga('send', {hitType: 'event', eventCategory: 'Sharing', eventAction: 'DropBox', eventLabel: 'DropBox Sharing'});
 	};
 	
 	
