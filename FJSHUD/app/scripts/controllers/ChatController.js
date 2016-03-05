@@ -13,6 +13,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	var cutoff = ntpService.calibrateTime(new Date().getTime());
 	var scrollbox = {};
 	var chat = {}; // internal controller data
+	var gaAudience;
 	
 	$scope.chat = this; // ng model data
 	$scope.upload = {};
@@ -198,17 +199,39 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 			return 'img/XIcon-UnknownDocument.png';
 	};
 
-	$rootScope.showAttachmentsBoxWithBG = function(){
+	$rootScope.showAttachmentsBoxWithBG = function(audience){
 		// for clicking on fileshare icon on avatar-hover
 		$scope.attachmentItems = true;
 		$scope.showBG = true;
+		gaAudience = audience;
 	};	
+
+	// determine access point for google analytics purposes
+	$scope.determineAudience = function(){
+		gaAudience = $location.path().split('/')[1];
+	};
+
+	var sendGoogleAnalytic = function(type){
+		if (type == "Computer")
+			var finalEventAction = "Attachment";	
+		else
+			var finalEventAction = "DropBox";
+
+		var gaObj = {
+			hitType: 'event',
+			eventCategory: 'Sharing',
+			eventAction: finalEventAction,
+			eventLabel: type + '_Share_via_access_point_' + gaAudience
+		};
+		// send object to google analytics api
+		ga('send', gaObj);
+	};
 
 	$scope.chooseDropbox = function(){
 		Dropbox.choose(options);
-		ga('send', {hitType: 'event', eventCategory: 'Sharing', eventAction: 'DropBox', eventLabel: 'DropBox Sharing'});
+		$scope.determineAudience();
+		sendGoogleAnalytic('DropBox');
 	};
-	
 	
 	//this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
 	$scope.flow_cleanup = function($files){
@@ -245,7 +268,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
             "_archive": 0,
         };
 		httpService.upload_attachment(data,fileList);
-
+		// local upload -> send to GA
+		sendGoogleAnalytic('Computer');
 	};
 	
 	// keep scrollbar at bottom until chats are loaded

@@ -258,7 +258,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
     var fsXpid = $scope.profile.xpid;
     $location.path('/' + fsAudience + '/' + fsXpid + '/chat');
     $timeout(function(){
-      $rootScope.showAttachmentsBoxWithBG();
+      $rootScope.showAttachmentsBoxWithBG(fsAudience);
     }, 500);
 	};
 
