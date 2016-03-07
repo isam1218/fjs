@@ -1,4 +1,4 @@
-hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', function($scope, $rootScope, httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService) {
+hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', '$http', function($scope, $rootScope, httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService, $http) {
 	
 	// redirect if not allowed
 	if ($scope.$parent.chatTabEnabled !== undefined && $scope.$parent.chatTabEnabled === false) {
@@ -42,6 +42,27 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		}	
 		
 	});
+
+	var getURL = function(action){
+    var url = 
+       action
+      + '?callback=JSON_CALLBACK'
+      + '&fonalityUserId=' + $rootScope.myPid.split('_')[1]
+      + '&serverId=' + $rootScope.meModel.server_id
+      + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+      + '&authToken=' + localStorage.authTicket;
+    
+    return url;
+	}
+
+  $http.post(fjs.CONFIG.SERVER.ppsServer + getURL('dropbox/settings')).success(function(data){
+    var dropboxScriptTag = document.createElement('script');
+    dropboxScriptTag.setAttribute('src', 'https://www.dropbox.com/static/api/2/dropins.js');
+    dropboxScriptTag.setAttribute('type', 'text/javascript');
+    dropboxScriptTag.setAttribute('id', 'dropboxjs');
+    dropboxScriptTag.setAttribute('data-app-key', data.app_key);
+    document.body.appendChild(dropboxScriptTag);
+  });
 
 	var options = {
 
