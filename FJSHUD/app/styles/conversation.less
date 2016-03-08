@@ -481,7 +481,8 @@
   }
   #dropboxFile{
     position: relative;
-    top: 10px;
+    top: 15px;
+    left: 20px;
     font-size: 14px;
     font-family: Arial;
     color: #009cff;
@@ -698,11 +699,9 @@
 
 .AttachmentContainer{
   float: left;
-  width: auto;
+  width: inherit;
   height: auto;
   text-align:center;
-  // border:.5px solid #ccc;
-  // display:inline-block;
   display: flex;
   display: -webkit-flex;
   overflow: hidden;
@@ -718,6 +717,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    cursor: pointer;
+
+  
+  }
+  .uploadImgName{
+    margin-left: 40px;
+    margin-top: 35px;
   }
 } 
 
@@ -730,10 +736,10 @@
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
-  padding-top: 15px;
 }
 
 #dropboxFileSize{
   font-size: 14px;
   color: #333333;
+  display: inherit;
 }
