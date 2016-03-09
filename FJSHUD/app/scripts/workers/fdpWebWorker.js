@@ -39,17 +39,24 @@ self.addEventListener('message',function(event){
 				break;
 			case 'delete':
 				var feed = event.data.feed;
-				var key = event.data.xpid.split('_')[0];
 				
-				if (data_obj[feed] && data_obj[feed][key]) {
-					for (var i = 0, len = data_obj[feed][key].items.length; i < len; i++) {
-						if (data_obj[feed][key].items[i].xpid == event.data.xpid) {
-							// force delete flag
-							data_obj[feed][key].items[i].xef001type = 'delete';
-							break;
+				// only delete one record
+				if (event.data.xpid) {
+					var key = event.data.xpid.split('_')[0];
+					
+					if (data_obj[feed] && data_obj[feed][key]) {
+						for (var i = 0, len = data_obj[feed][key].items.length; i < len; i++) {
+							if (data_obj[feed][key].items[i].xpid == event.data.xpid) {
+								// force delete flag
+								data_obj[feed][key].items[i].xef001type = 'delete';
+								break;
+							}
 						}
 					}
 				}
+				// delete the whole thing
+				else
+					data_obj[feed] = null;
 			
 				break;
 			case 'add':

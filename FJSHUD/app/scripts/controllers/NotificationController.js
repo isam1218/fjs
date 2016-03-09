@@ -348,6 +348,7 @@ hudweb.controller('NotificationController',
 	$scope.errors.splice(0, $scope.errors.length);
 
     myHttpService.sendAction('quickinbox','removeAll');
+    myHttpService.deleteFromWorker('quickinbox');
       
     $scope.showNotificationOverlay(false);
     $scope.hasAwayNotifications = false;
