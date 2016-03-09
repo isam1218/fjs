@@ -64,11 +64,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     dropboxScriptTag.setAttribute('id', 'dropboxjs');
     // if post request successfully returns key -> use as dropbox key otherwise use hardcoded key located in properties.js config file
     if (success && passedInData.app_key){
-  		console.log('from post');
   		dropboxScriptTag.setAttribute('data-app-key', passedInData.app_key);
     }
     else{
-    	console.log('use prop.js');
     	dropboxScriptTag.setAttribute('data-app-key', fjs.CONFIG.DROPBOX_APP_TOKEN);
     }
 
