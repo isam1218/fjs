@@ -15,6 +15,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	var scrollbox = {};
 	var chat = {}; // internal controller data
 	var gaAudience;
+	var dropboxScriptTag;
+	var elementExists;
 	
 	$scope.chat = this; // ng model data
 	$scope.upload = {};
@@ -53,17 +55,33 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
       + '&authToken=' + localStorage.authTicket;
     
     return url;
-	}
+	};
 
-  $http.post(fjs.CONFIG.SERVER.ppsServer + getURL('dropbox/settings')).success(function(data){
-    var dropboxScriptTag = document.createElement('script');
+	var createDropboxTag = function(success, passedInData){
+    dropboxScriptTag = document.createElement('script');
     dropboxScriptTag.setAttribute('src', 'https://www.dropbox.com/static/api/2/dropins.js');
     dropboxScriptTag.setAttribute('type', 'text/javascript');
     dropboxScriptTag.setAttribute('id', 'dropboxjs');
-    dropboxScriptTag.setAttribute('data-app-key', data.app_key);
-    var elementExists = document.getElementById("dropboxjs");
+    // if post request successfully returns key -> use as dropbox key otherwise use hardcoded key located in properties.js config file
+    if (success && passedInData.app_key){
+  		console.log('from post');
+  		dropboxScriptTag.setAttribute('data-app-key', passedInData.app_key);
+    }
+    else{
+    	console.log('use prop.js');
+    	dropboxScriptTag.setAttribute('data-app-key', fjs.CONFIG.DROPBOX_APP_TOKEN);
+    }
+
+    // don't add the script tag multiple times if switching back and forth b/w chat controller
+    elementExists = document.getElementById("dropboxjs");
     if (!elementExists)
     	document.body.appendChild(dropboxScriptTag);
+	};
+
+  $http.post(fjs.CONFIG.SERVER.ppsServer + getURL('dropbox/settings')).success(function(data){
+    createDropboxTag(true, data);
+  }).error(function(err){
+    createDropboxTag(false);
   });
 
 	var options = {
