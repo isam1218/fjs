@@ -51,5 +51,6 @@ fjs.CONFIG = {
     },
     DEBUG:true,
 	SYNC_DELAY: 1500,
-	ACTIVITY_DELAY: 60000
+	ACTIVITY_DELAY: 60000,
+    DROPBOX_APP_TOKEN: 'mfak8bm5ct32dji'
 };
