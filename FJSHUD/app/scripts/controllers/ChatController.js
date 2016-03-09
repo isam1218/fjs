@@ -61,7 +61,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     dropboxScriptTag.setAttribute('type', 'text/javascript');
     dropboxScriptTag.setAttribute('id', 'dropboxjs');
     dropboxScriptTag.setAttribute('data-app-key', data.app_key);
-    document.body.appendChild(dropboxScriptTag);
+    var elementExists = document.getElementById("dropboxjs");
+    if (!elementExists)
+    	document.body.appendChild(dropboxScriptTag);
   });
 
 	var options = {
