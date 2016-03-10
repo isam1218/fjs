@@ -426,12 +426,16 @@
   }
 }
 #ChatMessageText{
-  padding-top:20px;
+  padding-top: 27px;
+  color: #333333 !important;
   border: 0px;
   width: 330px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 #ChatMessageText[placeholder]{
- color:#333333;
+ color: #959595;
  font-family: Arial;
  font-size: 14px;
 }
@@ -441,7 +445,7 @@
   position:absolute;
   top:-70px;
   background-color:white;
-  border:1px solid grey;
+  border:1px solid #959595;
   box-shadow: 0 4px 10px grey;
   z-index: 3;
 }
@@ -449,10 +453,15 @@
   font-size:14px;
   padding-bottom:5px;
   cursor:pointer;
-
+  p{
+    font-size: 14px;
+    display: inline;
+    margin-left: 23px;
+  }
 }
 .attachmentTitle img{
-    margin-right:5px;
+    position: absolute;
+    margin-right: 5px;
   }
 
   #attachBtn{
@@ -460,17 +469,17 @@
     height:71px;
     width:71px;
     text-align:center;
-    padding-top:17px;
+    padding-top:23px;
     cursor:pointer;
     float: left;
   }
   #sendBtn{
-    border:0px solid black;
-    height:71px;
-    width:71px;
-    text-align:center;
-    padding-top:13px;
-    cursor:pointer;
+    border: 0px solid black;
+    height: 71px;
+    width: 71px;
+    text-align: center;
+    padding-top: 16px;
+    cursor: pointer;
     float: right;
   }
   #sendBtn span{
@@ -709,7 +718,7 @@
   margin-top: 5px;
 
   p{
-    margin-top: 25px;
+    margin-top: 30px;
     margin-left: 20px;
     font-family: Arial;
     font-size: 14px;
@@ -741,10 +750,15 @@
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
+  padding-top: 5px;
 }
 
 #dropboxFileSize{
   font-size: 14px;
   color: #333333;
   display: inherit;
+}
+
+.material-icons{
+  color: #858585;
 }
