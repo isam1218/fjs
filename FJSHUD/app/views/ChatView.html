@@ -74,7 +74,7 @@
 
   
   <div class="ChatInputFields" ng-if="enableChat" >
-    <div id="attachmentBox" ng-if="attachmentItems" >
+    <div id="attachmentBox" ng-if="chat.attachmentItems" >
       <div class="attachmentTitle" flow-btn>Upload From Computer</div>
 
       <div class="attachmentTitle" ng-click="chooseDropbox()">
@@ -83,10 +83,11 @@
       </div>
 
     </div>
-    <div ng-if="showBG" class="upload-background"></div>
+
+    <div ng-if="chat.showBG" class="upload-background"></div>
 
     <div class="chatInputBtnSection">
-  		<div id="attachBtn" ng-click="attachmentItems=!attachmentItems; determineAudience()" click-anywhere="attachmentItems=false" ><span class="material-icons">attach_file</span></div>
+  		<div id="attachBtn" ng-click="chat.attachmentItems=!chat.attachmentItems; determineAudience()" click-anywhere="chat.attachmentItems=false" ><span class="material-icons">attach_file</span></div>
   		<textarea id="ChatMessageText" placeholder="Type Your Message" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}" auto-focus></textarea>
   		<progress ng-if="upload_progress > 0" ng-value="upload_progress" max="100"  > </progress>
   		<div id="sendBtn" ng-click="sendMessage()"><span class="material-icons" >send</span></div>

@@ -27,8 +27,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	$scope.messages = [];
 	$scope.upload_time = 0;	
 	$scope.upload_progress = 0;
-	$scope.attachmentItems;
-	$scope.showBG;
+	$scope.chat.attachmentItems;
+	$scope.chat.showBG;
 
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
@@ -239,10 +239,14 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 			return 'img/XIcon-UnknownDocument.png';
 	};
 
+	$scope.$on('sameUserFileShareIconClick', function(data){
+		$scope.chat.attachmentItems = true;
+	});
+
 	$rootScope.showAttachmentsBoxWithBG = function(audience){
 		// for clicking on fileshare icon on avatar-hover
-		$scope.attachmentItems = true;
-		$scope.showBG = true;
+		$scope.chat.attachmentItems = true;
+		$scope.chat.showBG = true;
 		gaAudience = audience;
 	};	
 
