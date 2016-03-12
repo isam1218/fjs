@@ -256,10 +256,18 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 	$scope.fileShare = function() {
     var fsAudience = $scope.type.split(/(?=[A-Z])/)[0].toLowerCase();
     var fsXpid = $scope.profile.xpid;
-    $location.path('/' + fsAudience + '/' + fsXpid + '/chat');
-    $timeout(function(){
-      $rootScope.showAttachmentsBoxWithBG(fsAudience);
-    }, 500);
+    var destination = '/' + fsAudience + '/' + fsXpid + '/chat';
+
+    if ($location.path() == destination){
+      // if already on same user's chat...
+      $rootScope.$broadcast('sameUserFileShareIconClick');
+    } else {
+      $location.path(destination);
+      $timeout(function(){
+        $rootScope.showAttachmentsBoxWithBG(fsAudience);
+      }, 500);
+    }
+
 	};
 
  $scope.addedContacts = [];
