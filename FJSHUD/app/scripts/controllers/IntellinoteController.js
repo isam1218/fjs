@@ -46,7 +46,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 	  });
 	
 	// init
-	settingsService.getSettings().then(function() {
+/*	settingsService.getSettings().then(function() {
 		// get workspaces
 
 		$http.post(fjs.CONFIG.SERVER.ppsServer + getURL('workspaceList') + '&admin=1').
@@ -61,7 +61,7 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 			  });
 
 
-	});
+	});*/
 	
 	$scope.verifyLicense = function() {
 		//window.open(getURL('loadApp'));
