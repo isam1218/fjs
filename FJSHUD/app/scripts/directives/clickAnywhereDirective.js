@@ -8,9 +8,14 @@ hudweb.directive('clickAnywhere', function($document){
       });
       $document.bind('click', function() {
         // magic here.
-        scope.chat.showBG = false;
-        scope.$apply(attr.clickAnywhere);
-      })
+        if (scope.chat.attachmentItems){
+          scope.chat.showBG = false;
+          scope.$apply(attr.clickAnywhere);
+        }
+      });
+      scope.$on('$destroy', function(){
+        $document.unbind('click');
+      });
     }
   }
 });
