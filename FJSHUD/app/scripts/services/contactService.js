@@ -164,7 +164,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 	$rootScope.$on('contactpermissions_synced', function(event, data){
 		for (var i = 0, iLen = contacts.length; i < iLen; i++){
 			for (var j = 0, jLen = data.length; j < jLen; j++){
-				if (contacts[i].xpid == data[j].xpid && data[j].permissions){
+				if (contacts[i].xpid == data[j].xpid) {
 					contacts[i].permissions = data[j].permissions;					
 					break;
 				}
