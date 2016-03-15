@@ -44,16 +44,25 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		
 	});
 
+		function formatBytes(bytes,decimals) {
+		   if(bytes == 0) return '0 Byte';
+		   var k = 1000;
+		   var dm = decimals + 1 || 3;
+		   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+		   var i = Math.floor(Math.log(bytes) / Math.log(k));
+		   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+		};
+
 	var getURL = function(action){
-    var url = 
-       action
-      + '?callback=JSON_CALLBACK'
-      + '&fonalityUserId=' + $rootScope.myPid.split('_')[1]
-      + '&serverId=' + $rootScope.meModel.server_id
-      + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
-      + '&authToken=' + localStorage.authTicket;
-    
-    return url;
+	    var url = 
+	       action
+	      + '?callback=JSON_CALLBACK'
+	      + '&fonalityUserId=' + $rootScope.myPid.split('_')[1]
+	      + '&serverId=' + $rootScope.meModel.server_id
+	      + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
+	      + '&authToken=' + localStorage.authTicket;
+	    
+	    return url;
 	};
 
 	var createDropboxTag = function(success, passedInData){
@@ -126,14 +135,33 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     extensions: ['.pdf', '.doc', '.docx','.zip','.txt', '.png', '.jpg', '.jpeg', '.gif'],
 	};
 
-	function formatBytes(bytes,decimals) {
-	   if(bytes == 0) return '0 Byte';
-	   var k = 1000;
-	   var dm = decimals + 1 || 3;
-	   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-	   var i = Math.floor(Math.log(bytes) / Math.log(k));
-	   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-	};
+	//GOOGLE DRIVE
+   $scope.onLoaded = function () {
+     console.log('Google Picker loaded!');
+   };
+
+   $scope.onPicked = function (docs) {
+   	console.log("Files",docs);
+   	var fileName = docs[0].name;
+       fileName = fileName + "";
+       var fileLink = docs[0].url;
+       fileLink = fileLink + "";
+       var fileBytes = docs[0].sizeBytes;
+       fileBytes = formatBytes(fileBytes);
+       fileBytes = fileBytes + "";
+    httpService.sendAction('streamevent', 'sendConversationEvent', {
+				type: chat.type,
+				audience: chat.audience,
+				to: chat.targetId,
+				message: ' ',
+				// message: files[0].link,
+				data: '{"attachment":[{"googleDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+			});
+   };
+
+   $scope.onCancel = function () {
+     console.log('Google picker close/cancel!');
+   };
 
 	// set chat data
 	if ($routeParams.contactId) {
@@ -226,7 +254,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
 	$scope.getAttachment = function(attachment){
 		// show image as is
-		if(attachment && attachment.dropbox == true)
+		if(attachment && attachment.googleDrive == true)
+			return 'img/GoogleDrive-logo-90.png';
+		else if(attachment && attachment.dropbox == true)
 			return 'img/dropbox-logo-90.png';
 		else if (attachment && attachment.fileName.match(/\.(png|jpg|jpeg|gif)$/i))
 			return httpService.get_attachment(attachment.url,attachment.fileName);
