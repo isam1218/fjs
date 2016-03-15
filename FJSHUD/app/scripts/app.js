@@ -6,8 +6,21 @@ var hudweb = angular.module('fjshudApp', [
     'ngSanitize',
     'flow',
     'angulartics',
-    'angulartics.google.analytics'
+    'angulartics.google.analytics',
+    'lk-google-picker'
 ]);
+
+hudweb.config(['lkGoogleSettingsProvider', function (lkGoogleSettingsProvider) {
+
+  lkGoogleSettingsProvider.configure({
+    apiKey   : 'AIzaSyAjCQ6Xf8ZQSylnmGu-spRtUfMgUoVLlng',
+    clientId : '1021477541761-rfj7un5tiupnjpe066u9afh9s7edpau3.apps.googleusercontent.com',
+    scopes   : ['https://www.googleapis.com/auth/drive'],
+    locale   : 'eg',
+    features : ['MULTISELECT_ENABLED', 'ANOTHER_ONE'],
+    views    : ['DocsUploadView()', 'DocsView()']
+  });
+}])
 
 hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyticsProvider) {
 	// disables debugger injection 

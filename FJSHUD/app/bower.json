@@ -13,7 +13,8 @@
     "moment-timezone": "~0.4.1",
     "ng-flow": "~2",
     "angulartics": "~1.0",
-    "angulartics-google-analytics": "~0.1.1"
+    "angulartics-google-analytics": "~0.1.1",
+    "angular-google-picker": "~0.2.2"
   },
   "appPath": "app",
   "resolutions": {
