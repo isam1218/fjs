@@ -16,7 +16,6 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	var gaAudience;
 	var dropboxScriptTag;
 	var elementExists;
-	var boxSelect;
 	
 	$scope.chat = this; // ng model data
 	$scope.upload = {};
@@ -171,7 +170,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     multiselect: false
   };
 
-   boxSelect = new BoxSelect(boxOptions);
+  var boxSelect = new BoxSelect(boxOptions);
 
   boxSelect.success(function(data){
     console.log('success - ', data[0]);
