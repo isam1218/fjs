@@ -206,6 +206,20 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     return attch.boxLink;
   };   
 
+  //One Drive
+   var pickerOptions = {
+	  linkType: "downloadLink",
+	  multiSelect: true,
+	  openInNewWindow: true,
+	  success: function(files) { console.log("ONEDRIVE FILES",files); },
+	  cancel: function() { /* cancel handler */ },
+	  error: function(e) { /* error handler */ }
+	};
+  $scope.launchOneDrivePicker = function(){
+ 
+    OneDrive.open(pickerOptions);
+  };
+
 	// set chat data
 	if ($routeParams.contactId) {
 		chat.name = $scope.contact.displayName;
