@@ -164,6 +164,48 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
      console.log('Google picker close/cancel!');
    };
 
+   // box
+  var boxOptions = {
+    clientId: 'e002eyntxr19ajn0skc77f2oqqior03a',
+    linkType: 'shared',
+    multiselect: false
+  };
+
+  var boxSelect = new BoxSelect(boxOptions);
+
+  boxSelect.success(function(data){
+    console.log('success - ', data[0]);
+    var fileName = data[0].name;
+    fileName = fileName + "";
+    var fileLink = data[0].url;
+    fileLink = fileLink + "";
+    // file size not provided if linkType === 'shared'
+    var fileBytes = data[0].size;
+    fileBytes = formatBytes(fileBytes);
+    fileBytes = fileBytes + "";
+    httpService.sendAction('streamevent', 'sendConversationEvent', {
+      type: chat.type,
+      audience: chat.audience,
+      to: chat.targetId,
+      message: ' ',
+      data: '{"attachment":[{"box":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+    });
+
+  });
+
+  boxSelect.cancel(function(){
+    console.log('user cancelled popup');
+  });
+
+  $scope.launchBox = function(){
+    boxSelect.launchPopup();
+  };
+
+  $scope.convertBoxLink = function(attch){
+    console.log('attch - ', attch);
+    return attch.boxLink;
+  };   
+
 	// set chat data
 	if ($routeParams.contactId) {
 		chat.name = $scope.contact.displayName;
@@ -255,7 +297,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
 	$scope.getAttachment = function(attachment){
 		// show image as is
-		if(attachment && attachment.googleDrive == true)
+		if (attachment && attachment.box)
+			return 'img/box_logo-90.png';
+		else if(attachment && attachment.googleDrive == true)
 			return 'img/GoogleDrive-logo-90.png';
 		else if(attachment && attachment.dropbox == true)
 			return 'img/dropbox-logo-90.png';

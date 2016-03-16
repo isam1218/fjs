@@ -29,12 +29,12 @@
                 <div class="ListMessageText"  ng-bind-html="message.message | highlight:chat.query"></div>
                 
                 
-                <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="!attachment.dropbox && !attachment.googleDrive ? showDownloadAttachmentOverlay(attachment) : ''">
+                <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="!attachment.dropbox && !attachment.googleDrive && !attachment.box ? showDownloadAttachmentOverlay(attachment) : ''">
                     <img class="AttachmentImg" ng-src="{{::getAttachment(attachment)}}" />               
                     <p ng-class="attachment.dropbox ? 'hideParagraph' : ''"> {{ ::attachment.fileName }}</p>
                     <div class="DropboxAttachmentContainer" ng-repeat="attachment in ::message.data.attachment">
                         <a id="dropboxFile" href="{{::attachment.dropboxLink}}" target="_blank"> {{ ::attachment.dropboxFile }}</a>
-                        <p id="dropboxFileSize"> {{::attachment.fileBytes}}</p>
+                        <p ng-hide="attachment.box" id="dropboxFileSize"> {{::attachment.fileBytes}}</p>
                 	</div>
                 </div> 
 
@@ -84,6 +84,10 @@
       </div>
 
       <div class="attachmentTitle" lk-google-picker on-picked="onPicked(docs)" on-loaded="onLoaded()" on-cancel="onCancel()"><img src="img/GoogleDrive-logo-16.png"><p>Link From Google Drive</p></div>
+      <div class="attachmentTitle" ng-click="launchBox()">
+        <img src="img/box-logo-16.png">
+        </p>Link From Box</div>
+      </div>
 
     </div>
 
