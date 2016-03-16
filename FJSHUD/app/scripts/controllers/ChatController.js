@@ -172,7 +172,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     multiselect: false
   };
 
-   boxSelect = new BoxSelect(boxOptions);
+  var boxSelect = new BoxSelect(boxOptions);
 
   boxSelect.success(function(data){
     console.log('success - ', data[0]);
