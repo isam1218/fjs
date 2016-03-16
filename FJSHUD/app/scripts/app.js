@@ -18,7 +18,7 @@ hudweb.config(['lkGoogleSettingsProvider', function (lkGoogleSettingsProvider) {
     scopes   : ['https://www.googleapis.com/auth/drive'],
     locale   : 'eg',
     features : ['MULTISELECT_ENABLED', 'ANOTHER_ONE'],
-    views    : ['DocsUploadView()', 'DocsView()']
+    views    : ['DocsView()']
   });
 }])
 
