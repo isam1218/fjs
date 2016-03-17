@@ -175,7 +175,6 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
   var boxSelect = new BoxSelect(boxOptions);
 
   boxSelect.success(function(data){
-    console.log('success - ', data[0]);
     var fileName = data[0].name;
     fileName = fileName + "";
     var fileLink = data[0].url;
@@ -212,7 +211,25 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	  linkType: "downloadLink",
 	  multiSelect: true,
 	  openInNewWindow: true,
-	  success: function(files) { console.log("ONEDRIVE FILES",files); },
+	  success: function(files) {
+	  	  var fileName = files[0].fileName;
+	    fileName = fileName + "";
+	    var fileLink = files[0].link;
+	    fileLink = fileLink + "";
+	    // file size not provided if linkType === 'shared'
+	    var fileBytes = files[0].size;
+	    fileBytes = formatBytes(fileBytes);
+	    fileBytes = fileBytes + "";
+	    httpService.sendAction('streamevent', 'sendConversationEvent', {
+	      type: chat.type,
+	      audience: chat.audience,
+	      to: chat.targetId,
+	      message: ' ',
+	      data: '{"attachment":[{"oneDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+	    });
+	   console.log("ONEDRIVE FILES",files); 
+
+	},
 	  cancel: function() { /* cancel handler */ },
 	  error: function(e) { /* error handler */ }
 	};
@@ -312,7 +329,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
 	$scope.getAttachment = function(attachment){
 		// show image as is
-		if (attachment && attachment.box)
+		if (attachment && attachment.oneDrive)
+			return 'img/OneDrive-logo-90.png';
+		else if (attachment && attachment.box)
 			return 'img/box_logo-90.png';
 		else if(attachment && attachment.googleDrive == true)
 			return 'img/GoogleDrive-logo-90.png';
