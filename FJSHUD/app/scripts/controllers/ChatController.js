@@ -209,16 +209,17 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
   //One Drive
    var pickerOptions = {
-	  linkType: "downloadLink",
+	  linkType: "webLink",
 	  multiSelect: true,
 	  openInNewWindow: true,
 	  success: function(files) {
-	  	  var fileName = files[0].fileName;
+	  	console.log("Files",files);
+	  	  var fileName = files.values[0].fileName;
 	    fileName = fileName + "";
-	    var fileLink = files[0].link;
+	    var fileLink = files.values[0].link;
 	    fileLink = fileLink + "";
 	    // file size not provided if linkType === 'shared'
-	    var fileBytes = files[0].size;
+	    var fileBytes = files.values[0].size;
 	    fileBytes = formatBytes(fileBytes);
 	    fileBytes = fileBytes + "";
 	    httpService.sendAction('streamevent', 'sendConversationEvent', {
