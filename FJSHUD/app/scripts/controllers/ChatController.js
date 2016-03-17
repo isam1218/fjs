@@ -18,7 +18,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	var gaAudience;
 	var dropboxScriptTag;
 	var elementExists;
-	var boxSelect;
+
 	
 	$scope.chat = this; // ng model data
 	$scope.upload = {};
@@ -166,7 +166,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
      console.log('Google picker close/cancel!');
    };
 
-   /*// box
+   // box
   var boxOptions = {
     clientId: 'e002eyntxr19ajn0skc77f2oqqior03a',
     linkType: 'shared',
@@ -207,7 +207,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     console.log('attch - ', attch);
     return attch.boxLink;
   };   
-*/
+
   //One Drive
    var pickerOptions = {
 	  linkType: "downloadLink",
