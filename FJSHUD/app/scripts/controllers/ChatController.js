@@ -18,6 +18,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	var gaAudience;
 	var dropboxScriptTag;
 	var elementExists;
+	var request;
 
 	
 	$scope.chat = this; // ng model data
