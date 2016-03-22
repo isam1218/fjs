@@ -72,7 +72,7 @@ hudweb.service('PhoneService', ['$q', '$rootScope', 'HttpService','$compile','$l
 
 	var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
 	if($rootScope.browser != "Chrome"){
-		$("body").append($compile(pluginHtml)($rootScope));
+		$("#phonehtml").append($compile(pluginHtml)($rootScope));
 		phonePlugin = document.getElementById('fonalityPhone');
 		if(phonePlugin){
 			version = phonePlugin.version;
