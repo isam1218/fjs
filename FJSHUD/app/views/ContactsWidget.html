@@ -21,7 +21,7 @@
 
 <div class="ContactList">
 	<div class="LeftBarTabContentList">
-		<a href="#contact/{{::contact.xpid}}" ng-repeat="contact in contacts | orderBy: 'displayName'  | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.xpid}}" droppable="Call">	
+		<div ng-click="goToContact(contact.xpid)" ng-repeat="contact in contacts | orderBy: 'displayName'  | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.xpid}}" droppable="Call">	
 			<avatar profile="contact" context="contacts:$parent.tab"></avatar>
 			
 			<div class="ListRowContent" dockable="contact">
@@ -51,6 +51,6 @@
                     </avatar>
                 </div>  
 			</div>
-		</a>
+		</div>
 	</div>
 </div>

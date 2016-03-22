@@ -1,4 +1,5 @@
-hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'SettingsService', function($scope, $rootScope, myHttpService, contactService, groupService, settingsService) {
+hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'SettingsService', '$location', function($scope, $rootScope, myHttpService, contactService, groupService, settingsService,$location) {
+
 	$scope.query = "";
 	$scope.contacts = [];
 	$scope.favorites = {};
@@ -68,6 +69,19 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
       	localStorage['LeftBar_ExternalContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
       }
   };
+	$scope.goToContact = function(xpid){
+		console.log("XPID",xpid);
+		$location.path("/contact/"+xpid);
+	};
+    $scope.sort = function(field) {
+        if($scope.sortField != field) {
+            $scope.sortField = field;
+            $scope.sortReverse = false;
+        }
+        else {
+            $scope.sortReverse = !$scope.sortReverse;
+        }
+    };
 	
 	/*
 	// filter contacts down
