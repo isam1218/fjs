@@ -11,8 +11,7 @@ hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope',
 				cursorAt: { top: 25, left: 25 },
 				zIndex: 100,
 				appendTo: 'body',
-				delay: 150,
-				iframeFix: true,
+				delay: 150,			
 				helper: function() {
 					// object to dock
 					var obj = $parse(attrs.dockable)(scope);

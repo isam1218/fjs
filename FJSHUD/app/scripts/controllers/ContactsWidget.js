@@ -1,4 +1,4 @@
-hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', function($scope, $rootScope, myHttpService, contactService, groupService) {
+hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService','$location', function($scope, $rootScope, myHttpService, contactService, groupService,$location) {
 	$scope.query = "";
 	$scope.sortField = "displayName";
 	$scope.sortReverse = false;
@@ -14,7 +14,10 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	groupService.getGroups().then(function(data) {
 		$scope.favorites = data.favorites;
 	});
-	
+	$scope.goToContact = function(xpid){
+		console.log("XPID",xpid);
+		$location.path("/contact/"+xpid);
+	};
     $scope.sort = function(field) {
         if($scope.sortField != field) {
             $scope.sortField = field;

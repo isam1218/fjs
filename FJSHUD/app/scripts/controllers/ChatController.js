@@ -303,11 +303,12 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	$scope.showDownloadAttachmentOverlay = function(selected){
 		var downloadables = [];
 		var current = 0;
+
 		
 		for(var i = 0, iLen = $scope.messages.length; i < iLen; i++){
-			if ($scope.messages[i].data && $scope.messages[i].data.attachment) {
+			if ($scope.messages[i].data && $scope.messages[i].data.attachment && $scope.messages[i].data.attachment[0].dropbox != true && $scope.messages[i].data.attachment[0].box != true && $scope.messages[i].data.attachment[0].googleDrive != true && $scope.messages[i].data.attachment[0].oneDrive != true) {
 				var attachments = $scope.messages[i].data.attachment;
-				
+				console.log("attachments",attachments);
 				for(var a = 0, aLen = attachments.length; a < aLen; a++) {
 					var tempAttach = attachments[a];
 					tempAttach.created = $scope.messages[i].created;
