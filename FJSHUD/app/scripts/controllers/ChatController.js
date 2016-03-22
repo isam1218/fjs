@@ -139,7 +139,13 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     extensions: ['.pdf', '.doc', '.docx','.zip','.txt', '.png', '.jpg', '.jpeg', '.gif'],
 	};
 
-	//GOOGLE DRIVE
+	$scope.chooseDropbox = function(){
+		Dropbox.choose(options);
+		$scope.determineAudience();
+		sendGoogleAnalytic('DropBox');
+	};
+
+	//GOOGLE DRIVE file share
    $scope.onLoaded = function () {
      console.log('Google Picker loaded!');
    };
@@ -167,7 +173,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
      console.log('Google picker close/cancel!');
    };
 
-   // box
+   // BOX file share 
   var boxOptions = {
     clientId: 'e002eyntxr19ajn0skc77f2oqqior03a',
     linkType: 'shared',
@@ -214,15 +220,14 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	  multiSelect: true,
 	  openInNewWindow: true,
 	  success: function(files) {
-	  	console.log("Files",files);
-	  	  var fileName = files.values[0].fileName;
+  	  	var fileName = files.values[0].fileName;
 	    fileName = fileName + "";
 	    var fileLink = files.values[0].link;
 	    fileLink = fileLink + "";
-	    // file size not provided if linkType === 'shared'
 	    var fileBytes = files.values[0].size;
 	    fileBytes = formatBytes(fileBytes);
 	    fileBytes = fileBytes + "";
+
 	    httpService.sendAction('streamevent', 'sendConversationEvent', {
 	      type: chat.type,
 	      audience: chat.audience,
@@ -233,8 +238,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	   console.log("ONEDRIVE FILES",files); 
 
 	},
-	  cancel: function() { /* cancel handler */ },
-	  error: function(e) { /* error handler */ }
+	  cancel: function() {  },
+	  error: function(e) {  }
 	};
   $scope.launchOneDrivePicker = function(){
  
@@ -337,9 +342,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 			return 'img/OneDrive-logo-90.png';
 		else if (attachment && attachment.box)
 			return 'img/box_logo-90.png';
-		else if(attachment && attachment.googleDrive == true)
+		else if(attachment && attachment.googleDrive)
 			return 'img/GoogleDrive-logo-90.png';
-		else if(attachment && attachment.dropbox == true)
+		else if(attachment && attachment.dropbox)
 			return 'img/dropbox-logo-90.png';
 		else if (attachment && attachment.fileName.match(/\.(png|jpg|jpeg|gif)$/i))
 			return httpService.get_attachment(attachment.url,attachment.fileName);
@@ -383,11 +388,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		ga('send', gaObj);
 	};
 
-	$scope.chooseDropbox = function(){
-		Dropbox.choose(options);
-		$scope.determineAudience();
-		sendGoogleAnalytic('DropBox');
-	};
+	
 	
 	//this is needed to clear ng flow cache files for flow-files-submitted because ng flow will preserve previous uploads so the upload attachment will not receive it
 	$scope.flow_cleanup = function($files){

@@ -29,7 +29,7 @@
                 <div class="ListMessageText"  ng-bind-html="message.message | highlight:chat.query"></div>
                 
                 
-                <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="!attachment.dropbox && !attachment.googleDrive && !attachment.box ? showDownloadAttachmentOverlay(attachment) : ''">
+                <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="!attachment.dropbox && !attachment.googleDrive && !attachment.box && !attachment.oneDrive ? showDownloadAttachmentOverlay(attachment) : ''">
                     <img class="AttachmentImg" ng-src="{{::getAttachment(attachment)}}" />               
                     <p ng-class="attachment.dropbox ? 'hideParagraph' : ''"> {{ ::attachment.fileName }}</p>
                     <div class="DropboxAttachmentContainer" ng-repeat="attachment in ::message.data.attachment">
