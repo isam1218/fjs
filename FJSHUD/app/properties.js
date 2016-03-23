@@ -52,5 +52,9 @@ fjs.CONFIG = {
     DEBUG:true,
 	SYNC_DELAY: 1500,
 	ACTIVITY_DELAY: 60000,
-    DROPBOX_APP_TOKEN: 'mfak8bm5ct32dji'
+    DROPBOX_APP_TOKEN: 'mfak8bm5ct32dji',
+    GOOGLE_APP_KEY:'AIzaSyAjCQ6Xf8ZQSylnmGu-spRtUfMgUoVLlng',
+    GOOGLE_CLIENT_ID:'1021477541761-rfj7un5tiupnjpe066u9afh9s7edpau3.apps.googleusercontent.com',
+    BOX_CLIENT_ID: 'e002eyntxr19ajn0skc77f2oqqior03a',
+    ONEDRIVE_CLIENT_ID: '000000004818C953'
 };

@@ -16,6 +16,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	var chat = {}; // internal controller data
 	var gaAudience;
 	var dropboxScriptTag;
+	var oneDriveScriptTag;
 	var elementExists;
 	var request;
 
@@ -86,6 +87,24 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     if (!elementExists)
     	document.body.appendChild(dropboxScriptTag);
 	};
+
+	var createOneDriveTag = function(success){
+    oneDriveScriptTag = document.createElement('script');
+    oneDriveScriptTag.setAttribute('src', 'https://js.live.net/v6.0/OneDrive.js');
+    oneDriveScriptTag.setAttribute('type', 'text/javascript');
+    oneDriveScriptTag.setAttribute('id', 'onedrive-js');
+    // if post request successfully returns key -> use as dropbox key otherwise use hardcoded key located in properties.js config file
+    if (success){
+  		oneDriveScriptTag.setAttribute('client-id', fjs.CONFIG.ONEDRIVE_CLIENT_ID);
+    }
+   
+
+    // don't add the script tag multiple times if switching back and forth b/w chat controller
+    elementExists = document.getElementById("onedrive-js");
+    if (!elementExists)
+    	document.body.appendChild(oneDriveScriptTag);
+	};
+	createOneDriveTag(true);
 
   $http.post(fjs.CONFIG.SERVER.ppsServer + getURL('dropbox/settings')).success(function(data){
     createDropboxTag(true, data);
@@ -174,7 +193,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
    // BOX file share 
   var boxOptions = {
-    clientId: 'e002eyntxr19ajn0skc77f2oqqior03a',
+    clientId: fjs.CONFIG.BOX_CLIENT_ID,
     linkType: 'shared',
     multiselect: false
   };

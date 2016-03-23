@@ -13,8 +13,8 @@ var hudweb = angular.module('fjshudApp', [
 hudweb.config(['lkGoogleSettingsProvider', function (lkGoogleSettingsProvider) {
 
   lkGoogleSettingsProvider.configure({
-    apiKey   : 'AIzaSyAjCQ6Xf8ZQSylnmGu-spRtUfMgUoVLlng',
-    clientId : '1021477541761-rfj7un5tiupnjpe066u9afh9s7edpau3.apps.googleusercontent.com',
+    apiKey   : fjs.CONFIG.GOOGLE_APP_KEY,
+    clientId : fjs.CONFIG.GOOGLE_CLIENT_ID,
     scopes   : ['https://www.googleapis.com/auth/drive'],
     locale   : 'eg',
     features : ['MULTISELECT_ENABLED', 'ANOTHER_ONE'],
