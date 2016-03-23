@@ -57,10 +57,12 @@ fjs.db.IndexedDBProvider.prototype.open = function(name, version, callback) {
     this.state = 0;
     var request = this.indexedDB.open(name, version), context = this;
     request.onerror = function(event) {
-        new Error("Error: can't open indexedDB ("+name+", "+version+")", event);
+        fjs.utils.Console.error("Error: can't open indexedDB ("+name+", "+version+")", event);
+        callback(null);
     };
     var onError = function(event) {
-        new Error("Database error: " + event.target.errorCode);
+        fjs.utils.Console.error("Database error: " + event.target.errorCode, event);
+        callback(null);
     };
     request.onsuccess = function() {
         context.db = request.result;
@@ -471,7 +473,7 @@ fjs.db.WebSQLProvider.check = function() {
  * @param {function(fjs.db.IDBProvider)} callback - Handler function to execute when database was ready
  */
 fjs.db.WebSQLProvider.prototype.open = function(name, version, callback) {
-    var dbSize = 5*1023*1023, context = this;
+    var dbSize = 4*1024*1024, context = this;
 
     try {
         var db = this.db = self.openDatabase(name, "", name, dbSize);
@@ -892,39 +894,52 @@ fjs.db.LocalStorageDbProvider.prototype.createIndexes = function(tableName, item
  * @param {function} callback
  */
 fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback) {
-    var tableName, context = this;
-    this.state = 0;
-    this.dbInfo = fjs.utils.JSON.parse(self.localStorage.getItem("DB_"+name));
-    if(this.dbInfo) {
-        if(version>this.dbInfo.version) {
-            for(var i=0; i<this.dbInfo.tables.length; i++) {
-                var tableName = this.dbInfo.tables[i];
-                self.localStorage.removeItem(tableName);
+    var ls = fjs.utils.LocalStorage;
+    try {
+        var tableName, context = this;
+        this.state = 0;
+        this.dbInfo = fjs.utils.JSON.parse(ls.get("DB_" + name));
+        if (this.dbInfo) {
+            if (version > this.dbInfo.version) {
+                for (var i = 0; i < this.dbInfo.tables.length; i++) {
+                    tableName = this.dbInfo.tables[i];
+                    ls.remove(tableName);
+                }
+                this.dbInfo.tables = null;
+                this.dbInfo.version = version;
+                this.createTables();
+                ls.set("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
             }
-            this.dbInfo.tables = null;
-            this.dbInfo.version = version;
-            this.createTables();
-            self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
+            else {
+                for (var k = 0; k < this.dbInfo.tables.length; k++) {
+                    tableName = this.dbInfo.tables[k];
+                    var tableData = this.dbData[tableName] = fjs.utils.JSON.parse(ls.get(tableName)) || {};
+                    this.createIndexes(this.getRealTableName(tableName), tableData);
+                }
+            }
         }
         else {
-            for(var k=0; k<this.dbInfo.tables.length; k++) {
-                tableName = this.dbInfo.tables[k];
-                   var tableData = this.dbData[tableName] = fjs.utils.JSON.parse(self.localStorage.getItem(tableName)) || {};
-                   this.createIndexes(this.getRealTableName(tableName), tableData);
-            }
+            this.dbInfo = {
+                name: name,
+                version: version
+            };
+            this.createTables();
+            ls.set("DB_" + name, fjs.utils.JSON.stringify(this.dbInfo));
+        }
+        this.state = 1;
+        if (callback)
+            setTimeout(function () {
+                callback(context);
+            }, 0);
+    }
+    catch (e) {
+        fjs.utils.Console.error("Error: can't create localStorage DB", e);
+        if(callback) {
+            setTimeout(function () {
+                callback(null);
+            }, 0);
         }
     }
-    else {
-        this.dbInfo = {
-            name: name,
-            version:version
-        };
-        this.createTables();
-        self.localStorage.setItem("DB_"+name, fjs.utils.JSON.stringify(this.dbInfo));
-    }
-    this.state = 1;
-    if(callback)
-    setTimeout(function(){callback(context);}, 0);
 };
 
 /**
@@ -932,7 +947,7 @@ fjs.db.LocalStorageDbProvider.prototype.open = function(name, version, callback)
  * @returns {boolean}
  */
 fjs.db.LocalStorageDbProvider.check = function() {
-    return !!self.localStorage;
+    return fjs.utils.LocalStorage.check();
 };
 
 /**
@@ -985,7 +1000,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertOne = function(tableName, item, ca
     var _tableName = this.getLSTableName(tableName);
     this.createIndexes(tableName, [item]);
     this.dbData[_tableName][item[this.tables[tableName].key]] = item;
-    self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+    fjs.utils.LocalStorage.set(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
     if(callback)
     setTimeout(callback, 0);
 };
@@ -1004,7 +1019,7 @@ fjs.db.LocalStorageDbProvider.prototype.insertArray = function(tableName, items,
             var item = items[i];
             this.dbData[_tableName][item[this.tables[tableName].key]] = item;
         }
-    self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+    fjs.utils.LocalStorage.set(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
     if(callback)
     setTimeout(callback, 0);
 };
@@ -1019,12 +1034,12 @@ fjs.db.LocalStorageDbProvider.prototype.deleteByKey = function(tableName, key, c
     tableName = this.getLSTableName(tableName);
     if(key!=null && this.dbData[tableName]) {
         delete this.dbData[tableName][key];
-        self.localStorage.setItem(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
+        fjs.utils.LocalStorage.set(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
     }
     else {
         this.dbData[tableName] = {};
         this.indexes[tableName] = {};
-        self.localStorage.setItem(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
+        fjs.utils.LocalStorage.set(tableName, fjs.utils.JSON.stringify(this.dbData[tableName]));
     }
     if(callback)
     setTimeout(callback, 0);
@@ -1138,7 +1153,7 @@ fjs.db.LocalStorageDbProvider.prototype.clear = function(callback) {
     for(var tableName in this.tables) {
         if(this.tables.hasOwnProperty(tableName)) {
             var _tableName = this.getLSTableName(tableName);
-            self.localStorage.removeItem(_tableName);
+            fjs.utils.LocalStorage.remove(_tableName);
             delete this.dbData[_tableName];
             delete this.indexes[_tableName];
         }
@@ -1163,7 +1178,7 @@ fjs.db.LocalStorageDbProvider.prototype.deleteByIndex = function(tableName, rule
             }
         }
         this.indexes[_tableName] = {};
-        self.localStorage.setItem(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
+        fjs.utils.LocalStorage.set(_tableName, fjs.utils.JSON.stringify(this.dbData[_tableName]));
     }
     else {
         for (var key in rules) {
@@ -1216,26 +1231,30 @@ fjs.db.DBFactory = function(config) {
     };
 
     this.currentDB = null;
+    this.currentDBIndex = -1;
 };
 
 /**
  * Selects and returns the most appropriate database provider.
+ * @param {fjs.db.IDBProvider?} oldDB Previous database if it failed.
  * @returns {fjs.db.IDBProvider|undefined}
  */
-fjs.db.DBFactory.prototype.getDB = function() {
+fjs.db.DBFactory.prototype.getDB = function(oldDB) {
     /**
      * priority of databases
      * @type {Array}
      */
-    var dbs = this.config.DB.dbProviders;
-    for(var i=0; i<dbs.length; i++) {
-        if(this._dbRegister[dbs[i]].check()) {
-            if(!this.currentDB) {
+    if(!this.currentDB || oldDB) {
+        var dbs = this.config.DB.dbProviders;
+        for(var i=this.currentDBIndex+1; i<dbs.length; i++) {
+            if (this._dbRegister[dbs[i]].check()) {
                 this.currentDB = new this._dbRegister[dbs[i]]();
+                this.currentDBIndex = i;
+                break;
             }
-            return this.currentDB;
         }
     }
+    return this.currentDB;
 };
 namespace("fjs.fdp.model");
 /**
@@ -1577,7 +1596,8 @@ fjs.fdp.model.ProxyModel.prototype.onEntryDeletion = function(event) {
     this.fillDeletion(event.xpid, event.feed);
 };
 /**
- * @param {Object} event
+ * Keep entry event.
+ * @param {Object} event keep entry event object
  */
 fjs.fdp.model.ProxyModel.prototype.onEntryKeep = function(event) {
     this.keepEntries[event.xpid] = event;
@@ -1585,7 +1605,9 @@ fjs.fdp.model.ProxyModel.prototype.onEntryKeep = function(event) {
 
 
 /**
- * @param {Object} event
+ * Source complete event.
+ * @param {Object} event source complete event object
+ * @protected
  */
 fjs.fdp.model.ProxyModel.prototype.onSourceComplete = function(event) {
     if(event.syncType==fjs.fdp.SyncManager.syncTypes.FULL || event.syncType==fjs.fdp.SyncManager.syncTypes.KEEP) {
@@ -1599,15 +1621,31 @@ fjs.fdp.model.ProxyModel.prototype.onSourceComplete = function(event) {
     this.keepEntries = {};
 };
 
+/**
+ * Clears all data for feed
+ */
+fjs.fdp.model.ProxyModel.prototype.clear = function() {
+    this.changes = {};
+    for(var xpid in this.items) {
+        if(this.items.hasOwnProperty(xpid)) {
+            this.changes[xpid] = {type:'delete', entry:null, xpid:xpid};
+            delete this.items[xpid];
+        }
+    }
+    this.onSyncComplete();
+};
 
 /**
  * Handler of SyncManager events
- * @param event Event object
+ * @param {Object} event Event object
  * @protected
  */
 fjs.fdp.model.ProxyModel.prototype.onSyncEvent = function(event) {
     var eventTypes = fjs.fdp.SyncManager.eventTypes;
     switch(event.eventType) {
+        case eventTypes.CLEAR:
+            this.clear();
+            break;
         case eventTypes.SYNC_START:
             break;
         case eventTypes.FEED_START:
@@ -1633,7 +1671,10 @@ fjs.fdp.model.ProxyModel.prototype.onSyncEvent = function(event) {
             break;
     }
 };
-
+/**
+ * Sync iteration ends.
+ * @private
+ */
 fjs.fdp.model.ProxyModel.prototype.onSyncComplete = function() {
     if(this.changes) {
         this.fireEvent({feed:this.feedName, changes:this.changes});
@@ -1693,8 +1734,8 @@ fjs.fdp.model.ClientFeedProxyModel.extend(fjs.fdp.model.ProxyModel);
 
 /**
  * Creates simulated FDP sync object
- * @param {string} syncType
- * @param {Object} entry
+ * @param {string} syncType synchronization type ('full'|'lazy'|'keep')
+ * @param {fjs.fdp.model.EntryModel} entry model item.
  * @returns {Object}
  * @private
  */
@@ -1709,6 +1750,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.createSyncData = function(syncType,
     };
     return syncData;
 };
+/**
+ * Sync iteration ends.
+ * @private
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.onSyncComplete = function() {
     if(this.changes) {
         this.fireEvent({feed:this.clientFeedName, changes:this.changes});
@@ -1729,10 +1774,13 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
         this.sm.onClientSync(fjs.utils.JSON.stringify(syncData), notBroadcast);
     }
     else {
-        this.superClass.sendAction.call(this, this.feedName, actionName, data);
+        fjs.fdp.model.ProxyModel.prototype.sendAction.call(this, this.feedName, actionName, data);
     }
 };
-
+/**
+ * Handler of that entry has deleted
+ * @param {Object} event Event object
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
     if(event.feed == this.feedName) {
         delete this.items[event.xpid];
@@ -1741,6 +1789,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
     this.fillDeletion(event.xpid, event.feed);
 };
 
+/**
+ * Adds event handler function to feed changes
+ * @param {Function} listener handler function
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
     var index = this.listeners.indexOf(listener);
     if(index<0) {
@@ -1759,6 +1811,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.addListener = function(listener) {
     }
 };
 
+/**
+ * Collects field names from joined feeds, then to remove them if joined feed entry deleted
+ * @param {string} feedName Feed name
+ * @param {Object} entry FDP Feed entry
+ * @protected
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, entry) {
     if(feedName != this.feedName) {
         if(!this.feedFields[feedName]) {
@@ -1773,6 +1831,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.collectFields = function(feedName, 
         }
     }
 };
+
+/**
+ * Handler of that entry has changed
+ * @param {Object} event - Event object
+ * @protected
+ */
 fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     /**
      * @type {fjs.fdp.model.EntryModel}
@@ -1794,6 +1858,82 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             this.fillChange(event.xpid, changes, event.feed);
     }
     this.keepEntries[event.xpid] = event;
+};namespace("fjs.fdp.model");
+/**
+ * Proxy model for client feeds
+ * @param {Array.<string>} feeds List of joined feeds
+ * @param {fjs.fdp.SyncManager} syncManager SynchronizationManager
+ * @constructor
+ * @extends fjs.fdp.model.ClientFeedProxyModel
+ */
+fjs.fdp.model.MyCallsClientProxyModel = function(feeds, syncManager) {
+    fjs.fdp.model.ClientFeedProxyModel.call(this, feeds, syncManager);
+    this.callLogByHTCallId = {};
+};
+fjs.fdp.model.MyCallsClientProxyModel.extend(fjs.fdp.model.ClientFeedProxyModel);
+
+
+/**
+ * Handler of that entry has changed
+ * @param {Object} event - Event object
+ * @protected
+ */
+fjs.fdp.model.MyCallsClientProxyModel.prototype.onEntryChange = function(event) {
+    /**
+     * @type {fjs.fdp.model.EntryModel}
+     */
+    var item = this.items[event.xpid];
+    var _entry = this.prepareEntry(event.entry, event.feed, event.xpid);
+    if(!item) {
+        if(event.feed==this.clientFeedName && this.clientFeedName!=this.feedName) {
+            return;
+        }
+        var _change = this.fillChange(event.xpid, _entry, event.feed);
+        if(_change.type != 'delete') {
+            this.items[event.xpid] = new fjs.fdp.model.EntryModel(_entry);
+        }
+    }
+    else {
+        var changes = item.fill(_entry);
+        if(changes)
+            this.fillChange(event.xpid, changes, event.feed);
+    }
+    this.keepEntries[event.xpid] = event;
+};
+
+/**
+ * Handler of that entry has deleted
+ * @param {Object} event Event object
+ */
+fjs.fdp.model.MyCallsClientProxyModel.prototype.onEntryDeletion = function(event) {
+    if(event.feed == this.feedName) {
+        var delItem = this.items[event.xpid];
+        this.sendAction(this.clientFeedName, 'delete', {xpid: event.xpid}, true);
+        if(delItem) {
+            this.callLogByHTCallId[delItem.htCallId] = delItem['mycallsclient_callLog'];
+            delete this.items[event.xpid];
+        }
+    }
+    this.fillDeletion(event.xpid, event.feed);
+};
+
+/**
+ * Sync iteration ends.
+ * @private
+ */
+fjs.fdp.model.MyCallsClientProxyModel.prototype.onSyncComplete = function() {
+    var itemsKeys = Object.keys(this.items);
+    for(var i=0; i<itemsKeys.length; i++) {
+        var key = itemsKeys[i], _htCallId = this.items[key].htCallId, callLog = this.callLogByHTCallId[_htCallId];
+        if(callLog) {
+            this.sendAction(this.clientFeedName, 'push', {callLog:callLog, xpid:key});
+        }
+    }
+    if(this.changes) {
+        this.fireEvent({feed:this.clientFeedName, changes:this.changes});
+    }
+    this.changes= null;
+    this.callLogByHTCallId = {};
 };(function() {
     namespace("fjs.fdp.transport");
     /**
@@ -1875,6 +2015,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
          * @protected
          */
         this.ajax = null;
+
+
 
         this.type = type;
         /**
@@ -2010,13 +2152,12 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.transport.AJAXTransport.prototype.SFLogin = function(data){
         var context = this;
         this._currentRequest = this.sendRequest(this.url+this.SF_LOGIN_PATH, data, function(xhr, data, isOk){
-              if(isOk) {
-                  var _data = fjs.utils.JSON.parse(data);
-                  var ticket = _data["Auth"];
-                  var node = _data["node"];
-                  if(ticket && node) {
-                      context.fireEvent('message', {type:'node', data:{nodeId:(context.node = node)}});
-                      context.fireEvent('message', {type:'ticket', data:{ticket:(context.ticket = ticket)}});
+            try  {
+            if(isOk) {
+                  var _data = fjs.utils.JSON.parse(data), ticket, node;
+                  if(_data && (ticket = _data["Auth"]) && (node = _data["node"])) {
+                          context.fireEvent('message', {type: 'node', data: {nodeId: (context.node = node)}});
+                          context.fireEvent('message', {type: 'ticket', data: {ticket: (context.ticket = ticket)}});
                   }
                   else {
                       context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
@@ -2026,6 +2167,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                   context.fireEvent('error', {type:'authError', message:(data ? data.replace('Error=', '') : "Wrong auth data")});
               }
               context.handleRequestErrors(xhr, isOk);
+            } catch (e) {
+                context.fireEvent('error', {type:'authError', message:"Can't get ticket or node"});
+            }
           });
     };
 
@@ -2101,7 +2245,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                 }
             }
             else {
-                if(request.status == 403) {
+                if(request.status == 403 || request.status == 401) {
                     callback(false);
                     context.fireEvent('error', {type:'authError', message:'Auth ticket wrong or expired'});
                 }
@@ -2151,7 +2295,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     }
                     else if (context._clientRegistryFailedCount >= 5) {
                         setTimeout(function () {
-                            context.requestVersionscache()
+                            context.requestVersionscache();
                         }, 5000);
                     }
                 }
@@ -2173,6 +2317,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                 context.fireEvent('message', {type: 'sync', data:data});
                 context.requestVersionscache();
             }
+            else {
+                context.requestVersionscache();
+            }
             context.handleRequestErrors(xhr, isOK);
         });
     };
@@ -2186,6 +2333,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         //TODO: parse db and server versions;
         var params = data.split(";"), feeds = {}, feedsCount = 0, forgetFeedIndex;
         if(params) {
+            var fdpTime = params[0];
+            this.fireEvent("message", {type: "fdpTime", data: fdpTime});
+
             for(var i=2; i<params.length-1; i++) {
                 if(params[i]) {
                     if((forgetFeedIndex = this._forgetFeeds.indexOf(params[i]))<0) {
@@ -2260,6 +2410,18 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         }
         this.sendRequest(this.url+"/v1/"+feedName, data, function(xhr, response, isOK){
             context.handleRequestErrors(xhr, isOK);
+            if(isOK) {
+
+            }
+            else {
+                if(xhr.status == 401 || xhr.status == 403) {
+                    context.requestClientRegistry(function(isOK) {
+                        if(isOK) {
+                            context.sendAction(feedName, actionName, parameters);
+                        }
+                    });
+                }
+            }
         });
     };
 
@@ -2302,6 +2464,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.transport.XHRTransport.prototype.sendRequest = function (url, data, callback) {
         if(this.closed) {
             return null;
+        }
+        if(fjs.utils.Browser.isSafari()) {
+            url += (/\?/.test(url) ? '&safariNoCaсhe=' : '?safariNoCaсhe=') + Date.now();
         }
         data = data || {};
         data["t"] = this.type;
@@ -2399,6 +2564,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
 })();(function(){
     namespace("fjs.fdp.transport");
     /**
+     * This transport receives data form other tab via localStorage
      * @constructor
      * @extends fjs.fdp.transport.FDPTransport
      */
@@ -2449,12 +2615,13 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             this.tabsSynchronizer.setSyncValue('lsp_'+message.type, fjs.utils.JSON.stringify(message.data));
         }
         else {
-            localStorage.setItem('lsp_' + message.type, fjs.utils.JSON.stringify(message.data));
+            message.data.t = Date.now();
+            fjs.utils.LocalStorage.set('lsp_' + message.type, fjs.utils.JSON.stringify(message.data));
         }
     };
 
     /**
-     *
+     * Closes (destroy) this transport
      */
     fjs.fdp.transport.LocalStorageTransport.prototype.close = function() {
         window.removeEventListener('storage', this.onStorage, false);
@@ -2463,11 +2630,19 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         this.tabsSynchronizer.removeEventListener('lsp_clientSync', this.onStorage);
         this.tabsSynchronizer.removeEventListener('lsp_action', this.onStorage);
     };
+
+    /**
+     * Broadcasts message to all tabs using localStorage transport.
+     * @param {string} messageType
+     * @param {*} messageData
+     * @static
+     */
     fjs.fdp.transport.LocalStorageTransport.masterSend = function(messageType, messageData) {
         if(fjs.utils.Browser.isIE11()) {
             new fjs.api.TabsSynchronizer().setSyncValue('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
         }
-        localStorage.setItem('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
+        messageData.t = Date.now();
+        fjs.utils.LocalStorage.set('lsp_'+messageType, fjs.utils.JSON.stringify(messageData));
     };
 })();(function(){
 
@@ -2523,7 +2698,6 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
 })();(function(){
     namespace("fjs.fdp");
     /**
-     * 123
      * <p>
      *     Synchronization manager. Main logic of synchronization with FDP server.
      * <p>
@@ -2543,8 +2717,11 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
 
         fjs.EventsSource.call(this);
 
-        this.db = new fjs.db.DBFactory(config).getDB();
+        this.dbFactory = new fjs.db.DBFactory(config);
+        this.db = this.dbFactory.getDB();
         this.syncs = [];
+
+        this.runtimefeeds=['mycalldetails', 'mycalls'];
         /**
          * Current SyncManager state
          * @type {fjs.fdp.SyncManager.states|number}
@@ -2601,6 +2778,8 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
          * @private
          */
         this.suspendFeeds=[];
+        this.suspendActions = [];
+        this.suspendClientSyncs = [];
 
         /**
          *
@@ -2694,8 +2873,10 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         /**
          * Entry should be keeped
          */
-        'ENTRY_KEEP': 'keep'
-    };
+        'ENTRY_KEEP': 'keep',
+
+        'CLEAR': 'clear'
+};
 
     /**
      * <b>Enumerator</b> <br/>
@@ -2782,7 +2963,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             if(new fjs.api.TabsSynchronizer().isMaster) {
                 var obj = fjs.utils.JSON.parse(e.newValue);
                 if(eventType == "clientSync") {
-                    this.onClientSync(obj);
+                    this.onClientSync(obj.data);
                 }
                 else {
                     this.transport.send({type:eventType, data:obj});
@@ -2807,6 +2988,9 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
                     context.fireEvent('ticket', e);
                     context.startSync(context.syncFeeds);
                     break;
+                case sm.eventTypes.CLEAR:
+                    context.fireEvent(null, {eventType: sm.eventTypes.CLEAR});
+                    break;
                 default:
                     context.fireEvent(e.type, e);
                     break;
@@ -2830,35 +3014,32 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.SyncManager.prototype.initDataBase = function(callback) {
         if(this.db) {
             /**
-             * @type {fjs.fdp.SyncManager}
-             */
-            var context = this;
-
-            /**
-             * Declare tables from config
-             */
-            for(var i=0; i<this.config.DB.tables.length; i++) {
-
-                var table = this.config.DB.tables[i];
-                this.db.declareTable(table.name, table.key, table.indexes);
-            }
-            /**
              * Open DB
              */
-            this.db.open(this.config.DB.name, this.config.DB.version, function(dbProvider){
-                if(!dbProvider) {
-                    context.db = null;
-                }
-                context.finishInitialization(callback);
-                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
-                    context.db.deleteByKey('tabsync', null);
-                };
-            });
+            this.openDB(callback);
         }
         else {
             this.finishInitialization(callback);
         }
     };
+
+    fjs.fdp.SyncManager.prototype.openDB = function(callback) {
+        var context = this;
+        for(var i=0; i<this.config.DB.tables.length; i++) {
+            var table = this.config.DB.tables[i];
+            this.db.declareTable(table.name, table.key, table.indexes);
+        }
+        this.db.open(this.config.DB.name, this.config.DB.version, function(dbProvider){
+            if(!dbProvider) {
+                context.db = context.dbFactory.getDB(context.db);
+                context.openDB(callback);
+            }
+            context.finishInitialization(callback);
+            if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && context.tabsSyncronizer.isMaster) {
+                context.db.deleteByKey('tabsync', null);
+            };
+        });
+    }
 
     fjs.fdp.SyncManager.prototype.getDataForFeeds = function (feeds, callback) {
         var context = this;
@@ -2888,6 +3069,20 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             if(context.suspendFeeds.length>0) {
                 context.startSync(context.suspendFeeds);
             }
+            context.suspendFeeds = [];
+            if(context.suspendClientSyncs.length>0) {
+                for(var j=0; j<context.suspendClientSyncs.length; j++) {
+                    context.onSync(context.suspendClientSyncs[j]);
+                }
+            }
+            context.suspendClientSyncs = [];
+            if(context.suspendActions.length>0) {
+                for(var i=0; i<context.suspendActions.length; i++) {
+                    context.transport.send(context.suspendActions[i]);
+                }
+            }
+
+            context.suspendActions = [];
             context.suspendFeeds = [];
             context.suspendClientFeeds = [];
             context.status = sm.states.READY;
@@ -2967,7 +3162,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      * @private
      */
     fjs.fdp.SyncManager.prototype.saveVersions = function(feedName, source, version) {
-        if(this.db && version !== undefined && (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
+        if(this.db && version !== undefined && this.runtimefeeds.indexOf(feedName) < 0 &&  (!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster)) {
             this.db.insertOne("versions", {"feedSource": feedName+"_"+source, "feedName":feedName, "source":source, "version":version});
         }
     };
@@ -2990,7 +3185,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             },0);
         }
         else {
-            if (this.db) {
+            if (this.db && this.runtimefeeds.indexOf(feedName) < 0) {
                 this.db.selectByIndex("versions", {"feedName": feedName}, function (item) {
                     versionsArr.push(item.source + "@" + item.version);
                 }, function () {
@@ -3182,7 +3377,13 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
      */
     fjs.fdp.SyncManager.prototype.sendAction = function(feedName, actionName, data) {
         data["action"] = actionName;
-        this.transport.send({type:"action", data:{feedName:feedName, actionName:actionName, parameters: data}});
+        var message = {type: "action", data: {feedName: feedName, actionName: actionName, parameters: data}};
+        if(this.status!=sm.states.READY) {
+               this.suspendActions.push(message);
+        }
+        else {
+            this.transport.send(message);
+        }
     };
 
     /**
@@ -3195,10 +3396,15 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
             fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type:"sync", data:message});
         }
         else if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && !notBroadcast) {
-            fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', message);
+            fjs.fdp.transport.LocalStorageTransport.masterSend('clientSync', {type:"clientSync", data:message});
         }
         if(!fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() || new fjs.api.TabsSynchronizer().isMaster) {
-            this.onSync(message);
+            if(this.status!=1) {
+                this.suspendClientSyncs.push(message);
+            }
+            else {
+                this.onSync(message);
+            }
         }
     };
 
@@ -3315,7 +3521,7 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
     fjs.fdp.SyncManager.prototype.getFeedData = function(feedName, listener) {
         var context = this, data = {eventType:sm.eventTypes.FEED_START , syncType: "F", feed:feedName};
         this.fireEvent(feedName, data, listener);
-        if(this.db) {
+        if(this.db ) {
             this.db.selectAll(feedName, function(item){
                     var data = {eventType: sm.eventTypes.ENTRY_CHANGE, feed:feedName, xpid: item.xpid, entry: item};
                     context.fireEvent(feedName, data, listener);
@@ -3495,6 +3701,15 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryChange = function(event) {
         var context = this;
         if(this.status == sm.states.READY && this.db) {
             this.db.clear(function(){
+                context.fireEvent(null, {eventType: sm.eventTypes.CLEAR});
+                for(var key in context.versions) {
+                    if(context.versions.hasOwnProperty(key)) {
+                        context.versions[key] = '';
+                    }
+                }
+                if(fjs.fdp.transport.TransportFactory.useLocalStorageSyncronization() && new fjs.api.TabsSynchronizer().isMaster) {
+                    fjs.fdp.transport.LocalStorageTransport.masterSend('message', {type: sm.eventTypes.CLEAR});
+                }
                 context.transport.send({type:'SFLogin', data:loginData});
             });
         }
@@ -3534,6 +3749,7 @@ fjs.fdp.DataManager = function(authTicket, node, config, callback) {
      * @type {string}
      */
     this.ticket = authTicket;
+
     /**
      * Node ID
      * @type {string}
@@ -3562,6 +3778,7 @@ fjs.fdp.DataManager = function(authTicket, node, config, callback) {
         context.sm.addEventListener("authError", proxyEventListener);
         context.sm.addEventListener("networkProblem", proxyEventListener);
         context.sm.addEventListener("connectionEstablished", proxyEventListener);
+        context.sm.addEventListener("fdpTime", proxyEventListener);
     });
     /**
      * @type {{}}
@@ -3616,7 +3833,7 @@ fjs.fdp.DataManager.prototype.createProxy = function(feedName) {
         case 'sortings':
             return new fjs.fdp.model.ClientFeedProxyModel(['sortings'], this.sm);
         case 'mycallsclient':
-            return new fjs.fdp.model.ClientFeedProxyModel(['mycalls', 'mycalldetails', 'mycallsclient'], this.sm);
+            return new fjs.fdp.model.MyCallsClientProxyModel(['mycalls', 'mycalldetails', 'mycallsclient'], this.sm);
         case 'clientsettings':
             return new fjs.fdp.model.ClientFeedProxyModel(['clientsettings'], this.sm);
         default :
@@ -3647,8 +3864,8 @@ fjs.fdp.DataManager.prototype.sendAction = function(feedName, actionName, data) 
 
 /**
  * Loads more items for feeds with dynamic loading
- * @param {string} feedName
- * @param filter Filter to load only specified data
+ * @param {string} feedName FeedName
+ * @param {Object} filter Filter to load only specified data
  * @param {number} count Count of items
  */
 fjs.fdp.DataManager.prototype.loadNext = function(feedName, filter, count) {
@@ -3658,6 +3875,11 @@ fjs.fdp.DataManager.prototype.loadNext = function(feedName, filter, count) {
     this.sm.loadNext(feedName, filter, count);
 };
 
+/**
+ * Broadcasts message to listeners.
+ * @param {string} eventType event type
+ * @param {*} eventData event message object
+ */
 fjs.fdp.DataManager.prototype.fireEvent = function (eventType, eventData) {
     var _listeners = this.listeners[eventType], i;
     eventData.eventType = eventType;
@@ -3673,7 +3895,10 @@ fjs.fdp.DataManager.prototype.fireEvent = function (eventType, eventData) {
         }
     }
 };
-
+/**
+ * Authenticates user by salesforce user data
+ * @param {Object} loginData user info data
+ */
 fjs.fdp.DataManager.prototype.SFLogin = function(loginData) {
     this.sm.SFLogin(loginData);
 };

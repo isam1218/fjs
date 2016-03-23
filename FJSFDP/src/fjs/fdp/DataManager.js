@@ -55,6 +55,7 @@ fjs.fdp.DataManager = function(authTicket, node, config, callback) {
         context.sm.addEventListener("authError", proxyEventListener);
         context.sm.addEventListener("networkProblem", proxyEventListener);
         context.sm.addEventListener("connectionEstablished", proxyEventListener);
+        context.sm.addEventListener("fdpTime", proxyEventListener);
     });
     /**
      * @type {{}}

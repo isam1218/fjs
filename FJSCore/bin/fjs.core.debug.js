@@ -413,8 +413,8 @@ fjs.utils.Cookies = {
                     return;
                 }
                 var key = keys[currentKeyIndex];
-                execute(key, map[key], next);
                 currentKeyIndex++;
+                execute(key, map[key], next);
             }
 
             for(var key in map) {

@@ -20,6 +20,8 @@
          */
         this.ajax = null;
 
+
+
         this.type = type;
         /**
          * @type {Array.<string>}
@@ -335,6 +337,9 @@
         //TODO: parse db and server versions;
         var params = data.split(";"), feeds = {}, feedsCount = 0, forgetFeedIndex;
         if(params) {
+            var fdpTime = params[0];
+            this.fireEvent("message", {type: "fdpTime", data: fdpTime});
+
             for(var i=2; i<params.length-1; i++) {
                 if(params[i]) {
                     if((forgetFeedIndex = this._forgetFeeds.indexOf(params[i]))<0) {

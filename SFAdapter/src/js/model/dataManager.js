@@ -165,6 +165,9 @@ fjs.model.DataManager = function(sf) {
                     context.suspendActions=[];
                 }
             });
+            context.dataProvider.addEventListener(fjs.model.DataManager.EV_FDP_TIME, function(e) {
+                new fjs.utils.TimeSync().setTimestamp(e.data);
+            });
         }
     });
 };
@@ -182,6 +185,7 @@ fjs.model.DataManager.EV_TICKET = "ticket";
 fjs.model.DataManager.EV_NODE = "node";
 fjs.model.DataManager.EV_FDP_CONFIG_ERROR = "fdpConfigError";
 fjs.model.DataManager.EV_FDP_CONFIG = "fdpConfig";
+fjs.model.DataManager.EV_FDP_TIME = "fdpTime";
 
 fjs.model.DataManager.AUTH_COOKIE_NAME = "SF_Authorization";
 fjs.model.DataManager.NODE_COOKIE_NAME = "SF_Node";

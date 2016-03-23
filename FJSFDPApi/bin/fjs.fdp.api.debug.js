@@ -200,7 +200,7 @@ fjs.api.SharedWorkerDataProvider.extend(fjs.api.DataProviderBase);
  * @returns {boolean}
  */
 fjs.api.SharedWorkerDataProvider.check = function() {
-    return  !!self.SharedWorker;
+    return  !!self.SharedWorker && !fjs.utils.Browser.isSafari() && !fjs.utils.Browser.isFirefox();// && fjs.utils.Cookies.check();
 };
 namespace("fjs.api");
 
@@ -309,7 +309,7 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
                 fjs.utils.Cookies.set(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
             }
             else {
-                localStorage.setItem(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
+                fjs.utils.LocalStorage.set(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
             }
             if(!context.isMaster) {
                 context.fireEvent('master_changed', (context.isMaster = true));
@@ -361,7 +361,7 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
             lsvals = fjs.utils.Cookies.get(this.TABS_SYNCRONIZE_KEY);
         }
         else {
-            lsvals = localStorage.getItem(this.TABS_SYNCRONIZE_KEY);
+            lsvals = fjs.utils.LocalStorage.get(this.TABS_SYNCRONIZE_KEY);
         }
         return !lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT;
     };
