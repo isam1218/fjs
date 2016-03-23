@@ -13,7 +13,7 @@ fjs.CONFIG = {
             'contactpermissions', 'contactstatus', 'fdpImage',   'group_page_member',
              'chatsmiles', 'weblauncher', 'weblaunchervariables',  
             'streamevent','recent_talks','conferencemembers',
-            'conferencepermissions','conferencestatus','callrecording','parkedcalls','mycalldetails','i18n_langs','quickinbox',]
+            'conferencepermissions','conferencestatus','parkedcalls','mycalldetails','i18n_langs','quickinbox',]
     , 
     CALL_STATES:{
         CALL_UNKNOWN:-1,
@@ -49,7 +49,8 @@ fjs.CONFIG = {
         WINDOWS_NEW:'<%= WINDOWS_PLUGIN_VERSION %>',
         MAC_NEW:'<%= MAC_PLUGIN_VERSION %>'
     },
-    DEBUG:true,
-	SYNC_DELAY: 1000,
+   BUILD_NUMBER: '<%= BUILD_NUMBER %>',
+   DEBUG:true,
+	SYNC_DELAY: 1500,
 	ACTIVITY_DELAY: 60000
 };

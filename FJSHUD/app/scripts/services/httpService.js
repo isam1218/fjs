@@ -30,7 +30,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	
 	// check for second tab before starting web worker
 	if (document.cookie.indexOf('tab=true') == -1) {		
-		worker = new Worker("scripts/workers/fdpWebWorker.js");
+		worker = new Worker("scripts/workers/fdpWebWorker.js?v=" + fjs.CONFIG.BUILD_NUMBER);
 		
 		worker.addEventListener("message", function(event) {
 		    switch (event.data.action) {
@@ -84,11 +84,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					break;
 			}
 		}, false);
-		
-		
-		worker.onerror = function(evt){
-			console.error("error with worker port, line #" + evt.lineno + " - " + evt.message + " in " + evt.filename);
-		};
 	}
 	else {
 		window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
@@ -481,7 +476,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			transformResponse: false
 		})
 		.then(function(response) {
-			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
+			// account for characters that may break parse
+			var data = JSON.parse(response.data
+				.replace(/\\'/g, "'")
+				.replace(/([\u0000-\u001F])/g, function(match) {
+					var c = match.charCodeAt();
+					return "\\u00" + Math.floor(c/16).toString(16) + (c%16).toString(16);
+				})
+			);
 	
 			for (var key in data) {
 				// create xpid for each record
@@ -534,6 +536,28 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		});
 		
 		return deferred.promise;
+	};
+	
+	this.addFeedToSync = function(f) {
+		// make sure it's not already there
+		var found = false;
+		
+		for (var i = 0, len = feeds.length; i < len; i++) {
+			if (feeds[i] == f) {
+				found = true;
+				break;
+			}
+		}
+		
+		// remember feed locally
+		if (!found)
+			feeds.push(f);
+		
+		// ping worker to re-do version check
+		worker.postMessage({
+			"action": "add",
+			"feed": f
+		});
 	};
 	
 	// manually override 'delete' status in web worker

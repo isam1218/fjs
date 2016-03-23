@@ -10,6 +10,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	}
 
 	var version = 0;
+	var soundDelay = true;
 	var cutoff = ntpService.calibrateTime(new Date().getTime());
 	var scrollbox = {};
 	var chat = {}; // internal controller data
@@ -205,6 +206,13 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		// no more chats
 		if (version < 0)
 			scrollbox.onscroll = null;
+		
+		// sync with web worker in case history is delayed
+		httpService.getFeed('streamevent');
+		
+		soundDelay = setTimeout(function() {
+			soundDelay = false;
+		}, 1000);
 	});
 
    	// get additional messages from sync
@@ -261,7 +269,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 			
 			// only play sound once per sync
 			// isInFocus is required to avoid conflicts with notification sfx
-			if (phoneService.isInFocus() && incoming)
+			if (!soundDelay && phoneService.isInFocus() && incoming)
 				phoneService.playSound("received");
 			
 			// jump to bottom if new messages were found
