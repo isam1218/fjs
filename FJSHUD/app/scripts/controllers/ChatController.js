@@ -235,7 +235,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	      message: ' ',
 	      data: '{"attachment":[{"oneDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 	    });
-	   console.log("ONEDRIVE FILES",files); 
+	    
 
 	},
 	  cancel: function() {  },
@@ -369,6 +369,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
 	// determine access point for google analytics purposes
 	$scope.determineAudience = function(){
+		$scope.chat.showBG = false;
 		gaAudience = $location.path().split('/')[1];
 	};
 
