@@ -200,7 +200,7 @@ fjs.api.SharedWorkerDataProvider.extend(fjs.api.DataProviderBase);
  * @returns {boolean}
  */
 fjs.api.SharedWorkerDataProvider.check = function() {
-    return  !!self.SharedWorker;
+    return  !!self.SharedWorker && !fjs.utils.Browser.isSafari() && !fjs.utils.Browser.isFirefox();// && fjs.utils.Cookies.check();
 };
 namespace("fjs.api");
 
@@ -301,14 +301,6 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
 
         this.db = null;
 
-        window.onfocus = function(){
-            console.log("focus");
-        }
-
-        window.onblur = function(){
-            console.log("blur");
-        }
-
         /**
          * @private
          */
@@ -317,7 +309,7 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
                 fjs.utils.Cookies.set(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
             }
             else {
-                localStorage.setItem(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
+                fjs.utils.LocalStorage.set(context.TABS_SYNCRONIZE_KEY, context.tabId+"|"+Date.now());
             }
             if(!context.isMaster) {
                 context.fireEvent('master_changed', (context.isMaster = true));
@@ -369,7 +361,7 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
             lsvals = fjs.utils.Cookies.get(this.TABS_SYNCRONIZE_KEY);
         }
         else {
-            lsvals = localStorage.getItem(this.TABS_SYNCRONIZE_KEY);
+            lsvals = fjs.utils.LocalStorage.get(this.TABS_SYNCRONIZE_KEY);
         }
         return !lsvals || (Date.now() - parseInt(lsvals.split("|")[1]))>this.CHANGE_TAB_TIMEOUT;
     };
@@ -397,8 +389,13 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
                                         for (var i = 0; i < items.length; i++) {
                                             var item = items[i], tkey = item.key;
                                             var keyarr = tkey.split('|');
-
+                                            var now = Date.now();
+                                            if(now - item.date > 10000) {
+                                                context.db.deleteByKey("tabsync", item.key);
+                                                continue;
+                                            }
                                             if (_lastValues.indexOf(tkey) < 0 && keyarr[1] != context.tabId) {
+                                                console.log("read", tkey);
                                                 context.fireEvent(item.eventType, {key: item.eventType, newValue: item.val});
                                                 _lastValues.push(tkey);
                                                 (function (key) {
@@ -424,7 +421,15 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
 
     fjs.api.TabsSynchronizer.prototype.removeEventListener = function(eventType, handler) {
         if(fjs.utils.Browser.isIE11()) {
-            delete this.lastValues[eventType];
+            if(this.lastValues[eventType]) {
+                var index = this.lastValues[eventType].indexOf(handler);
+                if (index > -1) {
+                    this.lastValues[eventType].splice(index, 1);
+                }
+                if (this.lastValues[eventType].length = 0) {
+                    delete this.lastValues[eventType];
+                }
+            }
         }
         this.superClass.removeEventListener.call(this, eventType, handler);
     };
@@ -435,14 +440,17 @@ fjs.api.FDPProviderFactory.prototype.getProvider = function(ticket, node, callba
     };
 
     fjs.api.TabsSynchronizer.prototype.setSyncValue = function(key, value) {
-        //console.log('syncData', fjs.utils.JSON.parse(value), value);
         if(this.db && this.db.state == 1) {
             var genKey = this.generateDataKey(key), context = this;
             var inc = new fjs.utils.Increment();
-            this.db.insertOne("tabsync", {key:genKey, eventType:key, val:value, order:Date.now()+""+inc});
-            (function(key){setTimeout(function(){
-                context.db.deleteByKey("tabsync", key);
-            },10000)})(genKey);
+            (function(genKey){
+                var now = Date.now();
+                context.db.insertOne("tabsync", {key:genKey, eventType:key, val:value, order:now+""+inc.get('tabsSync'), date:now}, function(){
+                    setTimeout(function(){
+                        context.db.deleteByKey("tabsync", genKey);
+                    },5000);
+                });
+            })(genKey);
         }
     };
 })();

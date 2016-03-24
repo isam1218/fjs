@@ -85,6 +85,7 @@
                                 <label>RelatedTo</label>
                                 <select ng-model="call.mycallsclient_callLog.whatId" ng-change="whatChange($event)"
                                         ng-options="item._id as item.Name group by item.object for item in call.mycallsclient_callLog.related | WhatFilter">
+                                    <option value="">None</option>
                                 </select>
                             </div>
                             <label>Comments</label><textarea maxlength="255" ng-keypress="noteKeyPress()"

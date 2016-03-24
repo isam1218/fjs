@@ -1,4 +1,4 @@
-fjs.utils.Console.log('Build number: ' + 1234567893);/**
+/**
  * Created with JetBrains WebStorm.
  * User: ddyachenko
  * Date: 19.08.13
@@ -64,7 +64,7 @@ SFApi.prototype.setPhoneApi = function(isPhoneReg, onCallCallback) {
  */
 SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, duration, date, callback) {
     var status  = "Completed";
-    if(whoId == null && whoId== null) {
+    if(whoId == null && whatId == null) {
         status = "Not Started";
     }
     var args = "Subject=" + encodeURIComponent(subject)
@@ -89,14 +89,14 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
                 commentFieldName = data.result;
             }
         }
-        args += "&" + commentFieldName + "=" + encodeURIComponent(note);
+        if(note) args += "&" + commentFieldName + "=" + encodeURIComponent(note);
         if(duration && date && callType) {
             sforce.interaction.saveLog('Task',args, function(result) {
                 callback(result);
             });
         }
         else {
-            fjs.utils.Console.error('Wrong arguments for adding call log.')
+            fjs.utils.Console.error('Wrong arguments for adding call log.');
         }
     })
 };
@@ -115,11 +115,16 @@ SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, d
  *  error - undefined if the API call was successful, error message otherwise.
  */
 SFApi.prototype.getPhoneInfo = function (phone, callType, isRinging, callback) {
-    if(isRinging) {
-        var params = "acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
-        sforce.interaction.searchAndScreenPop(phone, params, callType, callback);
-    }
+//    if(isRinging) {
+//        var params = "acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
+//        sforce.interaction.searchAndScreenPop(phone, params, callType, callback);
+//    }
     sforce.interaction.searchAndGetScreenPopUrl(phone, '', callType, callback);
+};
+
+SFApi.prototype.getPhoneInfoAndOpenPopup = function(phoneSearch, phone,  callType, callback){
+    var params = "acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
+    sforce.interaction.searchAndScreenPop(phoneSearch, params, callType, callback);
 };
 
 /**
@@ -133,6 +138,11 @@ SFApi.prototype.getPhoneInfo = function (phone, callType, isRinging, callback) {
  */
 SFApi.prototype.openUser = function (id, callback) {
     sforce.interaction.screenPop('/' + id, true, callback);
+};
+
+SFApi.prototype.openCreateContactDialog = function(phone) {
+    var url = "/003/e?acc10=" + phone + "&con10=" + phone + "&lea8=" + phone;
+    sforce.interaction.screenPop(url, true, function(){});
 };
 
 /**
@@ -242,6 +252,9 @@ fjs.sf.SFSimpleProvider.prototype.sendAction = function(message) {
         case "openUser":
             this.api.openUser(message.data.id, message.callback);
             break;
+        case "getPhoneInfoAndOpenPopup":
+            this.api.getPhoneInfoAndOpenPopup(message.data.phoneSearch, message.data.phone, message.data.callType, message.callback);
+            break;
     }
 };
 
@@ -253,59 +266,10 @@ fjs.sf.SFSimpleProvider.check = function() {
  * Created by ddyachenko on 23.04.2014.
  */
 namespace("fjs.sf");
-fjs.sf.SFSharedWorkerProvider = function() {
-    if (!fjs.sf.SFSharedWorkerProvider.__instance) {
-        var context = this;
-        this.callbacks = {};
-        this.worker = new SharedWorker("js/salesforce_api/sf_shared_worker.js");
-        this.worker.port.addEventListener("message", function (e) {
-            fjs.utils.Console.log(e);
-            if (e.data["eventType"] == "ready") {
-                context.sendAction({action: 'init'});
-            }
-            else {
-                var callback = context.callbacks.get(e.id);
-                callback(e.data);
-                delete  context.callbacks[e.id];
-            }
-        }, false);
-
-        this.worker.port.addEventListener("error", function (e) {
-            fjs.utils.Console.error("Worker Error", e);
-        });
-        this.worker.port.start();
-        this.worker.port.postMessage("ping'");
-
-        this.sendAction = function(message) {
-            if(message) {
-                var id = fjs.utils.GUID.create();
-                context.callbacks[id] = message.callback;
-                message.id = id;
-                message.callback = null;
-            }
-            context.worker.port.postMessage(message);
-        };
-
-        fjs.sf.SFSharedWorkerProvider.__instance = this;
-    }
-    return fjs.sf.SFSharedWorkerProvider.__instance;
-};
-
-/**
- * @returns {boolean}
-*/
-fjs.sf.SFSharedWorkerProvider.check = function() {
-    return  !!self.SharedWorker;
-};
-/**
- * Created by ddyachenko on 23.04.2014.
- */
-namespace("fjs.sf");
 
 fjs.sf.SFApiProviderFactory = function() {
     this._providers = {
-          'sharedWorker': fjs.sf.SFSharedWorkerProvider
-        , 'simple': fjs.sf.SFSimpleProvider
+        'simple': fjs.sf.SFSimpleProvider
     };
 };
 
@@ -314,6 +278,22 @@ fjs.sf.SFApiProviderFactory.prototype.getProvider = function() {
 };var sfa_model = angular.module('SF_API', []);
 
 sfa_model.service('SFApi', fjs.sf.SFApiProviderFactory);namespace("fjs.model");
+
+fjs.model.EntryModel = function(obj) {
+    this.xef001id = null;
+    this.xef001iver = null;
+    this.xpid = null;
+    this.fill(obj);
+};
+
+fjs.model.EntryModel.prototype.fill = function(obj) {
+    if(obj)
+        for(var i in obj) {
+            if(obj.hasOwnProperty(i)) {
+                this[i] = obj[i];
+            }
+        }
+};namespace("fjs.model");
 /**
  * @param feedName
  * @param dataManager
@@ -323,6 +303,9 @@ sfa_model.service('SFApi', fjs.sf.SFApiProviderFactory);namespace("fjs.model");
 fjs.model.FeedModel = function(feedName, dataManager) {
     fjs.EventsSource.call(this);
     this.feedName = feedName;
+    /**
+     * @type {Object}
+     */
     this.items = {};
     this.order = [];
     this.dataManager = dataManager;
@@ -414,22 +397,6 @@ fjs.model.FeedModel.prototype.addEventListener = function(eventType, callback) {
     }
 };
 namespace("fjs.model");
-
-fjs.model.EntryModel = function(obj) {
-    this.xef001id = null;
-    this.xef001iver = null;
-    this.xpid = null;
-    this.fill(obj);
-};
-
-fjs.model.EntryModel.prototype.fill = function(obj) {
-    if(obj)
-        for(var i in obj) {
-            if(obj.hasOwnProperty(i)) {
-                this[i] = obj[i];
-            }
-        }
-};namespace("fjs.model");
 /**
  * @param {fjs.model.DataManager} dataManager
  * @constructor
@@ -447,35 +414,41 @@ fjs.model.MeModel.prototype.onEntryChange = function(data) {
     if(data.entry) {
         if (data.entry.propertyKey) {
             this.propertyKey2Xpid[data.xpid] = data.entry.propertyKey;
-            this.property2key[data.entry.propertyKey] = data.entry.propertyValue;
+            this.property2key[data.entry.propertyKey] = data.entry;
         }
         else {
-            this.property2key[this.propertyKey2Xpid[data.xpid]] = data.entry.propertyValue;
+            this.property2key[this.propertyKey2Xpid[data.xpid]] = data.entry;
         }
         this.superClass.onEntryChange.call(this, data);
-    }
-    else {
-        debugger;
     }
 };
 
 fjs.model.MeModel.prototype.onEntryDeletion = function(data) {
     var key = this.propertyKey2Xpid[data.xpid];
     delete this.propertyKey2Xpid[data.xpid];
-    delete this.property2key[key];
+    var entry = this.property2key[key];
+    if(entry.xpid == data.xpid) {
+        delete this.property2key[key];
+    }
     this.superClass.onEntryDeletion.call(this, data);
 };
 
 fjs.model.MeModel.prototype.getProperty = function(key) {
-    return this.property2key[key];
+    return this.property2key[key] && this.property2key[key].propertyValue;
 };
 
 fjs.model.MeModel.NAME = "me";namespace("fjs.model");
 
 fjs.model.MyCallsFeedModel = function(dataManager) {
     fjs.model.FeedModel.call(this, "mycallsclient", dataManager);
+    /**
+     * @type {Object}
+     */
     this.htCallIdToXpid = {};
     this.listeners["changepid"]= [];
+    /**
+     * @type {Object}
+     */
     this.changes = {};
     this.clientSettingsModel = this.dataManager.getModel('clientsettings');
 };
@@ -517,29 +490,51 @@ fjs.model.MyCallsFeedModel.prototype.onEntryChange = function(event) {
         this.changes[htCallId].push = event;
 };
 
+fjs.model.MyCallsFeedModel.prototype.getPhoneInfoAndOpenPopup = function(entry, changes) {
+    if(entry.type!=7 && entry.state == 0 && entry.incoming && changes.state == 2 && document.hasFocus()) {
+        var message = {}, context=this;
+        message.action = "getPhoneInfoAndOpenPopup";
+        message.data = {};
+        message.data.phoneSearch = entry.getFormattedPhone();
+        message.data.phone = entry.phone;
+        message.data.callType = "inbound";
+        message.callback = function(){
+            if(entry.fillCallLogData(data, context.dataManager.getModel('clientsettings'))) {
+                context.dataManager.sendAction("mycallsclient", "push", {"callLog":  entry.mycallsclient_callLog, "xpid": entry.xpid});
+            }
+        };
+        this.dataManager.sf.sendAction(message);
+    }
+};
+
 fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
         for(var i in this.changes) {
+           var _event, _entry;
            if(this.changes.hasOwnProperty(i)) {
                var change = this.changes[i];
                if(change.push && !change.delete) {
-                   var _event = change.push;
-                   var _entry = this.items[_event.xpid];
+                   _event = change.push;
+                   _entry = this.items[_event.xpid];
                    if(!_entry) {
                        _entry = this.items[_event.xpid] = new fjs.model.MyCallEntryModel(_event.entry);
                        this.order.push(_entry);
                    }
                    else {
+                        this.getPhoneInfoAndOpenPopup(_entry, _event.entry);
                        _entry.fill(_event.entry)
                    }
                    this.prepareEntry(_entry);
                    this.fireEvent("push", _entry);
-                   if((!this.clientSettingsModel.items["openedCall"] || (this.clientSettingsModel.items["openedCall"].value!= null &&  !this.items[this.clientSettingsModel.items["openedCall"].value])) && (_entry.state == 2 || _entry.state == 0)) {
+                   if((!this.clientSettingsModel.items["openedCall"]
+                       || (this.clientSettingsModel.items["openedCall"].value!= null
+                           &&  !this.items[this.clientSettingsModel.items["openedCall"].value]))
+                       && (_entry.state == 2 || _entry.state == 0)) {
                        this.dataManager.sendAction('clientsettings' , "push", {"xpid": 'openedCall', "value":  _entry.xpid});
                    }
                    fjs.utils.Console.log('!!!!push ', _event.xpid, _event.entry);
                 }
                else if(!change.push && change.delete) {
-                    var _event = change.delete;
+                   _event = change.delete;
                    var _item = this.items[_event.xpid];
                    var _index = this.order.indexOf(_item);
                    if(_index>-1) {
@@ -553,15 +548,21 @@ fjs.model.MyCallsFeedModel.prototype.onSyncComplete = function(event) {
                     var _dataDel = change.delete;
                     var _dataPush = change.push;
 
-                    var _entry = this.items[_dataDel.xpid];
+                    _entry = this.items[_dataDel.xpid];
+
+                   this.getPhoneInfoAndOpenPopup(_entry, _dataPush.entry);
 
                     _entry.fill(_dataPush.entry);
-
                     delete this.items[_dataDel.xpid];
                     this.prepareEntry(_entry);
                     this.items[_dataPush.xpid] = _entry;
+                    var openedCallId = this.clientSettingsModel.getEntryByXpid('openedCall');
+                    if(openedCallId && openedCallId.value == _dataDel.xpid) {
+                        this.dataManager.sendAction('clientsettings' , "push", {"xpid": 'openedCall', "value":  _dataPush.xpid});
+                    }
                     _entry.oldPid = _dataDel.xpid;
-                    _dataPush.eventType="changepid";
+                    _entry.pidChanged = true;
+                   _dataPush.eventType="changepid";
                     this.fireEvent("changepid", _entry);
                    fjs.utils.Console.log('!!!!changepid ', "from:", _entry.oldPid, "to:", _dataPush.xpid);
                 }
@@ -595,13 +596,37 @@ fjs.model.MyCallEntryModel = function(obj) {
         'tranferOpened':false,
         'whatId':null,
         'whoId':null,
-        'what': {},
-        'who': {}
+        'related': []
     };
     fjs.model.EntryModel.call(this, obj);
 };
 
 fjs.model.MyCallEntryModel.extend(fjs.model.EntryModel);
+
+fjs.model.MyCallEntryModel.prototype.getFormattedPhone = function() {
+    if(this.phone) {
+        var rawPhone = this.phone.replace(/[^0-9]/g, '');
+        if (rawPhone.length > 10) {
+            rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
+        }
+        var formattedPhone = null;
+        if (rawPhone.length > 4) {
+            formattedPhone = rawPhone.split("").reverse().join("");
+            if (formattedPhone.length > 7 && formattedPhone.length <= 10) {
+                formattedPhone = formattedPhone.replace(/(\d{4})(\d{3})(\d{3}|\d{2}|\d{1})/, "$1-$2-$3");
+            }
+            if (formattedPhone.length > 4 && formattedPhone.length <= 7) {
+                formattedPhone = formattedPhone.replace(/(\d{4})(\d{3}|\d{2}|\d{1})/, "$1-$2");
+            }
+            formattedPhone = formattedPhone.split("").reverse().join("");
+        }
+        if (formattedPhone) {
+            rawPhone += ' or ' + formattedPhone;
+        }
+        return rawPhone;
+    }
+    return null;
+};
 
 fjs.model.MyCallEntryModel.HOLD_CALL_TYPE = 3;
 fjs.model.MyCallEntryModel.RING_CALL_TYPE = 0;
@@ -614,128 +639,159 @@ fjs.model.MyCallEntryModel.prototype.isRing = function() {
     return this.state == fjs.model.MyCallEntryModel.RING_CALL_TYPE;
 };
 
-fjs.model.MyCallEntryModel.prototype.hasWhos = function() {
-    for(var key in this.mycallsclient_callLog.who) {
-        if(this.mycallsclient_callLog.who[key]) return true;
+fjs.model.MyCallEntryModel.prototype.getWho = function(notLead) {
+    for(var i=0;i<this.mycallsclient_callLog.related.length; i++) {
+        var item = this.mycallsclient_callLog.related[i];
+        if(this.getRelatedItemType(item)=='who' && (!notLead || item.object!='Lead')) return item;
     }
-    return false;
 };
 
-fjs.model.MyCallEntryModel.prototype.hasWhats = function() {
-    for(var key in this.mycallsclient_callLog.what) {
-        if(this.mycallsclient_callLog.what[key]) return true;
+fjs.model.MyCallEntryModel.prototype.getWhat = function() {
+    for(var i=0;i<this.mycallsclient_callLog.related.length; i++) {
+        var item = this.mycallsclient_callLog.related[i];
+        if(this.getRelatedItemType(item)=='what') return item;
     }
-    return false;
 };
 
-fjs.model.MyCallEntryModel.prototype.callLogItemUpdate = function() {
-
-};
-
-fjs.model.MyCallEntryModel.prototype.findCallLogTargetById = function(type, id) {
-    var arr;
-    if(type == 'Contact' || type == 'Lead') {
-       arr = this.mycallsclient_callLog.who[type];
-    }
-    else {
-        arr = this.mycallsclient_callLog.what[type];
-    }
-    if(arr) {
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i]._id == id) {
-                return arr[i];
+fjs.model.MyCallEntryModel.prototype.findCallLogTargetById = function(id) {
+        for (var i = 0; i < this.mycallsclient_callLog.related.length; i++) {
+            var item = this.mycallsclient_callLog.related[i];
+            if (item._id == id) {
+                return item;
             }
         }
-    }
+};
+
+fjs.model.MyCallEntryModel.prototype.getRelatedItemType = function(item) {
+    return item.object == 'Contact' || item.object == 'Lead' ? 'who' : 'what';
 };
 
 fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSettingsModel) {
-    var whoLength = this._who.length,
-        whatLength = this._what.length,
-        _whatId = this.mycallsclient_callLog.whatId,
+
+    var _whatId = this.mycallsclient_callLog.whatId,
         _whoId = this.mycallsclient_callLog.whoId,
         _changed = false;
 
-    this._who = [];
-    this._what = [];
+   if(!this.mycallsclient_callLog._notNew) {
+       this.mycallsclient_callLog._notNew = _changed = true;
+   }
+
+    if(this.pidChanged) {
+        _changed = true;
+        this.pidChanged = false;
+    }
+
     var phoneMap = clientSettingsModel.items['phoneMap'] && clientSettingsModel.items['phoneMap'].phones || {};
+
 
     if(data && data.result) {
         var result = fjs.utils.JSON.parse(data.result);
         for(var i in result) {
-            if (result.hasOwnProperty(i) && i != "screenPopUrl") {
+            if (result.hasOwnProperty(i) && i != "screenPopUrl" && result[i].object != 'CaseComment') {
                 var _result = result[i];
                 _result._id = i;
-                if(_result.object == "Contact" || _result.object == "Lead") {
-                    if(!this.mycallsclient_callLog.who[_result.object]) {
-                        this.mycallsclient_callLog.who[_result.object] = [];
-                    }
-                    var item = this.findCallLogTargetById(_result.object, i);
-                    if(!item) {
-                        this.mycallsclient_callLog.who[_result.object].push(_result);
-                    }
-                    else if(item.Name!=_result.Name) {
-                         item.Name = _result.Name;
-                         _changed = true;
-                    }
-                    this._who.push(_result);
+                if(_result.object == "Case") {
+                    _result.Name = _result["CaseNumber"];
                 }
-                else {
-                    if(_result.object == "Case") {
-                        _result.Name = _result.CaseNumber;
-                    }
-                    if(!this.mycallsclient_callLog.what[_result.object]) {
-                        this.mycallsclient_callLog.what[_result.object] = [];
-                    }
-                    var item = this.findCallLogTargetById(_result.object, i);
-                    if(!item) {
-                        this.mycallsclient_callLog.what[_result.object].push(_result);
-                    }
-                    else if(item.Name!=_result.Name) {
-                        item.Name = _result.Name;
-                        _changed = true;
-                    }
-                    this._what.push(_result);
+                var item = this.findCallLogTargetById(i);
+                if (!item) {
+                    item = _result;
+                    this.mycallsclient_callLog.related.push(item);
+                    _changed = true;
                 }
+                else if (item.Name != _result.Name) {
+                    item.Name = _result.Name;
+                    _changed = true;
+                }
+                item.new = true;
             }
         }
     }
-    if(phoneMap[this.phone]) {
-        var calleeInfo = phoneMap[this.phone];
-        if(calleeInfo.type == "Contact") {
-            this.mycallsclient_callLog.whoId = calleeInfo.id;
-            this.mycallsclient_callLog.whatId = (this._what[0] && this._what[0]._id) || null;
-        }
-        else if(calleeInfo.type == "Lead") {
-            this.mycallsclient_callLog.whoId = calleeInfo.id;
-            this.mycallsclient_callLog.whatId = null;
-        }
-        else  {
-            this.mycallsclient_callLog.whatId = calleeInfo.id;
-            if(this.mycallsclient_callLog.who["Contact"]) {
-                this.mycallsclient_callLog.whoId = this.mycallsclient_callLog.who["Contact"][0]._id || null;
+        var _items = this.mycallsclient_callLog.related.slice(0);
+        for(var i=0; i<_items.length; i++) {
+            var _item = _items[i];
+            if(_item.new) {
+                _item.new = false;
+            }
+            else {
+                var index = this.mycallsclient_callLog.related.indexOf(_item);
+                if(index>-1) {
+                    this.mycallsclient_callLog.related.splice(index, 1);
+                    if(this.mycallsclient_callLog.pervWhatId == _item._id) {
+                        this.mycallsclient_callLog.pervWhatId = null;
+                    }
+                    _changed = true;
+                }
             }
         }
+
+
+    fjs.model.filter.SortRelatedFields()(this.mycallsclient_callLog.related);
+
+    var calleeInfo = phoneMap[this.phone], item;
+    if(calleeInfo && (item = this.findCallLogTargetById(calleeInfo.id))) {
+            if(this.getRelatedItemType(item) == 'who') {
+                this.mycallsclient_callLog.whoId = calleeInfo.id;
+
+                if(item.object == 'Lead') {
+                    this.mycallsclient_callLog.whatId = null;
+                }
+            }
+            else {
+                var who = this.getWho(true);
+                this.mycallsclient_callLog.whoId =  who && who._id;
+                this.mycallsclient_callLog.whatId = calleeInfo.id;
+            }
+    }
+    else {
+        var who = this.findCallLogTargetById(this.mycallsclient_callLog.whoId);
+        var what = this.findCallLogTargetById(this.mycallsclient_callLog.whatId);
+        if(!who) {
+            who = this.getWho();
+            this.mycallsclient_callLog.whoId = who && who._id;
+        }
+    }
+    if(calleeInfo) {
         clientSettingsModel.deletePhone(this.phone);
     }
-    else if(!phoneMap[this.phone] && !this.mycallsclient_callLog.whatId && !this.mycallsclient_callLog.whoId){
-        if(this.mycallsclient_callLog.who["Contact"]) {
-            this.mycallsclient_callLog.whoId = this.mycallsclient_callLog.who["Contact"][0]._id;
-            this.mycallsclient_callLog.whatId = (this._what[0] && this._what[0]._id) || null;
-        }
-        else if(this.mycallsclient_callLog.who["Lead"]) {
-            this.mycallsclient_callLog.whoId = this.mycallsclient_callLog.who["Lead"][0]._id;
-            this.mycallsclient_callLog.whatId = null;
-        }
-        else {
-            this.mycallsclient_callLog.whoId = null;
-            this.mycallsclient_callLog.whatId = (this._what[0] && this._what[0]._id) || null;
-        }
-    }
-
-    return _changed || this._what.length!= whatLength || this._who.length!= whoLength || _whatId!=this.mycallsclient_callLog.whatId || _whoId != this.mycallsclient_callLog.whoId;
+    return _changed || _whatId!=this.mycallsclient_callLog.whatId || _whoId != this.mycallsclient_callLog.whoId;
 };
-namespace('fjs.model');
+
+fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
+    scope = scope || this;
+    if(obj)
+        for(var i in obj) {
+            if(obj.hasOwnProperty(i)) {
+                var field = obj[i];
+                if(typeof(field)!='object' || field==null) {
+                    if(i!='note' || !this._blockChangeNote) {
+                        scope[i] = field;
+                    }
+                    if(i=='note' && field) {
+                        scope['subject'] = "Call: " + (field.length>240 ? field.substr(0, 240) + " ..." : field);
+                    }
+                    else if(i=='note' && field=='') {
+                        scope['subject'] = "Call";
+                    }
+                }
+                else if(Array.isArray(field)) {
+                    scope[i] = [];
+                    this.fill(field, scope[i]);
+                }
+                else  {
+                    if(!scope[i]) {
+                        scope[i] = {};
+                    }
+                    this.fill(field, scope[i]);
+                }
+            }
+        }
+};
+
+fjs.model.MyCallEntryModel.prototype.showRelated = function() {
+    var who = this.findCallLogTargetById(this.mycallsclient_callLog.whoId);
+    return this.getWhat() && (!who || who.object!='Lead');
+};namespace('fjs.model');
 
 fjs.model.ClientSettingsFeedModel = function(dataManager) {
     fjs.model.FeedModel.call(this, "clientsettings", dataManager);
@@ -758,8 +814,64 @@ fjs.model.ClientSettingsFeedModel.prototype.deletePhone = function(phone) {
         delete this.items['phoneMap'].phones[phone];
         this.dataManager.sendAction("clientsettings", "push", this.items["phoneMap"]);
     }
-}
-namespace("fjs.model");
+};
+/**
+ * Created by vovchuk on 04.06.2014.
+ */
+namespace("fjs.model.filter");
+fjs.model.filter.What = function() {
+    return function(items) {
+        return items.filter(function(element) {
+            return element.object != 'Contact' && element.object != 'Lead';
+        });
+    };
+};/**
+ * Created by vovchuk on 04.06.2014.
+ */
+namespace("fjs.model.filter");
+fjs.model.filter.Who = function() {
+    return function(items) {
+        return items.filter(function(element) {
+            return element.object == 'Contact' || element.object == 'Lead';
+        });
+    };
+};/**
+ * Created by vovchuk on 04.06.2014.
+ */
+namespace("fjs.model.filter");
+fjs.model.filter.SortRelatedFields = function() {
+    return function(items) {
+        items.sort(function(a, b){
+            if(a.object> b.object) return 1;
+            else if(a.object < b.object) return -1;
+            else {
+                if(a.Name.toLowerCase() > b.Name.toLowerCase()) return 1;
+                else if (a.Name.toLowerCase() < b.Name.toLowerCase()) return -1;
+            }
+            return 0;
+        });
+        var lastTitle = null, rootItem=null, count=0;
+        items.forEach(function(item){
+            if(lastTitle!=item.object) {
+                count = 0;
+                lastTitle = item.object;
+                rootItem = item;
+            }
+            else {
+                item.title = "";
+            }
+            count++;
+            rootItem.title = lastTitle + " (" + count + ")";
+        });
+    };
+};namespace("fjs.model.filter");
+fjs.model.filter.HasCallInfoFilter = function() {
+    return function(items) {
+        return items.filter(function(item){
+            return !!item.htCallId;
+        });
+    };
+};namespace("fjs.model");
 /**
  * @constructor
  * @extends fjs.EventsSource
@@ -774,15 +886,22 @@ fjs.model.DataManager = function(sf) {
 
     this.state = -1;
     this.suspendFeeds = [];
+    this.suspendActions = [];
     this.warningListeners = {};
+
+    this.loginInfo = {};
 
     this.sf = sf.getProvider();
 
     var context = this;
     var providerFactory = new fjs.api.FDPProviderFactory();
 
+
+
     this.authErrorCount = 0;
     this.MAX_AUTH_ERROR_COUNT = 3;
+    this.tabSynchronizer = new fjs.api.TabsSynchronizer();
+    this.checkLoginTimeoutId = null;
 
     var onClickToDial = function(obj) {
         /**
@@ -810,9 +929,45 @@ fjs.model.DataManager = function(sf) {
         message.callback = onClickToDial;
         context.sf.sendAction(message);
     };
+
     this.checkDevice();
 
-    this._getAuthInfo(function(data){
+
+
+
+
+    var stopCheckLoginInfo = function() {
+        clearInterval(context.checkLoginTimeoutId);
+    };
+
+    var runCheckLoginInfo = function() {
+        if(context.checkLoginTimeoutId!=null) {
+            clearInterval(context.checkLoginTimeoutId);
+        }
+        context.checkLoginTimeoutId = setInterval(function () {
+            context._getAuthInfo(function(data){
+                if(data && context._authInfoChanged(data) && context.dataProvider && context.state) {
+                    fjs.utils.Cookies.remove(fjs.model.DataManager.AUTH_COOKIE_NAME);
+                    context.dataProvider.sendMessage({action: "SFLogin", data: data});
+                }
+            });
+        }, 900000);
+    };
+
+    if(this.tabSynchronizer.isMaster) {
+        runCheckLoginInfo();
+    }
+
+    this.tabSynchronizer.addEventListener('master_changed', function() {
+        if(context.tabSynchronizer.isMaster) {
+            runCheckLoginInfo();
+        }
+        else {
+            stopCheckLoginInfo();
+        }
+    });
+
+    this._getAuthInfo(function(data) {
         if(data) {
             if(context._authInfoChanged(data) || !context._getAccessInfo()) {
                  fjs.utils.Cookies.remove(fjs.model.DataManager.AUTH_COOKIE_NAME);
@@ -830,6 +985,12 @@ fjs.model.DataManager = function(sf) {
                          }
                          context.suspendFeeds=[];
                      }
+                     if(context.suspendActions.length>0) {
+                         for(var j=0; j<context.suspendActions.length; j++) {
+                             context.dataProvider.sendMessage(context.suspendActions[j]);
+                         }
+                         context.suspendActions=[];
+                     }
                  });
             }
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_SYNC, function(data) {
@@ -844,7 +1005,7 @@ fjs.model.DataManager = function(sf) {
                     context.authErrorCount++;
                 }
                 else {
-                    context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, false);
+                    context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, e);
                 }
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_REQUEST_ERROR, function(e) {
@@ -852,23 +1013,29 @@ fjs.model.DataManager = function(sf) {
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NETWORK_PROBLEM, function(e) {
                 fjs.utils.Console.error(e);
-                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, false);
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType:fjs.model.DataManager.EV_NETWORK_PROBLEM,  connected:false, message:"Network problem"});
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, function(e) {
                 fjs.utils.Console.info(e);
-                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, true);
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType:fjs.model.DataManager.EV_CONNECTION_ESTABLISHED, connected:true, message:""});
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_NODE, function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.NODE_COOKIE_NAME, context.node = e.data.nodeId);
             });
             context.dataProvider.addEventListener(fjs.model.DataManager.EV_TICKET, function(e) {
                 fjs.utils.Cookies.set(fjs.model.DataManager.AUTH_COOKIE_NAME, context.ticket = e.data.ticket);
-                context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, true);
+                context.fireWarningEvent(fjs.model.DataManager.AUTHORIZATION_STATE, e);
                 if(context.suspendFeeds.length>0) {
                     for(var i=0; i<context.suspendFeeds.length; i++) {
                         context.dataProvider.addSyncForFeed(context.suspendFeeds[i]);
                     }
                     context.suspendFeeds=[];
+                }
+                if(context.suspendActions.length>0) {
+                    for(var j=0; j<context.suspendActions.length; j++) {
+                        context.dataProvider.sendMessage(context.suspendActions[j]);
+                    }
+                    context.suspendActions=[];
                 }
             });
         }
@@ -886,6 +1053,8 @@ fjs.model.DataManager.EV_NETWORK_PROBLEM = "networkProblem";
 fjs.model.DataManager.EV_CONNECTION_ESTABLISHED = "connectionEstablished";
 fjs.model.DataManager.EV_TICKET = "ticket";
 fjs.model.DataManager.EV_NODE = "node";
+fjs.model.DataManager.EV_FDP_CONFIG_ERROR = "fdpConfigError";
+fjs.model.DataManager.EV_FDP_CONFIG = "fdpConfig";
 
 fjs.model.DataManager.AUTH_COOKIE_NAME = "SF_Authorization";
 fjs.model.DataManager.NODE_COOKIE_NAME = "SF_Node";
@@ -893,6 +1062,7 @@ fjs.model.DataManager.CLIENT_ID_COOKIE_NAME = "SF_Client_id";
 fjs.model.DataManager.SERVER_URL_COOKIE_NAME = "SF_ServerUrl";
 fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME = "SF_Login";
 fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME = "SF_Email";
+fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME = "SF_ADM_Login";
 
 fjs.model.DataManager.prototype.getModel = function(feedName) {
     if (!this.feeds[feedName]) {
@@ -922,8 +1092,12 @@ fjs.model.DataManager.prototype.getModel = function(feedName) {
 */
 
 fjs.model.DataManager.prototype.sendAction = function(feedName, action, data) {
-    if(this.dataProvider) {
-        this.dataProvider.sendMessage({"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}});
+    var message = {"action":"fdp_action", "data": {"feedName":feedName, "actionName":action, "params": data}};
+    if(this.state==1) {
+        this.dataProvider.sendMessage(message);
+    }
+    else {
+        this.suspendActions.push(message);
     }
 };
 
@@ -934,12 +1108,28 @@ fjs.model.DataManager.prototype.sendAction = function(feedName, action, data) {
  */
 fjs.model.DataManager.prototype._authInfoChanged = function(userData) {
     var authInfoChanged = false;
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME) != userData.hud) {
-        fjs.utils.Cookies.set(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME, userData.hud);
+    var _hud = fjs.utils.Cookies.get(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME) || this.loginInfo.hud;
+    if(_hud != userData.hud+"") {
+        if(this.tabSynchronizer.isMaster) {
+            fjs.utils.Cookies.set(fjs.model.DataManager.HUD_LOGIN_COOKIE_NAME, userData.hud);
+        }
+        this.loginInfo.hud = userData.hud+"";
         authInfoChanged = true;
     }
-    if(fjs.utils.Cookies.get(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME) != userData.email) {
-        fjs.utils.Cookies.set(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME, userData.email);
+    var _login = fjs.utils.Cookies.get(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME) || this.loginInfo.login;
+    if(_login != userData.login+"") {
+        if(this.tabSynchronizer.isMaster) {
+            fjs.utils.Cookies.set(fjs.model.DataManager.ADM_LOGIN_COOKIE_NAME, userData.login+"");
+        }
+        this.loginInfo.login = userData.login+"";
+        authInfoChanged = true;
+    }
+    var _email = fjs.utils.Cookies.get(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME) || this.loginInfo.email;
+    if(_email != userData.email+"") {
+        if(this.tabSynchronizer.isMaster) {
+            fjs.utils.Cookies.set(fjs.model.DataManager.HUD_EMAIL_COOKIE_NAME, userData.email+"");
+        }
+        this.loginInfo.email = userData.email+"";
         authInfoChanged = true;
     }
     return authInfoChanged;
@@ -952,7 +1142,7 @@ fjs.model.DataManager.prototype._getAccessInfo = function() {
 };
 
 fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
-    var message = {};
+    var message = {}, context = this;
     message.action = "getLoginInfo";
     message.callback = function(response) {
         var data = null;
@@ -976,7 +1166,13 @@ fjs.model.DataManager.prototype._getAuthInfo = function(callback) {
             if (res.hudLogin) {
                 data.hud = res.hudLogin;
             }
-            fjs.fdp.CONFIG.SERVER.serverURL = res.serverUrl;
+            if(res.serverUrl) {
+                fjs.fdp.CONFIG.SERVER.serverURL = res.serverUrl;
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType: fjs.model.DataManager.EV_FDP_CONFIG, message:""});
+            }
+            else {
+                context.fireWarningEvent(fjs.model.DataManager.CONNECTION_STATE, {eventType: fjs.model.DataManager.EV_FDP_CONFIG_ERROR, message:"Server URL was not specified"});
+            }
         }
         callback(data);
     };
@@ -1024,7 +1220,10 @@ fjs.model.DataManager.prototype.fireWarningEvent = function(eventType, data) {
 var sfa_model = angular.module('SFA_model', ['SF_API']);
 
 sfa_model.service('DataManager', ['SFApi', fjs.model.DataManager]);
-
+sfa_model.filter('WhoFilter', fjs.model.filter.Who);
+sfa_model.filter('WhatFilter', fjs.model.filter.What);
+sfa_model.filter('SortRelatedFields', fjs.model.filter.SortRelatedFields);
+sfa_model.filter('HasCallInfoFilter', fjs.model.filter.HasCallInfoFilter);
 namespace("fjs.controllers");
 fjs.controllers.CommonController = function() {
 };
@@ -1049,7 +1248,6 @@ fjs.controllers.CommonController.DELETE_LISTENER = "delete";
 namespace("fjs.controllers");
 fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $sce, dataManager, sfApi) {
     fjs.controllers.CommonController(this);
-    var callsFeedModel = dataManager.getModel("mycallsclient");
     var durationTimer = null;
     var callLogInfoTimeout = null;
     var timeSync = new fjs.utils.TimeSync();
@@ -1058,22 +1256,20 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     var callLogSaveTimeout = null;
     var sfApiProvider = sfApi.getProvider();
     var clientSettingsModel = dataManager.getModel('clientsettings');
+    var meModel = dataManager.getModel('me');
+    var locationModel = dataManager.getModel('locations');
 
     $scope.getTriangle = function() {
         return $sce.trustAsHtml($scope.call.mycallsclient_callLog.isOpened ? fjs.controllers.CallController.OPENED_TRIANGLE : fjs.controllers.CallController.CLOSED_TRIANGLE);
     };
 
-    var tabsSynchronizer = new fjs.api.TabsSynchronizer();
-    var masterListener = function() {
-        if(tabsSynchronizer.isMaster) {
-            startGetCallLogInfo();
-        }
-        else {
-            stopGetCallInfo();
-        }
+    $scope.isAutoAnswer = function() {
+        var _currentLocationId = meModel.getProperty('current_location');
+        var _currentLocation = locationModel.getEntryByXpid(_currentLocationId);
+        return $scope.call.incoming && _currentLocation && _currentLocation.location_status_autoAnswer;
     };
 
-    tabsSynchronizer.addEventListener("master_changed", masterListener);
+    var tabsSynchronizer = new fjs.api.TabsSynchronizer();
 
     var onDurationTimeout = function() {
         var date = new Date();
@@ -1090,73 +1286,69 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     onDurationTimeout();
 
     function callInfoCallback(data) {
-        if(context) {
             if ($scope.call.fillCallLogData(data, clientSettingsModel)) {
                 saveCallLogChanges();
-                context.safeApply($scope);
+                if(context) {
+                    context.safeApply($scope);
+                }
             }
-        }
     }
 
-    function getCallLogInfo() {
-        stopGetCallInfo();
+    function getCallLogInfo(callback) {
         lastPhone = $scope.call.phone;
-        if(lastPhone) {
-            var rawPhone =  $scope.call.phone.replace(/\(|\)|-/g, ''); //TODO check other symbols (+, *)
-            if(rawPhone.length > 10) {
-                rawPhone = rawPhone.slice(rawPhone.length - 10, rawPhone.length);
-            }
+        if(lastPhone && (!$scope.call.mycallsclient_callLog._notNew || callback)) {
             if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
                 var message = {};
                 message.action = "getPhoneInfo";
                 message.data = {};
-                message.data.phone = rawPhone;
+                message.data.phone = $scope.call.getFormattedPhone();
                 message.data.callType = ($scope.call.incoming ? "inbound" : "outbound");
                 message.data.isRinging = ($scope.call.state == 0);
-                message.callback = callInfoCallback;
+                message.callback = function(data){
+                    callInfoCallback(data);
+                    if(callback) {
+                        callback(data);
+                    }
+                };
                 sfApiProvider.sendAction(message);
             }
-            startGetCallLogInfo();
         }
     }
 
-    $scope.showWhatSelect = function() {
-        return $scope.call.hasWhats() && !$scope.call.findCallLogTargetById('Lead', $scope.call.mycallsclient_callLog.whoId);
+    var _blockChangeNoteTM =null;
+
+    $scope.noteKeyPress = function() {
+
+        $scope.call._blockChangeNote = true;
+
+        if(_blockChangeNoteTM!=null) {
+            clearTimeout(_blockChangeNoteTM);
+            _blockChangeNoteTM = null;
+        }
+        _blockChangeNoteTM = setTimeout(function(){
+            delete $scope.call._blockChangeNote;
+            _blockChangeNoteTM = null;
+        }, 1000);
     };
 
-    $scope.getWhatArray = function() {
-        var arr = [];
-        for(var type in $scope.call.mycallsclient_callLog.what) {
-            arr = arr.concat($scope.call.mycallsclient_callLog.what[type]);
-        }
-        return arr;
-    };
-
-    $scope.getWhoArray = function() {
-        var arr = [];
-        for(var type in $scope.call.mycallsclient_callLog.who) {
-            arr = arr.concat($scope.call.mycallsclient_callLog.who[type]);
-        }
-        return arr;
+    $scope.showAddButton = function() {
+        return $scope.call.mycallsclient_callLog.related.length == 0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE;
     };
 
     $scope.whoChange = function() {
-        if($scope.call.mycallsclient_callLog.who["Lead"] && $scope.call.mycallsclient_callLog.who["Lead"].indexOf($scope.call.mycallsclient_callLog.whoId)>-1) {
+        var who = $scope.call.findCallLogTargetById($scope.call.mycallsclient_callLog.whoId);
+        if(who && who.object == 'Lead') {
             $scope.call.mycallsclient_callLog.pervWhatId = $scope.call.mycallsclient_callLog.whatId;
             $scope.call.mycallsclient_callLog.whatId = null;
-
         }
         else if($scope.call.mycallsclient_callLog.whatId == null) {
             if($scope.call.mycallsclient_callLog.pervWhatId) {
                 $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.pervWhatId;
             }
-            else {
-                for(var key in $scope.call.mycallsclient_callLog.what) {
-                    if($scope.call.mycallsclient_callLog.what[key]) {
-                        $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.what[key][0];
-                    }
-                }
-            }
+            /*else {
+             var what = $scope.call.getWhat();
+             $scope.call.mycallsclient_callLog.whatId = what && what._id;
+             }*/
         }
         saveCallLogChanges()
     };
@@ -1171,7 +1363,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             callLogSaveTimeout = null;
         }
         callLogSaveTimeout = setTimeout(function() {
-
             dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
         },fjs.controllers.CallController.CALL_LOG_CHANGE_DELAY_IN_SEC);
     }
@@ -1180,8 +1371,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         saveCallLogChanges();
     };
 
-
-    $scope.$watch("call.phone", function() {
+    $scope.$watch("call.phone", function(newPhone, oldPhone) {
+        if(newPhone!=oldPhone) {
+            $scope.call.mycallsclient_callLog._notNew = false;
+        }
         getCallLogInfo();
     });
 
@@ -1196,8 +1389,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     };
 
     $scope.transfer = function() {
-        $scope.call.mycallsclient_callLog.tranferOpened = true;
-        $scope.call.mycallsclient_callLog.isOpened = false;
+        if(!$scope.call.mycallsclient_callLog.tranferOpened) {
+            $scope.call.mycallsclient_callLog.tranferOpened = true;
+            $scope.call.mycallsclient_callLog.isOpened = false;
+        }
+        else {
+            $scope.call.mycallsclient_callLog.tranferOpened = false;
+            $scope.call.mycallsclient_callLog.isOpened = true;
+        }
         saveCallLogChanges();
     };
 
@@ -1231,6 +1430,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         }
     };
 
+    $scope.createContact = function() {
+        new SFApi().openCreateContactDialog($scope.call.phone);
+    };
+
     $scope.openSFLink = function(id) {
         var message = {};
         message.action = "openUser";
@@ -1250,14 +1453,28 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         openCallLog();
     });
 
+    var findShowSaveCallLogDialog = function(_scope) {
+        _scope = _scope || $scope;
+        if(_scope.showSaveCallLogDialog) {
+            return _scope.showSaveCallLogDialog;
+        }
+        else {
+            return findShowSaveCallLogDialog(_scope.$parent);
+        }
+    }
+
     $scope.$on("$destroy", function() {
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
-        tabsSynchronizer.removeEventListener("master_changed", masterListener);
-        stopGetCallInfo();
-        if($scope.call.mycallsclient_callLog && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-            initCallLogSubject();
+        /*if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length>0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE)
+        {
+            if($scope.call.type == fjs.controllers.CallController.QUEUE_CALL_TYPE && ($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE) && $scope.call.incoming)
+            {
+                //skip incoming queue not answered call
+                console.log("Skip queue ring callLog", $scope.callLog);
+                return;
+            }
             var message = {};
             message.action = "addCallLog";
             message.data = {};
@@ -1272,38 +1489,23 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
                 fjs.utils.Console.error(response);
             };
             sfApiProvider.sendAction(message);
-
+        }
+        else */if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
+            var showSaveCallLogDialog = findShowSaveCallLogDialog();
+            getCallLogInfo(function(){
+                showSaveCallLogDialog($scope.call);
+            });
         }
         context = null;
         clearTimeout(callLogSaveTimeout);
     });
-
-    function initCallLogSubject() {
-        if($scope.call.mycallsclient_callLog.note && $scope.call.mycallsclient_callLog.note != "") {
-            $scope.call.mycallsclient_callLog.subject = "Call: " + $scope.call.mycallsclient_callLog.note.substr(0, 240) + " ...";
-        }
-        else {
-            $scope.call.mycallsclient_callLog.subject = "Call";
-        }
-    }
-
-
-    function stopGetCallInfo() {
-        if(callLogInfoTimeout) {
-            $timeout.cancel(callLogInfoTimeout);
-            callLogInfoTimeout = null;
-        }
-    }
-
-    function startGetCallLogInfo() {
-        callLogInfoTimeout = $timeout(getCallLogInfo, fjs.controllers.CallController.CALL_GET_INFO_DELAY_IN_SEC);
-    }
 };
 
 fjs.controllers.CallController.extend(fjs.controllers.CommonController);
 
 fjs.controllers.CallController.CONFERENCE_CALL_TYPE = 0;
 fjs.controllers.CallController.SYSTEM_CALL_TYPE = 7;
+fjs.controllers.CallController.QUEUE_CALL_TYPE = 3;
 fjs.controllers.CallController.HOLD_CALL_TYPE = 3;
 fjs.controllers.CallController.RING_CALL_TYPE = 0;
 fjs.controllers.CallController.TALCKING_CALL_TYPE = 2;
@@ -1354,10 +1556,13 @@ fjs.controllers.CallsListController.extend(fjs.controllers.CommonController);
 fjs.controllers.CallsListController.SELECTED_CALL_ID = "selected_call_id";
 fjs.controllers.CallsListController.SELECTED_CALL_ID_MODE= "selected_call_id_mode";
 namespace("fjs.controllers");
-fjs.controllers.MainController = function($scope, dataManager, sfApi) {
+fjs.controllers.MainController = function($scope, $element, dataManager, sfApi) {
     fjs.controllers.CommonController(this);
     var context = this;
     var sfApiProvider = sfApi.getProvider();
+    var browserWarningClosed = false;
+    var _hasBrowserWarning = null;
+    var timeSync = new fjs.utils.TimeSync();
 
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, onClientSettingsPush);
@@ -1380,6 +1585,10 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     $scope.connection = true;
     $scope.phone = true;
     $scope.isLocationRegistered = true;
+    $scope.fdpConfigured = true;
+    $scope.fdpErrorMessage = "";
+    $scope.dialogTemplate = null;
+    $scope.dialogModel = null;
 
     var initResizeFrame = function() {
         var messageH = {};
@@ -1391,7 +1600,7 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         var messageW = {};
         messageW.action = "setSoftphoneWidth";
         messageW.data = {};
-        messageW.data.height = context.SOFTPHONE_WIDTH;
+        messageW.data.width = context.SOFTPHONE_WIDTH;
         sfApiProvider.sendAction(messageW);
 
         var frameHtml = document.getElementById(context.FRAME_RESIZE_NAME);
@@ -1403,6 +1612,10 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         };
 
         function onResize() {
+            var browser = fjs.utils.Browser;
+            if(frameHtml.clientHeight!=oldHeight && (browser.isIE() || browser.isSafari())) {
+                $element[0].style.visibility = 'hidden';
+            }
             if(timerResize!=null) {
                 clearTimeout(timerResize);
                 timerResize = null;
@@ -1419,10 +1632,12 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
                     };
                     sfApiProvider.sendAction(message);
                 }
+                if(browser.isIE() || browser.isSafari()) {
+                    $element[0].style.visibility = 'visible';
+                }
                 oldHeight = height;
             }, 100);
         }
-
         setTimeout(function(){
             frame.onresize = function(){
                 onResize();
@@ -1432,10 +1647,42 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
 
     initResizeFrame();
 
+    $scope.showBrowserWarning = function() {
+        if(_hasBrowserWarning===null) {
+            var isDB = true;
+            if(fjs.utils.Browser.isSafari()) {
+                try {
+                    window.openDatabase('test', '', 'test', 1024);
+                }
+                catch(e) {
+                    isDB = false;
+                }
+            }
+            _hasBrowserWarning = !fjs.utils.Cookies.check() || !fjs.utils.LocalStorage.check() || !isDB;
+        }
+        return _hasBrowserWarning && !browserWarningClosed;
+    };
+
+    $scope.getBrowserWarningLink = function() {
+        return 'http://www.fonality.com/crmlink/' + fjs.utils.Browser.getBrowserName();
+    };
+
+    $scope.getBrowserWarningMessage = function() {
+        return 'Click here for ' + fjs.utils.Browser.getBrowserName() + ' instructions.';
+    };
+
+    $scope.closeBrowserWarning = function() {
+        browserWarningClosed = true;
+    };
+
     $scope.showWarnings = function() {
         $scope.isWarningsShown = true;
         context.safeApply($scope);
         dataManager.sendAction(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL , "push", {"xpid": fjs.controllers.MainController.IS_WARNING_SHOWN, "value":  $scope.isWarningsShown});
+    };
+
+    $scope.showLoadingPanel = function() {
+        return !$scope.name && !$scope.isWarningsShown && $scope.loggined && $scope.connection && $scope.fdpConfigured;
     };
 
     $scope.hideWarnings = function() {
@@ -1454,9 +1701,10 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     };
 
     var checkShowWarning = function() {
-        $scope.isWarningsButtonShown = !$scope.loggined || !$scope.connection || ! $scope.isLocationRegistered;
-        if($scope.loggined && $scope.connection && $scope.isLocationRegistered) {
+        $scope.isWarningsButtonShown = !$scope.loggined || !$scope.connection || ! $scope.isLocationRegistered || !$scope.fdpConfigured;
+        if($scope.loggined && $scope.connection && $scope.isLocationRegistered && $scope.fdpConfigured) {
             $scope.isWarningsShown = false;
+            dataManager.sendAction(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL , "push", {"xpid": fjs.controllers.MainController.IS_WARNING_SHOWN, "value":  $scope.isWarningsShown});
         }
         context.safeApply($scope);
     };
@@ -1470,18 +1718,40 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
     };
 
     this.authorizationWarningListener = function(data) {
-        $scope.loggined = data;
+        if(data.eventType == fjs.model.DataManager.EV_TICKET) {
+            $scope.loggined = true;
+            $scope.authErrorMessage = "";
+        }
+        else if(data.eventType == fjs.model.DataManager.EV_AUTH_ERROR) {
+            $scope.loggined = false;
+            $scope.authErrorMessage = data.message;
+        }
         checkShowWarning();
         $scope.isConnected = ($scope.connection && $scope.loggined);
         context.safeApply($scope);
     };
 
     this.connectionWarningListener = function(data) {
+
         // Add timeout, task #36371 SFA: Warning icon shows up every time I click on anything on Salesforce
         setTimeout(function() {
-            $scope.connection = data;
+            if(data.eventType == fjs.model.DataManager.EV_FDP_CONFIG_ERROR) {
+                $scope.fdpConfigured = false;
+                $scope.fdpErrorMessage = data.message;
+            }
+            else if(data.eventType == fjs.model.DataManager.EV_FDP_CONFIG) {
+                $scope.fdpConfigured = true;
+                $scope.fdpErrorMessage = data.message;
+            }
+
+            if(data.eventType == fjs.model.DataManager.EV_CONNECTION_ESTABLISHED || data.eventType == fjs.model.DataManager.EV_NETWORK_PROBLEM) {
+                $scope.connection = data.connected;
+                $scope.isConnected = ($scope.connection && $scope.loggined);
+                if($scope.fdpConfigured) {
+                    $scope.fdpErrorMessage = data.message;
+                }
+            }
             checkShowWarning();
-            $scope.isConnected = ($scope.connection && $scope.loggined);
             context.safeApply($scope);
         }, 1000);
     };
@@ -1491,6 +1761,41 @@ fjs.controllers.MainController = function($scope, dataManager, sfApi) {
         checkShowWarning();
         context.safeApply($scope);
     });
+
+    $scope.showSaveCallLogDialog = function(call) {
+        if(call.mycallsclient_callLog.related.length>0) {
+            $scope.dialogTemplate = "templates/saveCallLogDialog.html";
+            $scope.dialogModel = call;
+            context.safeApply($scope);
+        }
+        else {
+            $scope.saveCallLog(call);
+        }
+    };
+
+    $scope.closeDialog = function() {
+        $scope.dialogTemplate = null;
+        $scope.dialogModel = null;
+    };
+
+    $scope.saveCallLog = function(call) {
+        if(call && call.mycallsclient_callLog) {
+            var message = {};
+            message.action = "addCallLog";
+            message.data = {};
+            message.data.subject = call.mycallsclient_callLog.subject;
+            message.data.whoId = call.mycallsclient_callLog.whoId;
+            message.data.whatId = call.mycallsclient_callLog.whatId;
+            message.data.note = call.mycallsclient_callLog.note;
+            message.data.callType = (call.incoming ? "inbound" : "outbound");
+            message.data.duration = Math.round((new Date().getTime() - (call.created + timeSync.getDefault())) / 1000);
+            message.data.date = call.mycallsclient_callLog.date;
+            message.callback = function (response) {
+                fjs.utils.Console.error(response);
+            };
+            sfApiProvider.sendAction(message);
+        }
+    };
 
     $scope.$on("$destroy", function() {
         context.meModel.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.meListener);
@@ -1648,7 +1953,7 @@ fjs.controllers.WarningsController = function($scope, $element, dataManager) {
     };
 
     $scope.$on("$destroy", function() {
-        context.me.removeEventListener(fjs.controllers.CommonController.PUSH_LISTENER, context.pushMeListener);
+        context.me.removeEventListener(fjs.controllers.CommonController.PUSH_LISTENER, context.completeMeListener);
         context.locations.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.locationListener);
     });
 };
@@ -1675,4 +1980,4 @@ ng_app.controller("CallController", ['$scope', '$element', '$timeout', '$filter'
 ng_app.controller("DialpadController", ['$scope', fjs.controllers.DialpadController]);
 ng_app.controller("TransferDialog", ['$scope', fjs.controllers.TransferDialog]);
 ng_app.controller("WarningsController", ['$scope', '$element', 'DataManager', fjs.controllers.WarningsController]);
-ng_app.controller("MainController", ['$scope', 'DataManager', 'SFApi', fjs.controllers.MainController]);
+ng_app.controller("MainController", ['$scope', '$element', 'DataManager', 'SFApi', fjs.controllers.MainController]);
