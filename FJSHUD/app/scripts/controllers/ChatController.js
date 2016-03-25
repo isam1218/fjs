@@ -100,11 +100,12 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
     // Required. Called when a user selects an item in the Chooser.
     success: function(files) {
         //alert("Here's the file link: " + files[0].link);
-       var fileName = files[0].name;
+        for(var i = 0;i<files.length;i++){
+       var fileName = files[i].name;
        fileName = fileName + "";
-       var fileLink = files[0].link;
+       var fileLink = files[i].link;
        fileLink = fileLink + "";
-       var fileBytes = files[0].bytes;
+       var fileBytes = files[i].bytes;
        fileBytes = formatBytes(fileBytes);
        fileBytes = fileBytes + "";
         httpService.sendAction('streamevent', 'sendConversationEvent', {
@@ -115,6 +116,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				// message: files[0].link,
 				data: '{"attachment":[{"dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
+    	}
        
     },
 
@@ -131,7 +133,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
     // Optional. A value of false (default) limits selection to a single file, while
     // true enables multiple file selection.
-    multiselect: false // or true
+    multiselect: true // or true
 
     // Optional. This is a list of file extensions. If specified, the user will
     // only be able to select files with these extensions. You may also specify
@@ -152,11 +154,12 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
    $scope.onPicked = function (docs) {
    	console.log("Files",docs);
-   	var fileName = docs[0].name;
+   	for (var i = 0; i<docs.length; i++ ){
+   	var fileName = docs[i].name;
        fileName = fileName + "";
-       var fileLink = docs[0].url;
+       var fileLink = docs[i].url;
        fileLink = fileLink + "";
-       var fileBytes = docs[0].sizeBytes;
+       var fileBytes = docs[i].sizeBytes;
        fileBytes = formatBytes(fileBytes);
        fileBytes = fileBytes + "";
     httpService.sendAction('streamevent', 'sendConversationEvent', {
@@ -167,6 +170,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				// message: files[0].link,
 				data: '{"attachment":[{"googleDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
+		}
    };
 
    $scope.onCancel = function () {
@@ -177,18 +181,19 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
   var boxOptions = {
     clientId: fjs.CONFIG.BOX_CLIENT_ID,
     linkType: 'shared',
-    multiselect: false
+    multiselect: true
   };
 
   var boxSelect = new BoxSelect(boxOptions);
 
   boxSelect.success(function(data){
-    var fileName = data[0].name;
+  	for(var i=0; i<data.length;i++){
+    var fileName = data[i].name;
     fileName = fileName + "";
-    var fileLink = data[0].url;
+    var fileLink = data[i].url;
     fileLink = fileLink + "";
     // file size not provided if linkType === 'shared'
-    var fileBytes = data[0].size;
+    var fileBytes = data[i].size;
     fileBytes = formatBytes(fileBytes);
     fileBytes = fileBytes + "";
     httpService.sendAction('streamevent', 'sendConversationEvent', {
@@ -198,6 +203,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
       message: ' ',
       data: '{"attachment":[{"box":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
     });
+		}
 
   });
 
@@ -220,11 +226,12 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	  multiSelect: true,
 	  openInNewWindow: true,
 	  success: function(files) {
-  	  	var fileName = files.values[0].fileName;
+	  	for(var i = 0;i<files.length;i++){
+  	  	var fileName = files.values[i].fileName;
 	    fileName = fileName + "";
-	    var fileLink = files.values[0].link;
+	    var fileLink = files.values[i].link;
 	    fileLink = fileLink + "";
-	    var fileBytes = files.values[0].size;
+	    var fileBytes = files.values[i].size;
 	    fileBytes = formatBytes(fileBytes);
 	    fileBytes = fileBytes + "";
 
@@ -235,6 +242,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	      message: ' ',
 	      data: '{"attachment":[{"oneDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 	    });
+	}
 	    
 
 	},
