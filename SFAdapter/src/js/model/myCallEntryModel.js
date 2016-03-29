@@ -1,15 +1,20 @@
 namespace("fjs.model");
 
 fjs.model.MyCallEntryModel = function(obj) {
+    var context = this;
+
     function getCurrentDate() {
-        var d = new Date();
+        var d = new Date(context.created);
         return d.getFullYear()+"-"+ (d.getMonth()+1) +"-"+d.getDate();
     }
     this._who = [];
     this._what = [];
+
+    fjs.model.EntryModel.call(this, obj);
+
     this.mycallsclient_callLog = {
         'date': getCurrentDate(),
-        'subject': "Call",
+        'subject': this.getCallSubject(),
         'xpid':this.xpid,
         'note': '',
         'callType': (this.incoming ? "inbound" : "outbound"),
@@ -19,10 +24,28 @@ fjs.model.MyCallEntryModel = function(obj) {
         'whoId':null,
         'related': []
     };
-    fjs.model.EntryModel.call(this, obj);
 };
 
+
+
 fjs.model.MyCallEntryModel.extend(fjs.model.EntryModel);
+
+fjs.model.MyCallEntryModel.prototype.getCallSubject = function() {
+    var subjectParts = [];
+    var formatDate = function(date) {
+        var d = date.getDate().toString(),
+            m = (date.getMonth()+1).toString(),
+            y = date.getFullYear().toString();
+        d = d.length>1 ? d : "0"+d;
+        m = m.length>1 ? m : "0"+m;
+        return d+"/"+m+"/"+y;
+    };
+    var date = new Date(this.created);
+    subjectParts.push(this.incoming ? "Inbound" : "Outbound");
+    subjectParts.push("Call");
+    subjectParts.push(formatDate(date));
+    return subjectParts.join(" ");
+};
 
 fjs.model.MyCallEntryModel.prototype.getFormattedPhone = function() {
     if(this.phone) {
@@ -199,12 +222,6 @@ fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
                 if(typeof(field)!='object' || field==null) {
                     if(i!='note' || !this._blockChangeNote) {
                         scope[i] = field;
-                    }
-                    if(i=='note' && field) {
-                        scope['subject'] = "Call: " + (field.length>240 ? field.substr(0, 240) + " ..." : field);
-                    }
-                    else if(i=='note' && field=='') {
-                        scope['subject'] = "Call";
                     }
                 }
                 else if(Array.isArray(field)) {
