@@ -228,7 +228,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	  multiSelect: true,
 	  openInNewWindow: true,
 	  success: function(files) {
-	  	for(var i = 0;i<files.length;i++){
+	  	for(var i = 0;i<files.values.length;i++){
   	  	var fileName = files.values[i].fileName;
 	    fileName = fileName + "";
 	    var fileLink = files.values[i].link;
@@ -325,7 +325,6 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		for(var i = 0, iLen = $scope.messages.length; i < iLen; i++){
 			if ($scope.messages[i].data && $scope.messages[i].data.attachment && $scope.messages[i].data.attachment[0].dropbox != true && $scope.messages[i].data.attachment[0].box != true && $scope.messages[i].data.attachment[0].googleDrive != true && $scope.messages[i].data.attachment[0].oneDrive != true) {
 				var attachments = $scope.messages[i].data.attachment;
-				console.log("attachments",attachments);
 				for(var a = 0, aLen = attachments.length; a < aLen; a++) {
 					var tempAttach = attachments[a];
 					tempAttach.created = $scope.messages[i].created;
