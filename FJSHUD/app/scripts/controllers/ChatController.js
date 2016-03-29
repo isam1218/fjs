@@ -150,11 +150,12 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	//GOOGLE DRIVE file share
    $scope.onLoaded = function () {
      console.log('Google Picker loaded!');
+     $scope.determineAudience();
+		sendGoogleAnalytic('GoogleDrive');
    };
 
    $scope.onPicked = function (docs) {
-   	console.log("Files",docs);
-   	for (var i = 0; i<docs.length; i++ ){
+   	for (var i = 0; i< docs.length; i++ ){
    	var fileName = docs[i].name;
        fileName = fileName + "";
        var fileLink = docs[i].url;
@@ -213,6 +214,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
   $scope.launchBox = function(){
     boxSelect.launchPopup();
+    $scope.determineAudience();
+		sendGoogleAnalytic('Box');
   };
 
   $scope.convertBoxLink = function(attch){
@@ -250,8 +253,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	  error: function(e) {  }
 	};
   $scope.launchOneDrivePicker = function(){
- 
     OneDrive.open(pickerOptions);
+      $scope.determineAudience();
+		sendGoogleAnalytic('OneDrive');
   };
 
 	// set chat data
@@ -384,8 +388,14 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	var sendGoogleAnalytic = function(type){
 		if (type == "Computer")
 			var finalEventAction = "Attachment";	
-		else
+		else if(type == "DropBox")
 			var finalEventAction = "DropBox";
+		else if(type == "Box")
+			var finalEventAction = "Box";
+		else if(type == "OneDrive")
+			var finalEventAction = "OneDrive";
+		else if(type == "GoogleDrive")
+			var finalEventAction = "GoogleDrive";
 
 		var gaObj = {
 			hitType: 'event',
