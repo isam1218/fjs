@@ -580,15 +580,20 @@ fjs.model.MyCallsFeedModel.NAME = "mycallsclient";
 namespace("fjs.model");
 
 fjs.model.MyCallEntryModel = function(obj) {
+    var context = this;
+
     function getCurrentDate() {
-        var d = new Date();
+        var d = new Date(context.created);
         return d.getFullYear()+"-"+ (d.getMonth()+1) +"-"+d.getDate();
     }
     this._who = [];
     this._what = [];
+
+    fjs.model.EntryModel.call(this, obj);
+
     this.mycallsclient_callLog = {
         'date': getCurrentDate(),
-        'subject': "Call",
+        'subject': this.getCallSubject(),
         'xpid':this.xpid,
         'note': '',
         'callType': (this.incoming ? "inbound" : "outbound"),
@@ -598,10 +603,28 @@ fjs.model.MyCallEntryModel = function(obj) {
         'whoId':null,
         'related': []
     };
-    fjs.model.EntryModel.call(this, obj);
 };
 
+
+
 fjs.model.MyCallEntryModel.extend(fjs.model.EntryModel);
+
+fjs.model.MyCallEntryModel.prototype.getCallSubject = function() {
+    var subjectParts = [];
+    var formatDate = function(date) {
+        var d = date.getDate().toString(),
+            m = (date.getMonth()+1).toString(),
+            y = date.getFullYear().toString();
+        d = d.length>1 ? d : "0"+d;
+        m = m.length>1 ? m : "0"+m;
+        return d+"/"+m+"/"+y;
+    };
+    var date = new Date(this.created);
+    subjectParts.push(this.incoming ? "Inbound" : "Outbound");
+    subjectParts.push("Call");
+    subjectParts.push(formatDate(date));
+    return subjectParts.join(" ");
+};
 
 fjs.model.MyCallEntryModel.prototype.getFormattedPhone = function() {
     if(this.phone) {
@@ -778,12 +801,6 @@ fjs.model.MyCallEntryModel.prototype.fill = function(obj, scope) {
                 if(typeof(field)!='object' || field==null) {
                     if(i!='note' || !this._blockChangeNote) {
                         scope[i] = field;
-                    }
-                    if(i=='note' && field) {
-                        scope['subject'] = "Call: " + (field.length>240 ? field.substr(0, 240) + " ..." : field);
-                    }
-                    else if(i=='note' && field=='') {
-                        scope['subject'] = "Call";
                     }
                 }
                 else if(Array.isArray(field)) {
@@ -1473,44 +1490,40 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         else {
             return findShowSaveCallLogDialog(_scope.$parent);
         }
-    };
-    
-    $scope.callLogAvailable = function() {
-        return $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
-    };
+    }
 
     $scope.$on("$destroy", function() {
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
-        if($scope.call.type == fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-            if ($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length > 0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-                if ($scope.call.type == fjs.controllers.CallController.QUEUE_CALL_TYPE && ($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE) && $scope.call.incoming) {
-                    //skip incoming queue not answered call
-                    console.log("Skip queue ring callLog", $scope.callLog);
-                    return;
-                }
-                var message = {};
-                message.action = "addCallLog";
-                message.data = {};
-                message.data.subject = $scope.call.mycallsclient_callLog.subject;
-                message.data.whoId = $scope.call.mycallsclient_callLog.whoId;
-                message.data.whatId = $scope.call.mycallsclient_callLog.whatId;
-                message.data.note = $scope.call.mycallsclient_callLog.note;
-                message.data.callType = ($scope.call.incoming ? "inbound" : "outbound");
-                message.data.duration = Math.round((new Date().getTime() - ($scope.call.created + timeSync.getDefault())) / 1000);
-                message.data.date = $scope.call.mycallsclient_callLog.date;
-                message.callback = function (response) {
-                    fjs.utils.Console.error(response);
-                };
-                sfApiProvider.sendAction(message);
+        if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length>0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE)
+        {
+            if($scope.call.type == fjs.controllers.CallController.QUEUE_CALL_TYPE && ($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE) && $scope.call.incoming)
+            {
+                //skip incoming queue not answered call
+                console.log("Skip queue ring callLog", $scope.callLog);
+                return;
             }
-            else if ($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-                var showSaveCallLogDialog = findShowSaveCallLogDialog();
-                getCallLogInfo(function () {
-                    showSaveCallLogDialog($scope.call);
-                });
-            }
+            var message = {};
+            message.action = "addCallLog";
+            message.data = {};
+            message.data.subject = $scope.call.mycallsclient_callLog.subject;
+            message.data.whoId =  $scope.call.mycallsclient_callLog.whoId;
+            message.data.whatId = $scope.call.mycallsclient_callLog.whatId;
+            message.data.note = $scope.call.mycallsclient_callLog.note;
+            message.data.callType =  ($scope.call.incoming ? "inbound" : "outbound");
+            message.data.duration = Math.round((new Date().getTime()- ($scope.call.created + timeSync.getDefault()))/1000);
+            message.data.date = $scope.call.mycallsclient_callLog.date;
+            message.callback =  function(response) {
+                fjs.utils.Console.error(response);
+            };
+            sfApiProvider.sendAction(message);
+        }
+        else if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
+            var showSaveCallLogDialog = findShowSaveCallLogDialog();
+            getCallLogInfo(function(){
+                showSaveCallLogDialog($scope.call);
+            });
         }
         context = null;
         clearTimeout(callLogSaveTimeout);
@@ -1522,7 +1535,6 @@ fjs.controllers.CallController.extend(fjs.controllers.CommonController);
 fjs.controllers.CallController.CONFERENCE_CALL_TYPE = 0;
 fjs.controllers.CallController.SYSTEM_CALL_TYPE = 7;
 fjs.controllers.CallController.QUEUE_CALL_TYPE = 3;
-fjs.controllers.CallController.EXTERNAL_CALL = 5;
 fjs.controllers.CallController.HOLD_CALL_TYPE = 3;
 fjs.controllers.CallController.RING_CALL_TYPE = 0;
 fjs.controllers.CallController.TALCKING_CALL_TYPE = 2;
