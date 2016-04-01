@@ -15,7 +15,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.avatar ={};
     $scope.phoneType = false;
     $scope.settings = {};
-	
+    $scope.currentDevices = {};
 	// listens for route param to populate current call object
 	$scope.$on('$routeChangeSuccess', function() {    
 		$scope.currentCall = phoneService.getCallDetail(callId);
@@ -246,42 +246,57 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
      }
 
+    //Starting with the webphone version 1.1.011769 it will no longer keep track of what device the user selected to alleviate issue HUDF-899
+    //So we need manually set it (even though we were doing it before) so that means the getInputDevice ffrom phone service will be null when the 
+    //softphone is intialized
+
+    var setOutputAudioDevice = function(){
+        // loadedOutput/loadedRingput should be a device name (the object's name property, not the entire object)
+        var loadedOutput = localStorage['current_selectedOutput_of_' + $rootScope.myPid] ? localStorage['current_selectedOutput_of_' + $rootScope.myPid] : $scope.outputDevices[0].name;
+        var loadedRingput = localStorage['current_selectedRingput_of_' + $rootScope.myPid] ? localStorage['current_selectedRingput_of_' + $rootScope.myPid] : $scope.outputDevices[0].name;
+
+        // load output/ringput from 2 saves ago...
+        var prevOutput = localStorage['previous_selectedInput_of_' + $rootScope.myPid] ? localStorage['previous_selectedInput_of_' + $rootScope.myPid] : $scope.inputDevices[0].name;
+        var prevRingput = localStorage['previous_selectedInput_of_' + $rootScope.myPid] ? localStorage['previous_selectedRingput_of_' + $rootScope.myPid] : $scope.inputDevices[0].name;;
+
+        for (var i = 0; i < $scope.outputDevices.length; i++){
+            // if output device name matches, provide that object and set as selectedOutput/Ringput
+            if ($scope.outputDevices[i].name == loadedOutput){
+                $scope.currentDevices.selectedOutput = $scope.outputDevices[i];
+            }
+            if ($scope.outputDevices[i].name == loadedRingput){
+                $scope.currentDevices.selectedRingput = $scope.outputDevices[i];
+            }
+        }
+        // $scope.selectedOutput is the entire object, not just the name property
+        $scope.updateAudioSettings($scope.currentDevices.selectedOutput,'Output');
+        $scope.updateAudioSettings($scope.currentDevices.selectedRingput,'Ring');
+          
+    };  
+
+
 	var setInputAudioDevice = function(){
-		$scope.selectedInput = $scope.inputDevices.filter(function(item){
-                 return item.id == phoneService.getSelectedDevice('inpdefid');
-       	 })[0];
+        // loadedInput should be a device name (the object's name property, not the entire object)
+        var loadedInput = localStorage['current_selectedInput_of_' + $rootScope.myPid] ? localStorage['current_selectedInput_of_' + $rootScope.myPid] : $scope.inputDevices[0].name;
 
-        if($scope.selectedInput == undefined){
-            $scope.selectedInput = $scope.inputDevices[0];
-		}
-        $scope.updateAudioSettings($scope.selectedInput.id,'Input');
+        // load input from 2 saves ago...
+        var prevInput = localStorage['previous_selectedInput_of_' + $rootScope.myPid] ? localStorage['previous_selectedInput_of_' + $rootScope.myPid] : $scope.inputDevices[0].name;
 
+        for (var i = 0; i < $scope.inputDevices.length; i++){
+            // if input device name matches, provide that object and set as selectedInput
+            if ($scope.inputDevices[i].name == loadedInput){
+                $scope.currentDevices.selectedInput = $scope.inputDevices[i];
+            }
+        }
+        // send loaded input (entire object) to update method
+        $scope.updateAudioSettings($scope.currentDevices.selectedInput,'Input');
 	};
 
-	var setOutputAudioDevice = function(){
-		$scope.selectedOutput = $scope.outputDevices.filter(function(item){
-                 return item.id == phoneService.getSelectedDevice('outdefid'); 
-         })[0];
-            
-         $scope.selectedRingput = $scope.outputDevices.filter(function(item){
-                return item.id == phoneService.getSelectedDevice('ringdefid'); 
-          })[0];
-
-          if($scope.selectedRingput == undefined){
-                $scope.selectedRingput = $scope.outputDevices[0];
-                
-          }
-          if($scope.selectedOutput == undefined){
-                $scope.selectedOutput = $scope.outputDevices[0];
-          }
-          $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
-	       $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
-          
-    };	
-
+    // sync
    phoneService.getInputDevices().then(function(data){
 		$scope.inputDevices = data;
-		setInputAudioDevice();
+
+        setInputAudioDevice();
 		
         // disable phone tab
         if(!phoneService.isPhoneActive()){
@@ -296,14 +311,50 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
 	phoneService.getOutputDevices().then(function(data){
 		$scope.outputDevices = data;
+
 		setOutputAudioDevice();
 	});
 
-  	$scope.updateAudioSettings = function(value, type){
-        if(type == 'Output' && phoneService.isPhoneActive() == "new_webphone"){
-            phoneService.setAudioDevice('Ring',value);    
+  	$scope.updateAudioSettings = function(deviceObj, type){
+       if(deviceObj == null || deviceObj == undefined){
+            switch(type){
+                case 'Input':
+                    $scope.currentDevices.selectedInput = $scope.inputDevices[0];
+                    deviceObj = $scope.currentDevices.selectedInput;
+                    break;
+                case 'Output':
+                    $scope.currentDevices.selectedOutput = $scope.outputDevices[0];
+                    deviceObj = $scope.currentDevices.selectedOutput;
+                    break;
+                case 'Ring':
+                    $scope.currentDevices.selectedRingput = $scope.outputDevices[0];
+                    deviceObj = $scope.currentDevices.selectedRingput;
+                    break;
+            }
         }
-        phoneService.setAudioDevice(type,value);
+        // SENDING ENTIRE DEVICE OBJ FOR YOU TO PLAY WITH...
+        phoneService.setAudioDevice(type,deviceObj.id);
+       
+                        
+                
+        // only saving name-property to localStorage
+        switch(type){
+            case 'Input':
+                // saving prev and current (name-prop only)
+                localStorage['previous_selectedInput_of_' + $rootScope.myPid] = localStorage['current_selectedInput_of_' + $rootScope.myPid];
+                localStorage['current_selectedInput_of_' + $rootScope.myPid] = deviceObj.name;
+                break;
+            case 'Output':
+                
+                localStorage['previous_selectedOutput_of_' + $rootScope.myPid] = localStorage['current_selectedOutput_of_' + $rootScope.myPid];
+                localStorage['current_selectedOutput_of_' + $rootScope.myPid] = deviceObj.name;
+                break;
+            case 'Ring':
+            
+                localStorage['previous_selectedRingput_of_' + $rootScope.myPid] = localStorage['current_selectedOutput_of_' + $rootScope.myPid];
+                localStorage['current_selectedRingput_of_' + $rootScope.myPid] = deviceObj.name;
+                break;
+        }
     };
 
     
@@ -1227,12 +1278,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     break;
 				case "updateDevices":
 					if($scope.inputDevices && $scope.inputDevices.length > 0 && $scope.outputDevices && $scope.outputDevices.length > 0){
-                        $scope.selectedInput = $scope.inputDevices[0];
-                        $scope.updateAudioSettings($scope.selectedInput.id,'Input');
-                        $scope.selectedRingput = $scope.outputDevices[0];
-                        $scope.updateAudioSettings($scope.selectedRingput.id,'Ring');
-                        $scope.selectedOutput = $scope.outputDevices[0];
-                        $scope.updateAudioSettings($scope.selectedOutput.id,'Output');
+                        
+                        $scope.currentDevices.selectedInput = getPreviousInputDevice();
+                        $scope.updateAudioSettings($scope.currentDevices.selectedInput,'Input');
+                        
+                        $scope.currentDevices.selectedRingput = getPreviousRingDevice();
+                        $scope.currentDevices.selectedOutput = getPreviousOutputDevice();
+                        $scope.updateAudioSettings($scope.currentDevices.selectedRingput,'Ring');
+                        $scope.updateAudioSettings($scope.currentDevices.selectedOutput,'Output');
                     }
                     break;
                   
@@ -1265,6 +1318,38 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         update_queues();
     });
 
+
+    var getPreviousInputDevice = function(){
+        var prev = localStorage['current_selectedInput_of_' + $rootScope.myPid];
+        for(var i = 0; i < $scope.inputDevices.length; i++){
+            if(prev == $scope.inputDevices[i].name){
+                return $scope.inputDevices[i];
+            }
+        }
+        return $scope.inputDevices[0];
+           
+    };
+
+    var getPreviousOutputDevice = function(){
+        var prev = localStorage['current_selectedOutput_of_' + $rootScope.myPid];
+        for(var i = 0; i < $scope.outputDevices.length; i++){
+            if(prev == $scope.outputDevices[i].name){
+                return $scope.outputDevices[i];
+            }
+        }
+        return $scope.outputDevices[0];
+        
+    };
+
+    var getPreviousRingDevice = function(){
+        var prev = localStorage['current_selectedOutput_of_' + $rootScope.myPid];
+        for(var i = 0; i < $scope.outputDevices.length; i++){
+            if(prev == $scope.outputDevices[i].name){
+                $scope.outputDevices[i];
+            }
+        }
+        return $scope.outputDevices[0];
+    };
 
 
 
