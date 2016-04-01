@@ -76,15 +76,11 @@ describe("ClientProxyModelTest", function () {
         expect('0_2').toBe(syncData['test2'][''].items[0].xpid);
     });
     it("onEntryDeletion", function(){
-        var deleteClientActionCalled = false;
         var testProxy = {
             feedName: 'test'
             , feedFields: {}
             , items:{}
             , keepEntries: {}
-            , sendAction: function(feedName, actionName, data){
-                deleteClientActionCalled = actionName == 'delete';
-            }
             , clientFeedName: 'test2'
             , collectFields: fjs.fdp.model.ProxyModel.prototype.collectFields
             , createChange: fjs.fdp.model.ProxyModel.prototype.createChange
@@ -105,28 +101,22 @@ describe("ClientProxyModelTest", function () {
         testProxy.onEntryDeletion({xpid:'0_6', eventType:'delete', feed:'test'});
 
         expect('delete').toBe(testProxy.changes['0_6'].type);
-        expect(true).toBe(deleteClientActionCalled);
         expect(null).toBe(testProxy.changes['0_6'].entry);
         expect(undefined).toBe(testProxy.items['0_6']);
-
-        deleteClientActionCalled = false;
-
+        
         testProxy.onEntryDeletion({xpid:'0_7', feed:'test2', eventType:'delete'});
         expect('change').toBe(testProxy.changes['0_7'].type);
         expect(null).toBe(testProxy.changes['0_7'].entry.test2_f3);
         expect(null).toBe(testProxy.changes['0_7'].entry.test2_f4);
         expect(2).toBe(testProxy.items['0_7'].f1);
         expect('3').toBe(testProxy.items['0_7'].f2);
-        expect(false).toBe(deleteClientActionCalled);
 
         testProxy.onEntryDeletion({xpid:'0_7', feed:'test', eventType:'delete'});
         expect('delete').toBe(testProxy.changes['0_7'].type);
         expect(null).toBe(testProxy.changes['0_7'].entry);
         expect(undefined).toBe(testProxy.items['0_7']);
-        expect(true).toBe(deleteClientActionCalled);
 
         testProxy.changes=null;
-        deleteClientActionCalled = false;
 
         testProxy.onEntryChange({xpid:'0_8', entry:{f1:2, f2:"3", xpid:'0_8', source:'0', xef001id: "7", xef001iver: "4167"}, feed:'test', eventType: "push"});
         testProxy.onEntryChange({xpid:'0_8', entry:{f3:1, f4:"2", xpid:'0_8', source:'0', xef001id: "7", xef001iver: "4168"}, feed:'test2', eventType: "push"});
@@ -135,7 +125,6 @@ describe("ClientProxyModelTest", function () {
         expect('delete').toBe(testProxy.changes['0_8'].type);
         expect(null).toBe(testProxy.changes['0_8'].entry);
         expect(undefined).toBe(testProxy.items['0_8']);
-        expect(true).toBe(deleteClientActionCalled);
         testProxy.onEntryDeletion({xpid:'0_8', feed:'test1', eventType:'delete'});
         expect('delete').toBe(testProxy.changes['0_8'].type);
         expect(null).toBe(testProxy.changes['0_8'].entry);

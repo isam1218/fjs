@@ -5,7 +5,6 @@ namespace("fjs.controllers");
 fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $sce, dataManager, sfApi) {
     fjs.controllers.CommonController(this);
     var durationTimer = null;
-    var callLogInfoTimeout = null;
     var timeSync = new fjs.utils.TimeSync();
     var lastPhone = null;
     var context = this;
@@ -24,8 +23,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         var _currentLocation = locationModel.getEntryByXpid(_currentLocationId);
         return $scope.call.incoming && _currentLocation && _currentLocation.location_status_autoAnswer;
     };
-
-    var tabsSynchronizer = new fjs.api.TabsSynchronizer();
 
     var onDurationTimeout = function() {
         var date = new Date();
@@ -112,7 +109,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     function saveCallLogChanges() {
         if(callLogSaveTimeout != null) {
             clearTimeout(callLogSaveTimeout);
-            callLogSaveTimeout = null;
         }
         callLogSaveTimeout = setTimeout(function() {
             dataManager.sendAction("mycallsclient", "push", {"callLog":  $scope.call.mycallsclient_callLog, "xpid": $scope.call.xpid});
@@ -216,41 +212,23 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     };
     
     $scope.callLogAvailable = function() {
-        return $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
+        return true || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
     };
 
     $scope.$on("$destroy", function() {
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
-        if($scope.call.type == fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-            if ($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length > 0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-                if ($scope.call.type == fjs.controllers.CallController.QUEUE_CALL_TYPE && ($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE) && $scope.call.incoming) {
-                    //skip incoming queue not answered call
-                    console.log("Skip queue ring callLog", $scope.callLog);
-                    return;
-                }
-                var message = {};
-                message.action = "addCallLog";
-                message.data = {};
-                message.data.subject = $scope.call.mycallsclient_callLog.subject;
-                message.data.whoId = $scope.call.mycallsclient_callLog.whoId;
-                message.data.whatId = $scope.call.mycallsclient_callLog.whatId;
-                message.data.note = $scope.call.mycallsclient_callLog.note;
-                message.data.callType = ($scope.call.incoming ? "inbound" : "outbound");
-                message.data.duration = Math.round((new Date().getTime() - ($scope.call.created + timeSync.getDefault())) / 1000);
-                message.data.date = $scope.call.mycallsclient_callLog.date;
-                message.callback = function (response) {
-                    fjs.utils.Console.error(response);
-                };
-                sfApiProvider.sendAction(message);
-            }
-            else if ($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
-                var showSaveCallLogDialog = findShowSaveCallLogDialog();
-                getCallLogInfo(function () {
-                    showSaveCallLogDialog($scope.call);
+        if(true || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL) {
+            getCallLogInfo(function () {
+                dataManager.sendAction("clientcalllog", "push", {
+                    "callLog":  $scope.call.mycallsclient_callLog,
+                    "incoming":$scope.call.incoming,
+                    "created":$scope.call.created,
+                    "ended":Date.now(),
+                    "xpid": $scope.call.xpid
                 });
-            }
+            });
         }
         context = null;
         clearTimeout(callLogSaveTimeout);

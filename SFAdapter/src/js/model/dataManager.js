@@ -203,6 +203,9 @@ fjs.model.DataManager.prototype.getModel = function(feedName) {
             case "clientsettings":
                 this.feeds[feedName] = new fjs.model.ClientSettingsFeedModel(this);
                 break;
+            case "clientcalllog":
+                this.feeds[feedName] = new fjs.model.ClientCallLogFeedModel(this);
+                break;
             default:
                this.feeds[feedName] = new fjs.model.FeedModel(feedName, this);
                 break;

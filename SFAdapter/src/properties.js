@@ -6,7 +6,7 @@ fjs.fdp.CONFIG = {
     , providers: ['sharedWorker', 'simple']
     , DB: {
         name: "SFA"
-        , version: 25
+        , version: 27
         , size:5*1023*1023
         /**
          * @type {Array}
@@ -22,6 +22,7 @@ fjs.fdp.CONFIG = {
             , {name:"mycalls", key: "xpid", indexes:["source"]}
             , {name:"mycalldetails", key: "xpid", indexes:["source"]}
             , {name:"mycallsclient", key:"xpid"}
+            , {name:"clientcalllog", key:"xpid"}
             , {name:"clientsettings", key:"xpid"}]
     }
     , CLIENT: {type:'salesforce'}

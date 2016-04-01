@@ -5,3 +5,4 @@ sfa_model.filter('WhoFilter', fjs.model.filter.Who);
 sfa_model.filter('WhatFilter', fjs.model.filter.What);
 sfa_model.filter('SortRelatedFields', fjs.model.filter.SortRelatedFields);
 sfa_model.filter('HasCallInfoFilter', fjs.model.filter.HasCallInfoFilter);
+sfa_model.filter('CallLogSort', fjs.model.filter.CallLogSort);

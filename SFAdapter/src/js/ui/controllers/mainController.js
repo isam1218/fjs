@@ -5,7 +5,6 @@ fjs.controllers.MainController = function($scope, $element, dataManager, sfApi) 
     var sfApiProvider = sfApi.getProvider();
     var browserWarningClosed = false;
     var _hasBrowserWarning = null;
-    var timeSync = new fjs.utils.TimeSync();
 
     this.clientSettingsModel = dataManager.getModel(fjs.controllers.MainController.CLIENT_SETTINGS_FEED_MODEL );
     this.clientSettingsModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, onClientSettingsPush);
@@ -204,41 +203,6 @@ fjs.controllers.MainController = function($scope, $element, dataManager, sfApi) 
         checkShowWarning();
         context.safeApply($scope);
     });
-
-    $scope.showSaveCallLogDialog = function(call) {
-        if(call.mycallsclient_callLog.related.length>0) {
-            $scope.dialogTemplate = "templates/saveCallLogDialog.html";
-            $scope.dialogModel = call;
-            context.safeApply($scope);
-        }
-        else {
-            $scope.saveCallLog(call);
-        }
-    };
-
-    $scope.closeDialog = function() {
-        $scope.dialogTemplate = null;
-        $scope.dialogModel = null;
-    };
-
-    $scope.saveCallLog = function(call) {
-        if(call && call.mycallsclient_callLog) {
-            var message = {};
-            message.action = "addCallLog";
-            message.data = {};
-            message.data.subject = call.mycallsclient_callLog.subject;
-            message.data.whoId = call.mycallsclient_callLog.whoId;
-            message.data.whatId = call.mycallsclient_callLog.whatId;
-            message.data.note = call.mycallsclient_callLog.note;
-            message.data.callType = (call.incoming ? "inbound" : "outbound");
-            message.data.duration = Math.round((new Date().getTime() - (call.created + timeSync.getDefault())) / 1000);
-            message.data.date = call.mycallsclient_callLog.date;
-            message.callback = function (response) {
-                fjs.utils.Console.error(response);
-            };
-            sfApiProvider.sendAction(message);
-        }
-    };
 
     $scope.$on("$destroy", function() {
         context.meModel.removeEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, context.meListener);
