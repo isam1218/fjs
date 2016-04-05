@@ -48,18 +48,6 @@ hudweb.controller('NotificationController',
   $scope.displayAlert = false;
   $scope.clearOld;
   $scope.alertDuration = settingsService.getSetting('alert_call_duration');    
-    
-  // does not apply to non-plugin browsers
-  if (!navigator.userAgent.match(/CrOS|Edge|Linux/)) {
-	  settingsService.getMe().then(function() {
-		// delayed so phoneService can do its thing
-		$timeout(function() {
-			// can't find plugin or it's outdated
-			if (!phoneService.isPluginInstalled() || ($rootScope.pluginVersion !== undefined && $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1))
-				$scope.addError('browserPlugin');
-		}, 1000, false);
-	  });
-  }
 
   $scope.getAvatar = function(pid){
     return myHttpService.get_avatar(pid,40,40);
@@ -94,7 +82,7 @@ hudweb.controller('NotificationController',
 				
 				if (!$rootScope.pluginVersion)
 					data.message = 'Click to download & install';
-				else if (!$scope.isPluginUptoDate())
+				else
 					data.message = 'Click to update';
 				
 				break;
@@ -156,6 +144,14 @@ hudweb.controller('NotificationController',
             $rootScope.pbxError = false;
         }
     });
+	
+	// softphone
+	$scope.$on('plugin_error', function(data) {
+		// doesn't apply to non-plugin browsers
+		if (!navigator.userAgent.match(/CrOS|Edge|Linux/)) {
+			$scope.addError('browserPlugin');
+		}
+	});
   
   $scope.getMultipleNotifications = function(message){	
 	  var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';

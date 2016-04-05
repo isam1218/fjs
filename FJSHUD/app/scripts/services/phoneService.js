@@ -295,7 +295,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 		else{
 			if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
-	        var username = $rootScope.meModel.my_jid.split("@")[0];
+				var username = $rootScope.meModel.my_jid.split("@")[0];
 				if(!isRegistered && phonePlugin.getSession){
 					session = phonePlugin.getSession(username);
 					session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
@@ -304,14 +304,21 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 						session.attachEvent("onStatus", sessionStatus);
 		                session.attachEvent("onNetworkStatus", onNetworkStatus);
 
-				}else{
-					 session.addEventListener("Status",sessionStatus, false);
-	               	 session.addEventListener("NetworkStatus", onNetworkStatus);
+					}else{
+						 session.addEventListener("Status",sessionStatus, false);
+						 session.addEventListener("NetworkStatus", onNetworkStatus);
+					}
+				
+					// check plugin version
+					version = phonePlugin.version;
+					$rootScope.pluginVersion = phonePlugin.version;
+						
+					if ($rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1)
+						$rootScope.$broadcast('plugin_error', 'update');
 				}
-				if(session.status == 0){
-				}
+				else
+					$rootScope.$broadcast('plugin_error', 'install');
 			}
-		}
 		}
 	});
 
@@ -1011,7 +1018,9 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		webphone.onopen = function(e){};
 		webphone.onclose = function(e){};
 
-		webphone.onerror = function(e){};
+		webphone.onerror = function(e){
+			$rootScope.$broadcast('plugin_error', 'install');
+		};
 
 		webphone.onmessage = function(e){
 			if(e.data){
@@ -1019,6 +1028,9 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				$rootScope.pluginVersion = context.version;
 				initWS();
 				webphone.close();
+				
+				if ($rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1)
+					$rootScope.$broadcast('plugin_error', 'update');
 			}
 		};
 
@@ -1109,10 +1121,10 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 
 					if(phone == undefined){
 						isRegistered = ps == 1;
-						data = {
+						var data = {
 							event:'state',
 							registration: isRegistered,
-						}
+						};
 						$rootScope.$broadcast('phone_event',data);
 
 					}

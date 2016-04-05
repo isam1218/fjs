@@ -45,7 +45,6 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             };
 			
 			notifyPipe.onerror = function (evt) {
-            	console.error(evt);
             	notifyPipe.close();
             };
             // when the connection is closed, this method is called
