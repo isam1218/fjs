@@ -201,16 +201,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         openCallLog();
     });
 
-    var findShowSaveCallLogDialog = function(_scope) {
-        _scope = _scope || $scope;
-        if(_scope.showSaveCallLogDialog) {
-            return _scope.showSaveCallLogDialog;
-        }
-        else {
-            return findShowSaveCallLogDialog(_scope.$parent);
-        }
-    };
-    
     $scope.callLogAvailable = function() {
         return $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
     };

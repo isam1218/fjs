@@ -21,15 +21,14 @@ fjs.controllers.CallLogDialogController = function($scope, $element, $timeout, $
     };
 
     $scope.noteKeyPress = function() {
-
-        $scope._blockChangeNote = true;
+        $scope.log._blockChangeNote = true;
 
         if(_blockChangeNoteTM!=null) {
             clearTimeout(_blockChangeNoteTM);
             _blockChangeNoteTM = null;
         }
         _blockChangeNoteTM = setTimeout(function(){
-            delete $scope._blockChangeNote;
+            delete $scope.log._blockChangeNote;
             _blockChangeNoteTM = null;
         }, 1000);
     };

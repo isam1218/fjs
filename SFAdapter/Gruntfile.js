@@ -43,6 +43,7 @@ module.exports = function(grunt) {
                     , 'src/js/model/myCallEntryModel.js'
                     , 'src/js/model/clientSettingsFeedModel.js'
                     , 'src/js/model/callLogFeedModel.js'
+                    , 'src/js/model/callLogEntryModel.js'
                     , 'src/js/model/filters/whatFilter.js'
                     , 'src/js/model/filters/whoFilter.js'
                     , 'src/js/model/filters/sortRelatedFields.js'

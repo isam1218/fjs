@@ -838,7 +838,49 @@ fjs.model.ClientCallLogFeedModel = function(dataManager) {
     fjs.model.FeedModel.call(this, "clientcalllog", dataManager);
 };
 fjs.model.ClientCallLogFeedModel.extend(fjs.model.FeedModel);
-/**
+
+fjs.model.ClientCallLogFeedModel.prototype.onEntryChange = function(event) {
+    var entry = this.items[event.xpid];
+    if(!entry) {
+        entry = this.items[event.xpid] = new fjs.model.CallLogEntryModel(event.entry);
+        this.order.push(entry);
+    }
+    else {
+        entry.fill(event.entry);
+    }
+    this.prepareEntry(entry);
+
+    this.fireEvent(fjs.model.FeedModel.EVENT_TYPE_PUSH, entry);
+};
+fjs.model.CallLogEntryModel = function(obj) {
+    fjs.model.EntryModel.call(this, obj);
+};
+fjs.model.CallLogEntryModel.extend(fjs.model.EntryModel);
+
+fjs.model.CallLogEntryModel.prototype.fill = function(obj, scope) {
+    scope = scope || this;
+    if(obj)
+        for(var i in obj) {
+            if(obj.hasOwnProperty(i)) {
+                var field = obj[i];
+                if(typeof(field)!='object' || field==null) {
+                    if(i!='note' || !this._blockChangeNote) {
+                        scope[i] = field;
+                    }
+                }
+                else if(Array.isArray(field)) {
+                    scope[i] = [];
+                    this.fill(field, scope[i]);
+                }
+                else  {
+                    if(!scope[i]) {
+                        scope[i] = {};
+                    }
+                    this.fill(field, scope[i]);
+                }
+            }
+        }
+};/**
  * Created by vovchuk on 04.06.2014.
  */
 namespace("fjs.model.filter");
@@ -1479,16 +1521,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         openCallLog();
     });
 
-    var findShowSaveCallLogDialog = function(_scope) {
-        _scope = _scope || $scope;
-        if(_scope.showSaveCallLogDialog) {
-            return _scope.showSaveCallLogDialog;
-        }
-        else {
-            return findShowSaveCallLogDialog(_scope.$parent);
-        }
-    };
-    
     $scope.callLogAvailable = function() {
         return true || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
     };
@@ -1585,9 +1617,6 @@ fjs.controllers.CallLogsController = function($scope, dataManager) {
     this.callLogsFeedModel.addEventListener(fjs.controllers.CommonController.COMPLETE_LISTENER, this.completeCallLogsListener);
 };
 fjs.controllers.CallLogsController.extend(fjs.controllers.CommonController);
-/**
- * 123
- */
 namespace("fjs.controllers");
 fjs.controllers.CallLogDialogController = function($scope, $element, $timeout, $filter, $sce, dataManager, sfApi) {
 
@@ -1611,15 +1640,14 @@ fjs.controllers.CallLogDialogController = function($scope, $element, $timeout, $
     };
 
     $scope.noteKeyPress = function() {
-
-        $scope._blockChangeNote = true;
+        $scope.log._blockChangeNote = true;
 
         if(_blockChangeNoteTM!=null) {
             clearTimeout(_blockChangeNoteTM);
             _blockChangeNoteTM = null;
         }
         _blockChangeNoteTM = setTimeout(function(){
-            delete $scope._blockChangeNote;
+            delete $scope.log._blockChangeNote;
             _blockChangeNoteTM = null;
         }, 1000);
     };
