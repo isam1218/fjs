@@ -151,7 +151,7 @@
     <div class="loading-image"></div>
 </div>
 <div ng-controller="CallLogsController">
-    <div ng-repeat="log in logs | CallLogSort">
+    <div ng-repeat="log in logs | CallLogSort track by log.xpid">
         <div ng-controller="CallLogDialogController" class="dialog save_call_log_dialog">
             <b style="margin-bottom: 10px; display: block;">Save Call Log confirmation </b>
             <div ng-if="getWho()">
