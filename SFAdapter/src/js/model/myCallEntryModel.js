@@ -38,7 +38,7 @@ fjs.model.MyCallEntryModel.prototype.getCallSubject = function() {
             y = date.getFullYear().toString();
         d = d.length>1 ? d : "0"+d;
         m = m.length>1 ? m : "0"+m;
-        return d+"/"+m+"/"+y;
+        return m+"/"+d+"/"+y;
     };
     var date = new Date(this.created);
     subjectParts.push(this.incoming ? "Inbound" : "Outbound");
