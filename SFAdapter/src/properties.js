@@ -6,7 +6,7 @@ fjs.fdp.CONFIG = {
     , providers: ['sharedWorker', 'simple']
     , DB: {
         name: "SFA"
-        , version: 25
+        , version: 27
         , size:5*1023*1023
         /**
          * @type {Array}

@@ -64,9 +64,6 @@ SFApi.prototype.setPhoneApi = function(isPhoneReg, onCallCallback) {
  */
 SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, duration, date, callback) {
     var status  = "Completed";
-    if(whoId == null && whatId == null) {
-        status = "Not Started";
-    }
     var args = "Subject=" + encodeURIComponent(subject)
                + "&CallType=" + callType
                + "&CallDurationInSeconds=" + duration
@@ -1050,9 +1047,6 @@ fjs.model.DataManager = function(sf) {
                     context.suspendActions=[];
                 }
             });
-            context.dataProvider.addEventListener(fjs.model.DataManager.EV_FDP_TIME, function(e) {
-                new fjs.utils.TimeSync().setTimestamp(e.data);
-            });
         }
     });
 };
@@ -1070,7 +1064,6 @@ fjs.model.DataManager.EV_TICKET = "ticket";
 fjs.model.DataManager.EV_NODE = "node";
 fjs.model.DataManager.EV_FDP_CONFIG_ERROR = "fdpConfigError";
 fjs.model.DataManager.EV_FDP_CONFIG = "fdpConfig";
-fjs.model.DataManager.EV_FDP_TIME = "fdpTime";
 
 fjs.model.DataManager.AUTH_COOKIE_NAME = "SF_Authorization";
 fjs.model.DataManager.NODE_COOKIE_NAME = "SF_Node";
