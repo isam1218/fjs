@@ -22,6 +22,7 @@ fjs.fdp.CONFIG = {
             , {name:"mycalls", key: "xpid", indexes:["source"]}
             , {name:"mycalldetails", key: "xpid", indexes:["source"]}
             , {name:"mycallsclient", key:"xpid"}
+            , {name:"clientcalllog", key:"xpid"}
             , {name:"clientsettings", key:"xpid"}]
     }
     , CLIENT: {type:'salesforce'}

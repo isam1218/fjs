@@ -1784,7 +1784,6 @@ fjs.fdp.model.ClientFeedProxyModel.prototype.sendAction = function(feedName, act
 fjs.fdp.model.ClientFeedProxyModel.prototype.onEntryDeletion = function(event) {
     if(event.feed == this.feedName) {
         delete this.items[event.xpid];
-        this.sendAction(this.clientFeedName, 'delete', {xpid:event.xpid}, true);
     }
     this.fillDeletion(event.xpid, event.feed);
 };
@@ -3836,6 +3835,8 @@ fjs.fdp.DataManager.prototype.createProxy = function(feedName) {
             return new fjs.fdp.model.MyCallsClientProxyModel(['mycalls', 'mycalldetails', 'mycallsclient'], this.sm);
         case 'clientsettings':
             return new fjs.fdp.model.ClientFeedProxyModel(['clientsettings'], this.sm);
+        case 'clientcalllog':
+            return new fjs.fdp.model.ClientFeedProxyModel(['clientcalllog'], this.sm);
         default :
             return new fjs.fdp.model.ProxyModel([feedName], this.sm);
     }
