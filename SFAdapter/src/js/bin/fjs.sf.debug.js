@@ -64,9 +64,6 @@ SFApi.prototype.setPhoneApi = function(isPhoneReg, onCallCallback) {
  */
 SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, duration, date, callback) {
     var status  = "Completed";
-    if(whoId == null && whatId == null) {
-        status = "Not Started";
-    }
     var args = "Subject=" + encodeURIComponent(subject)
                + "&CallType=" + callType
                + "&CallDurationInSeconds=" + duration
@@ -617,7 +614,7 @@ fjs.model.MyCallEntryModel.prototype.getCallSubject = function() {
             y = date.getFullYear().toString();
         d = d.length>1 ? d : "0"+d;
         m = m.length>1 ? m : "0"+m;
-        return d+"/"+m+"/"+y;
+        return m+"/"+d+"/"+y;
     };
     var date = new Date(this.created);
     subjectParts.push(this.incoming ? "Inbound" : "Outbound");
@@ -1110,6 +1107,9 @@ fjs.model.DataManager = function(sf) {
                     context.suspendActions=[];
                 }
             });
+            context.dataProvider.addEventListener(fjs.model.DataManager.EV_FDP_TIME, function(e) {
+                new fjs.utils.TimeSync().setTimestamp(e.data);
+            });
         }
     });
 };
@@ -1127,6 +1127,7 @@ fjs.model.DataManager.EV_TICKET = "ticket";
 fjs.model.DataManager.EV_NODE = "node";
 fjs.model.DataManager.EV_FDP_CONFIG_ERROR = "fdpConfigError";
 fjs.model.DataManager.EV_FDP_CONFIG = "fdpConfig";
+fjs.model.DataManager.EV_FDP_TIME = "fdpTime";
 
 fjs.model.DataManager.AUTH_COOKIE_NAME = "SF_Authorization";
 fjs.model.DataManager.NODE_COOKIE_NAME = "SF_Node";
@@ -1522,14 +1523,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     });
 
     $scope.callLogAvailable = function() {
-        return true || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
+        return $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
     };
 
     $scope.$on("$destroy", function() {
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
-        if(true || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL) {
+        if($scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL) {
             getCallLogInfo(function () {
                 dataManager.sendAction("clientcalllog", "push", {
                     "callLog":  $scope.call.mycallsclient_callLog,
