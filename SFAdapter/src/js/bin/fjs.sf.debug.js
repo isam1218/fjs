@@ -64,6 +64,9 @@ SFApi.prototype.setPhoneApi = function(isPhoneReg, onCallCallback) {
  */
 SFApi.prototype.addCallLog = function (subject, whoId, whatId, note, callType, duration, date, callback) {
     var status  = "Completed";
+    if(whoId == null && whatId == null) {
+        status = "Not Started";
+    }
     var args = "Subject=" + encodeURIComponent(subject)
                + "&CallType=" + callType
                + "&CallDurationInSeconds=" + duration
@@ -730,11 +733,7 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
             if(this.getRelatedItemType(item) == 'who') {
                 this.mycallsclient_callLog.whoId = calleeInfo.id;
 
-                if(item.object != 'Lead') {
-                    var what = this.getWhat();
-                    this.mycallsclient_callLog.whatId = what && what._id;
-                }
-                else {
+                if(item.object == 'Lead') {
                     this.mycallsclient_callLog.whatId = null;
                 }
             }
@@ -750,14 +749,6 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
         if(!who) {
             who = this.getWho();
             this.mycallsclient_callLog.whoId = who && who._id;
-            if(!what && (!who || who.object!='Lead')) {
-                what = this.getWhat();
-                this.mycallsclient_callLog.whatId = what && what._id;
-            }
-        }
-        else if(!what && who.object!='Lead') {
-            what = this.getWhat();
-            this.mycallsclient_callLog.whatId = what && what._id;
         }
     }
     if(calleeInfo) {
@@ -1354,10 +1345,10 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             if($scope.call.mycallsclient_callLog.pervWhatId) {
                 $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.pervWhatId;
             }
-            else {
-                var what = $scope.call.getWhat();
-                $scope.call.mycallsclient_callLog.whatId = what && what._id;
-            }
+            /*else {
+             var what = $scope.call.getWhat();
+             $scope.call.mycallsclient_callLog.whatId = what && what._id;
+             }*/
         }
         saveCallLogChanges()
     };
@@ -1476,7 +1467,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
-        if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length>0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE)
+        /*if($scope.call.mycallsclient_callLog && $scope.call.mycallsclient_callLog.related.length>0 && $scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE)
         {
             if($scope.call.type == fjs.controllers.CallController.QUEUE_CALL_TYPE && ($scope.call.state == fjs.controllers.CallController.RING_CALL_TYPE) && $scope.call.incoming)
             {
@@ -1499,7 +1490,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             };
             sfApiProvider.sendAction(message);
         }
-        else if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
+        else */if($scope.call.type != fjs.controllers.CallController.SYSTEM_CALL_TYPE) {
             var showSaveCallLogDialog = findShowSaveCallLogDialog();
             getCallLogInfo(function(){
                 showSaveCallLogDialog($scope.call);

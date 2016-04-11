@@ -177,11 +177,7 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
             if(this.getRelatedItemType(item) == 'who') {
                 this.mycallsclient_callLog.whoId = calleeInfo.id;
 
-                if(item.object != 'Lead') {
-                    var what = this.getWhat();
-                    this.mycallsclient_callLog.whatId = what && what._id;
-                }
-                else {
+                if(item.object == 'Lead') {
                     this.mycallsclient_callLog.whatId = null;
                 }
             }
@@ -197,14 +193,6 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
         if(!who) {
             who = this.getWho();
             this.mycallsclient_callLog.whoId = who && who._id;
-            if(!what && (!who || who.object!='Lead')) {
-                what = this.getWhat();
-                this.mycallsclient_callLog.whatId = what && what._id;
-            }
-        }
-        else if(!what && who.object!='Lead') {
-            what = this.getWhat();
-            this.mycallsclient_callLog.whatId = what && what._id;
         }
     }
     if(calleeInfo) {

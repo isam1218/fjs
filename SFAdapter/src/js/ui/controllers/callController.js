@@ -101,10 +101,6 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
             if($scope.call.mycallsclient_callLog.pervWhatId) {
                 $scope.call.mycallsclient_callLog.whatId = $scope.call.mycallsclient_callLog.pervWhatId;
             }
-            else {
-                var what = $scope.call.getWhat();
-                $scope.call.mycallsclient_callLog.whatId = what && what._id;
-            }
         }
         saveCallLogChanges()
     };

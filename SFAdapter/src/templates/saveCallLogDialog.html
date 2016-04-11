@@ -10,6 +10,7 @@
         <label>RelatedTo:</label>
         <select ng-model="dialogModel.mycallsclient_callLog.whatId" ng-change="whatChange($event)"
                 ng-options="item._id as item.Name group by item.object for item in dialogModel.mycallsclient_callLog.related | WhatFilter">
+            <option value="">None</option>
         </select>
     </div>
     <div>
