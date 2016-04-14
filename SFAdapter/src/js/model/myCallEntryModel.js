@@ -87,7 +87,6 @@ fjs.model.MyCallEntryModel.prototype.getWho = function(notLead) {
         var item = this.mycallsclient_callLog.related[i];
         if(this.getRelatedItemType(item)=='who' && (!notLead || item.object!='Lead')) return item;
     }
-    debugger;
 };
 
 fjs.model.MyCallEntryModel.prototype.getWhat = function() {
