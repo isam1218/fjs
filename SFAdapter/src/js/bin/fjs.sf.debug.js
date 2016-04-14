@@ -1539,14 +1539,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     });
 
     $scope.callLogAvailable = function() {
-        return true || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
+        return $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
     };
 
     $scope.$on("$destroy", function() {
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
-        if(true || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL) {
+        if($scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL) {
             getCallLogInfo(function () {
                 dataManager.sendAction("clientcalllog", "push", {
                     "callLog":  $scope.call.mycallsclient_callLog,
