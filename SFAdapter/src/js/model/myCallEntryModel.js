@@ -5,13 +5,9 @@ fjs.model.MyCallEntryModel = function(obj) {
 
     function getCurrentDate() {
         var d = new Date(context.created);
-        return d.getFullYear()+"-"+ (d.getMonth()+1) +"-"+d.getDate();
+        return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
     }
-    this._who = [];
-    this._what = [];
-
-    fjs.model.EntryModel.call(this, obj);
-
+    
     this.mycallsclient_callLog = {
         'date': getCurrentDate(),
         'subject': this.getCallSubject(),
@@ -24,6 +20,8 @@ fjs.model.MyCallEntryModel = function(obj) {
         'whoId':null,
         'related': []
     };
+    
+    fjs.model.EntryModel.call(this, obj);
 };
 
 
@@ -84,10 +82,12 @@ fjs.model.MyCallEntryModel.prototype.isRing = function() {
 };
 
 fjs.model.MyCallEntryModel.prototype.getWho = function(notLead) {
+
     for(var i=0;i<this.mycallsclient_callLog.related.length; i++) {
         var item = this.mycallsclient_callLog.related[i];
         if(this.getRelatedItemType(item)=='who' && (!notLead || item.object!='Lead')) return item;
     }
+    debugger;
 };
 
 fjs.model.MyCallEntryModel.prototype.getWhat = function() {
@@ -189,7 +189,6 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
     }
     else {
         var who = this.findCallLogTargetById(this.mycallsclient_callLog.whoId);
-        var what = this.findCallLogTargetById(this.mycallsclient_callLog.whatId);
         if(!who) {
             who = this.getWho();
             this.mycallsclient_callLog.whoId = who && who._id;

@@ -581,13 +581,9 @@ fjs.model.MyCallEntryModel = function(obj) {
 
     function getCurrentDate() {
         var d = new Date(context.created);
-        return d.getFullYear()+"-"+ (d.getMonth()+1) +"-"+d.getDate();
+        return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
     }
-    this._who = [];
-    this._what = [];
-
-    fjs.model.EntryModel.call(this, obj);
-
+    
     this.mycallsclient_callLog = {
         'date': getCurrentDate(),
         'subject': this.getCallSubject(),
@@ -600,6 +596,8 @@ fjs.model.MyCallEntryModel = function(obj) {
         'whoId':null,
         'related': []
     };
+    
+    fjs.model.EntryModel.call(this, obj);
 };
 
 
@@ -660,10 +658,12 @@ fjs.model.MyCallEntryModel.prototype.isRing = function() {
 };
 
 fjs.model.MyCallEntryModel.prototype.getWho = function(notLead) {
+
     for(var i=0;i<this.mycallsclient_callLog.related.length; i++) {
         var item = this.mycallsclient_callLog.related[i];
         if(this.getRelatedItemType(item)=='who' && (!notLead || item.object!='Lead')) return item;
     }
+    debugger;
 };
 
 fjs.model.MyCallEntryModel.prototype.getWhat = function() {
@@ -765,7 +765,6 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
     }
     else {
         var who = this.findCallLogTargetById(this.mycallsclient_callLog.whoId);
-        var what = this.findCallLogTargetById(this.mycallsclient_callLog.whatId);
         if(!who) {
             who = this.getWho();
             this.mycallsclient_callLog.whoId = who && who._id;
@@ -877,6 +876,23 @@ fjs.model.CallLogEntryModel.prototype.fill = function(obj, scope) {
                 }
             }
         }
+};
+
+fjs.model.CallLogEntryModel.prototype.getCallSubject = function() {
+    var subjectParts = [];
+    var formatDate = function(date) {
+        var d = date.getDate().toString(),
+            m = (date.getMonth()+1).toString(),
+            y = date.getFullYear().toString();
+        d = d.length>1 ? d : "0"+d;
+        m = m.length>1 ? m : "0"+m;
+        return m+"/"+d+"/"+y;
+    };
+    var date = new Date(this.created);
+    subjectParts.push(this.incoming ? "Inbound" : "Outbound");
+    subjectParts.push("Call");
+    subjectParts.push(formatDate(date));
+    return subjectParts.join(" ");
 };/**
  * Created by vovchuk on 04.06.2014.
  */
@@ -1523,14 +1539,14 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     });
 
     $scope.callLogAvailable = function() {
-        return $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
+        return true || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
     };
 
     $scope.$on("$destroy", function() {
         if (durationTimer) {
             $timeout.cancel(durationTimer);
         }
-        if($scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL) {
+        if(true || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL) {
             getCallLogInfo(function () {
                 dataManager.sendAction("clientcalllog", "push", {
                     "callLog":  $scope.call.mycallsclient_callLog,
@@ -1712,7 +1728,7 @@ fjs.controllers.CallLogDialogController = function($scope, $element, $timeout, $
             var message = {};
             message.action = "addCallLog";
             message.data = {};
-            message.data.subject = $scope.log.callLog.subject;
+            message.data.subject = $scope.log.getCallSubject();
             message.data.whoId = $scope.log.callLog.whoId;
             message.data.whatId = $scope.log.callLog.whatId;
             message.data.note = $scope.log.callLog.note;
