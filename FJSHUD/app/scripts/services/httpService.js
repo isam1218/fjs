@@ -57,11 +57,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 							console.time('render');
 							synced = true;
 						}
+						else {
+							// give it a short expiration date
+							document.cookie = "tab=true; path=/; expires=" + new Date(new Date().getTime() + 120000).toGMTString();
+						}
 						
 						if ($rootScope.networkError)
 							$rootScope.$broadcast('network_issue', null);
-						
-						document.cookie = 'tab=true; path=/';
 		            }
 		            break;
 		        case "feed_request":
@@ -256,9 +258,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		location.href = authURL;
 	};
 	
-	this.setUnload = function() {
-		document.cookie = 'tab=true; path=/';
-		
+	this.setUnload = function() {		
 		// stupid warning
 		window.onbeforeunload = function() {			
 			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
