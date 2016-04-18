@@ -120,6 +120,11 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 	$http.get('views/popups/NetworkErrorsOverlay.html', { cache: $templateCache });*/
 	
     $rootScope.$on("$locationChangeStart", function(e, next, current) {
+       // don't redirect to self
+      if ($location.path().indexOf($rootScope.myPid) != -1){
+        e.preventDefault();
+        return;
+      }
     	SettingsService.getPermissions().then(function(data){ 
     	  $rootScope.showCallCenter = data.showCallCenter; 
     	  QueueService.getQueues().then(function(data) {
@@ -132,11 +137,6 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
     		  if(data.mine.length == 0)
     			  $rootScope.in_queue = false;
     		  
-		       // don't redirect to self
-		      if ($location.path().indexOf($rootScope.myPid) != -1){
-		        e.preventDefault();
-		        return;
-		      }
 		
 		      var finalSelected, typeFlag, tmpSelected, tmpToggleObject, endPath, finalContactId, finalGroupId, finalQueueId, finalConfId;
 		
