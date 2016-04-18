@@ -46,8 +46,8 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 			}
 
 			scope.showCallOverlay = function(contact){
-						
-				if (contact.call.contactId == scope.meModel.my_pid)
+				
+				if (contact.call.contactId == scope.meModel.my_pid || contact.xpid == scope.meModel.my_pid)
 					return;
 
 				switch(contact.call.type){
@@ -58,6 +58,7 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 						}
 						break;
 					default:
+						event.preventDefault();
 						scope.showOverlay(true, 'CallStatusOverlay', contact);
 			
 				}
