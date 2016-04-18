@@ -20,6 +20,7 @@ hudweb.service('SettingsService', ['$q', '$location', '$rootScope', 'HttpService
 		}
 	}else{
 		$rootScope.verbage = fjs.i18n.us;
+		$rootScope.fon_lang_code = 'us';
 	}
 	
 	service.getSettings = function() {
