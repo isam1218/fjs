@@ -254,7 +254,7 @@ module.exports = function(grunt) {
         src: [
         'app/languageMap.js',
         'app/scripts/app.js',
-        'app/jstz-1.0.4.min.js',
+        'app/jstz.min.js',
         'app/scripts/ui-bootstrap-tpls.js',
         'app/scripts/filters/**/*.js',
         'app/scripts/directives/**/*.js',
@@ -365,7 +365,7 @@ module.exports = function(grunt) {
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
-              'app/jstz-1.0.4.min.js',
+              'app/jstz.min.js',
               'app/scripts/ui-bootstrap-tpls.js',
               'app/scripts/filters/**/*.js',
               'app/scripts/directives/**/*.js',
@@ -393,7 +393,7 @@ module.exports = function(grunt) {
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
-              'app/jstz-1.0.4.min.js',
+              'app/jstz.min.js',
               'app/scripts/ui-bootstrap-tpls.js',
               'app/scripts/filters/**/*.js',
               'app/scripts/directives/**/*.js',
