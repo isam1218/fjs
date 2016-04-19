@@ -8,7 +8,7 @@
         <label>RelatedTo</label>
         <select ng-model="call.mycallsclient_callLog.whatId" ng-options="item._id as (item.object + ': ' + item.Name) for item in call.mycallsclient_callLog.what | orderBy:'object + Name'"
                 ng-change="whatChange()">
-            <option value="">None</option>
+            <option value="">Select</option>
         </select>
     </div>
     <label>Comments</label><textarea maxlength="255" ng-model="call.mycallsclient_callLog.note" ng-change="noteChange()"></textarea>
