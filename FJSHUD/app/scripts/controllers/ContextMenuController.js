@@ -26,10 +26,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 	
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
-		$scope.profile = res.obj.fullProfile ? res.obj.fullProfile : res.obj;		
-		$scope.profile.name = $('<div/>').html($scope.profile.name).text();
-		$scope.profile.displayName = $('<div/>').html($scope.profile.displayName).text();
-        
+		$scope.profile = res.obj.fullProfile ? res.obj.fullProfile : res.obj;
 		$scope.original = res.obj;
 		$scope.context = res.context;
 		$scope.widget = res.widget;

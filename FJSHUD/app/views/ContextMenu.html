@@ -26,7 +26,7 @@
 	</div>
 	
 	<div ng-switch-when="false">
-		<strong>{{ profile.displayName || profile.name || 'private' }}</strong>
+		<strong ng-bind-html="profile.displayName || profile.name || 'private'"></strong>
 	</div>
 </div>
 
