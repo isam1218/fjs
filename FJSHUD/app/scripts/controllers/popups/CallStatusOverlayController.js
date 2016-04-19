@@ -242,26 +242,42 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	// this isn't the isXferFromEnabled personal-permission; it's the contact-based permission which determines if I can transfer another call (call I'm not a part of) from 1 party to another...
 	$scope.determineTransferFrom = function(originalCall, bottom){
 	  var contact = contactService.getContact(originalCall.xpid);
-	  if (contact && contact.permissions){
-	    // user might not have have the view-call-details-permission (if no perm -> then the bottom caller is always private) --> can't transfer bottom caller's call; otherwise if have the permission --> default to transfer permissions check
-		  // external vs private --> w/ requisite perms, you can transfer an external caller. But cannot transfer if private/don't have view-call-details perm
-	    if (bottom){
-	    	// if the bottom caller is private (remember private is different from bottom caller being external, cuz you can transfer an external) --> can't transfer
-		    if (originalCall.call && originalCall.call.displayName == "Private" && !originalCall.call.fullProfile)
-		    	return false;
-		    else
-		    	return settingsService.isEnabled(contact.permissions, 3);
-	    }
-		  else{
-		  	// top contact permission...
-		  	// if other contact (the bottom contact) is external, cannot transfer top internal contact (verified on dev4 and w/ Jong on 1/18/16)
-		  	if (!contact.call.fullProfile || !contact.call.fullProfile.primaryExtension)
-		  		return false;
-		  	else
-		  		return settingsService.isEnabled(contact.permissions, 3);
-		  }
-	  } else
-	    return true;
+	  //see if the user is permitted to transfer from
+      var isPermitted = settingsService.isEnabled(contact.permissions, 3);
+	  //check that contact object exists
+	  if(typeof contact != 'undefined')
+	  {	  //check that contact's permissions exist
+		if (typeof contact.permissions != 'undefined')
+		{//if contact has all permissions or is permitted to transfer from
+		 //check for other conditions to see if to show the transfer button or not	
+		 if(contact.permissions == 0 || isPermitted)
+		 {	 
+		    // user might not have have the view-call-details-permission (if no perm -> then the bottom caller is always private) --> can't transfer bottom caller's call; otherwise if have the permission --> default to transfer permissions check
+			  // external vs private --> w/ requisite perms, you can transfer an external caller. But cannot transfer if private/don't have view-call-details perm
+		    if (bottom){
+		       // if the bottom caller is private (remember private is different from bottom caller being external, cuz you can transfer an external) --> can't transfer
+			   if (originalCall.call && originalCall.call.displayName == "Private" && !originalCall.call.fullProfile)
+			    	return false;
+			   else
+			    	return true;//settingsService.isEnabled(contact.permissions, 3);
+		    }
+			  else{
+			  	// top contact permission...
+			  	// if other contact (the bottom contact) is external, cannot transfer top internal contact (verified on dev4 and w/ Jong on 1/18/16)
+			  	if (!contact.call.fullProfile || !contact.call.fullProfile.primaryExtension)
+			  		return false;
+			  	else
+			  		return true;//settingsService.isEnabled(contact.permissions, 3);
+			  }
+		 }
+		 else//if contact does not have transfer or all permissions
+			 return false;
+		}
+		else//if no contact permissions object
+			return false;
+	  } 
+	  else//if no contact object
+		  return false;
 	};
 
 	$scope.canTransferToPrimaryExtension = function(){
