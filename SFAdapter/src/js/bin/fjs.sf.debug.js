@@ -577,19 +577,18 @@ fjs.model.MyCallsFeedModel.NAME = "mycallsclient";
 namespace("fjs.model");
 
 fjs.model.MyCallEntryModel = function(obj) {
-    var context = this;
 
     function getCurrentDate() {
-        var d = new Date(context.created);
+        var d = new Date(obj.created);
         return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
     }
     
     this.mycallsclient_callLog = {
         'date': getCurrentDate(),
-        'subject': this.getCallSubject(),
-        'xpid':this.xpid,
+        'subject': fjs.model.MyCallEntryModel.prototype.getCallSubject.call(obj),
+        'xpid':obj.xpid,
         'note': '',
-        'callType': (this.incoming ? "inbound" : "outbound"),
+        'callType': (obj.incoming ? "inbound" : "outbound"),
         'isOpened':true,
         'tranferOpened':false,
         'whatId':null,
@@ -663,7 +662,6 @@ fjs.model.MyCallEntryModel.prototype.getWho = function(notLead) {
         var item = this.mycallsclient_callLog.related[i];
         if(this.getRelatedItemType(item)=='who' && (!notLead || item.object!='Lead')) return item;
     }
-    debugger;
 };
 
 fjs.model.MyCallEntryModel.prototype.getWhat = function() {
