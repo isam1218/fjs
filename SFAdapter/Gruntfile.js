@@ -117,7 +117,7 @@ module.exports = function(grunt) {
                     , 'src/js/ui/controllers/warningsController.js'
                     , 'src/js/ui/controllers/dialpadController.js'
                     , 'src/js/ui/module.js'
-                    , 'build_nubmer'
+                    , 'src/build_nubmer'
                 ]
                 , dest: 'bin/SFAdapter-'+getBuildNumber()+'.zip'
             }
