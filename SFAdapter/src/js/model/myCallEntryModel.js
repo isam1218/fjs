@@ -182,7 +182,7 @@ fjs.model.MyCallEntryModel.prototype.fillCallLogData = function(data, clientSett
             else {
                 var who = this.getWho(true);
                 this.mycallsclient_callLog.whoId =  who && who._id;
-                this.mycallsclient_callLog.whatId = calleeInfo.id;
+                //this.mycallsclient_callLog.whatId = calleeInfo.id;
             }
     }
     else {
