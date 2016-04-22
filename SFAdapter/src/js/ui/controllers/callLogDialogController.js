@@ -111,7 +111,7 @@ fjs.controllers.CallLogDialogController = function($scope, $element, $timeout, $
     };
     $scope.cancelComment = function() {
      if($scope.log.callLog.note.length > 0){
-        if(confirm("All entered information will be lost. Do you want to continue?")) {
+        if(confirm("Are you sure you want to cancel? If you click okay, all entered comments will be lost.")) {
             if ($scope.log.callLog) {
                 $scope.log.callLog.note = '';
             }
