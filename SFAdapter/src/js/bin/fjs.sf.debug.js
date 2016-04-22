@@ -1721,7 +1721,7 @@ fjs.controllers.CallLogDialogController = function($scope, $element, $timeout, $
         saveCallLogChanges();
     };
 
-    $scope.saveCallLog = function(){
+    $scope.saveCallLog= function(){
         if($scope.log.callLog) {
             var message = {};
             message.action = "addCallLog";
@@ -1742,6 +1742,14 @@ fjs.controllers.CallLogDialogController = function($scope, $element, $timeout, $
     };
     $scope.closeDialog = function() {
         dataManager.sendAction("clientcalllog", "delete", {"callLog":  $scope.log.callLog, "xpid": $scope.log.xpid});
+    };
+    $scope.cancelComment = function() {
+        if(confirm("All entered information will be lost. Do you want to continue?")) {
+            if ($scope.log.callLog) {
+                $scope.log.callLog.note = '';
+            }
+            $scope.saveCallLog();
+        }
     };
 };
 
