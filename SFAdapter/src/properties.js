@@ -1,7 +1,7 @@
 namespace("fjs.fdp");
 fjs.fdp.CONFIG = {
     SERVER: {
-       serverURL: "https://huc-qa.fonality.com:8080"
+      serverURL: {{ server_url }}
     }
     , providers: ['sharedWorker', 'simple']
     , DB: {
