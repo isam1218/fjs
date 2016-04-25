@@ -110,12 +110,17 @@ fjs.controllers.CallLogDialogController = function($scope, $element, $timeout, $
         dataManager.sendAction("clientcalllog", "delete", {"callLog":  $scope.log.callLog, "xpid": $scope.log.xpid});
     };
     $scope.cancelComment = function() {
+     if($scope.log.callLog.note.length > 0){
         if(confirm("Are you sure you want to cancel? If you click okay, all entered comments will be lost.")) {
             if ($scope.log.callLog) {
                 $scope.log.callLog.note = '';
             }
             $scope.saveCallLog();
         }
+     }
+     else{
+        $scope.saveCallLog();
+     }
     };
 };
 
