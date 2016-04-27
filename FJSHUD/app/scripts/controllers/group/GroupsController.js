@@ -31,8 +31,8 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 	// filter groups down
 	$scope.customFilter = function(type) {
 		return function(group) {
-			// remove mine
-			if (group != $scope.mine && $scope.favoriteID != group.xpid) {
+			// exclude empty groups and mine/favorites
+			if (group != $scope.mine && $scope.favoriteID != group.xpid && group.members.length > 0) {
 				switch (type) {
 					case 'all':
 						return (group.type == 0);
@@ -42,7 +42,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
 						break;
 					case 'shared':
 						// find groups i don't own but that i belong to
-						if (group.ownerId != $rootScope.myPid && group.members) {
+						if (group.ownerId != $rootScope.myPid) {
 							for (var i = 0, iLen = group.members.length; i < iLen; i++) {
 								if (group.members[i].contactId == $rootScope.myPid)
 									return true;
