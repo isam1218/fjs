@@ -1537,7 +1537,7 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
     });
 
     $scope.callLogAvailable = function() {
-        return $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
+        return $scope.call.phone === '' || $scope.call.type == fjs.controllers.CallController.EXTERNAL_CALL;
     };
 
     $scope.$on("$destroy", function() {
@@ -1553,6 +1553,15 @@ fjs.controllers.CallController = function($scope, $element, $timeout, $filter, $
                     "ended":Date.now(),
                     "xpid": $scope.call.xpid
                 });
+            });
+        }
+        else if($scope.call.phone === '') {
+            dataManager.sendAction("clientcalllog", "push", {
+                "callLog":  $scope.call.mycallsclient_callLog,
+                "incoming":$scope.call.incoming,
+                "created":$scope.call.created,
+                "ended":Date.now(),
+                "xpid": $scope.call.xpid
             });
         }
         context = null;
@@ -1744,12 +1753,17 @@ fjs.controllers.CallLogDialogController = function($scope, $element, $timeout, $
         dataManager.sendAction("clientcalllog", "delete", {"callLog":  $scope.log.callLog, "xpid": $scope.log.xpid});
     };
     $scope.cancelComment = function() {
-        if(confirm("All entered information will be lost. Do you want to continue?")) {
+     if($scope.log.callLog.note.length > 0){
+        if(confirm("Are you sure you want to cancel? If you click okay, all entered comments will be lost.")) {
             if ($scope.log.callLog) {
                 $scope.log.callLog.note = '';
             }
             $scope.saveCallLog();
         }
+     }
+     else{
+        $scope.saveCallLog();
+     }
     };
 };
 
