@@ -118,6 +118,10 @@ module.exports = function(grunt) {
                     , 'src/js/ui/controllers/dialpadController.js'
                     , 'src/js/ui/module.js'
                     , 'src/build_nubmer'
+                    , 'src/properties.huc_qa'
+                    , 'src/properties.dev4_fon9'
+                    , 'src/properties.huc-dev'
+                    , 'src/properties.prod'
                 ]
                 , dest: 'bin/SFAdapter-'+getBuildNumber()+'.zip'
             }
