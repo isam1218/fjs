@@ -1,9 +1,9 @@
-//@supports (-moz-appearance:meterbar) {  
+//@supports (-moz-appearance:meterbar) {
      //input[type="search"]{float: left;}
-     
+
      .SearchBox {
         padding: .5em .5em .5em 2.3em !important;
-     } 
+     }
      #homeContainer{
   border: 1px solid none;
   height:79%;
@@ -21,72 +21,72 @@
     margin: 16px 0px 0px;
     padding: 15px 10px 13px 20px;
 }
-   
+
 .CallLog{
    .ListLineContent.Header{
     .ListLineContentCell{
       max-width: none !important;
       &:first-child{
          width: 30px;
-      }   
-                    
+      }
+
       .DirectionArrow{
-        left: 8px !important; 
+        left: 8px !important;
         position: relative !important;
       }
       &.Down{
         .DirectionArrow{top: 4px;}
       }
-                    
+
       @media screen and (-ms-high-contrast: active),
       (-ms-high-contrast: none) {
         .DirectionArrow{margin-left: 0;}
-      }                   
-                  
+      }
+
       &.Name{width: 150px;}
-      &.Topic{width: 130px;}   
+      &.Topic{width: 130px;}
       &.Phone{width: 74px;}
-      &.Duration{width: 70px; margin-left: 10px;} 
-      &.Meeting_Id{width:70px; margin-left: 160px;}     
+      &.Duration{width: 70px; margin-left: 10px;}
+      &.Meeting_Id{width:70px; margin-left: 160px;}
       &.StartedAt{width: 70px;}
       &.videoStartedAt{width: 110px;}
       &.CallType{width: 10%;}
       &.Start_time{width: 20%;margin-left: 20px;}
 
-    }                                               
+    }
   }
-}  
-     
+}
+
      img.x{
-           width: 7px; 
-           height: 7px; 
-           border: 0px none; 
-           position: absolute; 
-           margin-left: -15px; 
-           margin-top: -3px;   
-           cursor: pointer;   
+           width: 7px;
+           height: 7px;
+           border: 0px none;
+           position: absolute;
+           margin-left: -15px;
+           margin-top: -3px;
+           cursor: pointer;
        z-index: 100;
      }
 
      .Gadget {
     border-radius: 5px;
     overflow: hidden;
-   }   
-        
+   }
+
      .TopBarMeStatus{
         .Logout {
           padding: 1px 14px 3px 13px !important;
-          
+
           .icon {
              top: 0 !important;
           }
-        }  
+        }
         .XButton{
            span {
             top: .05em !important;
           }
         }
-     }     
+     }
     .Widget.Queues{
         .Block{
             .Avatar {
@@ -95,36 +95,36 @@
             }
             .Title {
                 width: 80px !important;
-                flex: none !important;                
+                flex: none !important;
             }
        }
-    }      
+    }
     .WidgetMe{
-    
-     .WidgetHeader{        
+
+     .WidgetHeader{
         & > div{
             display: inline-block;
         }
         .WidgetHeaderTitle{
             height: 2.4em !important;
-            line-height: 2.4em !important;   
-            margin: 0 !important;              
-        }        
-     }   
-     
-     .MeInfoBlock {width: 79% !important;}
-    }     
+            line-height: 2.4em !important;
+            margin: 0 !important;
+        }
+     }
 
-    .WidgetBody{        
-        
+     .MeInfoBlock {width: 79% !important;}
+    }
+
+    .WidgetBody{
+
          .SearchInputBox{
             width: 30% !important;
             float: left;
          }
          .SearchInputBoxInputHolder{
-             width: 78% !important;         
-         }    
-         
+             width: 78% !important;
+         }
+
          div.NewCall{
             .XButton{
                 padding-top: 5px !important;
@@ -133,28 +133,28 @@
                 }
             }
          }
-         
+
          .call-block{
-            .RecentCallSection .RecentCallLogs{height: 84%;} 
-            
+            .RecentCallSection .RecentCallLogs{height: 84%;}
+
             .LeftSide{
                 width: 46% !important;
             }
             .RightSide{
                 width: 54% !important;
-            }            
-            
-         }         
-                           
+            }
+
+         }
+
          .ToolBar{
-         
-             input[type=search]{           
-                width: 30%;                                       
+
+             input[type=search]{
+                width: 30%;
              }
-             &.fj-stream{ 
+             &.fj-stream{
                  .XButton{
-                    float: right !important;                                         
-                 } 
+                    float: right !important;
+                 }
                  select.XButton, select.XButtonDropDown{
                     height: 2.3em !important;
                     width: 22% !important;
@@ -170,29 +170,29 @@
                     padding-bottom: 3px !important;
                 }
              }
-             
-            .SearchInputBox{       
+
+            .SearchInputBox{
                 width: 30% !important;
                 float: left;
-            
+
                 .SearchInputBoxInputHolder{
-                    width: 82% !important;                    
+                    width: 82% !important;
                     img.x{
                         top: 10px !important;
                     }
                 }
             }
-            
+
             &.Queues{
-            
+
                 .XButton.XSortButton{
                     margin-top: 0px !important;
                 }
-                
-                input[type="search"] {                   
+
+                input[type="search"] {
                     height: 26px;
                 }
-            }        
+            }
          }
 
           .GroupRow{
@@ -205,38 +205,38 @@
             }
           }
 
-         
-            .call-block{                                               
-                         
-              .CurrentCall{    
+
+            .call-block{
+
+              .CurrentCall{
                 height: 148px;
-                            
+
                 .LeftSide .Dialog-settings-row{
                     margin: 1px !important;
                     height: 30px !important;
-                } 
-                                             
+                }
+
                 .RightSide .row_buttons{
                     min-height: 35px !important;
                     width: auto;
                     float: right;
-                    
+
                     .CurrentCallBtnLong{
                         width: 156px !important;
                         margin: 0 4px 0 0;
                     }
                 }
-              }                                                      
-            } 
-            
-            .Preferences-Holder{                
-                .SettingsPanel.DialogContentMainBlock_List {    
-                  height: 100%;             
+              }
+            }
+
+            .Preferences-Holder{
+                .SettingsPanel.DialogContentMainBlock_List {
+                  height: 100%;
                   overflow: hidden;
-                   
-                    & > div {                   
-                          padding: 0 !important;      
-                          /*height: auto !important;    */       
+
+                    & > div {
+                          padding: 0 !important;
+                          /*height: auto !important;    */
                     }
                 }
              }
@@ -245,74 +245,74 @@
        height: 100% !important;
        width: 82%  !important;
        right: 0px  !important;
-       top: 0px !important;                
+       top: 0px !important;
     }
     .Conference{
-        
-        .ToolBar{        
-         
-         .XButton{          
+
+        .ToolBar{
+
+         .XButton{
           padding: 6px 5px;
-         } 
-         .SearchInputBox{
-           width: 30% !important; 
-           float: left;      
          }
-         
+         .SearchInputBox{
+           width: 30% !important;
+           float: left;
+         }
+
          .SearchInputBoxInputHolder{
            width: 84% !important;
-           
+
            input[type=search]{
               width: 92% !important;
               font-size: 0.688em !important;
            }
-         }  
-       }     
-    }        
+         }
+       }
+    }
     .Conversation{
-    
-      .ToolBar{        
-         
-         img.x{top: 10px; right: 12px;}         
-         
+
+      .ToolBar{
+
+         img.x{top: 10px; right: 12px;}
+
          select.XButton, select.XButtonDropDown{
            width: 32%;
            height: 2em;
            padding-top: 3px !important;
          }
-         
-         input[type=search].SearchBox{           
+
+         input[type=search].SearchBox{
             width: 30% !important;
          }
          input.chat[type=search]{height: 100% !important;}
-         
+
          .XButton.XSortButton{
             margin-top: 0 !important;
-         }               
-        
+         }
+
         }
-     } 
-          
+     }
+
      .ToolBar.chatTop{
           .XButton {
                height: 2.2em !important;
           }
-              
+
           .ChatSearch{
             width: 60% !important;
             top: 0 !important!;
             height: 28px !important;
-            
+
             .SearchIcon{float: left;}
-            
+
             .Arrows{
-                float: right; 
+                float: right;
                 width: 24%;
                 position: relative;
                 clear: none;
                 top: -26px;
              }
-      
+
             input[type=search].SearchBox{
                 height: 100% !important;
                 margin-top: 0 !important;
@@ -320,15 +320,15 @@
                 width: 62% !important;
                 float: left;
             }
-          }         
+          }
          }
-    
+
   /******* notifications **********/
   .LeftBar
   {
    /*
    .Notifications
-   {        
+   {
         .TitleBar .XButton,
         .NotificationDivider > div .XButton
         {
@@ -340,79 +340,79 @@
        img{
          margin: -1px !important;
        }
-      } 
+      }
     }
   }
-  
+
   .LeftBarNotificationSection{
     background-color: transparent;
   }
-  
+
   .Widget{
     .ToolBar{
-	   .selectWrapper{	
-	   	&:hover{  
-	   	  select{          
-            background: none !important;            
-          }  
-        } 
+	   .selectWrapper{
+	   	&:hover{
+	   	  select{
+            background: none !important;
+          }
+        }
 	   }
-    } 
-    
+    }
+
     &#WidgetSearch{
       .WidgetBody .SearchPanel{
             input.SearchBox{
                 padding-top: 1px !important;
-                padding-bottom: 1px !important;            
+                padding-bottom: 1px !important;
             }
             input.XButton{
                 line-height: 0.5;
             }
         }
-    }   
-  } 
+    }
+  }
   .WidgetTabBar{ clear: both;}
-  .Messages{        
-          
-        &:first-child{         
+  .Messages{
+
+        &:first-child{
             clear: both;
         }
         &:not(:first-child) {
             margin-top: 0;
-            clear: both;          
+            clear: both;
         }
   }
-  
+
   .NotificationHeader{
     position: relative;
     z-index: 100;
     top: 0;
-    height: auto !important; 
+    height: auto !important;
   }
   .NotificationSection {
     float: left;
     top: -10px;
     width: 100%;
     position: relative;
-    margin-top: 0px;  
-    height: 15px;  
+    margin-top: 0px;
+    height: 15px;
     padding-bottom: 10px !important;
     margin-bottom: -10px;
-    
+
     &.last{
       height: auto;
-      
+
       &.alert{
         margin-top: 15px;
       }
     }
-    
+
      &.firstsection{
-        top: 0px;  
-        padding-top: 3px;      
+        top: 0px;
+        padding-top: 3px;
         margin-bottom: 0px;
      }
-     
+
      &:not(.firstsection){
        top: -10px;
        margin-bottom: -10px;
@@ -420,47 +420,47 @@
 
      .CallAvatar{
       float:  left;
-     }    
+     }
   }
-  
+
   .LeftBarNotificationMessageSection{
     float: left;
     padding-left: 0px;
     width: 82% !important;
     clear: none;
-    
+
     .NotificationDisplayName {
         padding-left: 5px;
         padding-bottom: 25px;
         height: 20px !important;
-        
+
         span{
           width: auto !important;
           &.truncate{
             max-width: 55% !important;
           }
-        }       
+        }
     }
-    
+
     .NotificationType {
         position: relative;
         left: 5px;
         top: -5px;
         margin-bottom: -10px;
     }
-    
+
     .NotificationMessage {
         padding-left: 5px;
     }
-    
+
   }
   .Overlay {
-    &.notifications{ 
+    &.notifications{
       .LeftBarNotificationAvatarSection{
             max-width: 12%;
       }
-        
-      .LeftBarNotificationMessageSection{         
+
+      .LeftBarNotificationMessageSection{
          max-width: 86%;
          padding-left: 10px;
 
@@ -476,22 +476,22 @@
           max-height: inherit !important;
         }
       }
-      
+
     }
   }
-  .CallStatusText{   
-    &.ringing{     
+  .CallStatusText{
+    &.ringing{
           max-width: 40% !important;
     }
   }
   .XIcon24-Record-Off{
-    right: 12px !important;   
-  }  
-  .XIcon24-Record-On{    
-    right: 12px !important;    
+    right: 12px !important;
+  }
+  .XIcon24-Record-On{
+    right: 12px !important;
     top: 1px !important;
-  }        
-   
+  }
+
    .ZoomWidgetSection{
     .XButtonWide.XButtonBlue.first{
         margin-top: 5px;
@@ -501,11 +501,11 @@
             margin-bottom: 5px;
         }
     }
-   } 
-   
+   }
+
    .vminfo:not(.voicemails):not(.recording){
     .vmalternate{
-       .vmcallbtn{margin-top: -15px;}        
+       .vmcallbtn{margin-top: -15px;}
     }
    }
    .CallLog {
@@ -513,45 +513,45 @@
         .ListLineContentCell{
             &:first-child{
                  width: 28px;
-            } 
+            }
             &.Name{width: 130px !important;}
             &.Phone{width: 75px !important;}
-            &.Duration{width: 50px  !important;}
-            &.StartedAt{width: 95px !important; margin-left: 5px;}
-            &.CallType{width: 6%  !important;}  
+            &.Duration{width: 65px  !important;}
+            &.StartedAt{width: 70px !important; margin-left: 5px;}
+            &.CallType{width: 40px  !important;}
         }
-    } 
+    }
 
-    .ListRow { 
+    .ListRow {
          & > div{
              &:first-child{
                 max-width: 42px;
-             } 
+             }
              &.Name{
                 max-width: 130px;
-             }      
-             &.Phone {        
+             }
+             &.Phone {
                 flex: 2.75 1 0;
                 max-width: 100px;
              }
              &.Duration{
                 max-width: 48px;
-             } 
+             }
              &.Date{
                 max-width: 125px;
              }
         }
     }
-          
-   }      
 
-.WidgetMe { 
+   }
+
+.WidgetMe {
     .queueList{
         .ListRow{
-            .SettingsListLineContent .QueueSetting{ 
-                &:first-child{                    
+            .SettingsListLineContent .QueueSetting{
+                &:first-child{
                     width: 33.1%;
-                  }                  
+                  }
                   &:nth-child(5){
                     width: 16.5%;
                   }
@@ -561,17 +561,17 @@
 }
 .voicemail.vmails{
 	.vmsection{
-	
+
 	    .Avatar.CallAvatar{
 	      &.CallAvatar_Office,
 	      &.CallAvatar_External,
-	      &.CallAvatar_Queue{		   
+	      &.CallAvatar_Queue{
 		   margin-top: 4px !important;
-		  } 
+		  }
 		}
 		.vminfo{
 			line-height: 38px !important;
-			
+
 			.displayName{
 				margin-top: -4px !important;
 			}
@@ -579,7 +579,7 @@
 			    font-size: 11px;
 			    line-height: 12px;
 			    bottom: -2px;
-			    			    
+
 				.vmduration{
 					margin-bottom: -8px;
 					padding: 2px;
@@ -587,27 +587,27 @@
 					height: 14px;
 					line-height: 10px;
 					padding: 2px 2px 1px 2px;
-				}				
+				}
 			}
 		}
-		
+
 		&.recording{
 			.vminfo{
 			    line-height: inherit !important;
-			   
-				.footnote {					
+
+				.footnote {
     				.vmduration {
     					margin-bottom: -18px;
     					vertical-align: bottom;
     				}
-    				
+
     				.no_transcription,.transcription {
-    					margin-bottom: -18px;    					
+    					margin-bottom: -18px;
     				}
-    				
+
 				}
 			}
 		}
 	}
-}	
+}
 .WidgetHeaderTitle .ChatStatus{max-width: 155px !important;}
