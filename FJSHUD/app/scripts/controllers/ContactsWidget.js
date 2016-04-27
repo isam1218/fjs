@@ -70,7 +70,6 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
       }
   };
 	$scope.goToContact = function(xpid){
-		console.log("XPID",xpid);
 		$location.path("/contact/"+xpid);
 	};
     $scope.sort = function(field) {
