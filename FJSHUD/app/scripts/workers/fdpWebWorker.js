@@ -4,6 +4,9 @@ importScripts("fdpRequest.js?v=" + fjs.CONFIG.BUILD_NUMBER);
 var request = new httpRequest();
 var header = {};
 
+var auth;
+var node;
+
 var synced = false;
 var sync_delay = fjs.CONFIG.SYNC_DELAY;
 var sync_failures = 0;
@@ -13,19 +16,25 @@ var feeds = fjs.CONFIG.FEEDS;
 var timestamp_flag = false;
 var temp_feed;
 
+var socket;
+var socketConnected = false;
+
 self.addEventListener('message',function(event){
 	if(event.data.action){
 		switch(event.data.action){
 			case 'authorized':
 				// server url was updated
-				if(event.data.data.serverURL && event.data.data.serverURL != undefined){
-					fjs.CONFIG.SERVER.serverURL = event.data.data.serverURL;
+				if(event.data.serverURL && event.data.serverURL != undefined){
+					fjs.CONFIG.SERVER.serverURL = event.data.serverURL;
 				}
+				
+				auth = event.data.auth;
+				node = event.data.node;
 				
 				// ajax request headers
 				header = {
-					"Authorization": event.data.data.auth,
-					"node": event.data.data.node,
+					"Authorization": "auth=" + auth,
+					"node": node
 				};
 				
 				self.postMessage({"action":"init"});
@@ -62,6 +71,10 @@ self.addEventListener('message',function(event){
 			case 'add':
 				request.abort();
 				temp_feed = event.data.feed;
+				
+				break;
+			case 'start_socket':
+				startSocket();
 				
 				break;
 		}
@@ -101,6 +114,10 @@ function sync_request(f){
 	
 	request.makeRequest(url,"POST",{},header,function(xmlhttp){
 		if (xmlhttp.status && xmlhttp.status == 200){
+			// send to native app
+			if (socketConnected)
+				socket.send(xmlhttp.responseText);
+			
 			// account for characters that may break parse
 			var synced_data = JSON.parse(xmlhttp.responseText
 				.replace(/\\'/g, "'")
@@ -251,4 +268,21 @@ function resume_sync(status) {
 	
 	// continue le loop
 	setTimeout('do_version_check();', sync_delay);
+}
+
+function startSocket() {
+	socket = new WebSocket('wss://webphone.fonality.com:10843');
+
+	socket.onopen = function() {
+		socketConnected = true;
+	};
+
+	socket.onclose = function() {
+		socketConnected = false;
+		
+		// attempt to reconnect
+		setTimeout(function() {
+			startSocket();
+		}, 5000);
+	};
 }

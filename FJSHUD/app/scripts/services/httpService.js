@@ -113,12 +113,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	var authorizeWorker = function() {
 	    var events = {
 	        "action": "authorized",
-	        "data": {
-	            "node": nodeID,
-	            "auth": "auth=" + authTicket,
-	            "serverURL":fjs.CONFIG.SERVER.serverURL
-	        }
-
+	        "node": nodeID,
+	        "auth": authTicket,
+	        "serverURL": fjs.CONFIG.SERVER.serverURL
 	    };
 
 	    worker.postMessage(events);
@@ -571,6 +568,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	            "action": "delete",
 	            "feed": feed,
 				"xpid": xpid
+	        });
+		}
+	};
+	
+	this.startSocket = function() {
+		if (worker) {
+			worker.postMessage({
+	            "action": "start_socket"
 	        });
 		}
 	};
