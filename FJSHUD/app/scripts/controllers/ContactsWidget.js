@@ -69,9 +69,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
       	localStorage['LeftBar_ExternalContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
       }
   };
-	$scope.goToContact = function(xpid){
-		$location.path("/contact/"+xpid);
-	};
+	
     $scope.sort = function(field) {
         if($scope.sortField != field) {
             $scope.sortField = field;
