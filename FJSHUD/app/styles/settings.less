@@ -109,36 +109,147 @@
           flex: 1 1 0;
           -webkit-flex: 1 1 0;
           -ms-flex: 1;
-          overflow: auto;
           font-size: .7em;
+          display: flex;
           display: -webkit-flex;
+          flex-direction: column;
           -webkit-flex-direction: column;
-          .transferSearch{
-            form{
-              height: 55px;
-              .FormInterior{
-                margin-left: 35px;
-                span{
-                  font-size: 15px;
-                  color: #1B5C74;
-                  font-family: Arial;
-                  font-weight: bold;
-                }
-                input[type=placeholder]{
-                  font-size: 13px !important;
-                  font-family: Arial !important;
-                  color: #CCCCCC !important;
-                }
-                input[type=search]{
-                  // margin: 5px;
-                  margin: 0px;
-                  margin-bottom: 10px;
-                  border-bottom: solid 1px #ccc;
-                  width: 400px !important;
+
+          .TransferSectionWithoutHeader{
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+            flex: 1 0 0;
+            -webkit-flex: 1 0 0;
+
+            .TransferSearch{
+              form{
+                // height: 55px;
+                .FormInterior{
+                  margin-left: 35px;
+                  span{
+                    font-size: 15px;
+                    color: #1B5C74;
+                    font-family: Arial;
+                    font-weight: bold;
+                  }
+                  input[type=placeholder]{
+                    font-size: 13px !important;
+                    font-family: Arial !important;
+                    color: #CCCCCC !important;
+                  }
+                  input[type=search]{
+                    // margin: 5px;
+                    margin: 0px;
+                    margin-bottom: 10px;
+                    border-bottom: solid 1px #ccc;
+                    width: 400px !important;
+                  }
                 }
               }
             }
+            .TransferResultContacts{
+              border-top: solid 1px #ccc;
+              overflow: auto;
+              -webkit-flex: 1 0 0;
+              flex: 1 0 0;
+            }
+
+            .TransferIcons{
+              display: -webkit-flex;
+              display: flex;
+              display: -ms-flexbox;
+              display: -moz-box;
+
+              .IconText{
+                -webkit-webkit-flex: 1;
+                -moz-webkit-flex: 1;
+                -ms-webkit-flex: 1;
+                -o-webkit-flex: 1;
+                -webkit-flex: 1;
+                margin-left: 17px;
+                margin-right: 17px;
+                color: #8A8989;
+                cursor: pointer;
+
+                &.ColdTransfer{
+                  // max-width: 85px;
+                  // margin-left: 25px;
+                  flex: 1 1 0;
+                  -webkit-flex: 1 1 0;
+                  -moz-webkit-flex: 1 1 0;
+                  -ms-webkit-flex: 1 1 0;
+                  -o-webkit-flex: 1 1 0;
+                }
+                &.WarmTransfer{
+                  // max-width: 90px;
+                  flex: 1 1 0;
+                  -webkit-flex: 1 1 0;
+                  -moz-webkit-flex: 1 1 0;
+                  -ms-webkit-flex: 1 1 0;
+                  -o-webkit-flex: 1 1 0;
+                }
+                &.ToVoicemail{
+                  // max-width: 75px;
+                  flex: 1 1 0;
+                  -webkit-flex: 1 1 0;
+                  -moz-webkit-flex: 1 1 0;
+                  -ms-webkit-flex: 1 1 0;
+                  -o-webkit-flex: 1 1 0;
+                }
+                &.Cancel{
+                  // margin-left: 25px;
+                  flex: 1 1 0;
+                  -webkit-flex: 1 1 0;
+                  -moz-webkit-flex: 1 1 0;
+                  -ms-webkit-flex: 1 1 0;
+                  -o-webkit-flex: 1 1 0;
+                }
+
+                .CircleBorder{
+                  border-radius: 50%;
+                  width: 45px;
+                  height: 45px;
+                  padding: 9px;
+                  background: #fff;
+                  border: 1px solid #858585;
+                  color: #858585;
+                  text-align: center;
+
+                  margin-left: auto;
+                  margin-right: auto;
+                  display: block;
+                }
+                .MaterialIconText{
+                  margin-top: 5px;
+                  margin-bottom: 5px;
+                  font-family: Arial;
+                  font-size: 13px;
+                  &.ColdIconText{
+                    width: 85px;
+                  }
+                  &.WarmIconText{
+                    width: 90px;
+                  }
+                  &.VMIconText{
+                    width: 75px;
+                  }
+                  &.CancelIconText{
+                    margin-top: 3px;
+                    margin-left: 3px;
+                  }
+                }
+                .material-icons{
+                  &.CancelIcon{
+                    font-size: 45px;
+                  }
+                }
+              }
+            }
+
           }
+
         }
 			& + .RecentCallSection {
 			  flex: 1 1 0;
@@ -330,83 +441,7 @@
        }
     }
 
-    .TransferResultContacts{
-      border-top: solid 1px #ccc;
-      overflow: auto;
-      max-height: 117px;
-      min-height: 117px;
-    }
 
-    .TransferIcons{
-      display: -webkit-flex;
-      display: flex;
-      display: -ms-flexbox;
-      display: -moz-box;
-
-      .IconText{
-        -webkit-webkit-flex: 1;
-        -moz-webkit-flex: 1;
-        -ms-webkit-flex: 1;
-        -o-webkit-flex: 1;
-        -webkit-flex: 1;
-        margin-left: 17px;
-        margin-right: 17px;
-        color: #8A8989;
-        cursor: pointer;
-
-        &.ColdTransfer{
-          max-width: 85px;
-        }
-        &.WarmTransfer{
-          max-width: 90px;
-        }
-        &.ToVoicemail{
-          max-width: 75px;
-        }
-        &.Cancel{
-          margin-left: 25px;
-        }
-
-        .CircleBorder{
-          border-radius: 50%;
-          width: 45px;
-          height: 45px;
-          padding: 9px;
-          background: #fff;
-          border: 1px solid #858585;
-          color: #858585;
-          text-align: center;
-
-          margin-left: auto;
-          margin-right: auto;
-          display: block;
-        }
-        .MaterialIconText{
-          margin-top: 5px;
-          margin-bottom: 5px;
-          font-family: Arial;
-          font-size: 13px;
-          &.ColdIconText{
-            width: 85px;
-          }
-          &.WarmIconText{
-            width: 90px;
-          }
-          &.VMIconText{
-            width: 75px;
-          }
-          &.CancelIconText{
-            margin-top: 3px;
-            margin-left: 3px;
-          }
-        }
-        .material-icons{
-          &.CancelIcon{
-            font-size: 45px;
-          }
-        }
-      }
-    }
 
 }
 

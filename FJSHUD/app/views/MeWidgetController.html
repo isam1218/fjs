@@ -135,61 +135,67 @@
       <!-- *** Uncomment the above line, comment out the below line, and then comment out 1, 2 and 3 to display transfer at all times -->
       <div class="TransferCallSection" ng-if="transferComponent && currentCall != null">
         <div class="WidgetSectionTitle meTitle">Transfer Call</div>
-        <!-- search  -->
-        <div class="transferSearch">
-          <div class="ContactSearchHolder">
-            <form ng-submit="inputtedSearch()">
-              <div class="FormInterior">
-                <span>To:</span>
-                <input type="search"  ng-model="transfer.search" ng-model-options="{debounce: 200}" id="ChatMessageText" placeholder="Enter Phone Number, Extension or Contact Name" />
-                <!-- <div ng-show="showResult" id="ChatMessageText">{{selectedTransferToContact.displayName}}</div> -->
-              </div>
-            </form>
-            <!-- <textarea ng-show="showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="ChatMessageText" placeholder="Enter Phone Number, Extension or Contact Name" </textarea> -->
+
+        <div class="TransferSectionWithoutHeader">
+          <!-- search  -->
+          <div class="TransferSearch">
+            <div class="ContactSearchHolder">
+              <form ng-submit="inputtedSearch()">
+                <div class="FormInterior">
+                  <span>To:</span>
+                  <input type="search"  ng-model="transfer.search" ng-model-options="{debounce: 200}" id="ChatMessageText" placeholder="Enter Phone Number, Extension or Contact Name" />
+                  <!-- <div ng-show="showResult" id="ChatMessageText">{{selectedTransferToContact.displayName}}</div> -->
+                </div>
+              </form>
+              <!-- <textarea ng-show="showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="ChatMessageText" placeholder="Enter Phone Number, Extension or Contact Name" </textarea> -->
+            </div>
           </div>
-        </div>
-        <!-- Results -->
-        <div class="TransferResultContacts">
-          <div class="ListRow" ng-repeat="contact in transferContacts | filter: transferFilter() | orderBy: 'displayName'" ng-click="selectTransferContact(contact)">
-            <avatar profile="contact"></avatar>
-            <div class="ListRowContent">
-              <div class="ListRowTitle">
-                <strong>{{ ::contact.displayName }}</strong>
-                <br/>
-                <div class="ListRowStatusIcon XIcon-QueueStatus-{{contact.queue_status}}"></div>
-                <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+          <!-- Results -->
+          <div class="TransferResultContacts">
+            <div class="ListRow" ng-repeat="contact in transferContacts | filter: transferFilter() | orderBy: 'displayName'" ng-click="selectTransferContact(contact)">
+              <avatar profile="contact"></avatar>
+              <div class="ListRowContent">
+                <div class="ListRowTitle">
+                  <strong>{{ ::contact.displayName }}</strong>
+                  <br/>
+                  <div class="ListRowStatusIcon XIcon-QueueStatus-{{contact.queue_status}}"></div>
+                  <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                </div>
               </div>
             </div>
           </div>
+          <!-- Transfer Icons -->
+          <div class="TransferIcons">
+            <div class="IconText ColdTransfer" ng-click="coldTransfer()">
+              <i class="material-icons CircleBorder">phone_forwarded</i>
+              <p class="MaterialIconText ColdIconText">
+                Cold Transfer
+              </p>
+            </div>
+            <div class="IconText WarmTransfer" ng-disabled="transferType == 'external'" ng-click="warmTransfer()">
+              <i class="material-icons CircleBorder">record_voice_over</i>
+              <p class="MaterialIconText WarmIconText">
+                Warm Transfer
+              </p>
+            </div>
+            <div class="IconText ToVoicemail" ng-disabled="transferType == 'external'" ng-click="transferToVM()">
+              <i class="material-icons CircleBorder">voicemail</i>
+              <p class="MaterialIconText VMIconText">
+                To Voicemail
+              </p>
+            </div>
+            <div class="IconText Cancel" ng-click="cancelTransfer()">
+              <i class="material-icons CancelIcon">cancel</i>
+              <p class="MaterialIconText CancelIconText">
+                Cancel
+              </p>
+            </div>
+          </div>
         </div>
-        <!-- Transfer Icons -->
-        <div class="TransferIcons">
-          <div class="IconText ColdTransfer" style="margin-left: 25px" ng-click="coldTransfer()">
-            <i class="material-icons CircleBorder">phone_forwarded</i>
-            <p class="MaterialIconText ColdIconText">
-              Cold Transfer
-            </p>
-          </div>
-          <div class="IconText WarmTransfer" ng-disabled="transferType == 'external'" ng-click="warmTransfer()">
-            <i class="material-icons CircleBorder">record_voice_over</i>
-            <p class="MaterialIconText WarmIconText">
-              Warm Transfer
-            </p>
-          </div>
-          <div class="IconText ToVoicemail" ng-disabled="transferType == 'external'" ng-click="transferToVM()">
-            <i class="material-icons CircleBorder">voicemail</i>
-            <p class="MaterialIconText VMIconText">
-              To Voicemail
-            </p>
-          </div>
-          <div class="IconText Cancel" ng-click="cancelTransfer()">
-            <i class="material-icons CancelIcon">cancel</i>
-            <p class="MaterialIconText CancelIconText">
-              Cancel
-            </p>
-          </div>
-        </div>
+
+
       </div>
+      <!-- class="TransferCallSection" -->
 
       <!-- 3  entire section-->
       <div class="RecentCallSection" ng-show="currentCall == null" ng-hide="transferComponent">
