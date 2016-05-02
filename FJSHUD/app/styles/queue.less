@@ -502,11 +502,17 @@
 	
 	.Agent {
       border: 1px solid #999;
+      width:140px;
 	  padding: .1em .5em .1em .1em;
 	  
 	  & > div {
 	    display: inline-block;
 	    vertical-align: middle;
+	  }
+	  div{
+	  	white-space: nowrap;
+	  	overflow: hidden;
+	  	text-overflow: ellipsis;max-width:100px;
 	  }
 	}
   
@@ -525,6 +531,7 @@
 	  -webkit-flex-direction: row;
 	  align-items: center;
 	  -webkit-align-items: center;
+	  max-width:310px;
     
       .Arrow {
   	    position: absolute;
