@@ -290,7 +290,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			// chrome on chromebook and linux still won't work
 			if(!navigator.userAgent.match(/CrOS|Linux/) && !context.webphone && $rootScope.meModel.my_pid){
 				getWSVersion();
-        		nservice.initNSService();
+        		//nservice.initNSService();
         	}
 		}
 		else{
@@ -1024,6 +1024,13 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 
 		webphone.onmessage = function(e){
 			if(e.data){
+				// new native app
+				if (parseInt(e.data.charAt(0)) >= 2)
+					httpService.startSocket();
+				// old crusty webphone
+				else
+					nservice.initNSService();
+				
 				context.version = e.data;
 				$rootScope.pluginVersion = context.version;
 				initWS();
