@@ -6,33 +6,17 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
   $scope.myself = $rootScope.myPid;
   var queueId = $scope.$parent.$parent.queueId;
 
-  $scope.customAgentOrderBy = function(member){
-    switch($scope.selectedSort){
-      case 'displayName':
-        return member.displayName;
-        break;
-      case 'queue_status':
-        // users on calls first, sort those alphabetically
-        return [!member.fullProfile.call, member.displayName];
-        break;
-      case 'hud_status':
-        // available, then away, then busy, then offline, sort those alphabetically
-        return [member.fullProfile.hud_status, member.displayName];
-        break;
-    };
-  };
-
   $scope.statusFilter = function(status){
-  return function(agent) {
-    if (status == 'in') {
-      if (agent.status && agent.status.status.indexOf('login') != -1)
-        return true;
-    }
-    else {
-      if (agent.status && agent.status.status.indexOf('login') == -1)
-        return true;
-    }
-  };
+	  return function(agent) {
+	    if (status == 'in') {
+	      if (agent.status && agent.status.status.indexOf('login') != -1)
+	        return true;
+	    }
+	    else {
+	      if (agent.status && agent.status.status.indexOf('login') == -1)
+	        return true;
+	    }
+	  };
   };
 
   $scope.selectedSort = localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid]) : 'displayName';
@@ -47,9 +31,8 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
       case 'hud_status':
         return [member.fullProfile.hud_status, member.displayName];
     }
-  }
-
-
+  };
+   
   queueService.getQueues().then(function() {  
      $scope.agents = $scope.queue.members;
   });

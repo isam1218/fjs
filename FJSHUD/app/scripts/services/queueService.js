@@ -303,7 +303,8 @@ hudweb.service('QueueService', ['$rootScope', '$q', '$location', 'ContactService
 			}
 		
 			// pull member child data
-			/*httpService.getFeed('queue_members_status');
+			httpService.getFeed('queue_members_status');
+			/*
 			httpService.getFeed('queue_members_stat');
 			httpService.getFeed('queuemembercalls');*/
 		}
