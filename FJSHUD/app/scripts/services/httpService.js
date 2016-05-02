@@ -187,13 +187,14 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				if(nodes && nodes.length > 0){
 					nodeID = nodes[1];
 					localStorage.nodeID = nodeID;
+					
+					// start shared worker
+					authorizeWorker();
 				}else{
 					localStorage.serverHost = response.match(/RedirectHost=([^\n]+)/)[1];
 					fjs.CONFIG.SERVER.serverURL = localStorage.serverHost;
 					clientRegistry();			
 				}
-				// start shared worker
-				authorizeWorker();
 			})
 			.error(function(response, status) {
 				switch(status){
