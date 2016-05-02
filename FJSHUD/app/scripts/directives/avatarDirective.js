@@ -28,6 +28,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				widget = attrs.context.split(':')[0];
 				context = attrs.context.split(':')[1];
 			}
+			
 			/**
 				AVATAR IMAGES
 			*/
@@ -118,9 +119,14 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			else if (profile.name) {
 				showGroup();
 				if (profile.members){
-					for (var i = 0; i < 4; i++){
-						if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version)
-							loadImage(element.find('.GroupAvatarItem_' + i + ' img'), profile.getAvatar(i, 28));
+					var mLen = profile.members.length;
+					var numIcons = 0;
+					
+					for (var i = 0; i < mLen; i++){
+						if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version && numIcons < 4){
+							loadImage(element.find('.GroupAvatarItem_' + numIcons + ' img'), profile.getAvatar(i, 28));
+						    numIcons++;
+						}
 					}
 				}
 			}
