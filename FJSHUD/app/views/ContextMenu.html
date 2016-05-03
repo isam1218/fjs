@@ -308,7 +308,7 @@
 			<div class="ListRowActionButtonLeave"></div>
 			<span>{{::verbage.leave}}</span>
 		</a>
-		<a class="Button" href="" ng-show="canRecord && profile.members && profile.members.length > 0 && profile.status && !profile.status.recorded" ng-click="recordConference(true)">
+		<a class="Button" href="" ng-show="canRecord && inConf && profile.members && profile.members.length > 0 && profile.status && !profile.status.recorded" ng-click="recordConference(true)">
 			<div class="ListRowActionButtonRecord"></div>
 			<span>{{::verbage.start}}</span>
 		</a>

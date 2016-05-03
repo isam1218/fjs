@@ -10,6 +10,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 	
 	$scope.myQueue;
 	$scope.canDock = true;	
+	$scope.inConf = false;
 	$scope.reasons = {
 		list: [],
 		show: false,
@@ -21,7 +22,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 	
 	// permissions (will most likely need to be moved)
 	settingsService.getPermissions().then(function(data) {
-		$scope.canRecord = data.recordingEnabled;
+		$scope.canRecord = data.recordingEnabled;		
 	});
 	
 	// populate contact info from directive
@@ -66,6 +67,16 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		}
 		else if ($scope.profile.roomNumber !== undefined) {
 			$scope.type = 'ConferenceRoom';
+			
+			var mLen = $scope.profile.members.length;
+			for (var i = 0; i < mLen; i++) {
+				var member = $scope.profile.members[i];
+				
+				// check to see if I am part of the conference								
+				if (member.contactId == $rootScope.myPid) {
+					$scope.inConf = true;
+				}
+	        } 
 		}
 		else if ($scope.profile.name !== undefined && $scope.profile.name != '') {
 			$scope.type = 'Group';
