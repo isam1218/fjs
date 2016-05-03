@@ -143,11 +143,12 @@
               <form ng-submit="inputtedSearch()">
                 <div class="FormInterior">
                   <span>To:</span>
-                  <input type="search"  ng-model="transfer.search" ng-model-options="{debounce: 200}" id="ChatMessageText" placeholder="Enter Phone Number, Extension or Contact Name" />
-                  <!-- <div ng-show="showResult" id="ChatMessageText">{{selectedTransferToContact.displayName}}</div> -->
+                  <input type="search" ng-show="transferComponent && !showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="SearchSection" placeholder="Enter Phone Number, Extension or Contact Name" />
+                  <!-- <input ng-show="transferComponent && showResult" id="DisplaySelection" ng-model="transfer.search"></input> -->
+                  <!-- <textarea ng-show="transferComponent && showResult" ng-change="showResultFalse()" id="DisplaySelection" ng-model="transferToDisplayName.displayName"></textarea> -->
+                  <input ng-show="transferComponent && showResult" ng-change="showResultFalse()" id="DisplaySelection" ng-model="transferToDisplayName.displayName"></input>
                 </div>
               </form>
-              <!-- <textarea ng-show="showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="ChatMessageText" placeholder="Enter Phone Number, Extension or Contact Name" </textarea> -->
             </div>
           </div>
           <!-- Results -->
@@ -166,27 +167,27 @@
           </div>
           <!-- Transfer Icons -->
           <div class="TransferIcons">
-            <div class="IconText ColdTransfer" ng-click="coldTransfer()">
-              <i class="material-icons CircleBorder">phone_forwarded</i>
-              <p class="MaterialIconText ColdIconText">
+            <div class="IconText ColdTransfer" ng-disabled="!IconEnabled" ng-click="coldTransfer()"  droppable="Contact">
+              <i class="material-icons CircleBorder" ng-class="transferIconEnabled || (!isNaN(transfer.search) && (transfer.search.length >= 4) ) ? 'IconEnabled' : ''">phone_forwarded</i>
+              <p class="MaterialIconText ColdIconText" ng-class="transferIconEnabled || (!isNaN(transfer.search) && (transfer.search.length >= 4) ) ? 'IconEnabled' : ''">
                 Cold Transfer
               </p>
             </div>
-            <div class="IconText WarmTransfer" ng-disabled="transferType == 'external'" ng-click="warmTransfer()">
-              <i class="material-icons CircleBorder">record_voice_over</i>
-              <p class="MaterialIconText WarmIconText">
+            <div class="IconText WarmTransfer" ng-disabled="transferType == 'external' || !IconEnabled" ng-click="warmTransfer()"  droppable="Contact">
+              <i class="material-icons CircleBorder" ng-class="transferIconEnabled ? 'IconEnabled' : ''">record_voice_over</i>
+              <p class="MaterialIconText WarmIconText" ng-class="transferIconEnabled ? 'IconEnabled' : ''">
                 Warm Transfer
               </p>
             </div>
-            <div class="IconText ToVoicemail" ng-disabled="transferType == 'external'" ng-click="transferToVM()">
-              <i class="material-icons CircleBorder">voicemail</i>
-              <p class="MaterialIconText VMIconText">
+            <div class="IconText ToVoicemail"  ng-disabled="transferType == 'external' || !IconEnabled" ng-click="transferToVM()"  droppable="Contact">
+              <i class="material-icons CircleBorder" ng-class="transferIconEnabled ? 'IconEnabled' : ''">voicemail</i>
+              <p class="MaterialIconText VMIconText" ng-class="transferIconEnabled ? 'IconEnabled' : ''">
                 To Voicemail
               </p>
             </div>
-            <div class="IconText Cancel" ng-click="cancelTransfer()">
-              <i class="material-icons CancelIcon">cancel</i>
-              <p class="MaterialIconText CancelIconText">
+            <div class="IconText Cancel"  ng-click="cancelTransfer()">
+              <i class="material-icons CancelIcon" ng-class="transferIconEnabled ? 'IconEnabled' : ''">cancel</i>
+              <p class="MaterialIconText CancelIconText" ng-class="transferIconEnabled ? 'IconEnabled' : ''">
                 Cancel
               </p>
             </div>

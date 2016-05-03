@@ -908,6 +908,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.transferComponent;
+    $scope.transferIconEnabled = false;
 
     $scope.showTransferComponent = function(){
         $scope.transferComponent = true;
@@ -971,7 +972,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.transferType = 'external';
             $scope.transferTo = createTmpExternalContact($scope.transfer.search);
             // console.log('1SET TO EXTERNAL!, transferTo should be an ext - ', $scope.transferTo);
-            // NEED TO DISABLE Warm Transfer and Transfer to VM
         }
     };
 
@@ -980,8 +980,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.showResult = false;
     // 2. this is called if user clicks on 1 of the selections
     $scope.selectTransferContact = function(selectionInput){
-        // replace what's in the input box with selected contact name/phone number
-
         $scope.transferType = 'internal'
         $scope.selectedTransferToContact;
 
@@ -990,8 +988,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.transferFrom = $scope.currentCall.fullProfile ? $scope.currentCall.fullProfile : $scope.currentCall;
         // console.log('transferFrom after selecting the contact to transfer to - ', $scope.transferFrom);
 
-
-        // if selected is an internal contact, grab their contact data...
         // DO I NEED THIS SECTION??? ALREADY FILTERING OUT THESE PEOPLE
         if (selectionInput.xpid != $rootScope.myPid){
             if ($scope.transferFrom.xpid){
@@ -1004,46 +1000,65 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
         // console.log('selectedTransferToContact - ', $scope.selectedTransferToContact);
 
-        // set scope flag that selection has been made so that can hide initial form and display other form
         $scope.showResult = true;
+        $scope.transferIconEnabled = true;
+        angular.extend($scope.transferToDisplayName, $scope.selectedTransferToContact)
+        // console.log('$scope.transferToDisplayName after extending - ', $scope.transferToDisplayName);
         // display $scope.selectedTransferToContact's displayname on new input
+    };
+
+    $scope.transferToDisplayName = {};
+
+    $scope.showResultFalse = function(){
+        $scope.showResult = false;
+        $scope.transferIconEnabled = false;
     };
 
     $scope.coldTransfer = function(){
         var action;
         var feed = 'mycalls';
         var params = {};
-        // console.log('onCall - ', $scope.onCall);
-        // console.log('scope - ', $scope);
         params.mycallId = $scope.currentCall.xpid;
 
         // receiver
         if ($scope.transferType == 'external')
             params.toNumber = $scope.transferTo.contactNumber;
+        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4))
+            params.toNumber = $scope.transfer.search;
+        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length === 4)){
+            // this is if user clicks cold transfer after typing in 4 digit extension WITHOUT first clicking on contact div to set as contact
+            for (var i = 0; i < $scope.transferContacts.length; i++){
+                if ($scope.transferContacts[i].primaryExtension == $scope.transfer.search){
+                    $scope.transferIconEnabled = true;
+                    $scope.selectedTransferToContact = $scope.transferContacts[i];
+                    params.toContactId = $scope.selectedTransferToContact.xpid;
+                    break;
+                }
+            }
+        }
         else
             params.toContactId = $scope.selectedTransferToContact.xpid;
 
         // feed action
-        if ($scope.transferType == 'external')
+        if ($scope.transferType == 'external' || (!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4))
             action = 'transferTo';
         else if ($scope.selectedTransferToContact.primaryExtension == '')
             action = 'transferToMobile';
         else
             action = 'transferToContact';
 
-        /*
-        else if ($scope.who.sendToPrimary)
-            action = 'transferToContact';
-        else
-            action = 'transferToVoicemail';
-        */
-
         myHttpService.sendAction(feed, action, params);
+        $scope.showResult = false;
+        $scope.transfer.search = '';
+        $scope.transferComponent = false;
     };
 
     $scope.warmTransfer = function(){
         // call warm transfer API here...
         console.log('Warm Transfer called');
+        // $scope.showResult = false;
+        // $scope.transfer.search = '';
+        // $scope.transferComponent = false;
     };
 
     // need to disable soon as realize it's an external #...
@@ -1058,10 +1073,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             return;
 
         myHttpService.sendAction(feed, action, params);
+        $scope.showResult = false;
+        $scope.transfer.search = '';
+        $scope.transferComponent = false;
+
     };
 
     $scope.cancelTransfer = function(){
         // console.log('cancel called!');
+        $scope.showResult = false;
+        $scope.transfer.search = '';
         $scope.transferComponent = false;
     };
 
