@@ -260,6 +260,10 @@ hudweb.controller('NotificationController',
   	  {
     	    if(item.type == 'q-alert-abandoned')
 			{
+    	    	//workaround: get the queue display name from the queue service
+    	    	var queue = queueService.getQueue(item.queueId);
+    	    	item.displayName = queue.name;
+    	    	
 				if(settingsService.getSetting('HUDw_QueueNotificationsAb_'+ item.queueId) == 'undefined' ||
 				   !settingsService.getSetting('HUDw_QueueNotificationsAb_'+ item.queueId))
 					toReturn = false;				
@@ -392,6 +396,9 @@ hudweb.controller('NotificationController',
         endPath = "/" + message.audience + "/" + message.queueId + '/alerts';
         break;
       case 'q-alert-abandoned':
+    	//workaround: get the queue display name from the queue service
+    	var queue = queueService.getQueue(message.queueId);
+    	message.displayName = queue.name;
         endPath = "/" + message.audience + "/" + message.queueId + '/stats';
       case 'busy-ring-back':
         $scope.makeCall(message);
@@ -411,6 +418,9 @@ hudweb.controller('NotificationController',
     $('.Widget.Queues .WidgetTabBarButton').removeClass('fj-selected-item');
     if(message.type == 'q-alert-abandoned')   
     {
+      //workaround: get the queue display name from the queue service
+      var queue = queueService.getQueue(message.queueId);
+      message.displayName = queue.name;	
       queueService.setSelected(true, 'stats', qid);
       $location.path("/" + message.audience + "/" + qid + "/stats");              
     }
@@ -914,6 +924,9 @@ hudweb.controller('NotificationController',
 	{
 			if(item.type == 'q-alert-abandoned')
 			{
+				//workaround: get the queue display name from the queue service
+				var queue = queueService.getQueue(item.queueId);
+				item.displayName = queue.name;
 				if(typeof settingsService.getSetting('HUDw_QueueAlertsAb_'+ item.queueId) == 'undefined' || 
 				   !settingsService.getSetting('HUDw_QueueAlertsAb_'+ item.queueId))
 					displayDesktopAlert = false;				
@@ -987,6 +1000,9 @@ hudweb.controller('NotificationController',
       	  {
       			if(item.type == 'q-alert-abandoned')
       			{
+      			    //workaround: get the queue display name from the queue service
+      				var queue = queueService.getQueue(item.queueId);
+      	            item.displayName = queue.name;
       				if(settingsService.getSetting('HUDw_QueueNotificationsAb_'+ item.queueId))
       					$scope.todaysNotifications.push(item);				
       			}
@@ -1073,7 +1089,10 @@ hudweb.controller('NotificationController',
       case 'q-alert-abandoned':
             notification.label = '...abandoned call';
             notification.message = "";
-            var abandoned_notification = angular.copy(notification);
+            //workaround: get the queue display name from the queue service
+            var queue = queueService.getQueue(notification.queueId);
+            notification.displayName = queue.name;
+            var abandoned_notification = angular.copy(notification);            
             // once it's an abandoned call, want long-wait-note to disappear
             deleteLastLongWaitNotification();
             $timeout(function(){deleteNotification(abandoned_notification);}, 60000);
@@ -1242,6 +1261,12 @@ hudweb.controller('NotificationController',
 				if(notification.xef001type != "delete" && notification.type != 'error'){
 					notification.fullProfile = contactService.getContact(notification.senderId);
 					notification.label == '';
+					if(notification.audience == 'queue' && notification.type == 'q-alert-abandoned')
+					{	
+						//workaround: get the queue display name from the queue service
+						var queue = queueService.getQueue(notification.queueId);
+			    		notification.displayName = queue.name;
+					}
 					updateNotificationLabel(notification);
 
 					for(var j = 0, jLen = $scope.notifications.length; j < jLen; j++){
