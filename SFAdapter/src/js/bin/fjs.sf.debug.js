@@ -17,7 +17,7 @@ var SFApi = function() {
  * It is used to have access to the custom objects and fields in package.
  * @type {string}
  */
-SFApi.PREFIX = "Fon.";
+SFApi.PREFIX = "Fonplatform.";
 SFApi.FON_LOGIN_CLASS_NAME = "FonLogin";
 
 /**
