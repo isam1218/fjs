@@ -93,7 +93,7 @@ function format_array(feed) {
     var arr = [];
 	
 	for (var key in feed) {
-		if (feed[key].items.length > 0) {
+		if (feed[key].items && feed[key].items.length > 0) {
 			// create xpid for each record
 			for (var i = 0, iLen = feed[key].items.length; i < iLen; i++)
 				feed[key].items[i].xpid = key + '_' + feed[key].items[i].xef001id;
@@ -142,7 +142,7 @@ function sync_request(f){
 							}
 						}
 						// update individually
-						else {
+						else if (synced_data[feed][key].items) {
 							for (var i = 0, iLen = synced_data[feed][key].items.length; i < iLen; i++) {
 								var newItem = true;
 								

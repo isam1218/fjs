@@ -179,7 +179,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				headers:{
 					'Content-Type':'application/x-www-form-urlencoded'
 				},
-				data:'',
+				data:$.param({b:fjs.CONFIG.BUILD_NUMBER}),
 				method:'POST'
 			})
 			.success(function(response) {
