@@ -41,6 +41,8 @@
 	  flex-direction: column;
 	  -webkit-flex-direction: column;
       overflow: hidden;
+      min-width: 0;     
+      min-height: 0;
            
      .WidgetTabBar{
         top: 0px;
@@ -53,7 +55,9 @@
        display: flex;
        display: -webkit-flex;
        flex-direction: column;
-       -webkit-flex-direction: column;     
+       -webkit-flex-direction: column;   
+       min-width: 0;     
+       min-height: 0;  
         
        &.DialogContentMainBlock_List {
          left: 0px;
@@ -75,6 +79,8 @@
            padding-bottom: 10px;     
 		   -ms-flex: 1;
 		   -webkit-flex: 1;
+		   min-width: 0;     
+           min-height: 0;
            
            &.padding{
             padding-bottom: 30px;
@@ -110,6 +116,8 @@
 			  -webkit-flex: 1 1 0;
 			  -ms-flex: 1;
 			  overflow: auto;
+			  min-width: 0;     
+              min-height: 0;
 			}
             
             .LeftSide{
@@ -852,9 +860,13 @@ div.NewCall{
   }
   .fj-hbox-cell {
     -webkit-box-flex: 0;
+    min-width: 0;     
+    min-height: 0;
   }
   .fj-hbox-space {
     -webkit-box-flex: 1;
+    min-width: 0;     
+    min-height: 0;
   }
 
   .fj-scrollable .fj-viewport {
@@ -1653,6 +1665,8 @@ div.NewCall{
   .SortHeader {
     display: flex;
 	display: -webkit-flex;
+	min-width: 0;     
+    min-height: 0;
   }
 
   .SortButton {
@@ -1662,6 +1676,8 @@ div.NewCall{
   .OtherQueueLine {
     display: flex;
 	display: -webkit-flex;
+	min-width: 0;     
+    min-height: 0;
   }
 
   .QueueButtonToggle {
