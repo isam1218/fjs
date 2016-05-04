@@ -275,14 +275,15 @@ function startSocket() {
 
 	socket.onopen = function() {
 		socketConnected = true;
+		
+		// send initial sync data to app
+		socket.send(JSON.stringify(data_obj));
 	};
 
 	socket.onclose = function() {
 		socketConnected = false;
 		
 		// attempt to reconnect
-		setTimeout(function() {
-			startSocket();
-		}, 5000);
+		setTimeout('startSocket();', 5000);
 	};
 }

@@ -4,6 +4,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	var top_window = window.top;
 	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"></object>';
 	var phonePlugin;
+	var nativeApp = false;
 	var version;
 	var deferred = $q.defer();
 	var deferredVM = $q.defer();
@@ -190,6 +191,14 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		
 		if(nservice.isEnabled()){
 			isCancelled = nservice.getCancelled();
+		}
+		
+		// let native app know what's up
+		if (nativeApp) {
+			context.webphone.send(JSON.stringify({
+				a: 'focus',
+				value: focused
+			}));
 		}
 		
 		//remove if the alert was closed
@@ -1025,8 +1034,10 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		webphone.onmessage = function(e){
 			if(e.data){
 				// new native app
-				if (parseInt(e.data.charAt(0)) >= 2)
+				if (parseInt(e.data.charAt(0)) >= 2) {
 					httpService.startSocket();
+					nativeApp = true;
+				}
 				// old crusty webphone
 				else
 					nservice.initNSService();
@@ -1111,6 +1122,10 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			try
     		  {
     			  var msg = JSON.parse(e.data);
+				  
+				  // new native app actions
+				  if (nativeApp && msg.a == "notification")
+					  nservice.nativeAction(msg.value);
 
     			  if (msg.sip_id){
 
