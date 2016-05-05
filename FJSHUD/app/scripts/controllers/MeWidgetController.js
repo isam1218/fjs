@@ -909,48 +909,42 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.transferComponent;
     $scope.transferIconEnabled = false;
+    $scope.transferContacts = [];
+    $scope.transferFrom;
+    $scope.transfer = {};
+    $scope.transfer.search = '';
+    $scope.transferType;
+    $scope.transferToDisplayName = {};
+    $scope.showResult = false;
 
     $scope.showTransferComponent = function(){
         $scope.transferComponent = true;
-    };
-
-    $scope.transferContacts = [];
-    $scope.transferFrom;
-
-    // populate transferrable contacts
-    contactService.getContacts().then(function(data){
-        // console.log('calling c service');
-        if ($scope.currentCall){
-            $scope.transferFrom = $scope.currentCall.fullProfile ? $scope.currentCall.fullProfile : $scope.currentCall;
-            // console.log('TRANSFERFROM set - ', $scope.transferFrom, $scope);
-        }
-
-        for (var i = 0, len = data.length; i < len; i++) {
-            // must have valid phone #
-            if (data[i].xpid != $rootScope.myPid && (data[i].primaryExtension || data[i].phoneMobile)) {
-                if ($scope.transferFrom){
-                    if (data[i].xpid != $scope.transferFrom.xpid){
-                        // filter out contacts from transfer list if do not have [transfer to primary extension permission] AND [transfer to VM permission]
-                        if (settingsService.isEnabled(data[i].permissions, 4) || settingsService.isEnabled(data[i].permissions, 5)) {
-                            $scope.transferContacts.push(data[i]);
+        // populate transferrable contacts
+        contactService.getContacts().then(function(data){
+            // transferFrom is the person I'm currently talking to...
+            if ($scope.currentCall){
+                $scope.transferFrom = $scope.currentCall.fullProfile ? $scope.currentCall.fullProfile : $scope.currentCall;
+            }
+            for (var i = 0, len = data.length; i < len; i++) {
+                // must have valid phone #
+                if (data[i].xpid != $rootScope.myPid && (data[i].primaryExtension || data[i].phoneMobile)) {
+                    if ($scope.transferFrom){
+                        if (data[i].xpid != $scope.transferFrom.xpid){
+                            // filter out contacts from transfer list if do not have [transfer to primary extension permission] AND [transfer to VM permission]
+                            if (settingsService.isEnabled(data[i].permissions, 4) || settingsService.isEnabled(data[i].permissions, 5)) {
+                                $scope.transferContacts.push(data[i]);
+                            }
                         }
                     }
                 }
             }
-        }
-        // console.log('transferContacts - ', $scope.transferContacts);
-    });
-
-    $scope.transfer = {};
-    $scope.transfer.search = '';
+        });
+    };
 
     $scope.transferFilter = function(){
-        // if ($scope.transfer)
         var query = $scope.transfer.search.toLowerCase();
-        // console.log('query - ', query);
         return function(contact){
             if (query == '' || contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1){
-                // console.log('contact in filter - ', contact);
                 return true;
             }
         };
@@ -958,58 +952,36 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     var createTmpExternalContact = function(contactNumber){
         var externalContact = {};
-        externalContact.displayName = "Unknown Number";
         externalContact.contactNumber = contactNumber;
         return externalContact;
     };
 
-    // 1. this is called if user presses enter on keyboard
-    // need to have it select the top selection from the filtered list if press enter??? <- Do I want this functionality?
+    // called if user presses enter on keyboard
     $scope.inputtedSearch = function(){
-        // console.log('inputtedSearch called - ', $scope.transfer.search);
         // numbers
         if (!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4){
             $scope.transferType = 'external';
             $scope.transferTo = createTmpExternalContact($scope.transfer.search);
-            // console.log('1SET TO EXTERNAL!, transferTo should be an ext - ', $scope.transferTo);
         }
     };
 
-
-    $scope.transferType;
-    $scope.showResult = false;
-    // 2. this is called if user clicks on 1 of the selections
+    // called if user clicks on one of the selections
     $scope.selectTransferContact = function(selectionInput){
-        // console.log('selectionInput - ', selectionInput.displayName, selectionInput);
-        $scope.transferType = 'internal'
-        $scope.selectedTransferToContact;
-
-        // THIS SHOULD BE THE PERSON I'M TALKING TO RIGHT NOW, who I'm about to transfer
-        // Account for talking to external number
         $scope.transferFrom = $scope.currentCall.fullProfile ? $scope.currentCall.fullProfile : $scope.currentCall;
-        // console.log('transferFrom after selecting the contact to transfer to - ', $scope.transferFrom);
-
-        // DO I NEED THIS SECTION??? ALREADY FILTERING OUT THESE PEOPLE
-        if (selectionInput.xpid != $rootScope.myPid){
-            if ($scope.transferFrom.xpid){
-                if (selectionInput.xpid != $scope.transferFrom.xpid){
-                    $scope.selectedTransferToContact = selectionInput;
-                }
-            } else {
-                $scope.selectedTransferToContact = selectionInput;
-            }
-        }
-        // console.log('selectedTransferToContact - ', $scope.selectedTransferToContact);
-
+        $scope.selectedTransferToContact = selectionInput;
         $scope.showResult = true;
         $scope.transferIconEnabled = true;
+        if (selectionInput.primaryExtension)
+            $scope.transferType = 'internal';
+        else{
+            $scope.transferType = 'external';
+            // need to set $scope.transferTo in case dragging an external contact to transfer component
+            $scope.transferTo = selectionInput;
+            // set transferIconEnabled to false so that not all icons are activated for external contact
+            $scope.transferIconEnabled = false;
+        }
         angular.extend($scope.transferToDisplayName, $scope.selectedTransferToContact)
-        // console.log('$scope.transferToDisplayName after extending - ', $scope.transferToDisplayName.displayName);
-        // display $scope.selectedTransferToContact's displayname on new input
-        // selected contact == selectionInput == $scope.selectedTransferToContact
     };
-
-    $scope.transferToDisplayName = {};
 
     $scope.showResultFalse = function(){
         $scope.showResult = false;
@@ -1018,15 +990,25 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.transferToDisplayName = {};
     };
 
+    $scope.enableColdTransfer = function(){
+        if ($scope.transferIconEnabled)
+            return true;
+        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length >= 4))
+            return true;
+        else if ($scope.transferType == 'external')
+            return true;
+        else
+            return false;
+    };
+
     $scope.coldTransfer = function(){
         var action;
         var feed = 'mycalls';
         var params = {};
         params.mycallId = $scope.currentCall.xpid;
-
-        // receiver
+        // receiver can be external, inputted extension, inputted phone number, etc.
         if ($scope.transferType == 'external')
-            params.toNumber = $scope.transferTo.contactNumber;
+            params.toNumber = $scope.transferTo.contactNumber ? $scope.transferTo.contactNumber : $scope.transferTo.phoneMobile ? $scope.transferTo.phoneMobile : $scope.transferTo.phoneBusiness;
         else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4))
             params.toNumber = $scope.transfer.search;
         else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length === 4)){
@@ -1058,24 +1040,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.warmTransfer = function(){
-        // call warm transfer API here...
-        console.log('Warm Transfer called');
+        // call warm transfer API and then?...
+
+        // console.log('Warm Transfer called');
         // $scope.showResult = false;
         // $scope.transfer.search = '';
         // $scope.transferComponent = false;
     };
 
-    // need to disable soon as realize it's an external #...
     $scope.transferToVM = function(){
         var action = 'transferToVoicemail';
         var feed = 'mycalls';
         var params = {};
         params.mycallId = $scope.currentCall.xpid;
         params.toContactId = $scope.selectedTransferToContact.xpid;
-        // in case button is not already disabled...
-        if ($scope.transferType == 'external')
-            return;
-
         myHttpService.sendAction(feed, action, params);
         $scope.showResult = false;
         $scope.transfer.search = '';
@@ -1084,13 +1062,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.cancelTransfer = function(){
-        // console.log('cancel called!');
         $scope.showResult = false;
         $scope.transfer.search = '';
         $scope.transferComponent = false;
+        $scope.transferContacts = [];
+        $scope.transferType = '';
     };
-
-
 
     $scope.showCallOvery = function(screen){
 		// create temp object for overlay

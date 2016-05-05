@@ -125,16 +125,13 @@
 
             .TransferSearch{
               form{
-                // height: 55px;
                 .FormInterior{
-                  // margin-left: 20px;
                   margin-right: 20px;
-                  border-bottom: solid 1px #ccc;
                   min-height: 50px;
 
                   span{
                     position: relative;
-                    margin-top: 15px;
+                    margin-top: 17px;
 
                     margin-left: 20px;
                     font-size: 18px;
@@ -149,22 +146,24 @@
                     color: #CCCCCC !important;
                   }
                   input[type=search]{
-                    // margin: 5px;
-                    font-size: 16px !important;
+                    font-size: 17px !important;
                     font-family: Arial !important;
                     color: #CCCCCC !important;
                     margin: 0px;
-                    height: 40px;
+                    height: 45px;
                     margin-bottom: 5px;
                     margin-top: 5px;
                     padding-top: 7.5px;
                     padding-bottom: 7.5px;
                     border-bottom: solid 1px #b9b9b9;
                     width: 405px !important;
+                    -moz-border-radius: 0px;
+                    -webkit-border-radius: 0px;
+                    border-radius: 0px;
                   }
                   #SearchSection{
-                    // padding: 15px 15px 15px 0;
-                    padding: 15px 15px 5px 15px;
+                    padding: 15px 0px 11px 0px;
+                    border-bottom: solid 1px #b9b9b9 !important;
                     color: #333333 !important;
                     border: 0px;
                     box-shadow: none;
@@ -176,31 +175,38 @@
                     color: #333333;
                     border: 0px;
                     box-shadow: none;
-                    // padding: 15px 15px 15px 0;
                     padding: 15px 15px 10px 15px;
                     margin-top: 5px;
                     margin-bottom: 5px;
                   }
 
                   .ListRow{
-                    width: 85%;
+                    width: 88%;
                     float: right;
-                    margin-right: 15px;
+                    right: 5px;
                     height: 50px;
                     border-bottom: solid 1px #ccc;
 
                     .Avatar{
-                      margin: 8px 5px 5px 5px;
+                      margin: 10px 5px 5px 5px;
                     }
                     .ListRowContent{
                       border-left: none !important;
-                      // margin-top: 5px;
                       min-height: none;
 
                       .ListRowTitle{
                         height: 49px;
-                        padding-top: 11px;
+                        padding-top: 13px;
                         max-width: 75%;
+
+                        span{
+                          font-family: Arial;
+                          font-size: 13px;
+                          font-weight: normal;
+                          color: #333333;
+                          margin-top: 0px;
+                          margin-left: 0px;
+                        }
 
                         .ChatStatusLine{
                           .ListRowStatusIcon{
@@ -223,10 +229,11 @@
                         height: 35px;
                         width: 35px;
                         margin-top: 6px;
+                        margin-right: 10px;
                       }
                     }
                     .ListRowStatus{
-                      top: 9px;
+                      top: 13px;
                       right: 0px;
                     }
                   }
@@ -236,7 +243,6 @@
               }
             }
             .TransferResultContacts{
-              // border-top: solid 1px #ccc;
               overflow: auto;
               -webkit-flex: 1 0 0;
               flex: 1 0 0;
@@ -244,7 +250,6 @@
               .TransferContactsContainer{
                 margin-left: 20px;
                 margin-right: 20px;
-                // border-top: solid 1px #ccc;
 
                 .ListRow{
                   .Avatar{
@@ -252,7 +257,6 @@
                   }
                   .ListRowContent{
                     border-left: none !important;
-                    // margin-top: 5px;
                     min-height: none;
 
                     .ListRowTitle{
@@ -260,12 +264,20 @@
                       padding-top: 11px;
                       max-width: 75%;
 
+                      span{
+                        font-family: Arial;
+                        font-size: 13px;
+                        color: #333333;
+                      }
+
                       .ChatStatusLine{
                         .ListRowStatusIcon{
                           margin-top: -4px;
                           margin-left: -2px;
                         }
                         .status_message{
+                          font-size: 11px;
+                          font-family: Arial;
                           margin-top: 1px;
                           margin-left: -4px;
                           display: inline;
@@ -281,6 +293,7 @@
                       height: 35px;
                       width: 35px;
                       margin-top: 6px;
+                      margin-right: 10px;
                     }
                   }
                   .ListRowStatus{
@@ -296,6 +309,7 @@
               display: flex;
               display: -ms-flexbox;
               margin-top: 5px;
+              margin-bottom: -5px;
 
               .IconText{
                 -webkit-webkit-flex: 1;
@@ -306,59 +320,49 @@
                 margin-left: 17px;
                 margin-right: 17px;
                 color: #8A8989;
-                cursor: pointer;
 
 
                 &.ColdTransfer{
-                  // max-width: 85px;
-                  // margin-left: 25px;
                   flex: 1 1 0;
                   -webkit-flex: 1 1 0;
                   -moz-webkit-flex: 1 1 0;
                   -ms-webkit-flex: 1 1 0;
                   -o-webkit-flex: 1 1 0;
                 }
-                // &.IconEnabled{
-                //   color: #1B5C74 !important;
-                //   // border: 1px solid #1B5C74;
-                // }
+                &.IconEnabled{
+                  cursor: pointer;
+                }
                 &.WarmTransfer{
-                  // max-width: 90px;
                   flex: 1 1 0;
                   -webkit-flex: 1 1 0;
                   -moz-webkit-flex: 1 1 0;
                   -ms-webkit-flex: 1 1 0;
                   -o-webkit-flex: 1 1 0;
                 }
-                // &.IconEnabled{
-                //   color: #1B5C74 !important;
-                //   // border: 1px solid #1B5C74;
-                // }
+                &.IconEnabled{
+                  cursor: pointer;
+                }
                 &.ToVoicemail{
-                  // max-width: 75px;
                   flex: 1 1 0;
                   -webkit-flex: 1 1 0;
                   -moz-webkit-flex: 1 1 0;
                   -ms-webkit-flex: 1 1 0;
                   -o-webkit-flex: 1 1 0;
                 }
-                // &.IconEnabled{
-                //   color: #1B5C74 !important;
-                //   // border: 1px solid #1B5C74;
-                // }
+                &.IconEnabled{
+                  cursor: pointer;
+                }
                 &.Cancel{
-                  // margin-left: 25px;
                   flex: 1 1 0;
                   -webkit-flex: 1 1 0;
                   -moz-webkit-flex: 1 1 0;
                   -ms-webkit-flex: 1 1 0;
                   -o-webkit-flex: 1 1 0;
-                  // color: #1B5C74 !important;
                 }
-                // &.IconEnabled{
-                //   color: #1B5C74 !important;
-                //   // border: 1px solid #1B5C74;
-                // }
+                &.IconEnabled{
+                  cursor: pointer;
+                }
+
 
                 .CircleBorder{
                   border-radius: 50%;
@@ -376,7 +380,7 @@
 
                   &.IconEnabled{
                     color: #333333 !important;
-                    border: 1px solid #1B5C74;
+                    border: 1px solid #015D73;
                   }
                 }
                 .MaterialIconText{
@@ -387,44 +391,27 @@
                   &.ColdIconText{
                     width: 85px;
                   }
-                  &.IconEnabled{
-                    color: #1B5C74 !important;
-                    // border: 1px solid #1B5C74;
-                  }
                   &.WarmIconText{
                     width: 90px;
                   }
-                  &.IconEnabled{
-                    color: #1B5C74 !important;
-                    // border: 1px solid #1B5C74;
-                  }
-
                   &.VMIconText{
                     width: 75px;
                   }
-                  &.IconEnabled{
-                    color: #1B5C74 !important;
-                    // border: 1px solid #1B5C74;
-                  }
-
                   &.CancelIconText{
-                    // margin-top: 3px;
                     margin-left: 20px;
                     color: #333333 !important;
                   }
                   &.IconEnabled{
                     color: #333333 !important;
-                    // color: #1B5C74 !important;
-                    // border: 1px solid #1B5C74;
                   }
 
                 }
-                // .material-icons{
-                //   &.CancelIcon{
-                //     font-size: 45px;
-                //     color: #1B5C74 !important;
-                //   }
-                // }
+                .material-icons{
+                  &.CancelIcon{
+                    font-size: 28px;
+                    padding: 7.5px !important;
+                  }
+                }
               }
             }
 

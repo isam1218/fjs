@@ -81,33 +81,44 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 					}
 					// dragging and dropping to transfer modal
 					else if (scope.$parent.currentCall && scope.$parent.transferComponent && type == 'Contact'){
-						// console.log('TRANSFERRING A CONTACT via drag and drop!');
 
 						// cold vs warm vs toVm
 						if (settingsService.getPermission('canTransferFrom')) {
 							var action;
 							var feed = 'mycalls';
 							var params = {};
+
 							if (element[0].className == 'IconText ToVoicemail ui-droppable'){
-								// dragging to vm
+								// dragging to vm icon
 				        action = 'transferToVoicemail';
 				        params.mycallId = scope.currentCall.xpid;
 				        params.toContactId = obj.xpid;
-								// httpService.sendAction(feed, action, params);
+				        // if try to drag myself or try to drag the person I'm already talking to -> return out...
+								if (params.toContactId == $rootScope.myPid || params.toContactId == scope.$parent.currentCall.contactId)
+									return;
+
+								httpService.sendAction(feed, action, params);
 							}
 							else if (element[0].className == 'IconText ColdTransfer ui-droppable'){
-								// cold transfer
+								// drag to cold transfer icon
 								action = 'transferToContact'
 								params.mycallId = scope.$parent.currentCall.xpid;
 								params.toContactId = obj.xpid;
-								// httpService.sendAction('mycalls', 'transferToContact', params);
+								// if try to drag myself or try to drag the person I'm already talking to -> return out...
+								if (params.toContactId == $rootScope.myPid || params.toContactId == scope.$parent.currentCall.contactId)
+									return;
+
+								httpService.sendAction(feed, action, params);
 							}
 							else if (element[0] == 'div.IconText.WarmTransfer'){
+								// drag to warm transfer icon
 								// console.log('WARM TRANSFER DRAG');
 								return;
+							} else {
+								// drag to non-icon section -> set dragged contact as the selected transfer contact in the "TO:" field
+								scope.selectTransferContact(obj);
+								scope.$apply();
 							}
-							httpService.sendAction(feed, action, params);
-							// if dragging contact, and transfer component is open
 						}
 						return;
 

@@ -44,8 +44,6 @@
 
     <div class="WidgetBody" ng-switch="currentCall != null">
 
-      <!-- <div class="CurrentCall"> -->
-      <!-- 1  uncomment above, comment out below line only-->
       <div class="CurrentCall" ng-switch-when="true">
         <div class="WidgetSectionTitle">{{::verbage.current_call}} <span timer="currentCall.startedAt ? currentCall.startedAt : currentCall.created"> </span> </div>
         <div class="LeftSide">
@@ -122,7 +120,6 @@
       </div>
      </div>
 
-      <!-- 2 entire section-->
       <div class="NewCall" ng-switch-when="false">
         <div class="WidgetSectionTitle">{{::verbage.place_a_call}}</div>
         <input class="NewCall" on-submit="makeCall(call_obj.phoneNumber)" type="tel" ng-model="call_obj.phoneNumber" ng-attr-placeholder="{{::verbage.phone_number}}" clear-field-on-keypress>
@@ -131,28 +128,23 @@
       </div>
 
 
-      <!-- <div class="TransferCallSection"> -->
-      <!-- *** Uncomment the above line, comment out the below line, and then comment out 1, 2 and 3 to display transfer at all times -->
       <div class="TransferCallSection" ng-if="transferComponent && currentCall != null">
         <div class="WidgetSectionTitle meTitle">Transfer Call</div>
 
         <div class="TransferSectionWithoutHeader">
           <!-- search  -->
-          <div class="TransferSearch">
+          <div class="TransferSearch" droppable="Contact">
             <div class="ContactSearchHolder">
               <form ng-submit="inputtedSearch()">
                 <div class="FormInterior">
                   <span>To:</span>
                   <input type="search" ng-show="transferComponent && !showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="SearchSection" placeholder="Enter Phone Number, Extension or Contact Name" />
-                  <!-- <input ng-show="transferComponent && showResult" id="DisplaySelection" ng-model="transfer.search"></input> -->
-                  <!-- <textarea ng-show="transferComponent && showResult" ng-change="showResultFalse()" id="DisplaySelection" ng-model="transferToDisplayName.displayName"></textarea> -->
-                  <!-- <input ng-show="transferComponent && showResult" ng-change="showResultFalse()" id="DisplaySelection" ng-model="transferToDisplayName.displayName"></input> -->
 
                   <div class="ListRow" ng-show="transferComponent && showResult" ng-click="showResultFalse()">
                     <avatar profile="transferToDisplayName"></avatar>
                     <div class="ListRowContent" ng-switch="transferToDisplayName.call != null">
                       <div class="ListRowTitle">
-                        <strong>{{ transferToDisplayName.displayName }}</strong>
+                        <span>{{ transferToDisplayName.displayName }}</span>
 
                         <br/>
                         <div class="ChatStatusLine">
@@ -180,13 +172,13 @@
             </div>
           </div>
           <!-- Results -->
-          <div class="TransferResultContacts">
+          <div class="TransferResultContacts" droppable="Contact">
             <div class="TransferContactsContainer">
               <div class="ListRow" ng-repeat="contact in transferContacts | filter: transferFilter() | orderBy: 'displayName'" ng-click="selectTransferContact(contact)" ng-hide="transferComponent && showResult">
                 <avatar profile="contact"></avatar>
                 <div class="ListRowContent" ng-switch="contact.call != null">
                   <div class="ListRowTitle">
-                    <strong>{{ ::contact.displayName }}</strong>
+                    <span>{{ ::contact.displayName }}</span>
 
                     <br/>
                     <div class="ChatStatusLine">
@@ -211,25 +203,25 @@
           </div>
           <!-- Transfer Icons -->
           <div class="TransferIcons">
-            <div class="IconText ColdTransfer" ng-disabled="!IconEnabled" ng-click="coldTransfer()"  droppable="Contact">
-              <i class="material-icons CircleBorder" ng-class="transferIconEnabled || (!isNaN(transfer.search) && (transfer.search.length >= 4) ) ? 'IconEnabled' : ''">phone_forwarded</i>
-              <p class="MaterialIconText ColdIconText" ng-class="transferIconEnabled || (!isNaN(transfer.search) && (transfer.search.length >= 4) ) ? 'IconEnabled' : ''">
+            <div class="IconText ColdTransfer" ng-class="enableColdTransfer() ? 'IconEnabled' : ''" ng-disabled="!IconEnabled" ng-click="coldTransfer()"  droppable="Contact">
+              <i class="material-icons CircleBorder" ng-class="enableColdTransfer()  ? 'IconEnabled' : ''">phone_forwarded</i>
+              <p class="MaterialIconText ColdIconText" ng-class="enableColdTransfer()  ? 'IconEnabled' : ''">
                 Cold Transfer
               </p>
             </div>
-            <div class="IconText WarmTransfer" ng-disabled="transferType == 'external' || !IconEnabled" ng-click="warmTransfer()"  droppable="Contact">
+            <div class="IconText WarmTransfer" ng-class="transferIconEnabled ? 'IconEnabled' : ''" ng-disabled="transferType == 'external' || !IconEnabled" ng-click="warmTransfer()"  droppable="Contact">
               <i class="material-icons CircleBorder" ng-class="transferIconEnabled ? 'IconEnabled' : ''">record_voice_over</i>
               <p class="MaterialIconText WarmIconText" ng-class="transferIconEnabled ? 'IconEnabled' : ''">
                 Warm Transfer
               </p>
             </div>
-            <div class="IconText ToVoicemail"  ng-disabled="transferType == 'external' || !IconEnabled" ng-click="transferToVM()"  droppable="Contact">
+            <div class="IconText ToVoicemail" ng-class="transferIconEnabled ? 'IconEnabled' : ''" ng-disabled="transferType == 'external' || !IconEnabled" ng-click="transferToVM()"  droppable="Contact">
               <i class="material-icons CircleBorder" ng-class="transferIconEnabled ? 'IconEnabled' : ''">voicemail</i>
               <p class="MaterialIconText VMIconText" ng-class="transferIconEnabled ? 'IconEnabled' : ''">
                 To Voicemail
               </p>
             </div>
-            <div class="IconText Cancel"  ng-click="cancelTransfer()">
+            <div class="IconText Cancel IconEnabled"  ng-click="cancelTransfer()">
               <i class="material-icons CircleBorder CancelIcon IconEnabled" >cancel</i>
               <p class="MaterialIconText CancelIconText IconEnabled">
                 Cancel
@@ -240,9 +232,7 @@
 
 
       </div>
-      <!-- class="TransferCallSection" -->
 
-      <!-- 3  entire section-->
       <div class="RecentCallSection" ng-show="currentCall == null" ng-hide="transferComponent">
           <div class="WidgetSectionTitle meTitle">{{::verbage.recent_calls}}</div>
 
