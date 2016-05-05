@@ -117,7 +117,7 @@
 		variables:'Variable',
 		description:'Description',
 		inbound:'Inbound',
-		outbound:'OutBound',
+		outbound:'Outbound',
 		wl_var_desc_username_accounts:'認証を要求するアカウントのユーザネーム',
 		wl_var_desc_duration:'通話の経過時間（秒）',
 		wl_var_desc_name_of_party:'接続先番号',
