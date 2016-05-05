@@ -1,6 +1,9 @@
   .LeftBar
   {   
    .ListRow .Avatar img {margin-right: 0px !important;}
+   .Contacts, .Groups, .Recent{
+       .ContactList a.ListRow .ListRowStatus{right: 0px;}
+   }
   }  
   #homeContainer{
   border: 1px solid none;
@@ -199,7 +202,7 @@
 
      
      .vmsection{       
-      &.recording{
+      &.recording{      
      	.vminfo{
      	    //line-height: 44px;
      		.footnote{
@@ -223,3 +226,5 @@
  .WidgetHeaderTitle .ChatStatus{
  	max-width: 78% !important;
  }  
+ 
+ .ChatInputBox .ChatAlertOptions input[type=radio]{margin-bottom: 0px;} 
