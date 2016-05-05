@@ -1556,6 +1556,44 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
+	this.getVoiceMailsForToday = function(id, type){
+		switch(type){
+			case 'contact':
+				return voicemails.filter(function(data){
+					  var date = new Date(data.date);
+
+					      var today = new Date();
+					      var toReturn = false;
+					      if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+					        if(date.getDate() == today.getDate()){
+					          if(data.receivedStatus != "away"){
+					            toReturn = true;
+					          }
+					        }
+					      }
+					return data.contactId == id && !data.readStatus && toReturn && data.phone != $rootScope.meModel.primary_extension;
+				});
+			break;
+			case 'group':
+				var group = groupService.getGroup(id);
+				var groupVm = [];
+				if(group){
+					for (var g = 0, gLen = group.members.length; g < gLen; g++) {
+						groupVm.push(voicemails.filter(function(item){
+							return item.contactId == group.members[g].contactId	 && !item.readStatus
+						}));
+
+					}
+				}
+				return groupVm;
+			break;
+			default:
+				return voicemails;
+			break;
+		}
+	};
+
+
 	$rootScope.$on("mycalldetails_synced", function(event,data){
 		if(data){
 			for(var i = 0, iLen = data.length; i < iLen; i++){

@@ -1112,10 +1112,12 @@ hudweb.controller('NotificationController',
           notification.label = 'queue chat to';
         break;
       case 'vm':
-        var vms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
-        var vm = phoneService.getVoiceMail(notification.vmId);
-        notification.vm = vm;
-        notification.label = 'you have ' +  vms.length + ' new voicemail(s)';
+         var newVms = phoneService.getVoiceMailsForToday(notification.senderId,notification.audience);
+         var oldVms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
+         var vm = phoneService.getVoiceMail(notification.vmId);
+         notification.vm = vm;
+         notification.label = 'you have ' +  newVms.length + ' new voicemail(s)';
+         notification.message = 'you have ' +  oldVms.length + ' unread voicemail(s)';
         // if displayname is a phone number -> add the hypens to make external notifications consistent...
         if (notification.fullProfile == null && notification.displayName.split('').length == 10 && !isNaN(parseInt(notification.displayName)))
           notification.displayName = notification.displayName.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
