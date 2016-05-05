@@ -980,6 +980,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.showResult = false;
     // 2. this is called if user clicks on 1 of the selections
     $scope.selectTransferContact = function(selectionInput){
+        // console.log('selectionInput - ', selectionInput.displayName, selectionInput);
         $scope.transferType = 'internal'
         $scope.selectedTransferToContact;
 
@@ -1003,8 +1004,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.showResult = true;
         $scope.transferIconEnabled = true;
         angular.extend($scope.transferToDisplayName, $scope.selectedTransferToContact)
-        // console.log('$scope.transferToDisplayName after extending - ', $scope.transferToDisplayName);
+        // console.log('$scope.transferToDisplayName after extending - ', $scope.transferToDisplayName.displayName);
         // display $scope.selectedTransferToContact's displayname on new input
+        // selected contact == selectionInput == $scope.selectedTransferToContact
     };
 
     $scope.transferToDisplayName = {};
@@ -1012,6 +1014,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.showResultFalse = function(){
         $scope.showResult = false;
         $scope.transferIconEnabled = false;
+        $scope.selectedTransferToContact = {};
+        $scope.transferToDisplayName = {};
     };
 
     $scope.coldTransfer = function(){

@@ -127,12 +127,21 @@
               form{
                 // height: 55px;
                 .FormInterior{
-                  margin-left: 35px;
+                  // margin-left: 20px;
+                  margin-right: 20px;
+                  border-bottom: solid 1px #ccc;
+                  min-height: 50px;
+
                   span{
-                    font-size: 15px;
-                    color: #1B5C74;
+                    position: relative;
+                    margin-top: 15px;
+
+                    margin-left: 20px;
+                    font-size: 18px;
+                    color: #015d73;
                     font-family: Arial;
                     font-weight: bold;
+                    display: inline-block;
                   }
                   input[type=placeholder]{
                     font-size: 13px !important;
@@ -141,13 +150,17 @@
                   }
                   input[type=search]{
                     // margin: 5px;
-                    font-size: 14px !important;
+                    font-size: 16px !important;
                     font-family: Arial !important;
                     color: #CCCCCC !important;
                     margin: 0px;
-                    margin-bottom: 10px;
-                    border-bottom: solid 1px #ccc;
-                    width: 400px !important;
+                    height: 40px;
+                    margin-bottom: 5px;
+                    margin-top: 5px;
+                    padding-top: 7.5px;
+                    padding-bottom: 7.5px;
+                    border-bottom: solid 1px #b9b9b9;
+                    width: 405px !important;
                   }
                   #SearchSection{
                     // padding: 15px 15px 15px 0;
@@ -165,15 +178,117 @@
                     box-shadow: none;
                     // padding: 15px 15px 15px 0;
                     padding: 15px 15px 10px 15px;
+                    margin-top: 5px;
+                    margin-bottom: 5px;
                   }
+
+                  .ListRow{
+                    width: 85%;
+                    float: right;
+                    margin-right: 15px;
+                    height: 50px;
+                    border-bottom: solid 1px #ccc;
+
+                    .Avatar{
+                      margin: 8px 5px 5px 5px;
+                    }
+                    .ListRowContent{
+                      border-left: none !important;
+                      // margin-top: 5px;
+                      min-height: none;
+
+                      .ListRowTitle{
+                        height: 49px;
+                        padding-top: 11px;
+                        max-width: 75%;
+
+                        .ChatStatusLine{
+                          .ListRowStatusIcon{
+                            margin-top: -4px;
+                            margin-left: -2px;
+                          }
+                          .status_message{
+                            margin-top: 1px;
+                            margin-left: -4px;
+                            display: inline;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            width: 80%;
+                          }
+                        }
+                      }
+
+                      .CallStatus{
+                        height: 35px;
+                        width: 35px;
+                        margin-top: 6px;
+                      }
+                    }
+                    .ListRowStatus{
+                      top: 9px;
+                      right: 0px;
+                    }
+                  }
+
+
                 }
               }
             }
             .TransferResultContacts{
-              border-top: solid 1px #ccc;
+              // border-top: solid 1px #ccc;
               overflow: auto;
               -webkit-flex: 1 0 0;
               flex: 1 0 0;
+
+              .TransferContactsContainer{
+                margin-left: 20px;
+                margin-right: 20px;
+                // border-top: solid 1px #ccc;
+
+                .ListRow{
+                  .Avatar{
+                    margin: 8px 5px 5px 5px;
+                  }
+                  .ListRowContent{
+                    border-left: none !important;
+                    // margin-top: 5px;
+                    min-height: none;
+
+                    .ListRowTitle{
+                      height: 49px;
+                      padding-top: 11px;
+                      max-width: 75%;
+
+                      .ChatStatusLine{
+                        .ListRowStatusIcon{
+                          margin-top: -4px;
+                          margin-left: -2px;
+                        }
+                        .status_message{
+                          margin-top: 1px;
+                          margin-left: -4px;
+                          display: inline;
+                          text-overflow: ellipsis;
+                          white-space: nowrap;
+                          overflow: hidden;
+                          width: 80%;
+                        }
+                      }
+                    }
+
+                    .CallStatus{
+                      height: 35px;
+                      width: 35px;
+                      margin-top: 6px;
+                    }
+                  }
+                  .ListRowStatus{
+                    top: 9px;
+                    right: 0px;
+                  }
+                }
+              }
             }
 
             .TransferIcons{
@@ -238,7 +353,7 @@
                   -moz-webkit-flex: 1 1 0;
                   -ms-webkit-flex: 1 1 0;
                   -o-webkit-flex: 1 1 0;
-                  color: #1B5C74 !important;
+                  // color: #1B5C74 !important;
                 }
                 // &.IconEnabled{
                 //   color: #1B5C74 !important;
@@ -260,7 +375,7 @@
                   display: block;
 
                   &.IconEnabled{
-                    color: #1B5C74 !important;
+                    color: #333333 !important;
                     border: 1px solid #1B5C74;
                   }
                 }
@@ -293,22 +408,23 @@
                   }
 
                   &.CancelIconText{
-                    margin-top: 3px;
-                    margin-left: 3px;
-                    color: #1B5C74 !important;
+                    // margin-top: 3px;
+                    margin-left: 20px;
+                    color: #333333 !important;
                   }
                   &.IconEnabled{
-                    color: #1B5C74 !important;
+                    color: #333333 !important;
+                    // color: #1B5C74 !important;
                     // border: 1px solid #1B5C74;
                   }
 
                 }
-                .material-icons{
-                  &.CancelIcon{
-                    font-size: 45px;
-                    color: #1B5C74 !important;
-                  }
-                }
+                // .material-icons{
+                //   &.CancelIcon{
+                //     font-size: 45px;
+                //     color: #1B5C74 !important;
+                //   }
+                // }
               }
             }
 

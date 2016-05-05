@@ -146,21 +146,65 @@
                   <input type="search" ng-show="transferComponent && !showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="SearchSection" placeholder="Enter Phone Number, Extension or Contact Name" />
                   <!-- <input ng-show="transferComponent && showResult" id="DisplaySelection" ng-model="transfer.search"></input> -->
                   <!-- <textarea ng-show="transferComponent && showResult" ng-change="showResultFalse()" id="DisplaySelection" ng-model="transferToDisplayName.displayName"></textarea> -->
-                  <input ng-show="transferComponent && showResult" ng-change="showResultFalse()" id="DisplaySelection" ng-model="transferToDisplayName.displayName"></input>
+                  <!-- <input ng-show="transferComponent && showResult" ng-change="showResultFalse()" id="DisplaySelection" ng-model="transferToDisplayName.displayName"></input> -->
+
+                  <div class="ListRow" ng-show="transferComponent && showResult" ng-click="showResultFalse()">
+                    <avatar profile="transferToDisplayName"></avatar>
+                    <div class="ListRowContent" ng-switch="transferToDisplayName.call != null">
+                      <div class="ListRowTitle">
+                        <strong>{{ transferToDisplayName.displayName }}</strong>
+
+                        <br/>
+                        <div class="ChatStatusLine">
+                          <div class="ListRowStatusIcon XIcon-ChatStatus-{{transferToDisplayName.hud_status || 'offline' }}"></div>
+                          <div class="status_message" ng-bind-html="(transferToDisplayName.custom_status ? transferToDisplayName.custom_status : transferToDisplayName.hud_status ? verbage[transferToDisplayName.hud_status] : verbage['offline']) + (transferToDisplayName.call ? ' + ' + verbage['on_call'] : '')"></div>
+                        </div>
+                      </div>
+                    <div class="ListRowStatus">
+                      <div class="ListRowDesc">#{{ transferToDisplayName.primaryExtension }}</div>
+                    </div>
+                    <div class="CallStatus" ng-if="transferToDisplayName.call">
+                        <avatar
+                            ng-click="showCallStatus($event, transferToDisplayName)"
+                            profile="transferToDisplayName.call.fullProfile"
+                            context="callstatus"
+                            type="{{transferToDisplayName.call.type}}">
+                        </avatar>
+                    </div>
+                    </div>
+                  </div>
+
+
                 </div>
               </form>
             </div>
           </div>
           <!-- Results -->
           <div class="TransferResultContacts">
-            <div class="ListRow" ng-repeat="contact in transferContacts | filter: transferFilter() | orderBy: 'displayName'" ng-click="selectTransferContact(contact)">
-              <avatar profile="contact"></avatar>
-              <div class="ListRowContent">
-                <div class="ListRowTitle">
-                  <strong>{{ ::contact.displayName }}</strong>
-                  <br/>
-                  <div class="ListRowStatusIcon XIcon-QueueStatus-{{contact.queue_status}}"></div>
-                  <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+            <div class="TransferContactsContainer">
+              <div class="ListRow" ng-repeat="contact in transferContacts | filter: transferFilter() | orderBy: 'displayName'" ng-click="selectTransferContact(contact)" ng-hide="transferComponent && showResult">
+                <avatar profile="contact"></avatar>
+                <div class="ListRowContent" ng-switch="contact.call != null">
+                  <div class="ListRowTitle">
+                    <strong>{{ ::contact.displayName }}</strong>
+
+                    <br/>
+                    <div class="ChatStatusLine">
+                      <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                      <div class="status_message" ng-bind-html="(contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + ' + verbage['on_call'] : '')"></div>
+                    </div>
+                  </div>
+                <div class="ListRowStatus">
+                  <div class="ListRowDesc">#{{ ::contact.primaryExtension }}</div>
+                </div>
+                <div class="CallStatus" ng-if="contact.call">
+                    <avatar
+                        ng-click="showCallStatus($event, contact)"
+                        profile="contact.call.fullProfile"
+                        context="callstatus"
+                        type="{{contact.call.type}}">
+                    </avatar>
+                </div>
                 </div>
               </div>
             </div>
@@ -186,8 +230,8 @@
               </p>
             </div>
             <div class="IconText Cancel"  ng-click="cancelTransfer()">
-              <i class="material-icons CancelIcon" ng-class="transferIconEnabled ? 'IconEnabled' : ''">cancel</i>
-              <p class="MaterialIconText CancelIconText" ng-class="transferIconEnabled ? 'IconEnabled' : ''">
+              <i class="material-icons CircleBorder CancelIcon IconEnabled" >cancel</i>
+              <p class="MaterialIconText CancelIconText IconEnabled">
                 Cancel
               </p>
             </div>
