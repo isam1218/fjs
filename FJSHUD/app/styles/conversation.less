@@ -1,6 +1,7 @@
 .Widget.Conversation {
   min-height: 300px;   
-
+  img.Loading{ margin-left: 10px; }
+  
   .ContactList {      
         margin-top: 10px;
   }
@@ -355,7 +356,9 @@
   flex: 1 1 0;     
   -ms-flex: 1 1 auto;
   -webkit-flex: 1 1 0;
-  
+  min-width: 0;     
+  min-height: 0;
+        
   .ListViewContent {
     flex: 1 1 0;
 	-webkit-flex: 1 1 0;
@@ -363,7 +366,9 @@
     overflow-y: auto;
     overflow-x: hidden;
 	margin-top: 5px;
-  padding-left:10px;
+    padding-left:10px;
+    min-width: 0;     
+    min-height: 0;
 	
 	.attachmentDrag{
 	   position:relative;
@@ -392,12 +397,21 @@
 	display: -webkit-flex;
 	flex-direction: row;
 	-webkit-flex-direction: row;
+	min-width: 0;     
+    min-height: 0;   
+    
+    input[type=radio]{vertical-align: bottom;} 
 	
 	.Right { 
 	  flex: 1;
 	  -webkit-flex: 1;
 	  text-align: right;
+	  min-width: 0;     
+      min-height: 0;
+	  padding-top: 5px;
+      padding-right: 10px;
 	}
+	.Left{padding-top: 2px;}
   }
   
   .ChatInputFields {
@@ -405,11 +419,13 @@
 	display: -webkit-flex;
 	flex-direction: row;
 	-webkit-flex-direction: row;
-
+    min-width: 0;     
+    min-height: 0;
+        
 	.text.ChatInputBoxInput {
 	  margin-right: 1px;
-    margin-left: 1px;
-    font-size: 13px;	
+      margin-left: 1px;
+      font-size: 13px;	
 	  padding:5px;
 	  overflow:auto;
 	  background-color: #fff;
@@ -419,8 +435,7 @@
 	  height: 29px;
 	  min-height: 61px;
 	  max-height: 200px;
-
-
+	  min-width: 0;        
 	}
 	
 	.XButton.ChatInputBoxSend {
@@ -763,6 +778,8 @@
   display: -webkit-flex;
   flex-direction: column;
   padding-top: 5px;
+  min-width: 0;     
+  min-height: 0;
 }
 
 #dropboxFileSize{

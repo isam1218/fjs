@@ -10,6 +10,8 @@
   user-select: none;
   max-width: 60%;
   font-size: 0.9em;
+  min-width: 0;     
+  min-height: 0;
   
   position: fixed;
   left: 820px;
@@ -49,6 +51,8 @@
 	align-content: flex-start;
 	-webkit-align-content: flex-start;
 	-webkit-transform: translateZ(0);
+	min-width: 0;     
+    min-height: 0;
   
     &.ui-sortable:not(.ui-sortable-disabled) .Gadget {
       position: static;
@@ -91,6 +95,8 @@
 	background-color: #EBEBEB;
 	margin: .5em;
 	opacity: .9;
+	min-width: 0;     
+    min-height: 0;
 	
 	&.Hide {
 		display: none !important;
@@ -175,7 +181,9 @@
 		flex-direction: row;
 		-webkit-flex-direction: row;
 		max-height: 40px;
-	
+	    min-width: 0;     
+        min-height: 0;
+        
 	    span{
 	       margin-top: -3px;
 	    }
@@ -227,6 +235,8 @@
 			font-size: 12px;
 			padding: 6px 3px 0px;
 			margin-top: -3px;
+			min-width: 0;     
+            min-height: 0;
 			
 			div {
 				overflow: hidden;
@@ -315,6 +325,8 @@
 		overflow-y: auto;
 		min-height: 6em;
 		position: relative;
+		min-width: 0;     
+        min-height: 80px;
 		
 		.SubHeader {
 			background: linear-gradient(to bottom, #D4D4D5, #D9D9DA);
@@ -337,7 +349,9 @@
 			-ms-flex: 1;
 			background: linear-gradient(to bottom, #DCDCDC, #EAEAEB);
 			background: -webkit-linear-gradient(to bottom, #DCDCDC, #EAEAEB);
-		    
+		    min-width: 0;     
+            min-height: 0;
+        
 		    .free{
 		      font-size: 12px;
 		      padding: 5px;
@@ -364,6 +378,9 @@
                       flex: 1 1 0;
                       -webkit-flex: 1 1 0;
                       margin-top: -3px;
+                      min-width: 0;     
+                      min-height: 0;
+                       
                       .name{
                             font-size: 12px !important;               
                             color: #555;
@@ -433,6 +450,7 @@
 				padding: 1em 0;
 				line-height: 1.5em;
 				border-top: 1px solid #D5D6D6;
+				/*min-height: 80px;*/
 		
 				& > div {
 					display: inline-block;
