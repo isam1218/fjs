@@ -304,114 +304,52 @@
               }
             }
 
-            .TransferIcons{
+            .TransferButtons{
               display: -webkit-flex;
               display: flex;
               display: -ms-flexbox;
-              margin-top: 5px;
-              margin-bottom: -5px;
+              -webkit-justify-content: space-around;
+              justify-content: space-around;
+              // margin-top: 5px;
+              // margin-bottom: -5px;
+              font-size: 10px;
 
-              .IconText{
-                -webkit-webkit-flex: 1;
-                -moz-webkit-flex: 1;
-                -ms-webkit-flex: 1;
-                -o-webkit-flex: 1;
-                -webkit-flex: 1;
-                margin-left: 17px;
-                margin-right: 17px;
-                color: #8A8989;
-
+              .CurrentCallBtn{
+                flex: 1 1 0;
+                -webkit-flex: 1 1 0;
+                -moz-webkit-flex: 1 1 0;
+                -ms-webkit-flex: 1 1 0;
+                -o-webkit-flex: 1 1 0;
+                max-width: 100px !important;
+                height: 25px;
 
                 &.ColdTransfer{
-                  flex: 1 1 0;
-                  -webkit-flex: 1 1 0;
-                  -moz-webkit-flex: 1 1 0;
-                  -ms-webkit-flex: 1 1 0;
-                  -o-webkit-flex: 1 1 0;
+                  left: 25px;
                 }
-                &.IconEnabled{
-                  cursor: pointer;
+
+                &.CompleteTransfer{
+                  &.CompleteTransferFinal{
+                    max-width: 120px !important;
+                  }
                 }
-                &.WarmTransfer{
-                  flex: 1 1 0;
-                  -webkit-flex: 1 1 0;
-                  -moz-webkit-flex: 1 1 0;
-                  -ms-webkit-flex: 1 1 0;
-                  -o-webkit-flex: 1 1 0;
-                }
-                &.IconEnabled{
-                  cursor: pointer;
-                }
+
                 &.ToVoicemail{
-                  flex: 1 1 0;
-                  -webkit-flex: 1 1 0;
-                  -moz-webkit-flex: 1 1 0;
-                  -ms-webkit-flex: 1 1 0;
-                  -o-webkit-flex: 1 1 0;
+                  right: 25px;
                 }
-                &.IconEnabled{
-                  cursor: pointer;
-                }
-                &.Cancel{
-                  flex: 1 1 0;
-                  -webkit-flex: 1 1 0;
-                  -moz-webkit-flex: 1 1 0;
-                  -ms-webkit-flex: 1 1 0;
-                  -o-webkit-flex: 1 1 0;
-                }
-                &.IconEnabled{
-                  cursor: pointer;
-                }
+              }
+            }
 
+            .CancelSection{
+              display: -webkit-flex;
+              display: flex;
+              display: -ms-flexbox;
+              justify-content: center;
 
-                .CircleBorder{
-                  border-radius: 50%;
-                  width: 45px;
-                  height: 45px;
-                  padding: 9px;
-                  background: #fff;
-                  border: 1px solid #858585;
-                  color: #858585;
-                  text-align: center;
-
-                  margin-left: auto;
-                  margin-right: auto;
-                  display: block;
-
-                  &.IconEnabled{
-                    color: #333333 !important;
-                    border: 1px solid #015D73;
-                  }
-                }
-                .MaterialIconText{
-                  margin-top: 5px;
-                  margin-bottom: 0px;
-                  font-family: Arial;
-                  font-size: 13px;
-                  &.ColdIconText{
-                    width: 85px;
-                  }
-                  &.WarmIconText{
-                    width: 90px;
-                  }
-                  &.VMIconText{
-                    width: 75px;
-                  }
-                  &.CancelIconText{
-                    margin-left: 20px;
-                    color: #333333 !important;
-                  }
-                  &.IconEnabled{
-                    color: #333333 !important;
-                  }
-
-                }
-                .material-icons{
-                  &.CancelIcon{
-                    font-size: 28px;
-                    padding: 7.5px !important;
-                  }
-                }
+              span{
+                font-size: 11px;
+                // font-weight: bold;
+                cursor: pointer;
+                color: #015D73;
               }
             }
 

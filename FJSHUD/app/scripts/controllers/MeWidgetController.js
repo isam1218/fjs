@@ -950,50 +950,58 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         };
     };
 
-    var createTmpExternalContact = function(contactNumber){
-        var externalContact = {};
-        externalContact.contactNumber = contactNumber;
-        return externalContact;
-    };
-
-    // called if user presses enter on keyboard
+    // called if user presses enter on keyboard after typing in 7 digits -> automatically coldTransfers
     $scope.inputtedSearch = function(){
         // numbers
-        if (!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4){
+        if (!isNaN($scope.transfer.search) && $scope.transfer.search.length >= 10){
+            console.log('pressed enter!');
             $scope.transferType = 'external';
-            $scope.transferTo = createTmpExternalContact($scope.transfer.search);
+            $scope.transferTo = {};
+            $scope.transferTo.contactNumber = $scope.transfer.search;
+            $scope.coldTransfer();
         }
     };
+
+    $scope.coldTransferButtonEnabled = false;
+    $scope.warmTransferButtonEnabled = false;
+    $scope.toVMButtonEnabled = false;
+    $scope.changeWarmButton = false;
 
     // called if user clicks on one of the selections
     $scope.selectTransferContact = function(selectionInput){
         $scope.transferFrom = $scope.currentCall.fullProfile ? $scope.currentCall.fullProfile : $scope.currentCall;
         $scope.selectedTransferToContact = selectionInput;
         $scope.showResult = true;
-        $scope.transferIconEnabled = true;
-        if (selectionInput.primaryExtension)
+        $scope.coldTransferButtonEnabled = true;
+        if (selectionInput.primaryExtension){
             $scope.transferType = 'internal';
+            $scope.warmTransferButtonEnabled = true;
+            $scope.toVMButtonEnabled = true;
+        }
         else{
             $scope.transferType = 'external';
             // need to set $scope.transferTo in case dragging an external contact to transfer component
             $scope.transferTo = selectionInput;
-            // set transferIconEnabled to false so that not all icons are activated for external contact
-            $scope.transferIconEnabled = false;
+            // set these to false so that not all icons are activated for external contact
+            $scope.warmTransferButtonEnabled = false;
+            $scope.toVMButtonEnabled = false;
         }
         angular.extend($scope.transferToDisplayName, $scope.selectedTransferToContact)
     };
 
     $scope.showResultFalse = function(){
         $scope.showResult = false;
-        $scope.transferIconEnabled = false;
+        $scope.coldTransferButtonEnabled = false;
+        $scope.warmTransferButtonEnabled = false;
+        $scope.toVMButtonEnabled = false;
         $scope.selectedTransferToContact = {};
         $scope.transferToDisplayName = {};
     };
 
     $scope.enableColdTransfer = function(){
-        if ($scope.transferIconEnabled)
+        if ($scope.coldTransferButtonEnabled)
             return true;
-        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length >= 4))
+        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length >= 10))
             return true;
         else if ($scope.transferType == 'external')
             return true;
@@ -1009,19 +1017,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         // receiver can be external, inputted extension, inputted phone number, etc.
         if ($scope.transferType == 'external')
             params.toNumber = $scope.transferTo.contactNumber ? $scope.transferTo.contactNumber : $scope.transferTo.phoneMobile ? $scope.transferTo.phoneMobile : $scope.transferTo.phoneBusiness;
-        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4))
+        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length >= 10))
             params.toNumber = $scope.transfer.search;
-        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length === 4)){
-            // this is if user clicks cold transfer after typing in 4 digit extension WITHOUT first clicking on contact div to set as contact
-            for (var i = 0; i < $scope.transferContacts.length; i++){
-                if ($scope.transferContacts[i].primaryExtension == $scope.transfer.search){
-                    $scope.transferIconEnabled = true;
-                    $scope.selectedTransferToContact = $scope.transferContacts[i];
-                    params.toContactId = $scope.selectedTransferToContact.xpid;
-                    break;
-                }
-            }
-        }
         else
             params.toContactId = $scope.selectedTransferToContact.xpid;
 
@@ -1037,15 +1034,47 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.showResult = false;
         $scope.transfer.search = '';
         $scope.transferComponent = false;
+        $scope.coldTransferButtonEnabled = false;
     };
 
-    $scope.warmTransfer = function(){
-        // call warm transfer API and then?...
+    $scope.goToWarmTransfer = function(){
+        // console.log('GOING TO WARM 2nd SCREEN!');
+        // 0. go to new screen
+        // $scope.warmTransferButtonEnabled = false;
+        $scope.changeWarmButton = true;
 
-        // console.log('Warm Transfer called');
+    };
+
+    $scope.completeWarmTransfer = function(){
+        /*
+        console.log('current Call - ', $scope.currentCall);
+        console.log('$scope.transferToDisplayName - ', $scope.transferToDisplayName);
+        1. place current call on hold
+             holdCall(currentCall) -> grabs call by xpid and makes call to phoneService.holdCall(currentCall.xpid, isHeld)
+        $scope.holdCall($scope.currentCall);
+        2. make 2nd call to $scope.selectedTransferToContact;
+             phoneService.makeCall($scope.selectedTransferToContact.primaryExtension)
+                phoneService.makeCall($scope.transferToDisplayName.primaryExtension);
+        3. grab callIds for both calls
+            $scope.calls is an object that has both of my calls {0_17: Object, 0_18: Object}
+            just loop thru $scope.calls and set key as callId1 and other key as callId2...
+        4. call warm transfer API
+        https://localhost:8080/v1/mycalls?action=warmTransfer&a.callId1=0_52&a.callId2=0_53&Authorization=b9c55b7baeb341f5d598f202a9955fca0baf48502cd47b63
+
+        // call warm transfer API and then?...
+        var action = 'warmTransfer';
+        var feed = 'mycalls';
+        var params = {};
+        // params.mycallId = $scope.currentCall.xpid;
+
+        console.log('Final complete Warm Transfer called');
+
         // $scope.showResult = false;
         // $scope.transfer.search = '';
-        // $scope.transferComponent = false;
+        */
+        $scope.changeWarmButton = false;
+        $scope.warmTransferButtonEnabled = false;
+        $scope.transferComponent = false;
     };
 
     $scope.transferToVM = function(){
@@ -1058,7 +1087,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.showResult = false;
         $scope.transfer.search = '';
         $scope.transferComponent = false;
-
+        $scope.toVMButtonEnabled = false;
     };
 
     $scope.cancelTransfer = function(){
@@ -1067,6 +1096,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.transferComponent = false;
         $scope.transferContacts = [];
         $scope.transferType = '';
+        $scope.coldTransferButtonEnabled = false;
+        $scope.warmTransferButtonEnabled = false;
+        $scope.toVMButtonEnabled = false;
+        $scope.changeWarmButton = false;
     };
 
     $scope.showCallOvery = function(screen){
