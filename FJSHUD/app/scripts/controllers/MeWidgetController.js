@@ -993,6 +993,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.showResult = false;
         $scope.coldTransferButtonEnabled = false;
         $scope.warmTransferButtonEnabled = false;
+        $scope.changeWarmButton = false;
         $scope.toVMButtonEnabled = false;
         $scope.selectedTransferToContact = {};
         $scope.transferToDisplayName = {};
