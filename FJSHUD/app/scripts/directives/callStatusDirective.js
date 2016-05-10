@@ -53,6 +53,11 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 				updateContact(contact);
 			});
 			
+			scope.$on("contextMenu", function () {
+				contact = $parse(attrs.profile)(scope);
+				updateContact(contact);
+
+			});
 
 			scope.$on("$destroy", function () {
 				//$interval.cancel(loop);
