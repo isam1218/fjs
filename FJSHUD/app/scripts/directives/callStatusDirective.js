@@ -52,17 +52,15 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 			scope.$watch("contact.call",function(){
 				updateContact(contact);
 			});
-			
-			scope.$on("contextMenu", function () {
-				contact = $parse(attrs.profile)(scope);
-				updateContact(contact);
 
-			});
+			if(scope.profile){
+				scope.$on("contextMenu", function () {
+					contact = $parse(attrs.profile)(scope);
+					updateContact(contact);
 
-			scope.$on("$destroy", function () {
-				//$interval.cancel(loop);
-				
-			});
+				});
+			}
+
 		}
 	};
 }]);
