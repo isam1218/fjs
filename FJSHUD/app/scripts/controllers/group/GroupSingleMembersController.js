@@ -1,4 +1,4 @@
-hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService', 
+hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService',
 	function($scope, $rootScope, $routeParams, groupService, contactService, httpService, storageService) {
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
@@ -25,20 +25,20 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
   $scope.callExtension = function($event, contact){
     $event.stopPropagation();
     $event.preventDefault();
-	
+
 	   httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
-	
+
 	   storageService.saveRecent('contact', contact.xpid);
   };
-  
+
   $scope.showCallStatus = function($event, contact) {
     $event.stopPropagation();
         $event.preventDefault();
-    
+
     // permission?
-    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid || contact.xpid == $rootScope.myPid)
+    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid || contact.xpid == $rootScope.myPid || (contact.call.displayName == "Private" && contact.call.phone == "Unknown"))
       return;
-  
+
     $scope.showOverlay(true, 'CallStatusOverlay', contact);
   };
 

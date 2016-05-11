@@ -4,12 +4,12 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	$scope.contacts = [];
 	$scope.favorites = {};
 	var chosenTab;
-	
+
 	// pull contact updates from service
 	contactService.getContacts().then(function(data) {
-		$scope.contacts = data;	
+		$scope.contacts = data;
 	});
-	
+
 	// pull group updates from service
 	groupService.getGroups().then(function(data) {
 		$scope.favorites = data.favorites;
@@ -69,7 +69,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
       	localStorage['LeftBar_ExternalContacts_sortReverse_of_' + $rootScope.myPid] = JSON.stringify($scope.sortReverse);
       }
   };
-	
+
     $scope.sort = function(field) {
         if($scope.sortField != field) {
             $scope.sortField = field;
@@ -79,12 +79,12 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
             $scope.sortReverse = !$scope.sortReverse;
         }
     };
-	
+
 	/*
 	// filter contacts down
 	$scope.customFilter = function() {
 		var tab = $scope.$parent.tab;
-		
+
 		return function(contact) {
 			// remove self
 			if (contact.xpid != $rootScope.myPid) {
@@ -105,7 +105,7 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 			}
 		};
 	};
-	
+
 	$scope.searchFilter = function(contact){
 		var query = $scope.$parent.query.toLowerCase();
 
@@ -115,24 +115,25 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 			return true;
 	};
 	*/
-	
+
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();
         $event.preventDefault();
-		
-		// permission?
-		if (contact.call.contactId == $rootScope.myPid)
+
+		// permission -> don't show call status of call that you're on, also don't show CSO for your own if see others' call details permission is removed
+		// there's no single permission dedicated to "see others' call details," so use displayName == "Private" + phone == "Unknown"
+		if (contact.call.contactId == $rootScope.myPid || (contact.call.displayName == "Private" && contact.call.phone == "Unknown"))
 			return;
-	
+
 		$scope.showOverlay(true, 'CallStatusOverlay', contact);
 	};
-	
+
 	// add favorites action (via directive)
 	$scope.searchContact = function(contact) {
 		myHttpService.sendAction('groupcontacts', 'addContactsToFavorites', {contactIds: contact.xpid});
 	};
 
     $scope.$on("$destroy", function() {
-		
+
     });
 }]);

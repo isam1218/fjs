@@ -1,5 +1,5 @@
 hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', 'SettingsService', '$location',  function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService, storageService, settingsService ,$location){
-  
+
   $scope.totalContacts = [];
   $scope.totalGroups = [];
   $scope.totalQueues = [];
@@ -26,7 +26,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   var mostRecentGroup;
   var mostRecentQueue;
   var mostRecentConf;
-  
+
   $scope.groupedSections = [{type: 'contact', lastTime: {}},{type: 'group', lastTime: {}},{type: 'queue', lastTime: {}},{type: 'conference', lastTime: {}}];
 
   // retrieve saved recents from LS (if any), then grab the most recent entry from each grouping (contact, group, queue, conf) and assign as prop to the items in groupedSections array
@@ -46,7 +46,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       } else if ((singleEntry.type == 'conference' && mostRecentConf === undefined) || (singleEntry.type == 'conference' && singleEntry.time > mostRecentConf.time)){
         mostRecentConf = singleEntry;
         $scope.recentConfFlag = true;
-      }      
+      }
     }
     // take the object w/ the most recent time from that section, and add that time as property to [groupedSections]
     $scope.groupedSections[0].lastTime = mostRecentContact;
@@ -101,7 +101,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
         var single = $scope.combined[key];
         $scope.totalCombined.push($scope.combined[key]);
       }
-    });    
+    });
   }();
 
   $scope.recentFilter = function(){
@@ -120,15 +120,15 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.showCallStatus = function($event, contact) {
     $event.stopPropagation();
         $event.preventDefault();
-    
+
     // permission?
-    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid)
+    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid || (contact.call.displayName == "Private" && contact.call.phone == "Unknown"))
       return;
-  
+
     $scope.showOverlay(true, 'CallStatusOverlay', contact);
   };
 
-  settingsService.getSettings().then(function(data) {   
+  settingsService.getSettings().then(function(data) {
     $scope.sortField = localStorage['LeftBar_RecentContacts_sortTab_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_RecentContacts_sortTab_of_' + $rootScope.myPid]) : 'timeline';
     $scope.sortReverse = localStorage['LeftBar_RecentContacts_sortReverse_of_' + $rootScope.myPid] ? JSON.parse(localStorage['LeftBar_RecentContacts_sortReverse_of_' + $rootScope.myPid]) : false;
   });
@@ -193,7 +193,7 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.conferencesLimit = function(){
     return conferencePageSize * conferencePagesShown;
   }
-  
+
   $scope.hasMoreContactsToLoad = function(){
     var contactCounter = 0;
     for (var i = 0, iLen = $scope.totalContacts.length; i < iLen; i++){
@@ -273,20 +273,20 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
         return httpService.get_avatar(xpid,28,28);
       } else {
         return 'img/Generic-Avatar-28.png';
-      } 
+      }
     } else {
         return 'img/Generic-Avatar-28.png';
     }
   };
-  
+
   $scope.getDroppableType = function(type) {
 	switch(type) {
 		case 'contact':
 			return 'Call';
 		case 'conference':
 			return 'Call,Contact';
-	}	
-	
+	}
+
 	return '';
   };
 }]);

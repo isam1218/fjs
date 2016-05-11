@@ -1,4 +1,4 @@
-hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','ConferenceService', 
+hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','ConferenceService',
 	function($parse,$compile, $location, ntpService,conferenceService) {
 	return {
 		restrict: 'E',
@@ -9,16 +9,16 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 		},*/
 		template:'<div class="WidgetHeaderCallStatus"></div>',
 		link: function(scope, element, attrs) {
-			
+
 			var callStatus,avatarEle,details,detailCallerName, detailCallExtension,duration;
 			var contact = $parse(attrs.profile)(scope);
 
-			
+
 
 
 			function updateContact(contact){
 				element.empty();
-				//we create a call status contact and attach it to the scope 
+				//we create a call status contact and attach it to the scope
 				scope.callstatusContact = contact;
 				if(contact.call){
 					var innerElement = "<avatar ng-click='showCallOverlay(callstatusContact)' context='callstatus' profile='callstatusContact.call.fullProfile' type=" + contact.call.type + "> </avatar> <div class='CallLineTop'> <div class='CallerName'>" + contact.call.displayName + "</div> <div class='CallExtension'>" + contact.call.phone + "</div> </div> <div class='CallDuration' timer=" + contact.call.startedAt + "> </div>";
@@ -31,8 +31,8 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 			}
 
 			scope.showCallOverlay = function(contact){
-				
-				if (contact.call.contactId == scope.meModel.my_pid || contact.xpid == scope.meModel.my_pid)
+
+				if (contact.call.contactId == scope.meModel.my_pid || contact.xpid == scope.meModel.my_pid || (contact.call.displayName == "Private" && contact.call.phone == "Unknown"))
 					return;
 
 				switch(contact.call.type){
@@ -45,7 +45,7 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 					default:
 						event.preventDefault();
 						scope.showOverlay(true, 'CallStatusOverlay', contact);
-			
+
 				}
 			};
 

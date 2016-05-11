@@ -22,7 +22,7 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
   $scope.selectedSort = localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid]) : 'displayName';
 
   $scope.customAgentOrderBy = function(member){
-    localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid] = JSON.stringify($scope.selectedSort);     
+    localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid] = JSON.stringify($scope.selectedSort);
     switch($scope.selectedSort){
       case 'displayName':
         return member.displayName;
@@ -32,8 +32,8 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
         return [member.fullProfile.hud_status, member.displayName];
     }
   };
-   
-  queueService.getQueues().then(function() {  
+
+  queueService.getQueues().then(function() {
      $scope.agents = $scope.queue.members;
   });
 
@@ -53,20 +53,20 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
   $scope.callExtension = function($event, contact) {
     $event.stopPropagation();
     $event.preventDefault();
-    
+
 	httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
-	
+
 	storageService.saveRecent('contact', contact.xpid);
   };
-  
+
   $scope.showCallStatus = function($event, contact) {
     $event.stopPropagation();
         $event.preventDefault();
-    
+
     // permission?
-    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid)
+    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid || (contact.call.displayName == "Private" && contact.call.phone == "Unknown"))
       return;
-  
+
     $scope.showOverlay(true, 'CallStatusOverlay', contact);
   };
 
