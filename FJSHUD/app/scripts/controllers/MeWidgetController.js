@@ -1039,17 +1039,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.goToWarmTransfer = function(){
-        // console.log('GOING TO WARM 2nd SCREEN!');
-        // 0. go to new screen
-        // $scope.warmTransferButtonEnabled = false;
-        $scope.changeWarmButton = true;
-
-    };
-
-    $scope.completeWarmTransfer = function(){
         /*
-        console.log('current Call - ', $scope.currentCall);
-        console.log('$scope.transferToDisplayName - ', $scope.transferToDisplayName);
+        // console.log('GOING TO WARM 2nd SCREEN!');
+        0. go to new screen
         1. place current call on hold
              holdCall(currentCall) -> grabs call by xpid and makes call to phoneService.holdCall(currentCall.xpid, isHeld)
         $scope.holdCall($scope.currentCall);
@@ -1059,6 +1051,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         3. grab callIds for both calls
             $scope.calls is an object that has both of my calls {0_17: Object, 0_18: Object}
             just loop thru $scope.calls and set key as callId1 and other key as callId2...
+        // $scope.warmTransferButtonEnabled = false;
+        */
+        $scope.changeWarmButton = true;
+
+    };
+
+    $scope.completeWarmTransfer = function(){
+        /*
+        console.log('current Call - ', $scope.currentCall);
+        console.log('$scope.transferToDisplayName - ', $scope.transferToDisplayName);
         4. call warm transfer API
         https://localhost:8080/v1/mycalls?action=warmTransfer&a.callId1=0_52&a.callId2=0_53&Authorization=b9c55b7baeb341f5d598f202a9955fca0baf48502cd47b63
 
@@ -1368,6 +1370,20 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     icon_version = data[i].xef001iver;
                     $scope.meModel.icon_version = icon_version;
                 }
+            }
+        }
+    });
+
+    // this is for determining whether to show old transfer UI vs new transfer UI. If CP14 --> show new transfer UI
+    // only checking for cp14 -> need to make sure to add checks for any new versions of CP that are released thereafter
+    $scope.cpFourteen = false;
+    $scope.$on("me_synced", function(event, data){
+        for (var i = 0; i < data.length; i++){
+            if (data[i].propertyKey == "cp_location"){
+                if (data[i].propertyValue == "cp14")
+                    $scope.cpFourteen = true;
+                else
+                    $scope.cpFourteen = false;
             }
         }
     });
