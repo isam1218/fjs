@@ -32,7 +32,7 @@
 
 <div class="BottomRow Actions" ng-show="!reasons.show">
 	<!-- recordings -->
-	<div ng-if="widget == 'recordings' && profile.xpid != myPid">
+	<div ng-if="type =='Contact' && widget == 'recordings' && profile.xpid != myPid ">	
 		<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.delete_word}}</span>
@@ -40,12 +40,12 @@
 		<a class="Button" href="" ng-show="!profile && original.calleePhone" ng-click="callNumber(original.calleePhone)">
 			<div class="ListRowActionButtonCall"></div>
 			<span>{{::verbage.call_back}}</span>
-		</a>		
+		</a>	
 	</div>
 
 		
 	<!-- voicemails -->	
-	<div ng-if="widget == 'voicemails' && profile.xpid != myPid">
+	<div ng-if="type =='Contact' && widget == 'voicemails' && profile.xpid != myPid">
 		<a class="Button" href="" ng-click="deleteRecording()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.delete_word}}</span>
@@ -81,7 +81,7 @@
 	</div>	
 
 	<!-- myself -->
-	<div ng-if="profile.xpid && profile.xpid == myPid && type == 'Contact'">	
+	<div ng-if="profile.xpid && profile.xpid == myPid && type == 'Contact'">
 		<a class="Button" href="" ng-show="widget == 'conference' && !original.muted" ng-click="muteUser(true)">
 			<div class="ListRowActionButtonMute"></div>
 			<span>{{::verbage.Mute}}</span>
@@ -133,10 +133,13 @@
 			<div class="ListRowActionButtonMobile"></div>
 			<span>{{::verbage.mobile}}</span>
 		</a>
-	</div>
-		
+		<a class="Button" href="" ng-show="(widget == 'voicemails'  || widget == 'recordings') && context && context.fullProfile && context.fullprofile.id == meModel.my_pid"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+			<div class="ListRowActionButtonDownload"></div>
+			<span>Download</span>
+		</a>
+	</div>		
 	<!-- contact -->
-	<div ng-if="profile.xpid != myPid && (type != 'QueueStat' || type != 'ConferenceRoom' || type != 'Group')">
+	<div ng-if="profile.xpid != myPid && type != 'QueueStat' && type != 'ConferenceRoom' && type != 'Group'">		
 		<a class="Button" href="" ng-show="original.parkExt" ng-click="takeParkedCall()">
 			<div class="ListRowActionButtonTake"></div>
 			<span>{{::verbage.take}}</span>
@@ -234,11 +237,15 @@
 				<div class="ListRowActionButtonScreenShare" ></div>
 				<span>Screen Share</span>
 			</a>
-	  	</div>
+	  	</div>	  	
+		 <a class="Button" href="" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+			<div class="ListRowActionButtonDownload"></div>
+			<span>Download</span>
+		</a>
 	</div>
 	
 	<!-- group -->
-	<div ng-if="type == 'Group'">
+	<div ng-if="type == 'Group'">	
 		<a class="Button" href="" ng-show="profile.ownerId && profile.ownerId == myPid" ng-click="editGroup()">
 			<div class="ListRowActionButtonEdit"></div>
 			<span>{{::verbage.Edit}}</span>
@@ -271,11 +278,14 @@
 			<div class="ListRowActionButtonScreenShare" ng-hide="hideScreenShare"></div>
 			<span ng-hide="hideScreenShare">Screen Share</span>
 		</a>
-		
+		<a class="Button" href="" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+			<div class="ListRowActionButtonDownload"></div>
+			<span>Download</span>
+		</a>
 	</div>
 		
 	<!-- queue -->
-	<div ng-if="type == 'QueueStat'">
+	<div ng-if="type == 'QueueStat'">	
 		<a class="Button" href="" ng-show="canLoginAgent && context.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
@@ -296,10 +306,14 @@
             <div class="ListRowActionButtonReset"></div>
             <span>{{::verbage.Reset_Stats}}</span>
         </a>
+        <a class="Button" href="" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+			<div class="ListRowActionButtonDownload"></div>
+			<span>Download</span>
+		</a>
 	</div>
 	
 	<!-- conference -->
-	<div ng-if="type == 'ConferenceRoom'">
+	<div ng-if="type == 'ConferenceRoom'">		
 		<a class="Button" href="" ng-show="profile.status && !profile.status.isMeJoined" ng-click="joinConference(true)">
 			<div class="ListRowActionButtonJoin"></div>
 			<span>{{::verbage.join}}</span>
@@ -328,10 +342,14 @@
 			<div class="ListRowActionButtonFileShare"></div>
 			<span>{{::verbage.file_share}}</span>
 		</a>
+		<a class="Button" href="" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+			<div class="ListRowActionButtonDownload"></div>
+			<span>Download</span>
+		</a>
 	</div>
 	
 	<!-- dockable -->
-	<div ng-show="profile.xpid  && profile.xpid != myPid && (profile.displayName || profile.name) && (profile.displayName !== undefined || profile.name !== undefined)">
+	<div ng-show="profile.xpid  && profile.xpid != myPid && (profile.displayName || profile.name) && (profile.displayName !== undefined || profile.name !== undefined)">			
 		<div ng-show="widget != 'voicemails' && widget != 'recordings'">
 			<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 				<div class="ListRowActionButtonDock"></div>
@@ -342,7 +360,12 @@
 				<span>{{::verbage.undock}}</span>
 			</a>
 		</div>
-
+        <div ng-show="widget == 'voicemails' && widget == 'recordings'">
+	        <a class="Button" href="" ng-show="widget == 'voicemails'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+				<div class="ListRowActionButtonDownload"></div>
+				<span>Download</span>
+			</a>
+		</div> 
 	</div>
 
 	<div ng-if="profile.xpid && profile.xpid != myPid && profile.call"> 

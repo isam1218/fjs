@@ -1,5 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService','$http','$modal',
-	function($rootScope, $scope, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService,$http,$modal) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService','$http','$modal',
+	function($rootScope, $scope, $sce, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService,$http,$modal) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -163,6 +163,17 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 	
 	$scope.removeFavorite = function() {
 		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.profile.xpid});
+	};
+	
+	$scope.downloadRecording = function(event){
+		//get the audio file path
+		var path = $scope.original.voicemailMessageKey ? 'vm_download?id=' + $scope.original.voicemailMessageKey : 'media?key=callrecording:' + $scope.original.xpid;
+		var source = httpService.get_audio(path);
+		//set the element's href attribute and click it
+		var el = event.currentTarget;
+		$(el).attr('href', source);
+		//$(el).trigger('click');
+		
 	};
 	
 	$scope.deleteRecording = function() {
