@@ -168,12 +168,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 	$scope.downloadRecording = function(event){
 		//get the audio file path
 		var path = $scope.original.voicemailMessageKey ? 'vm_download?id=' + $scope.original.voicemailMessageKey : 'media?key=callrecording:' + $scope.original.xpid;
-		var source = httpService.get_audio(path);
+		var source = httpService.get_audio(path);		
+		window.onbeforeunload = null;	
 		//set the element's href attribute and click it
 		var el = event.currentTarget;
-		$(el).attr('href', source);
-		//$(el).trigger('click');
-		
+		$(el).attr('href', source);				
 	};
 	
 	$scope.deleteRecording = function() {
