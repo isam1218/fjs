@@ -20,7 +20,8 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
   		if($scope.calls_data[i] != undefined) {
   		  if($scope.calls_data[i].type != 0 && ($scope.calls_data[i].incoming == false || $scope.calls_data[i].state == 2)){
   		    $scope.tab = 'recent';
-  		    $location.path("settings/callid/"+data[i].xpid);
+  		    if($rootScope.meModel.location.locationType == 'w') 
+  		    	$location.path("settings/callid/"+data[i].xpid);
   		  } 
   		}
 		}
