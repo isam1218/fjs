@@ -32,7 +32,7 @@
 
 <div class="BottomRow Actions" ng-show="!reasons.show">
 	<!-- recordings -->
-	<div ng-if="type =='Contact' && widget == 'recordings' && profile.xpid != myPid ">	
+	<div ng-if="widget == 'recordings' && profile.xpid != myPid ">	<!-- type =='Contact' &&  -->
 		<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.delete_word}}</span>
@@ -45,7 +45,7 @@
 
 		
 	<!-- voicemails -->	
-	<div ng-if="type =='Contact' && widget == 'voicemails' && profile.xpid != myPid">
+	<div ng-if="widget == 'voicemails' && profile.xpid != myPid"><!-- type =='Contact' &&  -->
 		<a class="Button" href="" ng-click="deleteRecording()">
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.delete_word}}</span>
@@ -133,7 +133,7 @@
 			<div class="ListRowActionButtonMobile"></div>
 			<span>{{::verbage.mobile}}</span>
 		</a>
-		<a class="Button" href="" ng-show="(widget == 'voicemails'  || widget == 'recordings') && context && context.fullProfile && context.fullprofile.id == meModel.my_pid"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+		<a class="Button" ng-href="{{downloadLink}}" ng-show="(widget == 'voicemails'  || widget == 'recordings') && context && context.fullProfile && context.fullprofile.id == meModel.my_pid"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
 			<div class="ListRowActionButtonDownload"></div>
 			<span>Download</span>
 		</a>
@@ -238,7 +238,7 @@
 				<span>Screen Share</span>
 			</a>
 	  	</div>	  	
-		 <a class="Button" href="" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+		 <a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
 			<div class="ListRowActionButtonDownload"></div>
 			<span>Download</span>
 		</a>
@@ -278,7 +278,7 @@
 			<div class="ListRowActionButtonScreenShare" ng-hide="hideScreenShare"></div>
 			<span ng-hide="hideScreenShare">Screen Share</span>
 		</a>
-		<a class="Button" href="" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+		<a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
 			<div class="ListRowActionButtonDownload"></div>
 			<span>Download</span>
 		</a>
@@ -306,7 +306,7 @@
             <div class="ListRowActionButtonReset"></div>
             <span>{{::verbage.Reset_Stats}}</span>
         </a>
-        <a class="Button" href="" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+        <a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
 			<div class="ListRowActionButtonDownload"></div>
 			<span>Download</span>
 		</a>
@@ -342,7 +342,7 @@
 			<div class="ListRowActionButtonFileShare"></div>
 			<span>{{::verbage.file_share}}</span>
 		</a>
-		<a class="Button" href="" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+		<a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
 			<div class="ListRowActionButtonDownload"></div>
 			<span>Download</span>
 		</a>
@@ -361,7 +361,7 @@
 			</a>
 		</div>
         <div ng-show="widget == 'voicemails' && widget == 'recordings'">
-	        <a class="Button" href="" ng-show="widget == 'voicemails'"  target="_self" download="recording.mp3" ng-click="downloadRecording($event)">
+	        <a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
 				<div class="ListRowActionButtonDownload"></div>
 				<span>Download</span>
 			</a>

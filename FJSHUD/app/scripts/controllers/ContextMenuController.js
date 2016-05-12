@@ -7,6 +7,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 	$scope.type;
 	$scope.widget;
 	$scope.context;
+	$scope.downloadLink = "";
 	
 	$scope.myQueue;
 	$scope.canDock = true;	
@@ -165,15 +166,24 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.profile.xpid});
 	};
 	
-	$scope.downloadRecording = function(event){
+	$scope.downloadRecording = function(){		
 		//get the audio file path
 		var path = $scope.original.voicemailMessageKey ? 'vm_download?id=' + $scope.original.voicemailMessageKey : 'media?key=callrecording:' + $scope.original.xpid;
-		var source = httpService.get_audio(path);		
-		window.onbeforeunload = null;	
-		//set the element's href attribute and click it
-		var el = event.currentTarget;
-		$(el).attr('href', source);				
-	};
+		$scope.downloadLink =  httpService.get_audio(path);
+		
+	    window.onbeforeunload = null;	
+	    
+	    setTimeout(function(){
+	    	if(httpService.getUnload())
+			{
+				window.onbeforeunload = function() {			
+					document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+					
+					return "Are you sure you want to navigate away from this page?";
+				};
+			}
+        }, 1000);	    			
+	};	
 	
 	$scope.deleteRecording = function() {
 		var type;
