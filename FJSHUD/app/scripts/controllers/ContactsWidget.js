@@ -118,13 +118,20 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();
-        $event.preventDefault();
+    $event.preventDefault();
+    // if the contact is mine
+    if (contact.xpid == $rootScope.myPid || contact.call.type === 0)
+      return;
 
-		// permission -> don't show call status of call that you're on, also don't show CSO for your own if see others' call details permission is removed
-		// there's no single permission dedicated to "see others' call details," so use displayName == "Private" + phone == "Unknown"
-		if (contact.call.contactId == $rootScope.myPid || (contact.call.displayName == "Private" && contact.call.phone == "Unknown"))
-			return;
+    var myContact = contactService.getContact($rootScope.myPid);
+    // if i'm on a call...
+    if (myContact.call){
+      // if the person i'm talking to is the contact clicked on
+      if (myContact.call.contactId == contact.call.xpid)
+        return;
+    }
 
+    // show overlay
 		$scope.showOverlay(true, 'CallStatusOverlay', contact);
 	};
 

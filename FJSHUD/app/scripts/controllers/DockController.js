@@ -1,7 +1,6 @@
 hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
 	var column;
 	var request;
-
 	$scope.gadgets = [];
 	$scope.parkedCalls = [];
 	$scope.upload_time = 0;
@@ -190,6 +189,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		$scope.$on('settings_updated', function(event, data) {
 			updateDock(data);
 		});
+
 	});
 
 	$scope.getDroppableType = function(type) {
@@ -245,11 +245,18 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();
-        $event.preventDefault();
+    $event.preventDefault();
+		// if the contact is mine
+    if (contact.xpid == $rootScope.myPid || contact.call.type == 0)
+      return;
 
-		// permission?
-		if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid || (contact.call.displayName == "Private" && contact.call.phone == "Unknown"))
-			return;
+    var myContact = contactService.getContact($rootScope.myPid);
+    // if i'm on a call...
+    if (myContact.call){
+      // if the person i'm talking to == contact clicked on
+      if (myContact.call.contactId == contact.call.xpid)
+        return;
+    }
 
 		$scope.showOverlay(true, 'CallStatusOverlay', contact);
 	};

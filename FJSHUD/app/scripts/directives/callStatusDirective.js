@@ -1,5 +1,5 @@
-hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','ConferenceService',
-	function($parse,$compile, $location, ntpService,conferenceService) {
+hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','ConferenceService', 'ContactService',
+	function($parse,$compile, $location, ntpService,conferenceService, contactService) {
 	return {
 		restrict: 'E',
 		priority: -1,
@@ -31,9 +31,18 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 			}
 
 			scope.showCallOverlay = function(contact){
+				// if contact is mine
+		    if (contact.xpid == scope.meModel.my_pid || contact.call.type === 0){
+		      return;
+		    }
+				var myContact = contactService.getContact(scope.meModel.my_pid);
+				// if i'm on a call and clicking on the person i'm talking to...
+				if (myContact.call){
+					if (myContact.call.contactId == contact.call.xpid){
+						return;
+					}
+				}
 
-				if (contact.call.contactId == scope.meModel.my_pid || contact.xpid == scope.meModel.my_pid || (contact.call.displayName == "Private" && contact.call.phone == "Unknown"))
-					return;
 
 				switch(contact.call.type){
 					case fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL:
@@ -43,11 +52,14 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 						}
 						break;
 					default:
-						event.preventDefault();
 						scope.showOverlay(true, 'CallStatusOverlay', contact);
-
 				}
 			};
+
+			element.on('click', function(event){
+				event.stopPropagation();
+				event.preventDefault();
+			});
 
 			scope.$watch("contact.call",function(){
 				updateContact(contact);

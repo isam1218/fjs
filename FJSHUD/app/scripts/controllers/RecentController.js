@@ -119,11 +119,18 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
 
   $scope.showCallStatus = function($event, contact) {
     $event.stopPropagation();
-        $event.preventDefault();
-
-    // permission?
-    if (contact.call.type == 0 || contact.call.contactId == $rootScope.myPid || (contact.call.displayName == "Private" && contact.call.phone == "Unknown"))
+    $event.preventDefault();
+    // if the contact is mine
+    if (contact.xpid == $rootScope.myPid || contact.call.type == 0)
       return;
+
+    var myContact = contactService.getContact($rootScope.myPid);
+    // if i'm on a call...
+    if (myContact.call){
+      // if the person i'm talking to == contact clicked on
+      if (myContact.call.contactId == contact.call.xpid)
+        return;
+    }
 
     $scope.showOverlay(true, 'CallStatusOverlay', contact);
   };
