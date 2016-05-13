@@ -1,4 +1,4 @@
-hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$location', '$rootScope', 'QueueService', function(httpService, conferenceService, settingsService ,$parse, $location, $rootScope, queueService) {
+hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$location', '$rootScope', function(httpService, conferenceService, settingsService ,$parse, $location, $rootScope) {
 	var timeout;
 
 	// used as droppable="Type,Type,Type"
