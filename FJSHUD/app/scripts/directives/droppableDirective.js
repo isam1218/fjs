@@ -1,4 +1,4 @@
-hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$location', '$rootScope', function(httpService, conferenceService, settingsService ,$parse, $location, $rootScope) {
+hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$location', '$rootScope', 'QueueService', function(httpService, conferenceService, settingsService ,$parse, $location, $rootScope, queueService) {
 	var timeout;
 
 	// used as droppable="Type,Type,Type"
@@ -52,7 +52,6 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 				drop: function(event, ui) {
 					$('.DroppableArea').removeClass('DroppableArea');
 
-					// console.log('0 - ', obj);
 					// re-check basic criteria
 					if (timeout || drops.indexOf(type) == -1)
 						return;
@@ -82,7 +81,6 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 					}
 					// start conference via active call
 					else if (scope.$parent.currentCall) {
-						// console.log('1');
 						var currentConf = scope.$parent.currentCall.details.conferenceId;
 
 						// already on a conference call
@@ -144,7 +142,6 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 					}
 					// join conference normally
 					else if (scope.conference || (scope.item && scope.item.recent_type == 'conference') || (scope.gadget && scope.gadget.name.indexOf('ConferenceRoom') != -1)) {
-					// console.log('2');
 						var xpid = scope.conference ? scope.conference.xpid : scope.gadget ? scope.gadget.data.xpid : scope.item.xpid;
 
 						if (type == 'Contact') {
@@ -164,7 +161,6 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 					}
 					// park call
 					else if (scope.gadget && scope.gadget.name.indexOf('GadgetParkedCalls') != -1) {
-					// console.log('3');
 						httpService.sendAction('mycalls', 'transferToPark', {
 							mycallId: obj.xpid
 						});
@@ -173,45 +169,49 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 					else {
 						// check if I have isXFerFromIsEnabled personal permission...
 						if (settingsService.getPermission('canTransferFrom')) {
-							var fromID;
-							var toID;
-							var feed = 'queue_call';
+							var feed;
 							var action = 'transferToContact';
 							var params = {};
 
-							// console.log('obj - ', obj);
-							// so long as queue call has not been answered yet...(transfer unanswered queue call functionality)
-							if (obj.taken == false){
-								// console.log('in if statement!');
+							// incoming queue calls have the 'taken' property on the obj and it will have value 'false' if incoming. They do not have type property...
+							// other calls have to 'taken' property on the obj
+							if (obj.taken != null && obj.taken === false){
+								// transfer unanswered queue call functionality
+								feed = 'queue_call';
 								params.queueCallId = obj.xpid;
-								params.contactId = scope.gadget.data.xpid;
+								// if drag to leftbar...(scope has contact property on it), else if (item for recents), else dragging to dock...
+								if (scope.contact)
+									params.contactId = scope.contact.xpid;
+								else if (scope.item)
+									params.contactId = scope.item.xpid;
+								else if (scope.gadget)
+									params.contactId = scope.gadget.data.xpid;
+								// else drag to dock
+
 								httpService.sendAction(feed, action, params);
-								console.log('Drag and Drop: Transferring to -> ', scope.gadget.data.displayName, ' | feed -> ', feed, ' | action -> ', action, ' | params -> ', params);
 								return;
 							}
 
+							feed = 'calls';
 							// queue call vs my call vs other's call
 							if (obj.agentContactId)
-								fromID = obj.agentContactId;
+								params.fromContactId = obj.agentContactId;
 							else if (obj.sipId)
-								fromID = $rootScope.myPid;
+								params.fromContactId = $rootScope.myPid;
 							else
-								fromID = obj.xpid;
+								params.fromContactId = obj.xpid;
 
 							// contact id comes from multiple places
 							if (scope.contact)
-								toID = scope.contact.xpid;
+								params.toContactId = scope.contact.xpid;
 							else if (scope.member)
-								toID = scope.member.contactId;
+								params.toContactId = scope.member.contactId;
 							else if (scope.gadget)
-								toID = scope.gadget.data.xpid;
+								params.toContactId = scope.gadget.data.xpid;
 							else if (scope.item)
-								toID = scope.item.xpid;
+								params.toContactId = scope.item.xpid;
 
-							httpService.sendAction('calls', 'transferToContact', {
-								fromContactId: fromID,
-								toContactId: toID
-							});
+							httpService.sendAction(feed, action, params);
 						}
 					}
 

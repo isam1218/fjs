@@ -19,24 +19,6 @@ hudweb.controller('QueueWidgetCallsController', ['$scope', '$rootScope', '$route
 		}
 	};
 
-	var feed = 'queue_call';
-	var action = 'transferToContact';
-	var params = {};
-
-	$scope.testTransfer = function(call){
-		params.queueCallId = call.xpid;
-		params.contactId = "100007bf0_2122674";
-		httpService.sendAction(feed, action, params);
-		console.log('Button1: Transferring to SeanTest20: feed -> ', feed, ' | action -> ', action, ' | params -> ', params);
-	};
-
-	$scope.testTransfer2 = function(call){
-		params.queueCallId = call.xpid;
-		params.contactId = "100007bf0_2122714";
-		httpService.sendAction(feed, action, params);
-		console.log('Button2: Transferring to Sean Rose: feed -> ', feed, ' | action -> ', action, ' | params -> ', params);
-	}
-
 	// listen for updates
 	$scope.$watchCollection('queue.calls', function() {
 		$scope.callsWaiting = 0;
