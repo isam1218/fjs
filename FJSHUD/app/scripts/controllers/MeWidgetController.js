@@ -448,6 +448,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         var offset = context.getElementOffset(eventTarget);
         $scope.showPopup({key:"DialPadPopup", x:offset.x-60, y:offset.y + 25});
         return true;
+        ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: 'From Dialpad/Center'});
     };
     $scope.lastMillis = 0;
     $scope.getMeAvatarUrl = function(width,height){
@@ -953,7 +954,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
 		$scope.call_obj.phoneNumber = '';
-
+        ga('send', 'event', {eventCategory:'Calls', eventAction:'From', eventLabel: 'Center Column'});
     };
 		
 

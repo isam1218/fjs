@@ -71,11 +71,12 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 						  if (data && data.url) {
 							window.open(data.url);
 						}
-
+						ga('send', 'event', {eventCategory:'Intellinote', eventAction:'Access', eventLabel: 'Center Column'});
 				  }).
 				  error(function(data, status, headers, config) {
    						alert("Access error. Please contact your system administrator or Fonality Support.");
 				  });
+				  
 	};
 	
 	// from search contacts directive

@@ -85,6 +85,8 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 				}
 			}
 		});
+
+		ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From App Tray Navigation"});
 	};
 	
 	// reset search field on clear

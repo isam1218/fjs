@@ -569,6 +569,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		// jump to bottom on search clear
 		if (!data || data == '')
 			scrollbox.scrollTop = scrollbox.scrollHeight;
+		ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From Center Column (Chat, Calls, Voicemails, My Recordings)"});
 	});
 	
 	$scope.sendMessage = function() {

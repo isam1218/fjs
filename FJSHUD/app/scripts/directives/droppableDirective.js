@@ -195,6 +195,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 								toContactId: toID
 							});
 						}
+						ga('send', 'event', {eventCategory:'Calls', eventAction:'Transfer', eventLabel: 'via Drag and Drop'});
 					}
 					
 					// prevent sibling overlap

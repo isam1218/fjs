@@ -471,7 +471,7 @@ hudweb.controller('NotificationController',
         $scope.calls[call].state = $scope.callState.CALL_ACCEPTED;
       }
     }
-	
+	ga('send', 'event', {eventCategory:'Calls', eventAction:'Receive', eventLabel: 'Answer from Notification'});
     phoneService.acceptCall(xpid);
   };
 
@@ -485,6 +485,8 @@ hudweb.controller('NotificationController',
       $scope.remove_notification(message.xpid);
       $scope.showOverlay(false);
     }
+
+    ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: 'From Notification'});
   };
   
   $scope.joinZoom = function(message) {
@@ -492,7 +494,8 @@ hudweb.controller('NotificationController',
       window.open(urlPath, "_blank");
 	  
       $scope.remove_notification(message.xpid);
-  };
+      ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Join', eventLabel: 'From Notification'});
+  };  
 
   $scope.showNotificationOverlay = function(show) {
     if (!show)

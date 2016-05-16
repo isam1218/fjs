@@ -22,6 +22,7 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			// trigger auto clear
 			if (scope.enableChat === undefined && scope.searchEmUp === undefined) {
 				element.on('keyup', function(e) {
+					ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From Center Column (Chat, Calls, Voicemails, My Recordings)"});
 					if (autoClearOn == 'true') {
 						$timeout.cancel(timeout);
 						

@@ -1,5 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService','$http','$modal',
-	function($rootScope, $scope, $sce, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService,$http,$modal) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService','$http','$modal','$attrs',
+	function($rootScope, $scope, $sce, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService,$http,$modal,$attrs) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -210,6 +210,34 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		//httpService.sendAction('me', 'callTo', {phoneNumber: number});
 		phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
+		var gaLabel;
+		//check if its in the dock
+		if ($scope.profile) {
+			settingsService.getSettings().then(function(data) {
+				var regex = new RegExp($scope.profile.xpid + '$', 'g'); // end of string	
+				for (var key in data) {
+					if (key.indexOf('GadgetConfig') != -1 && key.match(regex) && $scope.context == null) {
+						 ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "From Dock"});
+						break;
+					}
+				}
+			});
+		}
+
+		if($scope.context == 'all'){
+			gaLabel = 'from Hover';
+		}
+		else if($scope.context == 'recent'){
+			gaLabel = 'Recents List'
+		}
+		else if ($scope.widget == 'voicemails'){
+			gaLabel = "Calls/Recordings - Voicemail - Call"
+		}
+		else if ($scope.widget == 'recordings'){
+			gaLabel = "Calls/Recordings - Recordings - Call"
+		}
+		
+		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: gaLabel});
 	};
 	
 	$scope.takeParkedCall = function(){
@@ -295,11 +323,9 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
  $scope.addedContacts = [];
 	$scope.screenShare = function(contact){
 
-		        $scope.addedContacts.push(contact);
+        $scope.addedContacts.push(contact);
 		        
-
-
-		        
+      	ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Start', eventLabel: 'From Hover Over'});  
 		  
 
 		

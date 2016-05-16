@@ -80,6 +80,8 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
     //fjs.ui.AddContactMenuController.call(this, $scope, dataManager, "views/AddContactPopupMenu.html");
     $scope.joinMeeting = function(meetingId){
         window.open("https://api.zoom.us/j/" + meetingId,'_blank');
+        if(meetingId != undefined)
+          ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Join', eventLabel: 'From Center Column'});
     };
 
     $scope.joinScheduledMeeting = function(meetingId){
@@ -353,10 +355,16 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
  
 
     $scope.startMeeting = function(option){
+
         var data = {};
         var users = "";
         $scope.inMeeting = true;
         $scope.showHome = false;
+
+        if(option == 'video')
+        ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Start', eventLabel: 'From Center Column - with Video'});
+        if(option == 'screen_share')
+        ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Start', eventLabel: 'From Center Column - Screen Share'});
        
         for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
             users = users + $scope.addedContacts[i].xpid + ",";

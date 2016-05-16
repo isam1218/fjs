@@ -33,7 +33,7 @@ hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'Settin
 						  if (data && data.url) {
 							window.open(data.url);
 						}
-
+						ga('send', 'event', {eventCategory:'ZipWhip', eventAction:'Access', eventLabel: 'Center Column'});
 				  }).
 				  error(function(data, status, headers, config) {
 				    // called asynchronously if an error occurs
