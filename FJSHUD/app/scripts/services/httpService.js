@@ -199,6 +199,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			})
 			.error(function(response, status) {
 				switch(status){
+					case 602:
 					case 403:
 					case 402:
 						delete localStorage.me;
