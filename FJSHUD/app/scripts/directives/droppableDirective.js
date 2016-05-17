@@ -172,7 +172,24 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 							var feed;
 							var action = 'transferToContact';
 							var params = {};
+							var transferToExternal = function(type, toWhom){
+								switch (type){
+									case 'mobile':
+										action = 'transferToContactMobile';
+										params.toContactId = toWhom;
+										break;
+									case 'business':
+										action = 'transferTo';
+										params.toNumber = toWhom;
+										break;
+								}
+								feed = 'mycalls';
+								params.mycallId = obj.xpid;
+								httpService.sendAction(feed, action, params);
+								return;
+							};
 
+							/* [TRANSFERRING UNANSWERED QUEUE CALLS (D&D)] */
 							// incoming queue calls have the 'taken' property on the obj and it will have value 'false' if incoming. They do not have type property...
 							// other calls have to 'taken' property on the obj
 							if (obj.taken != null && obj.taken === false){
@@ -192,6 +209,46 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 								return;
 							}
 
+							/* [TRANSFERRING TO EXTERNAL CONTACT (D&D)] */
+							// if drag to dock...
+							if (scope.gadget && !scope.gadget.data.primaryExtension){
+								if (scope.gadget.data.phoneMobile && scope.gadget.data.phoneBusiness){
+									// TRIGGER POPUP HERE!!!
+									console.log('POPUP in dock');
+								} else if (scope.gadget.data.phoneMobile){
+                  // transfer to mobile number
+                  transferToExternal('mobile', scope.gadget.data.xpid)
+                } else if (scope.gadget.data.phoneBusiness){
+                  // transfer to business number
+                  transferToExternal('business', scope.gadget.data.phoneBusiness);
+                }
+                // else if drag to contact panel...
+							} else if (scope.contact && !scope.contact.primaryExtension){
+                if (scope.contact.phoneMobile && scope.contact.phoneBusiness){
+                	// TRIGGER POPUP HERE!
+                	console.log('POPUP! in contact panel - ');
+                } else if (scope.contact.phoneMobile){
+                  // mobile
+                  transferToExternal('mobile', scope.contact.xpid);
+                } else if (scope.contact.phoneBusiness){
+                  // business
+                  transferToExternal('business', scope.contact.phoneBusiness);
+                }
+                // else if drag to recents...
+							} else if (scope.item && !scope.item.primaryExtension){
+                if (scope.item.phoneMobile && scope.item.phoneBusiness){
+                	// TRIGGER POPUP HERE!
+                	console.log('POPUP! in recent panel - ');
+                } else if (scope.item.phoneMobile){
+                  // mobile
+                  transferToExternal('mobile', scope.item.xpid);
+                } else if (scope.item.phoneBusiness){
+                  // business
+                  transferToExternal('business', scope.item.phoneBusiness);
+                }
+							}
+
+							/* [TRANSFERRING TO INTERNAL CONTACT (D&D)] */
 							feed = 'calls';
 							// queue call vs my call vs other's call
 							if (obj.agentContactId)
