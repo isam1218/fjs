@@ -31,7 +31,7 @@ hudweb.service("sharedData",function(){
     }; 
 });
 
-hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$log','$filter', '$location', function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$log,$filter,$location) {
+hudweb.controller('ZoomWidgetController', ['$scope', '$http' ,'HttpService','sharedData','$rootScope','SettingsService', '$modal','$log','$filter', '$location','$analytics', function($scope, $http,httpService,sharedData,$rootScope,settingsService,$modal,$log,$filter,$location,$analytics) {
 $scope.setScheduleTab = sharedData.setScheduleTab;
      $scope.tab = 'Home';
     
@@ -44,6 +44,9 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
      $scope.host_id = null;
      $scope.meetingList = [];
      $scope.Time = "Time: ";
+
+     //track zoom with angularactics
+    $analytics.pageTrack('/zoom');
 
     
     if($rootScope.meModel.email == undefined || $rootScope.meModel.email == ""){
@@ -363,7 +366,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
         if(option == 'video')
         ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Start', eventLabel: 'From Center Column - with Video'});
-        if(option == 'screen_share')
+        else if(option == 'screen_share')
         ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Start', eventLabel: 'From Center Column - Screen Share'});
        
         for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {

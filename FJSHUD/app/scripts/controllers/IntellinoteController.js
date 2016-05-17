@@ -1,4 +1,4 @@
-hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '$http', 'SettingsService', '$location', function($scope,$timeout, $rootScope, $http, settingsService, $location) {
+hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '$http', 'SettingsService', '$location','$analytics', function($scope,$timeout, $rootScope, $http, settingsService, $location, $analytics) {
 	$scope.addedContacts = [];
 	$scope.workspaces = [];
 	$scope.showInvite = false;
@@ -7,6 +7,9 @@ hudweb.controller('IntellinoteController', ['$scope','$timeout', '$rootScope', '
 	
 	$scope.myColor = {};
 	$scope.myColor.myVar ='WorkspaceButtonDisabled';
+
+	//track intellinote with angularactics
+	$analytics.pageTrack('/intellinote');
 	
 	$scope.removeText = function(){
 		$scope.inviteStatus = "";

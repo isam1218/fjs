@@ -1,5 +1,8 @@
-hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', function($scope, $rootScope, $timeout, contactService, groupService, conferenceService, queueService, httpService, storageService) {
+hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService','$analytics', function($scope, $rootScope, $timeout, contactService, groupService, conferenceService, queueService, httpService, storageService, $analytics) {
 	$scope.searched = false;
+
+	//track search page view with angularactics
+	$analytics.pageTrack('/search');
 
 	$scope.searchEmUp = function() {
 		$scope.contacts = [];

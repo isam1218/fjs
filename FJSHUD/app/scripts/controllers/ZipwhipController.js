@@ -1,8 +1,11 @@
-hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'SettingsService', '$location', function($scope, $rootScope, $http, settingsService, $location) {
+hudweb.controller('ZipwhipController', ['$scope', '$rootScope', '$http', 'SettingsService', '$location','$analytics', function($scope, $rootScope, $http, settingsService, $location,$analytics) {
 	$scope.addedContacts = [];
 	$scope.workspaces = [];
 	$scope.showInvite = false;
 	$scope.inviteStatus = '';
+	
+	//track zipwhip with angularactics
+	$analytics.pageTrack('/zipwhip');
 	
 	// pps url
 	var getURL = function(action) {

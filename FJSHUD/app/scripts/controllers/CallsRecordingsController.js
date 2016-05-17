@@ -1,7 +1,25 @@
-hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', 'SettingsService','$http', function($scope, $rootScope, $routeParams, settingsService,$http) {
+hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', 'SettingsService','$http','$analytics', function($scope, $rootScope, $routeParams, settingsService,$http,$analytics) {
   // routing
   $scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'},{upper: $scope.verbage.my_videos_tab, lower: 'videos'}];
+  //google analytics page tracking
+      if($routeParams.route == 'calllog'){
+        $analytics.pageTrack('/calllog/calllog');
+        console.log("calllog");
+      }
+      else if($routeParams.route == 'voicemails'){
+        $analytics.pageTrack('/calllog/voicemails');
+        console.log("voicemails");
+      }
+      else if($routeParams.route == 'recordings'){
+        $analytics.pageTrack('/calllog/recordings');
+        console.log("recordings");
+      }
+      else if($routeParams.route == 'videos'){
+        $analytics.pageTrack('/calllog/videos');
+        console.log("videos");
+      }
 
+  
   // if route is defined (click on specific tab or manaully enter url)...
   if ($routeParams.route){
     $scope.selected = $routeParams.route;

@@ -447,8 +447,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
         $scope.showPopup({key:"DialPadPopup", x:offset.x-60, y:offset.y + 25});
-        return true;
         ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: 'From Dialpad/Center'});
+        return true;
     };
     $scope.lastMillis = 0;
     $scope.getMeAvatarUrl = function(width,height){

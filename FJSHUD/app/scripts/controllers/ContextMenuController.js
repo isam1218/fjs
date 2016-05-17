@@ -211,30 +211,21 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
 		var gaLabel;
-		//check if its in the dock
-		if ($scope.profile) {
-			settingsService.getSettings().then(function(data) {
-				var regex = new RegExp($scope.profile.xpid + '$', 'g'); // end of string	
-				for (var key in data) {
-					if (key.indexOf('GadgetConfig') != -1 && key.match(regex) && $scope.context == null) {
-						 ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "From Dock"});
-						break;
-					}
-				}
-			});
-		}
-
+		
 		if($scope.context == 'all'){
 			gaLabel = 'from Hover';
 		}
 		else if($scope.context == 'recent'){
-			gaLabel = 'Recents List'
+			gaLabel = 'Recents List';
 		}
 		else if ($scope.widget == 'voicemails'){
-			gaLabel = "Calls/Recordings - Voicemail - Call"
+			gaLabel = "Calls/Recordings - Voicemail - Call";
 		}
 		else if ($scope.widget == 'recordings'){
-			gaLabel = "Calls/Recordings - Recordings - Call"
+			gaLabel = "Calls/Recordings - Recordings - Call";
+		}
+		else if ($scope.widget == 'dock'){
+			gaLabel = "From Dock";
 		}
 		
 		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: gaLabel});

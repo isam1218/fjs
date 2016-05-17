@@ -22,12 +22,15 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			// trigger auto clear
 			if (scope.enableChat === undefined && scope.searchEmUp === undefined) {
 				element.on('keyup', function(e) {
-					ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From Center Column (Chat, Calls, Voicemails, My Recordings)"});
 					if (autoClearOn == 'true') {
 						$timeout.cancel(timeout);
 						
 						timeout = $timeout(clearSearch, autoClearTime*1000);
 					}
+				});
+
+				element.on('focus', function(e){
+				ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From Center Column (Calls, Voicemails, My Recordings)"});
 				});
 			
 				// pull updated settings

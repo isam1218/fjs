@@ -1,4 +1,4 @@
-hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', '$http', function($scope, $rootScope, httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService, $http) {
+hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', '$http','$analytics', function($scope, $rootScope, httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService, $http,$analytics) {
 	"use strict";
 
 	// redirect if not allowed
@@ -33,6 +33,27 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	$scope.upload_progress = 0;
 	$scope.chat.attachmentItems;
 	$scope.chat.showBG;
+
+	//google analytics track page views
+	var chatPath = $location.path();
+	var contactChat = chatPath.includes("contact");
+	var queueChat = chatPath.includes("queue");
+	var groupChat = chatPath.includes("group");
+	var conferenceChat = chatPath.includes("conference");
+
+	if(groupChat){
+		$analytics.pageTrack('group/chat');
+	}
+	else if(queueChat){
+		$analytics.pageTrack('queue/chat');
+	}
+	else if(conferenceChat){
+		$analytics.pageTrack('conference/chat');
+	}
+	else if(contactChat){
+		$analytics.pageTrack("contact/chat");
+	}
+	
 
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
@@ -569,8 +590,11 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		// jump to bottom on search clear
 		if (!data || data == '')
 			scrollbox.scrollTop = scrollbox.scrollHeight;
-		ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From Center Column (Chat, Calls, Voicemails, My Recordings)"});
 	});
+
+	$scope.trackMe = function(){
+		ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From Center Column Chat"});
+	};
 	
 	$scope.sendMessage = function() {
 		if ($scope.chat.message == '')
