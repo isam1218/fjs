@@ -1,4 +1,4 @@
-hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', '$timeout', '$q', 'ContactService', '$location', function($scope, $rootScope, httpService, phoneService, settingsService ,storageService, $timeout, $q, contactService, $location) {
+hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', 'PhoneService', 'SettingsService', 'StorageService', '$timeout', '$q', 'ContactService', '$location','$analytics', function($scope, $rootScope, httpService, phoneService, settingsService ,storageService, $timeout, $q, contactService, $location, $analytics) {
 	$scope.query = '';
   $scope.tab;
 	$scope.overlay = '';
@@ -28,6 +28,14 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	});
 
   $scope.setTab = function(tab) {
+    //track access with google analytics
+    if(tab == 'favorites')
+      $analytics.pageTrack('/favorites');
+    else if(tab == 'external')
+      $analytics.pageTrack('/external');
+    else if(tab == 'groups')
+      $analytics.pageTrack('/groups');
+
     $scope.tab = tab;
     $scope.query = '';
     // save last accessed contact panel tab

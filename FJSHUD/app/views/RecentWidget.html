@@ -15,7 +15,7 @@
         
         <a href="#/{{::item.recent_type}}/{{::item.xpid}}" data-ng-repeat="item in totalCombined | filter: recentFilter() | orderBy: 'timestamp': true track by item.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="{{::getDroppableType(item.recent_type)}}"> 
            
-            <avatar profile="item"></avatar>
+            <avatar profile="item" context="contacts:$parent.tab"></avatar>
 			
             <div class="ListRowContent" dockable="item" ng-if="::item.recent_type == 'contact'">
 
@@ -99,7 +99,7 @@
                    </div> 
                  </div>
                  <a href="#/contact/{{::contact.xpid}}/{{::lastContactTabRoute(contact.xpid)}}" data-ng-repeat="contact in totalContacts | filter: searchRecentContactFilter() | filter: recentFilter() | orderBy: 'timestamp': true | limitTo: contactsLimit() track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact" droppable="Call">
-                        <avatar profile="contact"></avatar>
+                        <avatar profile="contact" context="contacts:$parent.tab"></avatar>
                         
                         <div class="ListRowContent" dockable="contact">
 

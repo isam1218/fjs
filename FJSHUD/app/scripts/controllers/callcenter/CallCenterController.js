@@ -1,8 +1,11 @@
-hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', function ($scope, $rootScope, $routeParams, httpService, queueService, settingsService) {
+hudweb.controller('CallCenterController', ['$scope', '$rootScope', '$routeParams', 'HttpService', 'QueueService', 'SettingsService', '$analytics', function ($scope, $rootScope, $routeParams, httpService, queueService, settingsService, $analytics) {
 
 	$scope.tabs = [{upper: $scope.verbage.my_queue, lower: 'myqueue'},
 	{upper: $scope.verbage.all_queues, lower: 'allqueues'},
 	{upper: $scope.verbage.my_status, lower: 'mystatus'}];
+
+	//track call center page view with angularactics
+	$analytics.pageTrack('/callcenter');
     	
 	// if route is defined (click on specific tab or manaully enter url)...
 	if ($routeParams.route){

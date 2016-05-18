@@ -151,6 +151,8 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
   $scope.callExtension = function($event, contact) {
     $event.stopPropagation();
     $event.preventDefault();
+
+    ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "Calls/Recordings - Voicemail - Call"});
     
     httpService.sendAction('me', 'callTo', {phoneNumber: contact.phone});
   

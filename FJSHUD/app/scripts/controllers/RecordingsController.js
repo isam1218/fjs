@@ -127,6 +127,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	$scope.callNumber = function(e, number) {
 		e.stopPropagation();
 		phoneService.makeCall(number);
+		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "Calls/Recordings - Recordings - Call"});
 	};
 	
 	$scope.joinConference = function(e, xpid) {

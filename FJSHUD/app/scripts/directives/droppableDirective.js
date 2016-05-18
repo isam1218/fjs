@@ -213,6 +213,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 
 							httpService.sendAction(feed, action, params);
 						}
+						ga('send', 'event', {eventCategory:'Calls', eventAction:'Transfer', eventLabel: 'via Drag and Drop'});
 					}
 
 					// prevent sibling overlap

@@ -28,6 +28,10 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 						timeout = $timeout(clearSearch, autoClearTime*1000);
 					}
 				});
+
+				element.on('focus', function(e){
+				ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From Center Column (Calls, Voicemails, My Recordings)"});
+				});
 			
 				// pull updated settings
 				scope.$on('settings_updated', function(event, data) {

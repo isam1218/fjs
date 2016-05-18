@@ -130,7 +130,11 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 		else
 		{			
 			phoneService.makeCall(number);
-		}	
+		}
+
+		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: 'From Call Log'});	
+		
+
 	};
 
 }]);
