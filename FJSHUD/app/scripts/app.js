@@ -27,7 +27,7 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 	$compileProvider.debugInfoEnabled(false);
 	
 	//enable route provider for google analytics
-	$analyticsProvider.virtualPageviews(true);
+	$analyticsProvider.virtualPageviews(false);
 
 	// combines responses into one digest cycle
 	$httpProvider.useApplyAsync(true);
