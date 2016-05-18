@@ -920,6 +920,24 @@
     border-top: 1px solid #ccc;
 	margin-top: .25em;
 	
+	&.transfer{
+	  width: 100%;
+	  overflow: hidden;
+	  
+	   span, a{
+	   	font-size: 11px;	   
+	   }
+	   span{
+	    color: #000;
+	    font-style: italic;	    
+	   }
+	   a{
+	   	text-decoration: underline;	   
+	   }
+	   #labels{float: left; white-space: nowrap; }
+	   #numbers{float: left; text-align: left; clear: none; }
+	}
+	
 	&.Actions {
       & > div, & > div > div {
 	    display: inline;
