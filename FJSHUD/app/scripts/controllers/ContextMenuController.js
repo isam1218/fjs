@@ -40,6 +40,29 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 			$rootScope.contextShow = false;
 		}, t);
 	};
+	
+	function formatNumber(num){
+		var len = num.length;
+		if(len < 11)
+		{
+			return num.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+		}
+		else{
+			if(len == 11)
+			{
+				var numbers = num.split("");
+				if(numbers[0] == '1')
+				{
+					var pNum = num.substring(1);
+					return numbers[0] + '-' + pNum.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+				}
+				else
+					return num;
+			}
+			else
+				return num;
+		}
+	};
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
 		$scope.profile = res.obj.fullProfile ? res.obj.fullProfile : res.obj;
@@ -54,8 +77,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		if($scope.original.type && $scope.original.type == 'transfer')
 		{
 			$scope.type = 'Transfer';
-			$scope.business = $scope.original.business.replace(/^\d{3}\-\d{3}\-d{4}$/);
-			$scope.mobile = $scope.original.mobile.length > 10 ? $scope.original.mobile.replace(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/) : $scope.original.mobile.replace(/^\d{3}\-\d{3}\-d{4}$/);			
+			$scope.business = formatNumber($scope.original.business);//$scope.original.business.length > 11 ? $scope.original.business : '1-'+ $scope.original.business.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+			$scope.mobile = formatNumber($scope.original.mobile);//$scope.original.mobile.length > 10 ? $scope.original.mobile : '1-'+ $scope.original.mobile.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');			
 			$scope.externalXpid = $scope.original.externalXpid;
 			$scope.callId = $scope.original.callId;			
 		}	

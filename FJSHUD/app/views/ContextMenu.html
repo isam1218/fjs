@@ -29,12 +29,14 @@
 		<strong ng-bind-html="profile.displayName || profile.name || 'private'"></strong>
 	</div>
 </div>
-<div class="TopRow" ng-if="type == 'Transfer'">
-	<div class="info">
+<div class="TopRow transfers" ng-if="type == 'Transfer'">
+  <div class="Contact">
+   	<div class="info">
 		<span>
 		{{::verbage.transfer_external}}
-		</span>
-	</div>
+		</span>	
+   </div>
+ </div>
 </div>
 <div class="BottomRow Actions" ng-show="!reasons.show && type != 'Transfer'">
 	<!-- recordings -->

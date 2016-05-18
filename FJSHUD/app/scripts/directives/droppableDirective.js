@@ -255,7 +255,7 @@ hudweb.directive('droppable',
 																	if (scope.gadget && !scope.gadget.data.primaryExtension) {
 																		if (scope.gadget.data.phoneMobile && scope.gadget.data.phoneBusiness) {
 																			// TRIGGER POPUP HERE!!!
-																			enterElement(scope.gadget.data.phoneBusiness, scope.gadget.data.phoneMobile, scope.gadget.data.xpid, obj.xpid);																			
+																			enterElement(scope.gadget.data.phoneBusiness, scope.gadget.data.phoneMobile, scope.gadget.data.xpid);																			
 																			//console.log('POPUP in dock');
 																		} else if (scope.gadget.data.phoneMobile) {
 																			// transfer to mobile number
@@ -268,7 +268,7 @@ hudweb.directive('droppable',
 																	} else if (scope.contact && !scope.contact.primaryExtension) {
 																		if (scope.contact.phoneMobile && scope.contact.phoneBusiness) {
 																			// TRIGGER POPUP HERE!
-																			enterElement(scope.contact.phoneBusiness, scope.contact.phoneMobile, scope.contact.xpid, obj.xpid);																	
+																			enterElement(scope.contact.phoneBusiness, scope.contact.phoneMobile, scope.contact.xpid);																	
 																			//console.log('POPUP! in contact panel - ');
 																		} else if (scope.contact.phoneMobile) {
 																			// mobile
@@ -281,7 +281,7 @@ hudweb.directive('droppable',
 																	} else if (scope.item && !scope.item.primaryExtension) {
 																		if (scope.item.phoneMobile && scope.item.phoneBusiness) {
 																			// TRIGGER POPUP HERE!
-																			enterElement(scope.item.phoneBusiness, scope.item.phoneMobile, scope.item.xpid, obj.xpid);	
+																			enterElement(scope.item.phoneBusiness, scope.item.phoneMobile, scope.item.xpid);	
 																			//console.log('POPUP! in recent panel - ');
 																		} else if (scope.item.phoneMobile) {
 																			// mobile
@@ -322,14 +322,14 @@ hudweb.directive('droppable',
 																		timeout = null;
 																	}, 100);
 															
-															function enterElement(business, mobile, externalXpid, xpid){
+															function enterElement(business, mobile, externalXpid){
 																var avatar = element[0].getElementsByClassName('Avatar')[0]; 
 																rect = avatar.getBoundingClientRect();
 																$timeout.cancel(timer);
 
 																if (overlay.css('display') != 'block') {
 																	// delay
-																	timer = $timeout(showOverlay(business, mobile, externalXpid, xpid), settingsService.getSetting('avatar_hover_delay')*1000);
+																	timer = $timeout(showOverlay(business, mobile, externalXpid), settingsService.getSetting('avatar_hover_delay')*1000);
 																}
 																else if (current != element) {
 																	// hovered over a new avatar
@@ -339,7 +339,7 @@ hudweb.directive('droppable',
 																current = element;	
 															};															
 															
-															function showOverlay(business, mobile, externalXpid, xpid) {
+															function showOverlay(business, mobile, externalXpid) {
 																overlay.bind('mouseleave', function(e) {
 																	// keep open if user moves back onto avatar
 																	for (var i = 0, iLen = current.children().length; i < iLen; i++)  {
@@ -359,7 +359,7 @@ hudweb.directive('droppable',
 																obj.business = business;
 																obj.mobile = mobile;
 																obj.externalXpid = externalXpid;
-																obj.callId = xpid;
+																obj.callId = obj.xpid;
 																
 																console.log('droppable: '+ externalXpid);
 																// send data to controller																	
