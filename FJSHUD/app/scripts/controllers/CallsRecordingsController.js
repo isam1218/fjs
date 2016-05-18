@@ -4,19 +4,15 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
   //google analytics page tracking
       if($routeParams.route == 'calllog'){
         $analytics.pageTrack('/calllog/calllog');
-        console.log("calllog");
       }
       else if($routeParams.route == 'voicemails'){
         $analytics.pageTrack('/calllog/voicemails');
-        console.log("voicemails");
       }
       else if($routeParams.route == 'recordings'){
         $analytics.pageTrack('/calllog/recordings');
-        console.log("recordings");
       }
       else if($routeParams.route == 'videos'){
         $analytics.pageTrack('/calllog/videos');
-        console.log("videos");
       }
 
   

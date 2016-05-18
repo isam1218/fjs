@@ -211,7 +211,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
 		var gaLabel;
-		
+
 		if($scope.context == 'all'){
 			gaLabel = 'from Hover';
 		}
@@ -226,6 +226,9 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		}
 		else if ($scope.widget == 'dock'){
 			gaLabel = "From Dock";
+		}
+		else if ($scope.widget == 'calllog'){
+			gaLabel = "From Call Log";
 		}
 		
 		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: gaLabel});
