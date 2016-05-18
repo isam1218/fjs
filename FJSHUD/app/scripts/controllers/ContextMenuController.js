@@ -9,6 +9,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 	$scope.context;
 	$scope.downloadLink = "";
 	
+	var transferFeed;
+	var transferAction = 'transferToContact';
+	var transferParams = {};
+	var overlay = angular.element(document.getElementById('ContextMenu'));
+	
 	$scope.myQueue;
 	$scope.canDock = true;	
 	$scope.inConf = false;
@@ -26,6 +31,38 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		$scope.canRecord = data.recordingEnabled;		
 	});
 	
+	function hideOverlay(t) {
+		timer = $timeout(function() {
+			overlay.css('display', 'none');
+			overlay.unbind();
+			
+			$('#ContextMenu .Button').unbind('click');
+			$rootScope.contextShow = false;
+		}, t);
+	};
+	
+	function formatNumber(num){
+		var len = num.length;
+		if(len < 11)
+		{
+			return num.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+		}
+		else{
+			if(len == 11)
+			{
+				var numbers = num.split("");
+				if(numbers[0] == '1')
+				{
+					var pNum = num.substring(1);
+					return numbers[0] + '-' + pNum.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+				}
+				else
+					return num;
+			}
+			else
+				return num;
+		}
+	};
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
 		$scope.profile = res.obj.fullProfile ? res.obj.fullProfile : res.obj;
@@ -37,14 +74,22 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		$scope.myQueue = false;
 		
 		// get type
-		if ($scope.original.parkExt !== undefined) {
+		if($scope.original.type && $scope.original.type == 'transfer')
+		{
+			$scope.type = 'Transfer';
+			$scope.business = formatNumber($scope.original.business);//$scope.original.business.length > 11 ? $scope.original.business : '1-'+ $scope.original.business.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+			$scope.mobile = formatNumber($scope.original.mobile);//$scope.original.mobile.length > 10 ? $scope.original.mobile : '1-'+ $scope.original.mobile.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');			
+			$scope.externalXpid = $scope.original.externalXpid;
+			$scope.callId = $scope.original.callId;			
+		}	
+		else if ($scope.original.parkExt !== undefined) {
 			$scope.type = 'Contact';
 			
 			// external parked call
 			if (!$scope.original.callerContactId)
 				$scope.profile = null;
 		}
-		else if ($scope.profile.firstName !== undefined) {
+		else if ($scope.profile.firstName && $scope.profile.firstName !== undefined) {
 			$scope.type = 'Contact';
 			$scope.isFavorite = groupService.isFavorite($scope.profile.xpid);
 		}
@@ -244,6 +289,24 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: gaLabel});
 	};
 	
+	$scope.transferToExternal = function(type, toWhom, callId) {
+		switch (type) {
+			case 'mobile':
+				transferAction = 'transferToContactMobile';
+				transferParams.toContactId = toWhom;
+				break;
+			case 'business':
+				transferAction = 'transferTo';
+				transferParams.toNumber = toWhom;
+				break;
+		}
+		transferFeed = 'mycalls';
+		transferParams.mycallId = callId;		
+		httpService.sendAction(transferFeed, transferAction, transferParams);	
+		hideOverlay(500);
+		//return;
+	};
+	
 	$scope.takeParkedCall = function(){
 		httpService.sendAction('parkedcalls', 'transferFromPark', {
 			parkedCallId: $scope.original.xpid,
@@ -330,26 +393,23 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
         $scope.addedContacts.push(contact);
 		        
       	ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Start', eventLabel: 'From Hover Over'});  
-		  
 
-		
         var data = {};
         var users = "";
 
          if(contact.length > 1){
 		       	$scope.addedContacts = contact;
 		       	for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
-            users = users + $scope.addedContacts[i].contactId + ",";
+		       		users = users + $scope.addedContacts[i].contactId + ",";
             
-        }
-		       }
-		       else{
+		       	}
+		 }
+		 else{
 
-        for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
-            users = users + $scope.addedContacts[i].xpid + ",";
+			 for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
+				 users = users + $scope.addedContacts[i].xpid + ",";
         }
     }
-
 
         data["topic"]="";
         data["users"]= users;

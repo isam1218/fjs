@@ -904,7 +904,13 @@
        }
 	  }
 	}
-	
+	&.transfers{
+	   .Contact{
+	   	.info{
+	   		margin-left: 2px;
+	   	}
+	   }
+	}	 
 	.Numbers div {
 	  min-width: 3em;
 	  text-align: right;
@@ -919,6 +925,23 @@
   .BottomRow {
     border-top: 1px solid #ccc;
 	margin-top: .25em;
+	
+	&.transfer{
+	  width: 100%;
+	  overflow: hidden;
+	  border-top: none;
+	  margin-top: .18em;
+	 
+	  span{
+	    color: #000;
+	    font-style: italic;	    
+	  }
+	  a{
+	   	text-decoration: underline;	   
+	  }
+	  #labels{float: left; white-space: nowrap; padding-left: 2px;}
+	  #numbers{float: left; text-align: left; clear: none; padding-left: 3px;}
+	}
 	
 	&.Actions {
       & > div, & > div > div {

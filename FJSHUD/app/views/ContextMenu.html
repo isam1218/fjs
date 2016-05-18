@@ -1,7 +1,7 @@
 <div ng-if="contextShow"> 
 <div class="Arrow Left"></div>
-<div class="TopRow" ng-switch="type == 'Contact' && profile != null">
-	<div class="Contact" ng-switch-when="true" ng-switch="widget != 'voicemails' && widget != 'recordings'">
+<div class="TopRow" ng-if="type != 'Transfer'" ng-switch="type == 'Contact' && profile != null">
+	<div class="Contact" ng-switch-when="true" ng-switch="widget && widget != 'voicemails' && widget != 'recordings'">
 		<div>
 			<avatar profile="profile" context="context"></avatar>
 			<div class="info">
@@ -29,8 +29,16 @@
 		<strong ng-bind-html="profile.displayName || profile.name || 'private'"></strong>
 	</div>
 </div>
-
-<div class="BottomRow Actions" ng-show="!reasons.show">
+<div class="TopRow transfers" ng-if="type == 'Transfer'">
+  <div class="Contact">
+   	<div class="info">
+		<span>
+		{{::verbage.transfer_external}}
+		</span>	
+   </div>
+ </div>
+</div>
+<div class="BottomRow Actions" ng-show="!reasons.show && type != 'Transfer'">
 	<!-- recordings -->
 	<div ng-if="widget == 'recordings' && profile.xpid != myPid ">	<!-- type =='Contact' &&  -->
 		<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
@@ -367,12 +375,24 @@
 			</a>
 		</div> 
 	</div>
-
+	    
 	<div ng-if="profile.xpid && profile.xpid != myPid && profile.call"> 
 		<callStatus profile="profile"></callStatus>
 	</div>
 </div>
-
+<div class="BottomRow transfer" ng-show="!reasons.show && type == 'Transfer'">
+<!-- Transfer to External -->
+    <div ng-if="type ==  'Transfer'">
+        <div id="labels">
+    		<span>{{::verbage.business}} </span><br/>
+    		<span>{{::verbage.mobile}} </span>
+    	</div>
+    	<div id="numbers">
+    		<a href="" ng-click="transferToExternal('business', original.business, callId)">{{::business}}</a><br/>
+    		<a href="" ng-click="transferToExternal('mobile', externalXpid, callId)">{{::mobile}}</a>
+    	</div>
+    </div>
+</div>
 <div class="BottomRow Reasons" ng-show="reasons.show">
 	<h4>{{::verbage.reason}}</h4>
 	<em>{{::verbage.select_logout_reason}}</em>
