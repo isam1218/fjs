@@ -19,6 +19,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     var VERSIONSCACHE_PATH = "/v1/versionscache";
 	var worker = undefined;
 	var unload = false; 
+	var serverTime;
 	
 	if(localStorage.serverHost != undefined){
 		fjs.CONFIG.SERVER.serverURL = localStorage.serverHost;
@@ -83,9 +84,11 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					}
       				break;
 				case "timestamp_created":
-					if (event.data.data)
+					if (event.data.data){
 						ntpService.syncTime(event.data.data);
-					
+						serverTime = event.data.data;
+					}
+						
 					break;
 			}
 		}, false);
@@ -585,6 +588,10 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	this.getUnload = function(){
 		return unload;
 	};
+
+	this.getServerTime = function(){
+		return serverTime;
+	}
 	// preload images
 	this.preload('img/XAvatarBorder.png');
 	this.preload('img/Generic-Error.png');

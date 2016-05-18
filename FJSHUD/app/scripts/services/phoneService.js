@@ -1062,7 +1062,11 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
     	authticket = localStorage.authTicket;
         server = fjs.CONFIG.SERVER.serverURL;
     	node = localStorage.nodeID;
-    	context.webphone = new WebSocket('wss://webphone.fonality.com:10443/' + encodeURIComponent(server) + '/' + encodeURIComponent(authticket) + '/' + encodeURIComponent(node));
+    	serverTime = ntpService.getTimeDelta();
+    	serverTimeClient = ntpService.getSyncedFirst();
+
+    	//TODO refactor and remove the serverTimeClient
+    	context.webphone = new WebSocket('wss://webphone.fonality.com:10443/' + encodeURIComponent(server) + '/' + encodeURIComponent(authticket) + '/' + encodeURIComponent(node) + "/" + encodeURIComponent(serverTime) + "/" + encodeURIComponent(serverTimeClient));
     	context.webphone.onopen = function(e){
     			context.setEACTailLength = function(val) {
                     if(context.webphone && val != context.getEACTailLength()) {

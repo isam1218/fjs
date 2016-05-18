@@ -2,12 +2,12 @@ hudweb.service('NtpService', function () {
   var timeSyncFirstPlace;
   var timeSyncDelta;
   var clientFirstTime;
-  
+  //TODO update using arithmetic and remove this if and else state
   this.syncTime = function(data) {
 	var clientFirstTime = new Date().getTime();
 	var serverFirstTime = data;
 	
-	if (serverFirstTime > clientFirstTime){
+  if (serverFirstTime > clientFirstTime){
 	  // client time is ahead, server time behind
 	  timeSyncFirstPlace = 'client'; 
 	  timeSyncDelta = Math.abs(clientFirstTime - serverFirstTime);
@@ -47,6 +47,14 @@ hudweb.service('NtpService', function () {
       return dateToAdjust + timeSyncDelta;
 	else
       return dateToAdjust;
+  };
+
+  this.getTimeDelta = function(){
+    return timeSyncDelta;
+  };
+
+  this.getSyncedFirst = function(){
+    return timeSyncFirstPlace;
   };
 
 });
