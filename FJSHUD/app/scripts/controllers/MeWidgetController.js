@@ -1394,7 +1394,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 var sv3 = serverVersionSplit[2];
                 var sv4 = serverVersionSplit[3]
                 // if (<3) or (<= 3-3.5) or (3.5.0-3.5.1)
-                if ( (parseInt(sv1) < 3) || (parseInt(sv1) === 3 && parseInt(sv2) <= 5) || (parseInt(sv1) === 3 && parseInt(sv2) === 5 && parseInt(sv3) < 1) )
+                if ( (parseInt(sv1) < 3) || (parseInt(sv1) === 3 && parseInt(sv2) < 5) || (parseInt(sv1) === 3 && parseInt(sv2) === 5 && parseInt(sv3) < 1) )
                     $scope.serverVersionCloud = false;
                 else
                     $scope.serverVersionCloud = true;
