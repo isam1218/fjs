@@ -384,12 +384,12 @@
 <!-- Transfer to External -->
     <div ng-if="type ==  'Transfer'">
         <div id="labels">
-    		<span>{{::verbage.business}} </span><br/>
-    		<span>{{::verbage.mobile}} </span>
+    		<span>{{::verbage.business}} </span>
+    		<span class="bottomElement">{{::verbage.mobile}} </span>
     	</div>
     	<div id="numbers">
-    		<a href="" ng-click="transferToExternal('business', original.business, callId)">{{::business}}</a><br/>
-    		<a href="" ng-click="transferToExternal('mobile', externalXpid, callId)">{{::mobile}}</a>
+    		<a href="" ng-click="transferToExternal('business', original.business, callId)">{{::business}}</a>
+    		<a href="" ng-click="transferToExternal('mobile', externalXpid, callId)" class="bottomElement">{{::mobile}}</a>
     	</div>
     </div>
 </div>
