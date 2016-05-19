@@ -932,15 +932,22 @@
 	  border-top: none;
 	  margin-top: .18em;
 	 
+	  span, a{
+	  	display: inline-block;   
+	    clear: both;
+	    float: left;
+	  }
+	  
 	  span{
 	    color: #000;
-	    font-style: italic;	    
+	    font-style: italic;	 
 	  }
 	  a{
-	   	text-decoration: underline;	   
+	   	text-decoration: underline;	
 	  }
 	  #labels{float: left; white-space: nowrap; padding-left: 2px;}
-	  #numbers{float: left; text-align: left; clear: none; padding-left: 3px;}
+	  #numbers{float: left; text-align: left; clear: none; padding-left: 3px;}	
+	  #labels .bottomElement, #numbers .bottomElement{margin-top: 5px; margin-bottom: 10px;}  
 	}
 	
 	&.Actions {
