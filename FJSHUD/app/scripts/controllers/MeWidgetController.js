@@ -1374,9 +1374,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     });
 
-    // this is for determining whether to show old transfer UI vs new transfer UI. If CP14 --> show new transfer UI
+    // this is for determining whether to show old transfer UI vs new transfer UI. If CP14 & cloud server --> show new transfer UI
     // only checking for cp14 -> need to make sure to add checks for any new versions of CP that are released thereafter
     $scope.cpFourteen = false;
+    $scope.serverVersionCloud = false;
+
     $scope.$on("me_synced", function(event, data){
         for (var i = 0; i < data.length; i++){
             if (data[i].propertyKey == "cp_location"){
@@ -1384,6 +1386,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     $scope.cpFourteen = true;
                 else
                     $scope.cpFourteen = false;
+            }
+            if (data[i].propertyKey == "server_version"){
+                var serverVersionSplit = data[i].propertyValue.split('.');
+                var sv1 = serverVersionSplit[0];
+                var sv2 = serverVersionSplit[1];
+                var sv3 = serverVersionSplit[2];
+                var sv4 = serverVersionSplit[3]
+                // if (<3) or (<= 3-3.5) or (3.5.0-3.5.1)
+                if ( (parseInt(sv1) < 3) || (parseInt(sv1) === 3 && parseInt(sv2) <= 5) || (parseInt(sv1) === 3 && parseInt(sv2) === 5 && parseInt(sv3) < 1) )
+                    $scope.serverVersionCloud = false;
+                else
+                    $scope.serverVersionCloud = true;
+
             }
         }
     });
