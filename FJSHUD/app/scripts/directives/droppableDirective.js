@@ -230,25 +230,41 @@ hudweb.directive('droppable',
 																		return;
 																	};
 
-																	/* [TRANSFERRING UNANSWERED QUEUE CALLS (D&D)] */
-																	// incoming queue calls have the 'taken' property on the obj and it will have value 'false' if incoming. They do not have type property...
-																	// other calls have to 'taken' property on the obj
-																	if (obj.taken != null && obj.taken === false) {
-																		// transfer unanswered queue call functionality
-																		feed = 'queue_call';
-																		params.queueCallId = obj.xpid;
-																		// if drag to leftbar...(scope has contact property on it), else if (item for recents), else dragging to dock...
-																		if (scope.contact)
-																			params.contactId = scope.contact.xpid;
-																		else if (scope.item)
-																			params.contactId = scope.item.xpid;
-																		else if (scope.gadget)
-																			params.contactId = scope.gadget.data.xpid;
-																		// else drag to dock
 
-																		httpService.sendAction(feed, action, params);
-																		return;
-																	}
+                                  /* [TRANSFERRING UNANSWERED QUEUE CALLS (D&D)] */
+                                  // checking CP and server version *(CP < cp14 or server version < 3.5.1 does not receive this functionality HUDF-1424)*
+                                  var cpFourteen = $rootScope.meModel.cp_location == "cp14" ? true : false;
+                                  var serverVersionCloud;
+                                  var serverVersionSplit = $rootScope.meModel.server_version.split('.');
+                                  var sv1 = serverVersionSplit[0];
+                                  var sv2 = serverVersionSplit[1];
+                                  var sv3 = serverVersionSplit[2];
+                                  var sv4 = serverVersionSplit[3]
+                                  // if (<3) or (<= 3-3.5) or (3.5.0-3.5.1)
+                                  if ( (parseInt(sv1) < 3) || (parseInt(sv1) === 3 && parseInt(sv2) <= 5) || (parseInt(sv1) === 3 && parseInt(sv2) === 5 && parseInt(sv3) < 1) )
+                                      serverVersionCloud = false;
+                                  else
+                                      serverVersionCloud = true;
+
+                                  // incoming queue calls have the 'taken' property on the obj and it will have value 'false' if incoming. They do not have type property...
+                                  // other calls have no 'taken' property on the obj
+                                  // so checking to see if it's an incoming, unanswered q call, *and also if user meets the server and CP requirements (see HUDF-1424)*
+                                  if (obj.taken != null && obj.taken === false && serverVersionCloud && cpFourteen) {
+                                      feed = 'queue_call';
+                                      params.queueCallId = obj.xpid;
+                                      // if drag to leftbar...(scope has contact property on it), else if (item for recents), else dragging to dock...
+                                      if (scope.contact)
+                                          params.contactId = scope.contact.xpid;
+                                      else if (scope.item)
+                                          params.contactId = scope.item.xpid;
+                                      else if (scope.gadget)
+                                          params.contactId = scope.gadget.data.xpid;
+                                      // else drag to dock
+
+                                      httpService.sendAction(feed, action, params);
+                                      return;
+                                  }
+
 
 																	/* [TRANSFERRING TO EXTERNAL CONTACT (D&D)] */
 																	// if drag to dock...
@@ -291,6 +307,7 @@ hudweb.directive('droppable',
 																			return;
 																		}
 																	}
+
 
 																	/* [TRANSFERRING TO INTERNAL CONTACT (D&D)] */
 																	feed = 'calls';
