@@ -11,7 +11,7 @@ hudweb.directive('droppable',
 							var timeout;
 							var overlay = angular.element(document.getElementById('ContextMenu'));
 							var current, timer;
-							
+
 							// used as droppable="Type,Type,Type"
 							return {
 								restrict : 'A',
@@ -254,41 +254,41 @@ hudweb.directive('droppable',
 																	// if drag to dock...
 																	if (scope.gadget && !scope.gadget.data.primaryExtension) {
 																		if (scope.gadget.data.phoneMobile && scope.gadget.data.phoneBusiness) {
-																			// TRIGGER POPUP HERE!!!
-																			enterElement(scope.gadget.data.phoneBusiness, scope.gadget.data.phoneMobile, scope.gadget.data.xpid);																			
-																			//console.log('POPUP in dock');
+																			enterElement(scope.gadget.data.phoneBusiness, scope.gadget.data.phoneMobile, scope.gadget.data.xpid);
 																		} else if (scope.gadget.data.phoneMobile) {
 																			// transfer to mobile number
-																			transferToExternal('mobile',scope.gadget.data.xpid)
+																			transferToExternal('mobile',scope.gadget.data.xpid);
+																			return;
 																		} else if (scope.gadget.data.phoneBusiness) {
 																			// transfer to business number
 																			transferToExternal('business',scope.gadget.data.phoneBusiness);
+																			return;
 																		}
 																		// else if drag to contact panel...
 																	} else if (scope.contact && !scope.contact.primaryExtension) {
 																		if (scope.contact.phoneMobile && scope.contact.phoneBusiness) {
-																			// TRIGGER POPUP HERE!
-																			enterElement(scope.contact.phoneBusiness, scope.contact.phoneMobile, scope.contact.xpid);																	
-																			//console.log('POPUP! in contact panel - ');
+																			enterElement(scope.contact.phoneBusiness, scope.contact.phoneMobile, scope.contact.xpid);
 																		} else if (scope.contact.phoneMobile) {
 																			// mobile
 																			transferToExternal('mobile',scope.contact.xpid);
+																			return;
 																		} else if (scope.contact.phoneBusiness) {
 																			// business
 																			transferToExternal('business',scope.contact.phoneBusiness);
+																			return;
 																		}
 																		// else if drag to recents...
 																	} else if (scope.item && !scope.item.primaryExtension) {
 																		if (scope.item.phoneMobile && scope.item.phoneBusiness) {
-																			// TRIGGER POPUP HERE!
-																			enterElement(scope.item.phoneBusiness, scope.item.phoneMobile, scope.item.xpid);	
-																			//console.log('POPUP! in recent panel - ');
+																			enterElement(scope.item.phoneBusiness, scope.item.phoneMobile, scope.item.xpid);
 																		} else if (scope.item.phoneMobile) {
 																			// mobile
 																			transferToExternal('mobile',scope.item.xpid);
+																			return;
 																		} else if (scope.item.phoneBusiness) {
 																			// business
 																			transferToExternal('business',scope.item.phoneBusiness);
+																			return;
 																		}
 																	}
 
@@ -321,9 +321,9 @@ hudweb.directive('droppable',
 																	function() {
 																		timeout = null;
 																	}, 100);
-															
+
 															function enterElement(business, mobile, externalXpid){
-																var avatar = element[0].getElementsByClassName('Avatar')[0]; 
+																var avatar = element[0].getElementsByClassName('Avatar')[0];
 																rect = avatar.getBoundingClientRect();
 																$timeout.cancel(timer);
 
@@ -335,10 +335,10 @@ hudweb.directive('droppable',
 																	// hovered over a new avatar
 																	showOverlay();
 																}
-																	
-																current = element;	
-															};															
-															
+
+																current = element;
+															};
+
 															function showOverlay(business, mobile, externalXpid) {
 																overlay.bind('mouseleave', function(e) {
 																	// keep open if user moves back onto avatar
@@ -346,70 +346,69 @@ hudweb.directive('droppable',
 																		if (e.relatedTarget == current.children()[i])
 																			return;
 																	}
-																	
+
 																	if (e.relatedTarget != current)
 																		hideOverlay(500);
 																});
-																
+
 																overlay.bind('mouseenter', function(e) {
 																	$timeout.cancel(timer);
 																});
-																
+
 																obj.type = 'transfer';
 																obj.business = business;
 																obj.mobile = mobile;
 																obj.externalXpid = externalXpid;
 																obj.callId = obj.xpid;
-																
-																console.log('droppable: '+ externalXpid);
-																// send data to controller																	
+
+																// send data to controller
 																var data = {
 																	obj: obj,
 																	widget: widget,
 																	context: context ? $parse(context)(scope) : null
 																};
-																
+
 																$rootScope.$broadcast('contextMenu', data);
 																$rootScope.contextShow = true;
 
 																$timeout(function() {
-																	// position pop-pop				
+																	// position pop-pop
 																	overlay.addClass('NoWrap');
 																	overlay.removeClass('Bump');
-																	
+
 																	overlay.css('display', 'block');
 																	overlay.css('width', 'auto');
 																	overlay.css('top', (rect.top + rect.height/2) + 'px');
-																	
+
 																	var oRect = overlay[0].getBoundingClientRect();
-																	
+
 																	// can't fit on screen
 																	if (oRect.bottom >= window.innerHeight)
 																		overlay.addClass('Bump');
-																	
+
 																	// can fit on right side
 																	if (oRect.width < window.innerWidth - rect.right || oRect.width > rect.left) {
 																		overlay.css('left', (rect.left + rect.width/2) + 'px');
 																		overlay.css('right', 'auto');
-																		
+
 																		$('#ContextMenu .Arrow').removeClass('Right').addClass('Left');
 																	}
 																	// can fit on left side
 																	else {
 																		overlay.css('right', (window.innerWidth - rect.left - rect.width/2) + 'px');
 																		overlay.css('left', 'auto');
-																		
+
 																		$('#ContextMenu .Arrow').removeClass('Left').addClass('Right');
 																	}
-																	
+
 																	// set width for logout reasons
 																	overlay.removeClass('NoWrap');
 																	overlay.css('width', (overlay[0].getBoundingClientRect().width + 2) + 'px');
-															
+
 																	// button clicks
 																	$('#ContextMenu .Button').bind('click', function(e) {
 																		e.stopPropagation();
-																		
+
 																		// logout button shouldn't close
 																		if (this.className.indexOf('Logout') == -1)
 																			hideOverlay(0);
@@ -420,12 +419,12 @@ hudweb.directive('droppable',
 																	});
 																}, 10, false);
 															}
-															
+
 															function hideOverlay(t) {
 																timer = $timeout(function() {
 																	overlay.css('display', 'none');
 																	overlay.unbind();
-																	
+
 																	$('#ContextMenu .Button').unbind('click');
 																	$rootScope.contextShow = false;
 																}, t);
