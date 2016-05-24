@@ -85,6 +85,8 @@
         <div class="RightSide">
 
           <div class="row_buttons">
+            <!-- <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom" ng-click="showTransferComponent()" ng-if="currentCall.barge < 1 "><span class="CallControlButton">{{::verbage.transfer}}</span></button> -->
+            <!-- ^ Commented out transfer button for testing purposes  -->
             <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom" ng-click="showTransferComponent()" ng-if="currentCall.barge < 1 && cpFourteen && serverVersionCloud"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
             <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom" ng-click="showCallOvery('transfer',currentCall)" ng-if="currentCall.barge < 1 && (!cpFourteen || !serverVersionCloud)"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
             <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('conference',currentCall)" ng-if="currentCall.barge < 1"><span class="CallControlButton">{{::verbage.conf_room}}</span></button>
@@ -207,7 +209,7 @@
             <button  class="XButton CurrentCallBtn ColdTransfer" ng-if="!changeWarmButton" ng-disabled="!enableColdTransfer()" ng-click="coldTransfer()" droppable="Contact"><span class="CallControlButton">Cold Transfer</span></button>
 
             <button  class="XButton CurrentCallBtn WarmTransfer" ng-if="!changeWarmButton" ng-disabled="transferType == 'external' || !warmTransferButtonEnabled" ng-click="goToWarmTransfer()" droppable="Contact"><span class="CallControlButton">Warm Transfer</span></button>
-            <button  class="XButton CurrentCallBtn CompleteTransfer" ng-class="changeWarmButton ? 'CompleteTransferFinal' : ''" ng-if="changeWarmButton" ng-disabled="transferType == 'external' || !warmTransferButtonEnabled" ng-click="completeWarmTransfer()" droppable="Contact"><span class="CallControlButton">Complete Transfer</span></button>
+            <button  class="XButton CurrentCallBtn CompleteTransfer" ng-class="changeWarmButton ? 'CompleteTransferFinal' : ''" ng-if="changeWarmButton" ng-disabled="transferType == 'external' || !warmTransferButtonEnabled || !warmTransferToConnected" ng-click="completeWarmTransfer()" droppable="Contact"><span class="CallControlButton">Complete Transfer</span></button>
 
             <button  class="XButton CurrentCallBtn ToVoicemail" ng-if="!changeWarmButton" ng-disabled="transferType == 'external' || !toVMButtonEnabled" ng-click="transferToVM()" droppable="Contact"><span class="CallControlButton">To Voicemail</span></button>
 
@@ -219,6 +221,7 @@
         </div>
 
       </div>
+
 
       <div class="RecentCallSection" ng-show="currentCall == null" ng-hide="transferComponent">
           <div class="WidgetSectionTitle meTitle">{{::verbage.recent_calls}}</div>

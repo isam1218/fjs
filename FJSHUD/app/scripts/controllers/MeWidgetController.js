@@ -939,6 +939,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 }
             }
         });
+        if($scope.volume.micVolume == 0){
+            phoneService.setMicSensitivity($rootScope.volume.mic);
+            $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
+        }
     };
 
     $scope.transferFilter = function(){
@@ -954,7 +958,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.inputtedSearch = function(){
         // numbers
         if (!isNaN($scope.transfer.search) && $scope.transfer.search.length >= 10){
-            console.log('pressed enter!');
             $scope.transferType = 'external';
             $scope.transferTo = {};
             $scope.transferTo.contactNumber = $scope.transfer.search;
@@ -1038,46 +1041,63 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.coldTransferButtonEnabled = false;
     };
 
-    $scope.goToWarmTransfer = function(){
-        /*
-        // console.log('GOING TO WARM 2nd SCREEN!');
-        0. go to new screen
-        1. place current call on hold
-             holdCall(currentCall) -> grabs call by xpid and makes call to phoneService.holdCall(currentCall.xpid, isHeld)
-        $scope.holdCall($scope.currentCall);
-        2. make 2nd call to $scope.selectedTransferToContact;
-             phoneService.makeCall($scope.selectedTransferToContact.primaryExtension)
-                phoneService.makeCall($scope.transferToDisplayName.primaryExtension);
-        3. grab callIds for both calls
-            $scope.calls is an object that has both of my calls {0_17: Object, 0_18: Object}
-            just loop thru $scope.calls and set key as callId1 and other key as callId2...
-        // $scope.warmTransferButtonEnabled = false;
-        */
-        $scope.changeWarmButton = true;
+    var warmTransferFrom;
+    var warmTransferTo;
+    var call1;
+    var call2;
+    $scope.warmTransferToConnected;
+    $rootScope.secondCall = false;
 
+    $scope.goToWarmTransfer = function(){
+        $scope.warmTransferToConnected = false;
+        // ^ to keep the 'Complete Transfer' button disabled until wt-recipient answers
+        $rootScope.secondCall = true;
+        // ^ so that the leftbar controller doesn't automatically reload the mewidget controller for the 2nd call (which causes the transfer component to disappear and the recent calls section to reappear)
+        warmTransferFrom = $scope.currentCall.fullProfile;
+        warmTransferTo = $scope.transferToDisplayName;
+        // mute call # 1
+        $scope.muteCall()
+        // place call# 1 on hold
+        $scope.holdCall($scope.currentCall);
+        // place call #2 to wt-recipient
+        phoneService.makeCall($scope.transferToDisplayName.primaryExtension);
+        // grab callIds for both calls
+        $scope.$on("mycalls_synced",function(event,data){
+            for (var i = 0; i < data.length; i++){
+                if (data[i].xef001type != "delete" && (data[i].contactId == warmTransferFrom.xpid)){
+                    call1 = data[i];
+                } else if (data[i].xef001type != "delete" && (data[i].contactId == warmTransferTo.xpid)){
+                    call2 = data[i];
+                    if (data[i].state === 2){
+                        // keep the 'Complete Transfer' button disabled until wt-recipient picks up
+                        $scope.warmTransferToConnected = true;
+                    }
+                }
+            }
+        });
+
+        $scope.changeWarmButton = true;
+        $scope.transferComponent = true;
     };
 
     $scope.completeWarmTransfer = function(){
-        /*
-        console.log('current Call - ', $scope.currentCall);
-        console.log('$scope.transferToDisplayName - ', $scope.transferToDisplayName);
-        4. call warm transfer API
-        https://localhost:8080/v1/mycalls?action=warmTransfer&a.callId1=0_52&a.callId2=0_53&Authorization=b9c55b7baeb341f5d598f202a9955fca0baf48502cd47b63
-
-        // call warm transfer API and then?...
         var action = 'warmTransfer';
         var feed = 'mycalls';
         var params = {};
-        // params.mycallId = $scope.currentCall.xpid;
-
-        console.log('Final complete Warm Transfer called');
-
-        // $scope.showResult = false;
-        // $scope.transfer.search = '';
-        */
+        params.callId1 = call1.xpid;
+        params.callId2 = call2.xpid;
+        myHttpService.sendAction(feed, action, params);
         $scope.changeWarmButton = false;
         $scope.warmTransferButtonEnabled = false;
         $scope.transferComponent = false;
+        $scope.warmTransferToConnected = false;
+        $rootScope.secondCall = false;
+        // unmute call #1
+        if($scope.volume.micVolume == 0){
+            phoneService.setMicSensitivity($rootScope.volume.mic);
+            $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
+        }
+
     };
 
     $scope.transferToVM = function(){
@@ -1094,6 +1114,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.cancelTransfer = function(){
+        // if at warm transfer screen cancel means we want to hang up call #2
+        if ($scope.changeWarmButton || $scope.warmTransferToConnected){
+            phoneService.hangUp(call2.xpid);
+            $scope.warmTransferToConnected = false;
+            // and also unmute call #1
+            if($scope.volume.micVolume == 0){
+                phoneService.setMicSensitivity($rootScope.volume.mic);
+                $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
+            }
+        }
+
         $scope.showResult = false;
         $scope.transfer.search = '';
         $scope.transferComponent = false;
@@ -1103,7 +1134,24 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.warmTransferButtonEnabled = false;
         $scope.toVMButtonEnabled = false;
         $scope.changeWarmButton = false;
+        $rootScope.secondCall = false;
     };
+
+    $scope.$on("mycalls_synced",function(event,data){
+        var myActiveCalls = 0;
+        for (var i = 0; i < data.length; i++){
+            if (data[i].xef001type != "delete"){
+                myActiveCalls++;
+            }
+        }
+        // all calls hung up -> restore volume level back to unmuted
+        if (myActiveCalls === 0){
+            if($scope.volume.micVolume == 0){
+                phoneService.setMicSensitivity($rootScope.volume.mic);
+                $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
+            }
+        }
+    });
 
     $scope.showCallOvery = function(screen){
 		// create temp object for overlay
