@@ -380,6 +380,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			recentXpids[$scope.transferTo.xpid] = $scope.transferTo.xpid;
 			localStorage['recentTransfers_of_' + $rootScope.myPid] = JSON.stringify(recentXpids);
 			$scope.showOverlay(false);
+			ga('send', 'event', {eventCategory:'Calls', eventAction:'Transfer', eventLabel: 'via Call Control Transfer Button'});
 		}
 		else
 			$scope.addError = 'Select destination';

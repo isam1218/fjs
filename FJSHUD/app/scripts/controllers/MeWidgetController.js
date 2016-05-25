@@ -447,6 +447,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         var eventTarget = context.getEventHandlerElement(e.target, e);
         var offset = context.getElementOffset(eventTarget);
         $scope.showPopup({key:"DialPadPopup", x:offset.x-60, y:offset.y + 25});
+        ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: 'From Dialpad/Center'});
         return true;
     };
     $scope.lastMillis = 0;
@@ -953,7 +954,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
 		$scope.call_obj.phoneNumber = '';
-
+        ga('send', 'event', {eventCategory:'Calls', eventAction:'From', eventLabel: 'Center Column'});
     };
 		
 

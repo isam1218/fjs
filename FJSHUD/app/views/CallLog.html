@@ -40,7 +40,7 @@
 		<div class="rows">
 			<div class="ListRow Table AvatarHoverArea" data-ng-repeat="call in calls | orderBy: [sortField, '-startedAt']:sortReverse | filter: customFilter() track by call.xpid">
 				<div>
-					<avatar profile="call.fullProfile" type="{{::call.type}}"></avatar>
+					<avatar profile="call.fullProfile" type="{{::call.type}}" context="calllog"></avatar>
 				</div>
 				<div class="Name SmallFont-{{ :: call.displayName.length > 15 ? true : false}}"><div> {{ ::call.displayName }}</div></div>
 				<div class="Phone SmallFont-{{ :: call.phone.length > 12 ? true : false}}">

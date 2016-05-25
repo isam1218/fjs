@@ -465,11 +465,13 @@ hudweb.controller('NotificationController',
     for(var call = 0; call < $scope.calls.length; call++){
       if($scope.calls[call].state == $scope.callState.CALL_ACCEPTED){
         $scope.holdCall($scope.calls[call].xpid,true);
+
       }
       // if the user's incoming call is a queue call --> force change that call's state to ACCEPTED so that "End" and "Hold" appear. This is for the "Press to Accept" permission (HUDF-1338) to work properly.
       if (currentCall.type == $scope.calltype.QUEUE_CALL && $scope.calls[call].xpid == xpid){
         $scope.calls[call].state = $scope.callState.CALL_ACCEPTED;
       }
+      ga('send', 'event', {eventCategory:'Calls', eventAction:'Receive', eventLabel: 'Answer from Notification'});
     }
 	
     phoneService.acceptCall(xpid);
@@ -485,6 +487,8 @@ hudweb.controller('NotificationController',
       $scope.remove_notification(message.xpid);
       $scope.showOverlay(false);
     }
+
+    ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: 'From Notification'});
   };
   
   $scope.joinZoom = function(message) {
@@ -492,7 +496,8 @@ hudweb.controller('NotificationController',
       window.open(urlPath, "_blank");
 	  
       $scope.remove_notification(message.xpid);
-  };
+      ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Join', eventLabel: 'From Notification'});
+  };  
 
   $scope.showNotificationOverlay = function(show) {
     if (!show)

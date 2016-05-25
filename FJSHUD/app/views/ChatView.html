@@ -1,7 +1,7 @@
 <div class="ToolBar chatTop">
     <div class="ChatSearch">
         <div class="SearchIcon"></div>
-        <input ng-model="chat.query" class="Search chat" type="search" ng-model-options="{debounce: 200}" ng-attr-placeholder="{{::verbage.search}}" />
+        <input ng-model="chat.query" ng-focus="trackMe()" class="Search chat" type="search" ng-model-options="{debounce: 200}" ng-attr-placeholder="{{::verbage.search}}" />
 		<div class="Arrows">
       <input type="button" class="ChatSearchUpArrow" ng-click="searchChat(-1)" />
 			<input type="button" class="ChatSearchDownArrow"  ng-click="searchChat(1)" />

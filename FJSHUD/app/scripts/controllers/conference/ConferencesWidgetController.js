@@ -1,4 +1,4 @@
-hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService', function($rootScope, $scope, $location, conferenceService, httpService, settingsService) {
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService','$analytics', function($rootScope, $scope, $location, conferenceService, httpService, settingsService, $analytics) {
 	$scope.query = '';
 	$scope.totals = {};
 	$scope.sortBy = 'location';
@@ -7,6 +7,9 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		$scope.globalXpid = $rootScope.myPid;
 		$scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
 	});
+
+	//track conference page view with angularactics
+	$analytics.pageTrack('/conferences');
 	
 	$scope.tab = localStorage['ConfWidget_tab_of_' + $scope.globalXpid] ? JSON.parse(localStorage['ConfWidget_tab_of_' + $scope.globalXpid]) : 'my';
 
