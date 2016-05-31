@@ -1408,7 +1408,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on("me_synced", function(event, data){
         for (var i = 0; i < data.length; i++){
             if (data[i].propertyKey == "cp_location"){
-                if (data[i].propertyValue == "cp14")
+                if (data[i].propertyValue == "cp14" || data[i].propertyValue == "fcs-stg3-cp")
                     $scope.cpFourteen = true;
                 else
                     $scope.cpFourteen = false;
