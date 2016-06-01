@@ -1410,7 +1410,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on("me_synced", function(event, data){
         for (var i = 0; i < data.length; i++){
             if (data[i].propertyKey == "cp_location"){
-                var cpLocationParsed = data[i].propertyValue.split('');
+                var cpLocationParsed = data[i].propertyValue;
                 var parseReturnsFcs = cpLocationParsed.indexOf('fcs') != -1 && cpLocationParsed.indexOf('fcs') == 0 ? true : false;
                 // check for "cp14" or "fcs-stg3-cp" or "fcs-stg-cp", etc (1st three letters of cp_location propertyValue string will be 'fcs')
 
