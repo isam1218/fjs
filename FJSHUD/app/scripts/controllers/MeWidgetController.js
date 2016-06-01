@@ -1401,14 +1401,18 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     });
 
     // this is for determining whether to show old transfer UI vs new transfer UI. If CP14 & cloud server --> show new transfer UI
-    // only checking for cp14 -> need to make sure to add checks for any new versions of CP that are released thereafter
+    // only checking for cp14 (and fcs staging environments for dev testing) -> need to make sure to add checks for any new versions of CP that are released thereafter
     $scope.cpFourteen = false;
     $scope.serverVersionCloud = false;
 
     $scope.$on("me_synced", function(event, data){
         for (var i = 0; i < data.length; i++){
             if (data[i].propertyKey == "cp_location"){
-                if (data[i].propertyValue == "cp14" || data[i].propertyValue == "fcs-stg3-cp")
+                var cpLocationParsed = data[i].propertyValue.split('');
+                var firstThreeLeters = cpLocationParsed[0] + cpLocationParsed[1] + cpLocationParsed[2];
+                var parseReturnsFcs = firstThreeLeters == 'fcs' ? true : false;
+                // check for "cp14" or "fcs-stg3-cp" or "fcs-stg-cp", etc (1st three letters of cp_location propertyValue string will be 'fcs')
+                if (data[i].propertyValue == "cp14" || parseReturnsFcs)
                     $scope.cpFourteen = true;
                 else
                     $scope.cpFourteen = false;
