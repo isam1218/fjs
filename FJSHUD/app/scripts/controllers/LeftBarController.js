@@ -5,7 +5,7 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 	$scope.number = "";
 	$scope.locations = [];
   $scope.language = 'us';
-    
+
   $q.all([contactService.getContacts(), settingsService.getSettings()]).then(function(){
     $timeout(function(){
       $scope.language = $rootScope.language;
@@ -18,11 +18,11 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
 		for(var i = 0; i<= data.length;i++){
 
   		if($scope.calls_data[i] != undefined) {
-  		  if($scope.calls_data[i].type != 0 && ($scope.calls_data[i].incoming == false || $scope.calls_data[i].state == 2)){
+  		  if($scope.calls_data[i].type != 0 && ($scope.calls_data[i].incoming == false || $scope.calls_data[i].state == 2) && !$rootScope.secondCall){
   		    $scope.tab = 'recent';
-  		    if($rootScope.meModel.location.locationType == 'w') 
+  		    if($rootScope.meModel.location.locationType == 'w')
   		    	$location.path("settings/callid/"+data[i].xpid);
-  		  } 
+  		  }
   		}
 		}
 	});
@@ -41,7 +41,7 @@ hudweb.controller('LeftBarController', ['$scope', '$rootScope', 'HttpService', '
     // save last accessed contact panel tab
     localStorage['LeftBar_tabs_of_' + $rootScope.myPid] = JSON.stringify(tab);
   };
-	
+
 	$scope.makeCall = function(number){
         phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
