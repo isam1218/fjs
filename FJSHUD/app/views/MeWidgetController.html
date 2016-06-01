@@ -175,8 +175,8 @@
           </div>
           <!-- Results -->
           <div class="TransferResultContacts" droppable="Contact">
-            <div class="TransferContactsContainer">
-              <div class="ListRow" ng-repeat="contact in transferContacts | filter: transferFilter() | orderBy: 'displayName'" ng-click="selectTransferContact(contact)" ng-hide="transferComponent && showResult">
+            <div class="TransferContactsContainer" ng-class="filteredTransferContacts.length <= 2 ? 'FilteredDown' : ''">
+              <div class="ListRow" ng-repeat="contact in filteredTransferContacts = (transferContacts | filter: transferFilter()) | orderBy: 'displayName'" ng-click="selectTransferContact(contact)" ng-hide="transferComponent && showResult" ng-if="transfer.search.length > 0">
                 <avatar profile="contact"></avatar>
                 <div class="ListRowContent" ng-switch="contact.call != null">
                   <div class="ListRowTitle">
