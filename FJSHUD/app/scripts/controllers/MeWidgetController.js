@@ -27,12 +27,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 			if ($scope.currentCall.contactId)
 				$scope.currentCall.fullProfile = contactService.getContact($scope.currentCall.contactId);
 			else if ($scope.currentCall.details.conferenceId)
-				$scope.currentCall.fullProfile = conferenceService.getConference($scope.currentCall.details.conferenceId);
+				$scope.currentCall.fullProfile = conferenceService.getConference($scope.currentCall.details.conferenceId);						
         }
         else {
             $scope.call_obj.phoneNumber = "";
             $scope.onCall = false;
-        }
+        }       
 	});
 
     $scope.phoneState = phoneService.getPhoneState();
@@ -1184,6 +1184,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.endCall = function(call){
         phoneService.hangUp(call.xpid);
+        $scope.call_obj.phoneNumber = "";
+        $scope.onCall = false;
     };
 
      $scope.hangup = function(){
@@ -1198,6 +1200,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }else{
             myHttpService.sendAction('me','callTo',{phoneNumber: number});
         }
+        $scope.call_obj.phoneNumber = "";
+        $scope.onCall = false;
     };
 
 
@@ -1337,15 +1341,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
     $scope.$on('make_phone_call',function(event,data){
-        $scope.callKeyPress(data);
-
+        $scope.callKeyPress(data);        
     });
 
     $scope.$on('calls_updated',function(event,data){
         $scope.calls = data;
         var call_exist = false;
         $scope.onCall = false;
-
+       
         if(data && !$.isEmptyObject(data)){
             for (var i in data){
                 if(data[i].xpid == $scope.meModel.my_pid){
@@ -1382,12 +1385,15 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         }else{
             $scope.currentCall = null;
-            $scope.onCall = false;
+            $scope.onCall = false;           
         }
 
         updateTime();
     });
 
+    $scope.$watch($scope.currentCall, function(call){
+    	if(call == null && )
+    });
     var dtmf_input = "";
     var icon_version = $scope.meModel.icon_version;
     $scope.$on("fdpImage_synced",function(event,data){
@@ -1457,7 +1463,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 setTimeout(function(){
                    phoneService.sendDtmf($scope.currentCall.xpid,dtmf_input);
                     dtmf_input = "";
-                },900);
+                },900);           
             }
 
     });
@@ -1506,7 +1512,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.$on('phone_event',function(event,data){
         if(data){
-            var e = data.event;
+            var e = data.event;            
             switch(e){
                 case 'state':
                     $scope.phoneState = data.registration;
