@@ -1382,18 +1382,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             if($scope.currentCall && !data[$scope.currentCall.xpid]){
                 $scope.currentCall = null;
                 $scope.onCall = false;
+                $scope.call_obj.phoneNumber = "";  
             }
         }else{
             $scope.currentCall = null;
-            $scope.onCall = false;           
+            $scope.onCall = false;  
+            $scope.call_obj.phoneNumber = "";  
         }
 
         updateTime();
     });
-
-    $scope.$watch($scope.currentCall, function(call){
-    	if(call == null && )
-    });
+   
     var dtmf_input = "";
     var icon_version = $scope.meModel.icon_version;
     $scope.$on("fdpImage_synced",function(event,data){
