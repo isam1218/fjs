@@ -233,7 +233,22 @@ hudweb.directive('droppable',
 
                                   /* [TRANSFERRING UNANSWERED QUEUE CALLS (D&D)] */
                                   // checking CP and server version *(CP < cp14 or server version < 3.5.1 does not receive this functionality HUDF-1424)*
-                                  var cpFourteen = $rootScope.meModel.cp_location == "cp14" ? true : false;
+                                  // add new CP versions to this array...
+                                  var possibleCpVersions = ["cp14"];
+                                  var cpFourteen = false;
+                                   // check for "cp14" or "fcs-stg3-cp" or "fcs-stg-cp", etc for testing environment purposes (1st three letters of cp_location propertyValue string will be 'fcs')
+                                  var parseReturnsFcs = $rootScope.meModel.cp_location.indexOf('fcs') != -1 && $rootScope.meModel.cp_location.indexOf('fcs') == 0 ? true : false;
+																																		
+																	for (var j = 0; j < possibleCpVersions.length; j++){
+																		if ($rootScope.meModel.cp_location == possibleCpVersions[j]){
+																			cpFourteen = true;
+																			break;
+																		}
+																	}
+																	if (parseReturnsFcs){
+																		cpFourteen = true;
+																	}
+                                  // var cpFourteen = $rootScope.meModel.cp_location == "cp14" ? true : false;
                                   var serverVersionCloud;
                                   var serverVersionSplit = $rootScope.meModel.server_version.split('.');
                                   var sv1 = serverVersionSplit[0];
