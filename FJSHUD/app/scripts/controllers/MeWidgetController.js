@@ -480,8 +480,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.hoverDelaySelected;
 
     $scope.searchAutoClear;
-    $scope.boxObj = {};
-    $scope.boxObj.enableBox;
     $scope.enableSound;
     $scope.soundOnChatMsgReceived;
     $scope.soundOnSentMsg;
@@ -541,13 +539,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 break;
             case 'hudmw_searchautocleardelay':
                 myHttpService.updateSettings(type, action, model.value);
-                break;
-            case 'hudmw_box_enabled':
-                if (!$scope.boxObj.enableBox)
-                    $scope.boxObj.enableBox;
-                else
-                    !$scope.boxObj.enableBox
-                myHttpService.updateSettings(type, action, model);
                 break;
             case 'hudmw_launcher_config_id':
             	//$scope.truncateLongString();
@@ -625,7 +616,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             $scope.alertDuration = settings['alert_call_duration'];
 
             $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
-            $scope.boxObj.enableBox=settings['hudmw_box_enabled'] == "true";
             $scope.enableSound=settings['hudmw_chat_sounds'] == "true";
             $scope.soundOnChatMsgReceived=settings['hudmw_chat_sound_received'] == "true";
             $scope.soundOnSentMsg=settings['hudmw_chat_sound_sent'] == "true";
