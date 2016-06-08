@@ -1116,6 +1116,9 @@ hudweb.controller('NotificationController',
          var oldVms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
          var vm = phoneService.getVoiceMail(notification.vmId);
          notification.vm = vm;
+         if(newVms.length < 1){
+              $scope.remove_notification(notification.xpid);
+            }
          notification.label = 'you have ' +  newVms.length + ' new voicemail(s)';
          notification.message = 'you have ' +  oldVms.length + ' unread voicemail(s)';
         // if displayname is a phone number -> add the hypens to make external notifications consistent...
