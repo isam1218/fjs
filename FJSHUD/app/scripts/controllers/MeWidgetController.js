@@ -1054,11 +1054,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     // used to advance to 2nd warm transfer screen (places call #1 on hold then places call #2 to wt-recipient)
     $scope.goToWarmTransfer = function(){
+        var firstCallIsWithExternal = false;
         $scope.warmTransferToConnected = false;
         // ^ to keep the 'Complete Transfer' button disabled until wt-recipient answers
         $rootScope.secondCall = true;
         // ^ so that the leftbar controller doesn't automatically reload the mewidget controller for the 2nd call (which causes the transfer component to disappear and the recent calls section to reappear)
-        warmTransferFrom = $scope.currentCall.fullProfile;
+        if ($scope.currentCall.fullProfile){
+            // if call1 is with internal contact
+            warmTransferFrom = $scope.currentCall.fullProfile;
+        } else {
+            // else if call1 is with external #
+            warmTransferFrom = $scope.currentCall;
+            firstCallIsWithExternal = true;
+        }
         warmTransferTo = $scope.transferToDisplayName;
         // place call# 1 on hold
         $scope.holdCall($scope.currentCall);
@@ -1067,18 +1075,28 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         // grab callIds for both calls
         $scope.$on("mycalls_synced",function(event,data){
             for (var i = 0; i < data.length; i++){
-                if (data[i].xef001type != "delete" && (data[i].contactId == warmTransferFrom.xpid)){
-                    call1 = data[i];
-                } else if (data[i].xef001type != "delete" && (data[i].contactId == warmTransferTo.xpid)){
-                    call2 = data[i];
-                    if (data[i].state === 2){
-                        // keep the 'Complete Transfer' button disabled until wt-recipient picks up
-                        $scope.warmTransferToConnected = true;
+                if (data[i].xef001type != "delete"){
+                    if (firstCallIsWithExternal){
+                        // if call1 is w/ external caller
+                        if (data[i].phone == warmTransferFrom.phone){
+                            call1 = data[i];
+                        } 
+                    } else {
+                        // call1 is w/ internal caller
+                        if (data[i].contactId == warmTransferFrom.xpid){
+                            call1 = data[i];
+                        } 
+                    }
+                    // set call2
+                    if (data[i].contactId == warmTransferTo.xpid){
+                        call2 = data[i];
+                        if (data[i].state === 2){
+                            $scope.warmTransferToConnected = true;
+                        }
                     }
                 }
             }
         });
-
         $scope.changeWarmButton = true;
         $scope.transferComponent = true;
     };
@@ -1410,7 +1428,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.$on("me_synced", function(event, data){
         for (var i = 0; i < data.length; i++){
             if (data[i].propertyKey == "cp_location"){
-                var cpLocationParsed = data[i].propertyValue.split('');
+                var cpLocationParsed = data[i].propertyValue;
                 var parseReturnsFcs = cpLocationParsed.indexOf('fcs') != -1 && cpLocationParsed.indexOf('fcs') == 0 ? true : false;
                 // check for "cp14" or "fcs-stg3-cp" or "fcs-stg-cp", etc (1st three letters of cp_location propertyValue string will be 'fcs')
 
