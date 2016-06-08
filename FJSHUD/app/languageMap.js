@@ -17,7 +17,7 @@
     select:'Select',
     clear_selection:'Clear Selection',
     on_call: 'on call',
-    
+
 		/****************ME LABELS******************/
 		avatar_hover_menu: '写真ホバーメニュー遅延',
 		enable_box: 'ボックス有効化',
@@ -74,7 +74,7 @@
         talk:'talk',
         recent_calls:'Recent calls',
   		time:'Time',
-    	today:'Today' , 
+    	today:'Today' ,
     	yesterday:'Yesterday',
     	AM: 'am',
 　  		PM:	'pm',
@@ -92,7 +92,7 @@
         enable_box:	'Enable Box',
         reset_app_menu_order:  'Reset App Menu Order',
 		sound_quality_setting: 	'音質設定',
-		speaker: 'speaker'　,　　	
+		speaker: 'speaker'　,　　
       	echo:	'Echo',
       	device:'Device',
       	select_device_to_use:'Select Device to use',
@@ -117,7 +117,7 @@
 		variables:'Variable',
 		description:'Description',
 		inbound:'Inbound',
-		outbound:'OutBound',
+		outbound:'Outbound',
 		wl_var_desc_username_accounts:'認証を要求するアカウントのユーザネーム',
 		wl_var_desc_duration:'通話の経過時間（秒）',
 		wl_var_desc_name_of_party:'接続先番号',
@@ -266,7 +266,7 @@
       queues_search_results: 'Queues search results',
       conferences_search_results: 'Conferences search results',
       waiting_calls: 'waiting call(s)',
-    
+
       /***** Call Recordings *****/
       call_log_tab:'Call Log',
       voicemail_tab:'Voicemails',
@@ -277,7 +277,7 @@
       action:'Actions',
       mark_all_incoming_vm_read:'Mark as read all incoming voicemails',
       mark_all_incoming_vm_unread:'Mark as unread all incoming voicemails',
-      delete_all_incoming_read:'Delete all read incoming voicemails', 
+      delete_all_incoming_read:'Delete all read incoming voicemails',
 
       sort_newest_first:'Newest First',
       sort_alphabetically:'Alphabetically',
@@ -303,7 +303,7 @@
       room:'Room',
       total:'Total',
       you_are_on_call:'You are on a call',
-      
+
       not_a_member_of_conference:'You are not a member of this conference',
       join_to_chat:'Join conference call to use chat.',
       only_see_messages_during_chat:'You can see only messages sent during conference call.',
@@ -350,7 +350,7 @@
       want_to_know_who_is_calling:'Want to know who is calling you?',
       messaging:'Messaging',
       want_to_chat_with_this_person:'Want to chat and e-mail this person?',
-     
+
       visibility:'Visibility',
       add_to_favorites:'add to favorites group',
       phones:'Phones',
@@ -372,6 +372,9 @@
       send_message:'Send Message',
       delete_group:'Delete Group',
       delete_word:'Delete',
+      transfer_external: 'Select Which Number To Transfer To',
+      business: 'Business:',
+      mobile: 'Mobile:',
       team_description:'Team description is used for search and provides useful information to the team members.',
       open:'Open',
       old:'Old',
@@ -382,7 +385,7 @@
       sort_by_chat_status:'Sort By Chat Status',
       /****Phone Notifications ***/
       clear_all:'Clear All',
-      clear: 'Clear', 
+      clear: 'Clear',
       show: 'Show',
       hide: 'Hide',
       /***page**/
@@ -402,7 +405,7 @@
       no_voicemails_between:'There are currently no voicemails in the system between you and',
 
 
-      
+
       no_recent_calls:"No Recent Calls",
       UnMute: 'Unmute',
       Mute:'Mute',
@@ -499,7 +502,7 @@
       active_calls_in_queue_longest_wait:'active call(s) in queue with the longest call time of',
       no_active_calls:'No active calls',
       longest_hold: 'Lng Hold',
-      
+
 
       call_management:'Call Management',
       call_members:'Call Members',
@@ -533,7 +536,7 @@
       schedule_move_to_trash:'Schedule move to trash',
       Call_Later:'Call Later',
       Skip:'Skip',
-    
+
   },
 
 	/*****Japanese Language******/
@@ -610,7 +613,7 @@
         recent_calls:'最近の通話',
   		date:'日',
   		time:'時',
-    	today:'今日' , 
+    	today:'今日' ,
     	yesterday:'昨日',
     	AM: '午前',
 　  		PM:	'午後',
@@ -630,7 +633,7 @@
         sound_quality:'音質設定',
         sound_settings:'音の設定',
 		sound_quality_setting: 	'音質設定',
-		speaker: 'スピーカー'　,　　	
+		speaker: 'スピーカー'　,　　
       	echo:	'エコー',
       	device:'端末',
       	select_device_to_use:'利用デバイス設定',
@@ -758,7 +761,7 @@
        fdp_version:'FDPのバージョン',
        hud_server_version:'HUDサーバーバージョン',
        fon_core_version:'FONcoreバージョン',
-      phone: '電話',    
+      phone: '電話',
        me:'自席',
        call_and_recordings:'通話と録音',
        conferencing:'会議中',
@@ -788,7 +791,7 @@
       zoom_created:'ビデオ会議が作成されています',
       link:'リンク',
       link_to_join:'参加するリンク:',
-	        
+
       /*****Search WIdget ******/
       type_for_results:'名称　または番号',
       search_to_start_convo:'会話を始めるために検索する',
@@ -803,13 +806,13 @@
 
       mark_all_incoming_vm_read:'既読のボイスメールにマークする ',
       mark_all_incoming_vm_unread:'未読のボイスメールにマークする ',
-      delete_all_incoming_read:'既読のボイスメールを削除する ', 
+      delete_all_incoming_read:'既読のボイスメールを削除する ',
 
       sort_newest_first:'新しい順',
       sort_alphabetically:'アルファベット順 ',
       sort_oldest_first:'古い順',
       sort_read_status:'既読状態',
-  
+
        /*****Conferences*******/
       conferencing:'会議中',
       my_rooms:'個人の会議室',
@@ -909,7 +912,7 @@
       sort_by_name:'ユーザ名 ',
       sort_by_call_status:'コールステータス ',
       sort_by_chat_status:'チャットステータス ',
-   
+
 
       /***page ***/
       page:'ページ',
@@ -933,7 +936,7 @@
       auto_delete:'自動削除',
       never:'決して',
       hours:'3時間後',
-  
+
 
       no_voicemails:'ビューにはボイスメールがありません',
       no_voicemails_between:'現在システム内にボイスメールはありません',
@@ -1036,7 +1039,7 @@
       active_calls_answered:'Active Calls (Answered)',
       active_calls_in_queue_longest_wait:'active call(s) in queue with the longest call time of',
       no_active_calls:'No active calls',
-      
+
 
       call_management:'Call Management',
       call_members:'Call Members',
@@ -1068,7 +1071,7 @@
      search_by_room_or_person:'Search by room or person',
       Call_Later:'後で呼び出し',
       Skip:'スキップ',
- 
+
 
   },
   /**PIRATE**/
@@ -1090,7 +1093,7 @@
     select:'Select',
     clear_selection:'Clear Selection',
     on_call: 'on call',
-    
+
     /****************ME LABELS******************/
     avatar_hover_menu: '写真ホバーメニュー遅延',
     enable_box: 'ボックス有効化',
@@ -1147,7 +1150,7 @@
         talk:'talk',
         recent_calls:'Recent Calls',
       time:'Time',
-      today:'Today' , 
+      today:'Today' ,
       yesterday:'Yesterday',
       AM: 'am',
 　     PM: 'pm',
@@ -1165,7 +1168,7 @@
         enable_box: 'Enable Box',
         reset_app_menu_order:  'Reset App Menu Order',
     sound_quality_setting:  '音質設定',
-    speaker: 'speaker'　,　　  
+    speaker: 'speaker'　,　　
         echo: 'Echo',
         device:'Device',
         select_device_to_use:'Select Device to use',
@@ -1333,7 +1336,7 @@
       type_for_results:'Type for results',
       search_to_start_convo:'Search to Start Conversation',
       type_subject_name:'Type name of contact, team, queue, or conference room...',
-    
+
       /***** Call Recordings *****/
       call_log_tab:'Call Log',
       voicemail_tab:'Voicemails',
@@ -1343,7 +1346,7 @@
       action:'Actions',
       mark_all_incoming_vm_read:'Mark as read all incoming voicemails',
       mark_all_incoming_vm_unread:'Mark as unread all incoming voicemails',
-      delete_all_incoming_read:'Delete all read incoming voicemails', 
+      delete_all_incoming_read:'Delete all read incoming voicemails',
 
       sort_newest_first:'Newest First',
       sort_alphabetically:'Alphabetically',
@@ -1369,7 +1372,7 @@
       room:'Room',
       total:'Total',
       you_are_on_call:'You are on a call',
-      
+
       not_a_member_of_conference:'You are not a member of this conference',
       join_to_chat:'Join conference call to use chat.',
       only_see_messages_during_chat:'You can see only messages sent during conference call.',
@@ -1415,7 +1418,7 @@
       want_to_know_who_is_calling:'Want to know who is calling you?',
       messaging:'Messaging',
       want_to_chat_with_this_person:'Want to chat and e-mail this person?',
-     
+
       visibility:'Visibility',
       add_to_favorites:'add to favorites group',
       phones:'Phones',
@@ -1447,7 +1450,7 @@
       sort_by_chat_status:'Sort By Chat Status',
       /****Phone Notifications ***/
       clear_all:'Clear All',
-      clear: 'Clear', 
+      clear: 'Clear',
       show: 'Show',
       hide: 'Hide',
       /***page**/
@@ -1467,7 +1470,7 @@
       no_voicemails_between:'There are currently no voicemails in the system between you and',
 
 
-      
+
       no_recent_calls:"No Recent Calls",
       UnMute: 'Unmute',
       Mute:'Mute',
@@ -1564,7 +1567,7 @@
       active_calls_in_queue_longest_wait:'active call(s) in queue with the longest call time of',
       no_active_calls:'No active calls',
       longest_hold: 'Lng Hold',
-      
+
 
       call_management:'Call Management',
       call_members:'Call Members',
@@ -1598,9 +1601,9 @@
       schedule_move_to_trash:'Schedule move to trash',
       Call_Later:'Call Later',
       Skip:'Skip',
-    
-  },
- 
 
-  
+  },
+
+
+
 };

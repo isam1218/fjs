@@ -1,4 +1,4 @@
-hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', '$http', function($scope, $rootScope, httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService, $http) {
+hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', '$http','$analytics', function($scope, $rootScope, httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService, $http,$analytics) {
 	"use strict";
 
 	// redirect if not allowed
@@ -33,6 +33,28 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	$scope.upload_progress = 0;
 	$scope.chat.attachmentItems;
 	$scope.chat.showBG;
+
+	//google analytics track page views
+	var chatPath = $location.path();
+	
+	var contactChat = chatPath.indexOf("contact");
+	var queueChat = chatPath.indexOf("queue");
+	var groupChat = chatPath.indexOf("group");
+	var conferenceChat = chatPath.indexOf("conference");
+
+	if(groupChat != -1){
+		$analytics.pageTrack('group/chat');
+	}
+	else if(queueChat != -1){
+		$analytics.pageTrack('queue/chat');
+	}
+	else if(conferenceChat != -1){
+		$analytics.pageTrack('conference/chat');
+	}
+	else if(contactChat != -1){
+		$analytics.pageTrack("contact/chat");
+	}
+	
 
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
@@ -570,6 +592,10 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		if (!data || data == '')
 			scrollbox.scrollTop = scrollbox.scrollHeight;
 	});
+
+	$scope.trackMe = function(){
+		ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From Center Column Chat"});
+	};
 	
 	$scope.sendMessage = function() {
 		if ($scope.chat.message == '')

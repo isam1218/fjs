@@ -519,11 +519,18 @@
 	
 	.Agent {
       border: 1px solid #999;
+      width:160px;
 	  padding: .1em .5em .1em .1em;
 	  
 	  & > div {
 	    display: inline-block;
 	    vertical-align: middle;
+	  }
+	  div{
+	  	white-space: nowrap;
+	  	overflow: hidden;
+	  	text-overflow: ellipsis;
+	  	max-width:120px;
 	  }
 	}
   
@@ -544,7 +551,7 @@
 	  -webkit-align-items: center;
       min-width: 0;     
       min-height: 0;
-        
+	  max-width:310px; 
       .Arrow {
   	    position: absolute;
   	    border: solid 6px;

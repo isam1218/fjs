@@ -116,16 +116,26 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				if (profile.icon_version)
 					loadImage(element.find('img'), profile.getAvatar(28));
 			}
-			else if (profile.name) {
-				showGroup();
+			else if (profile.name) {			
 				if (profile.members){
 					var mLen = profile.members.length;
 					var numIcons = 0;
+					$(element).empty();
 					
 					for (var i = 0; i < mLen; i++){
-						if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version && numIcons < 4){
-							loadImage(element.find('.GroupAvatarItem_' + numIcons + ' img'), profile.getAvatar(i, 28));
+						if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version && numIcons < 4){							
+							showGroupImg(profile.getAvatar(i, 28, 28, profile.members[i].fullProfile.icon_version), numIcons);							
 						    numIcons++;
+						}
+					}
+					if(numIcons == 0)
+						showGroup();
+					else{
+						if(numIcons < 3)
+						{	
+							for (var j = numIcons; j < 4; j++){
+								showGroupImg(null, j);
+							}
 						}
 					}
 				}
@@ -150,6 +160,15 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			
 			function showGroup() {
 				element.html('<div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div>');
+			}
+			
+			function showGroupImg(img_url, idx) {
+				var img = $('<img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" />');
+				if(img_url && img_url != null)
+					img = $('<img class="GroupAvatarItemImg default" src="' + img_url + '" />');
+				var cur_div = $('<div class="GroupAvatarItem GroupAvatarItem_'+idx+'"></div>');
+				$(cur_div).append($(img));
+				$(element).append(cur_div);
 			}
 			
 			function loadImage(el, url) {

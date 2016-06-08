@@ -18,7 +18,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     var VERSIONS_PATH = "/v1/versions";
     var VERSIONSCACHE_PATH = "/v1/versionscache";
 	var worker = undefined;
-
+	var unload = false; 
+	
 	if(localStorage.serverHost != undefined){
 		fjs.CONFIG.SERVER.serverURL = localStorage.serverHost;
 	}
@@ -147,7 +148,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
             + "&revoke_token="; // + authTicket;
 			
 		worker.terminate();
-		
+		unload = false;
 		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 		window.onbeforeunload = null;
 		location.href = authURL;
@@ -179,7 +180,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				headers:{
 					'Content-Type':'application/x-www-form-urlencoded'
 				},
-				data:'',
+				data:$.param({b:fjs.CONFIG.BUILD_NUMBER}),
 				method:'POST'
 			})
 			.success(function(response) {
@@ -198,6 +199,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			})
 			.error(function(response, status) {
 				switch(status){
+					case 602:
 					case 403:
 					case 402:
 						delete localStorage.me;
@@ -228,7 +230,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	/**
 		SCOPE FUNCTIONS
 	*/
-
+    
 	this.logout = function() {
         var authURL = fjs.CONFIG.SERVER.loginURL
             + '/oauth/authorize'
@@ -251,12 +253,13 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     	
 		// shut off web worker
 		worker.terminate();
-		
+		unload = false;
 		window.onbeforeunload = null;		
 		location.href = authURL;
 	};
 	
-	this.setUnload = function() {		
+	this.setUnload = function() {	
+		unload = true;
 		// stupid warning
 		window.onbeforeunload = function() {			
 			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
@@ -580,7 +583,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	        });
 		}
 	};
-
+	this.getUnload = function(){
+		return unload;
+	};
 	// preload images
 	this.preload('img/XAvatarBorder.png');
 	this.preload('img/Generic-Error.png');

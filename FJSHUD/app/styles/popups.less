@@ -16,21 +16,21 @@
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 160;  
-  
+  z-index: 160;
+
   &.fileShare{
     .wrapper{
         width: 90%;
-        
+
         .Section{
             .review{
                 background-color:#FFF;
                 height:340px;
                 text-align:center;
-                
+
                 img.CurrentDownload {
                     max-width: 100%;
-                    max-height: 100%;  
+                    max-height: 100%;
 					position: relative;
 					top: 50%;
 					transform: translateY(-50%);
@@ -41,25 +41,25 @@
 					width: 100%;
 					height: 100%;
 				}
-            }            
+            }
             .Members .ListRow{
                 .file{
                     margin-left:5px;
                     display:inline-block;
                     width:70%;
                     padding-top: 10px;
-                    
+
                     & > p:first-child{
                         border-bottom:1px solid #ccc;
                         width:100%;color:#009cff;
                         font-weight:bold;
                     }
-                    
+
                     span{
                         margin-top:0px;
-                    }                                        
+                    }
                 }
-                
+
                 .XButton{
                         float:right;
                         margin-top:10px;
@@ -74,17 +74,17 @@
         }
     }
   }
-      
-  &.notifications{    
+
+  &.notifications{
     .overlayNotificationsSection{
         background: #fff;
     }
-   
+
     .error{
         .LeftBarNotificationAvatarSection{
             border-right: none 0px;
-        }    
-    } 
+        }
+    }
     .Conference-HeaderSubTitle{
         font-size: 11px;
         line-height: 18px;
@@ -98,21 +98,21 @@
         float: left;
     }
 
-    
+
     .HeaderTitle{
         left: -5px !important;
     }
-    
 
-    .NotificationMessages{          
+
+    .NotificationMessages{
           display: block;
-    } 
+    }
 
     .Messages{
-        background: url('') #fff !important;       
+        background: url('') #fff !important;
         padding-bottom: 0 !important;
         margin-top: 0px;
-        
+
         .AvatarWarningSmall{
             left: 5px;
             top: 10px;
@@ -121,7 +121,7 @@
             margin-left: 5px;
             width: 90%;
             max-width: 90%;
-            
+
             .NotificationDisplayName{
                 font-size: 12px;
                 height: auto;
@@ -131,12 +131,12 @@
                 &.error{
                     padding-top: 10px;
                 }
-            }   
+            }
         }
         .NotificationSection{
             height: auto !important;
             width: 100%;
-            
+
             &.error{
                 padding-bottom: 20px;
             }
@@ -147,8 +147,8 @@
         } */
 
     }
-    
-    
+
+
     .XButton.header{
         float: right;
         margin-right: 5px;
@@ -173,45 +173,45 @@
           margin: auto;
           padding-top: 40px;
           padding-bottom: 0px;
-          
+
           &.lessPadding{
             padding-top: 10px;
           }
      }
     .Foreground .Footer {
-      border-top: 1px solid #ccc;     
+      border-top: 1px solid #ccc;
       text-align: right;
       position: absolute;
       width: 94%;
-      bottom: 10px;       
-      padding-top: 20px;      
-      
+      bottom: 10px;
+      padding-top: 20px;
+
       .XButton[type=button]{
         width:20%;
-      }  
+      }
     }
-    .notifications_section{             
-        width: 100%;          
+    .notifications_section{
+        width: 100%;
         max-height: 100%;
         overflow-y: auto;
         vertical-align: middle;
         display: inline-block;
         /*margin-top: 20px;*/
-        
+
         .Messages{
             overflow: hidden;
             .NotificationHeader, .NotificationDivider{ margin-top: 16px;}
             .NotificationHeader{
                 margin-right: -1px;
             }
-        }        
+        }
     }
     .Messages.plugins{
         margin-top: 20px;
         border-bottom: 1px solid #ccc;
         cursor:hand;
         cursor:pointer;
-        
+
         .NotificationDivider{
             margin-top: 14px;
         }
@@ -219,36 +219,36 @@
             bottom: 14px;
         }
     }
-    .NotificationMessages{       
-        border: 1px solid #ccc;        
-        position: absolute;        
+    .NotificationMessages{
+        border: 1px solid #ccc;
+        position: absolute;
         right: 5px;
         top: 80px;
         bottom: 70px;
         overflow: hidden;
         overflow-y: auto;
         overflow-x: hidden;
-        padding-bottom: 40px;   
+        padding-bottom: 40px;
         width: 94%;
-        left: 15px;    
-        margin-bottom: 20px;  
-        background: #fff;       
-        
-        .overlayNotificationsSection:before{             
+        left: 15px;
+        margin-bottom: 20px;
+        background: #fff;
+
+        .overlayNotificationsSection:before{
              content: '';
-             margin-right: -0.25em; /* Adjusts for spacing */   
+             margin-right: -0.25em; /* Adjusts for spacing */
              vertical-align: middle;
-             display: inline-block;           
-        } 
+             display: inline-block;
+        }
         .NotificationTime{
             right: 5px;
-        }  
+        }
         .NotificationMessage{
           max-height: inherit;
           // font-size: 13px;
-        }            
+        }
     }
-    .Foreground{          
+    .Foreground{
       width: 500px;
       background: url('') #ffffff !important;
       height: 575px;
@@ -266,23 +266,23 @@
 	width: 100%;
 	height: 100%;
   }
-  
+
   .Foreground {
 	background-color: #fafafa;
 	box-shadow: 0 0 50px #333;
-	position: absolute;	
+	position: absolute;
 	top: 0;
 	left: 20%;
 	width: 836px;
-	max-height: 500px;	
+	max-height: 500px;
 	padding: 20px;
 	display: flex;
 	display: -webkit-flex;
 	flex-direction: column;
 	-webkit-flex-direction: column;
-	min-width: 0;     
+	min-width: 0;
     min-height: 0;
-	
+
 	.Close {
 	  position: absolute;
       top: 20px;
@@ -293,7 +293,7 @@
       border-radius: 2px;
       -webkit-border-radius: 2px;
       cursor: pointer;
-      
+
       .CloseIcon2{
           position: absolute;
           top: -1px;
@@ -302,30 +302,30 @@
           height: 24px;
           background: url("../img/XIconSet-24x24.png") -24px -24px;
       }
-	}		
-	
+	}
+
 	.Sections {
 	  padding-top: 10px;
 	  padding-bottom: 20px;
-	  
+
 	  &.no_permission{
 	   margin-top: 10px;
 	  }
-	  
-	  &.callStatus{	
-	    
+
+	  &.callStatus{
+
 	      .Section{
-	      
+
 	         .Contact{
 	           margin-bottom: 0px !important;
-	           
+
 	           &.top{
 	               margin-bottom: 20px !important;
 	           }
-	         }	         	         
+	         }
 	      }
-	  }	  
-	  
+	  }
+
 	  #attachments{
 	       .XButton{
 	           float:right;
@@ -346,7 +346,7 @@
 	       }
 	  }
 	}
-	
+
 	.Section {
 	  display: inline-block;
 	  min-width: 48%;
@@ -354,59 +354,59 @@
 	  vertical-align: top;
 	  font-size: .9em;
 	  height:inherit;
-	  
+
 	   .network{
 	     background: url("../img/Network-Problems.png") no-repeat -0px -0px;
 	     width: 504px;
-	     height: 323px;	     
+	     height: 323px;
 	   }
-	  
+
 	  .visibility{
 	   font-size: 12px;
-	   
+
 	   input{
 	       vertical-align: middle;
 	   }
 	  }
-	  
+
 	  .AutoDelete{
     	   width: 19% !important;
     	   font-size: 0.75em;
     	   border-top: 1px solid #fff;
     	   text-align: left;
 	  }
-	  
+
 	  p{
 	      color: #555;
           font-size: 11px;
           font-style: italic;
-          font-weight: normal;  
-          margin-top: 0px;       
+          font-weight: normal;
+          margin-top: 0px;
 	  }
-	  
+
 	  & > div {
 		margin-bottom: .5em;
-		
+
 		&.transferSearch{
 		   margin-bottom: 0px;
         }
 	  }
-	  
+
 	  & > div > * {
 		vertical-align: top;
 	  }
-	  
+
 	  h4 {
 	    margin: .75em 0 .25em 0;
 		color: #0093f0;
 		font-variant: small-caps;
 	  }
-	  
+
 	  em {
 		font-size: .8em;
 		display: block;
 	  }
-	  
+
 	  label {
 		display: inline-block;
 		width: 38%;
@@ -420,13 +420,13 @@
       font-weight: bold;
     }
 
-	  
+
 	  textarea {
 		/*width: 80%;*/
 		min-height: 206px;
 		width: 365px;
 	  }
-	  
+
 	  .Contact {
 		border: 1px solid #ccc;
 		border-radius: 5px;
@@ -434,7 +434,7 @@
 		width: 98%;
 		margin-bottom: 1em;
 		position: relative;
-		
+
 		.Time {
 		  position: absolute;
 		  top: .5em;
@@ -442,16 +442,16 @@
 		  color: gray;
 		  font-size: .8em;
 		}
-		
+
 		.Name {
 		  display: inline-block;
 		  margin-left: .1em;
 		  font-size: .9em;
 		}
-		
+
 		.Buttons {
 			margin: 2em 0 .5em 0;
-			
+
 			input{
 			 margin-right: 10px;
 			}
@@ -461,7 +461,7 @@
 			}
 		}
 	  }
-  
+
 	  .ContactSearchHolder {
 		position: relative;
 		display: inline-block;
@@ -470,14 +470,14 @@
 		width: 100%;
 	  }
 	}
-	
-	.Header {	
+
+	.Header {
 	  border-bottom: 1px solid #ccc;
       height: 40px;
       left: 18px;
-      right: 18px;  
-      width: 100%;          
-      
+      right: 18px;
+      width: 100%;
+
       .headerIcon {
           float: left;
           left: -6px;
@@ -485,9 +485,9 @@
           width: 40px;
           height: 40px;
           background: url("../img/XApp-Icons.png") no-repeat -0px -0px;
-          
+
           &.share {
-              background-position: -240px 0px;              
+              background-position: -240px 0px;
           }
           &.groupEdit {
               background-position: -120px -40px;
@@ -495,32 +495,32 @@
           &.contactEdit {
                 background-position: -80px -40px;
           }
-          
+
           &.callStatus{
                 background-position: -398px -38px;
           }
-          
+
           &.callTransfer{
                 background-position: -358px -40px;
           }
-          
+
           &.plugin{
                 background-position: -320px -40px;
           }
-          
+
           &.notifications{
                 background-position: -486px -38px;
                 margin-top: -12px;
           }
-          
+
           &.network{
-                background-position: -207px -40px;                
+                background-position: -207px -40px;
           }
       }
-      
+
       .HeaderTitle {
           position: relative;
-          left: 10px;         
+          left: 10px;
           right: 30px;
           height: 40px;
           font-size: 14px;
@@ -535,23 +535,23 @@
           clear: none;
           float: left;
           top: -8px;
-          
+
           &.no_permission{
               font-size: 12px;
           }
-          
+
           .name {
               color: #729c00;
               font-weight: bold;
           }
        }
 	}
-	
+
 	.Footer {
 	  border-top: 1px solid #ccc;
 	  padding-top: 20px;
 	  text-align: right;
-	  
+
 	  .Error {
 		float: left;
 		color: red;
@@ -562,7 +562,7 @@
 	  }
 	}
   }
-  
+
   .Bargers {
     border: 1px solid #999999;
 	background-color: #999999;
@@ -570,7 +570,7 @@
 	margin-top: 10px;
 	overflow-y: auto;
   }
-  
+
   .Barging {
 	color: #c33;
 	font-size: .8em;
@@ -579,7 +579,7 @@
 	top: 4em;
 	right: .5em;
   }
-  
+
   .Banner {
     width: 100%;
 	text-align: center;
@@ -589,7 +589,7 @@
 	font-size: .8em;
 	margin-bottom: 0 !important;
   }
-  
+
   .Members {
 	background-color: #ccc;
 	border: 1px solid gray;
@@ -614,16 +614,16 @@
     height: 60px;
     width: auto;
   }
-	
+
 	.ListRow {
 	  &:first-child .Delete {
 	    display: none !important;
 	  }
-	
+
 	  &:hover .Delete {
 	    opacity: 1;
 	  }
-	
+
 	  .Delete {
 	    background-color: #d72800;
 		border: 0;
@@ -667,16 +667,16 @@
 	img {
 	  max-width: 100%;
 	}
-	
+
 	.FileInfo {
-	  display:inline-block; 
+	  display:inline-block;
 	  flex: 1;
 	  -webkit-flex: 1;
 	  margin-left: .5em;
-	  min-width: 0;     
+	  min-width: 0;
       min-height: 0;
 	}
-	
+
 	.Selected {
 	  border-left: 3px solid #292;
 	}
@@ -699,9 +699,9 @@
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  min-width: 0;     
+  min-width: 0;
   min-height: 0;
-  
+
   .SearchHeader {
 	  text-align: center;
       font-weight: bold;
@@ -714,7 +714,7 @@
       margin: 0 5px;
       border-bottom: solid 1px #999;
   }
-  
+
   .ListRowContent {
 	  display: flex;
 	  display: -webkit-flex;
@@ -722,20 +722,20 @@
 	  -webkit-flex-direction: row;
 	  margin: 3px 0 -3px 0;
 	  padding-left: 5px;
-	  min-width: 0;     
+	  min-width: 0;
       min-height: 0;
-        
+
 	  .ListRowTitle {
 		  display: block;
 		  max-width: 100% !important;
       padding-top: 3px;
       margin-left: -4px;
-		  
+
 		  .name {
 			  max-width: 100% !important;
 			  font-size: 12px;
 		  }
-		  
+
 		  .hudStatus {
 			  font-size: 11px;
 			  margin-top: -3px;
@@ -743,14 +743,14 @@
 			  text-overflow: ellipsis;
         margin-top: -5px;
 		  }
-		  
+
 		  .ListRowStatusIcon {
 			  margin-left: -1px;
         margin-bottom: 4px;
 		  }
 	  }
   }
-  
+
   .ExpandedToolBarHelp {
       position: absolute;
       width: 180px;
@@ -764,7 +764,7 @@
       top: 15%;
       right: 15px;
   }
-  
+
   .XButton.JoinByPhoneBtn{
       width: 115px !important;
       position: absolute;
@@ -773,7 +773,7 @@
       height: 30px !important;
       padding-top: 6px !important;
   }
-  
+
   .XButton.JoinByPhoneBtnSecond{
       width: 100px !important;
       position: relative;
@@ -785,24 +785,24 @@
   	flex: 1 1 0;
 	-webkit-flex: 1 1 0;
 	margin: 5px;
-	min-width: 0;     
+	min-width: 0;
     min-height: 0;
-	
+
 	.rows {
 	   border-top: solid 1px #eee;
 	   border-left: solid 1px #eee;
 	   border-right: solid 1px #eee;
 	   width: 99.5%;
-	   
+
 	   .ListRow{
 	       width: 100%;
 	   }
 	}
-	  
+
 	.Extension {
 		visibility: visible !important;
 	    font-size: .9em;
-		color: gray;	
+		color: gray;
 	}
   }
 }
@@ -822,7 +822,7 @@
 	.SearchContactOverlay {
 		width: 230px;
 		left: -10px;
-	
+
 		.SearchHeader {
 			color: #015d73;
 		}
@@ -841,58 +841,58 @@
   min-width: 10em;
   margin-left: 10px;
   margin-top: -3.5em;
-  
+
   &.NoWrap {
     visibility: hidden;
-	
-    .BottomRow { 
-      white-space: nowrap; 
+
+    .BottomRow {
+      white-space: nowrap;
     }
   }
-  
+
   &.Bump {
 	margin-top: -6em;
-	
+
 	.Arrow {
 	  top: auto;
 	  bottom: 1em;
 	}
   }
-  
+
   .Arrow {
     position: absolute;
 	top: 3em;
-    width: 0; 
-	height: 0; 
+    width: 0;
+	height: 0;
 	border-top: 10px solid transparent;
-	border-bottom: 10px solid transparent; 	
-	
+	border-bottom: 10px solid transparent;
+
 	&.Left {
 	  left: -10px;
-	  border-right: 10px solid #ededee; 
+	  border-right: 10px solid #ededee;
 	}
-	
+
 	&.Right {
 	  right: -10px;
-	  border-left: 10px solid #ededee; 
+	  border-left: 10px solid #ededee;
 	}
   }
-  
+
   .TopRow {
     white-space: nowrap;
-	
+
 	& > div > div:not(:last-child) {
 	  border-right: 1px solid #ccc;
 	  margin-right: .5em;
 	  padding-right: .5em;
 	}
-	
+
 	div {
 	  display: inline-block;
 	  vertical-align: top;
 	  font-size: 11px;
 	  color: #999;
-	  
+
 	  &.Contact{
 	   .info{
 	       font-size: 12px;
@@ -904,39 +904,69 @@
        }
 	  }
 	}
-	
+	&.transfers{
+	   .Contact{
+	   	.info{
+	   		margin-left: 2px;
+	   	}
+	   }
+	}
 	.Numbers div {
 	  min-width: 3em;
 	  text-align: right;
 	}
-	
+
 	strong{font-weight: bold;}
 	.ListRowStatusIcon{
 	   margin-left: -5px;
 	}
   }
-  
+
   .BottomRow {
     border-top: 1px solid #ccc;
 	margin-top: .25em;
-	
+
+	&.transfer{
+	  width: 100%;
+	  overflow: hidden;
+	  border-top: none;
+	  margin-top: .18em;
+
+	  span, a{
+	  	display: inline-block;
+	    clear: both;
+	    float: left;
+	  }
+
+	  span{
+	    color: #333;
+	    font-style: italic;
+	  }
+	  a{
+	   	text-decoration: underline;
+	  }
+	  #labels{float: left; white-space: nowrap; padding-left: 2px;}
+	  #numbers{float: left; text-align: left; clear: none; padding-left: 3px;}
+	  #labels .bottomElement, #numbers .bottomElement{margin-top: 5px; margin-bottom: 10px;}
+	}
+
 	&.Actions {
       & > div, & > div > div {
 	    display: inline;
 	  }
-	
+
 	  .Button {
         text-align: center;
 	    text-decoration: none;
 	    color: gray;
 	    display: inline-block;
-	    
+
 	    div {
 	      margin: 0 auto;
           width: 30px;
 	      height: 32px;
 	    }
-	    
+
 	    span {
 	      font-size: 11px;
 	      padding: 0 1em;
@@ -944,36 +974,36 @@
 	      border-radius: 10px;
 	      font-weight: bold;
 	    }
-	    
+
 	    &:hover span {
 	      border: 1px solid gray;
 	    }
       }
 	}
-	
+
 	&.Reasons  {
 	  padding: .5em;
 	  font-size: .8em;
-	  
+
 	  h4 {
 	    color: #0093f0;
 		margin: 0 0 .25em 0;
 		text-transform: uppercase;
 	  }
-	  
+
 	  .List {
 	    overflow-y: auto;
 		max-height: 300px;
 		font-size: 1.2em;
 		margin-top: 1em;
 	  }
-	
+
 	  .Button {
 	    cursor: pointer;
 	    padding: .25em 1em .25em 1.5em;
 		overflow-x: hidden;
 		text-overflow: ellipsis;
-		  
+
 	    &:hover {
 	      background-color: #5A9801;
 		  color: white;
@@ -981,14 +1011,14 @@
 	  }
 	}
   }
-  
+
   .WidgetHeaderCallStatus{
 	  float: none;
 	  display: inline-block !important;
       width: 100px;
       min-width: 185px;
       height: 50px;
-	  
+
       .Avatar{
         height:40px;
         width:40px;
@@ -1156,12 +1186,12 @@
   line-height:2.5em;
   display:inline-block;
   font-size:0.75em;
-  
-  input{  
+
+  input{
       position: relative;
       top: 3px;
   }
-} 
+}
 
 
 #dialogheadicon{

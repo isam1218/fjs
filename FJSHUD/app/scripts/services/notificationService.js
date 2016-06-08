@@ -196,6 +196,32 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			
 			return notification;
 		};
+		
+		// native alert was clicked
+		this.nativeAction = function(data) {
+			var xpid = data.context.split(':')[1];
+			var route = '';
+
+			// redirect to chat
+			switch(data.type) {
+				case 'q-broadcast':
+					route = 'alerts';
+					break;
+				case 'chat':
+				case 'gchat':
+				case 'wall':
+				case 'zoom':
+					route = 'chat';
+					break;
+			}
+			
+			$rootScope.$evalAsync(function() {
+				$location.path("/" + data.audience + "/" + xpid + "/" + route);
+			});
+			
+			// switch browser tab
+			chrome.runtime.sendMessage(extensionId, {"message":"selectTab", "title":document.title});
+		};
 
 		var focusBrowser = function(){
 			if($rootScope.browser == "Chrome"){

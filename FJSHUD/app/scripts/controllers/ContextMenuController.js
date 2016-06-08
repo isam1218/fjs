@@ -1,5 +1,5 @@
-hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService','$http','$modal',
-	function($rootScope, $scope, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService,$http,$modal) {
+hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$timeout', '$location', 'ContactService', 'GroupService', 'QueueService', 'ConferenceService', 'SettingsService', 'HttpService', 'StorageService', 'PhoneService','$http','$modal','$attrs',
+	function($rootScope, $scope, $sce, $timeout, $location, contactService, groupService, queueService, conferenceService, settingsService, httpService, storageService, phoneService,$http,$modal,$attrs) {
 	// original object/member vs full profile
 	$scope.original;
 	$scope.profile;
@@ -7,15 +7,19 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 	$scope.type;
 	$scope.widget;
 	$scope.context;
+	$scope.downloadLink = "";
+	
+	var transferFeed;
+	var transferAction = 'transferToContact';
+	var transferParams = {};
+	var overlay = angular.element(document.getElementById('ContextMenu'));
 	
 	$scope.myQueue;
 	$scope.canDock = true;	
-	$scope.inConf = false;
 	$scope.reasons = {
 		list: [],
 		show: false,
 	};		
-	
 	queueService.getQueues().then(function(data) {
 		$scope.reasons.list = data.reasons;
 	});
@@ -25,6 +29,38 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		$scope.canRecord = data.recordingEnabled;		
 	});
 	
+	function hideOverlay(t) {
+		timer = $timeout(function() {
+			overlay.css('display', 'none');
+			overlay.unbind();
+			
+			$('#ContextMenu .Button').unbind('click');
+			$rootScope.contextShow = false;
+		}, t);
+	};
+	
+	function formatNumber(num){
+		var len = num.length;
+		if(len < 11)
+		{
+			return num.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+		}
+		else{
+			if(len == 11)
+			{
+				var numbers = num.split("");
+				if(numbers[0] == '1')
+				{
+					var pNum = num.substring(1);
+					return numbers[0] + '-' + pNum.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+				}
+				else
+					return num;
+			}
+			else
+				return num;
+		}
+	};
 	// populate contact info from directive
 	$scope.$on('contextMenu', function(event, res) {
 		$scope.profile = res.obj.fullProfile ? res.obj.fullProfile : res.obj;
@@ -36,14 +72,22 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		$scope.myQueue = false;
 		
 		// get type
-		if ($scope.original.parkExt !== undefined) {
+		if($scope.original.type && $scope.original.type == 'transfer')
+		{
+			$scope.type = 'Transfer';
+			$scope.business = formatNumber($scope.original.business);//$scope.original.business.length > 11 ? $scope.original.business : '1-'+ $scope.original.business.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+			$scope.mobile = formatNumber($scope.original.mobile);//$scope.original.mobile.length > 10 ? $scope.original.mobile : '1-'+ $scope.original.mobile.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');			
+			$scope.externalXpid = $scope.original.externalXpid;
+			$scope.callId = $scope.original.callId;			
+		}	
+		else if ($scope.original.parkExt !== undefined) {
 			$scope.type = 'Contact';
 			
 			// external parked call
 			if (!$scope.original.callerContactId)
 				$scope.profile = null;
 		}
-		else if ($scope.profile.firstName !== undefined) {
+		else if ($scope.profile.firstName && $scope.profile.firstName !== undefined) {
 			$scope.type = 'Contact';
 			$scope.isFavorite = groupService.isFavorite($scope.profile.xpid);
 		}
@@ -67,16 +111,15 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		}
 		else if ($scope.profile.roomNumber !== undefined) {
 			$scope.type = 'ConferenceRoom';
-			
+			$scope.inConf = false;
 			var mLen = $scope.profile.members.length;
 			for (var i = 0; i < mLen; i++) {
 				var member = $scope.profile.members[i];
-				
 				// check to see if I am part of the conference								
 				if (member.contactId == $rootScope.myPid) {
 					$scope.inConf = true;
 				}
-	        } 
+	    } 
 		}
 		else if ($scope.profile.name !== undefined && $scope.profile.name != '') {
 			$scope.type = 'Group';
@@ -165,6 +208,25 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.profile.xpid});
 	};
 	
+	$scope.downloadRecording = function(){		
+		//get the audio file path
+		var path = $scope.original.voicemailMessageKey ? 'vm_download?id=' + $scope.original.voicemailMessageKey : 'media?key=callrecording:' + $scope.original.xpid;
+		$scope.downloadLink =  httpService.get_audio(path);
+		
+	    window.onbeforeunload = null;	
+	    
+	    setTimeout(function(){
+	    	if(httpService.getUnload())
+			{
+				window.onbeforeunload = function() {			
+					document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+					
+					return "Are you sure you want to navigate away from this page?";
+				};
+			}
+        }, 1000);	    			
+	};	
+	
 	$scope.deleteRecording = function() {
 		var type;
 		
@@ -200,6 +262,46 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
 		//httpService.sendAction('me', 'callTo', {phoneNumber: number});
 		phoneService.makeCall(number);
 		storageService.saveRecentByPhone(number);
+		var gaLabel;
+
+		if($scope.context == 'all'){
+			gaLabel = 'from Hover';
+		}
+		else if($scope.context == 'recent'){
+			gaLabel = 'Recents List';
+		}
+		else if ($scope.widget == 'voicemails'){
+			gaLabel = "Calls/Recordings - Voicemail - Call";
+		}
+		else if ($scope.widget == 'recordings'){
+			gaLabel = "Calls/Recordings - Recordings - Call";
+		}
+		else if ($scope.widget == 'dock'){
+			gaLabel = "From Dock";
+		}
+		else if ($scope.widget == 'calllog'){
+			gaLabel = "From Call Log";
+		}
+		
+		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: gaLabel});
+	};
+	
+	$scope.transferToExternal = function(type, toWhom, callId) {
+		switch (type) {
+			case 'mobile':
+				transferAction = 'transferToContactMobile';
+				transferParams.toContactId = toWhom;
+				break;
+			case 'business':
+				transferAction = 'transferTo';
+				transferParams.toNumber = toWhom;
+				break;
+		}
+		transferFeed = 'mycalls';
+		transferParams.mycallId = callId;		
+		httpService.sendAction(transferFeed, transferAction, transferParams);	
+		hideOverlay(500);
+		//return;
 	};
 	
 	$scope.takeParkedCall = function(){
@@ -285,31 +387,26 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$timeout', 
  $scope.addedContacts = [];
 	$scope.screenShare = function(contact){
 
-		        $scope.addedContacts.push(contact);
+        $scope.addedContacts.push(contact);
 		        
+      	ga('send', 'event', {eventCategory:'Video Conference', eventAction:'Start', eventLabel: 'From Hover Over'});  
 
-
-		        
-		  
-
-		
         var data = {};
         var users = "";
 
          if(contact.length > 1){
 		       	$scope.addedContacts = contact;
 		       	for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
-            users = users + $scope.addedContacts[i].contactId + ",";
+		       		users = users + $scope.addedContacts[i].contactId + ",";
             
-        }
-		       }
-		       else{
+		       	}
+		 }
+		 else{
 
-        for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
-            users = users + $scope.addedContacts[i].xpid + ",";
+			 for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
+				 users = users + $scope.addedContacts[i].xpid + ",";
         }
     }
-
 
         data["topic"]="";
         data["users"]= users;

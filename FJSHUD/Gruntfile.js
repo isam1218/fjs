@@ -208,7 +208,7 @@ module.exports = function(grunt) {
     less:{
       dist:{
         options:{
-          compress:true
+          compress:false
         },
         files:{
           "prod/app/styles/main.css":"app/styles/main.less",
@@ -221,7 +221,7 @@ module.exports = function(grunt) {
       },
       dev:{
         options:{
-          compress:true
+          compress:false
         },
         files:{
           "dest/app/styles/main.css":"app/styles/main.less",
@@ -234,7 +234,7 @@ module.exports = function(grunt) {
       },
       huc_dev:{
         options:{
-          compress:true
+          compress:false
         },
         files:{
           "huc_dev/app/styles/main.css":"app/styles/main.less",
@@ -270,7 +270,7 @@ module.exports = function(grunt) {
       dev:{
         options:{
           mangle:false,
-          beautify:true,
+          beautify:false,
         },
         files:{
           'dest/fjsmin.js': '<%= concat.dist.src %>',
@@ -281,7 +281,7 @@ module.exports = function(grunt) {
         options:{
           mangle:false,
           beautify:false,
-          compress:true,
+          compress:false,
         },
         files:{
           'prod/app/scripts/fjs.min.js':['<%= concat.dist.dest %>'],
