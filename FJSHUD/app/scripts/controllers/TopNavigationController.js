@@ -64,12 +64,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			enabled:true, 
 			title: $scope.verbage.search
 		},
-		/*{
-			url:"#/box", 
-			key:"Box", 
-			enabled:false, 
-			title: $scope.verbage.box
-		},*/
 		{
 			url:"#/zoom", 
 			key:"Zoom", 
@@ -104,18 +98,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 					$scope.appIcons[i].enabled = data.showCallCenter;
 			}
 		});
-	});
-
-/*	$scope.$on('settings_updated', function(event, data){
-		for (var i = 0, iLen = $scope.appIcons.length; i < iLen; i++) {
-			// toggle box icon
-			if ($scope.appIcons[i].key == 'Box') {
-				$scope.appIcons[i].enabled = data['hudmw_box_enabled'];
-				break;
-			}
-		}
-	});*/
-	
+	});	
 
 	$scope.checkEmail = function(key,url){
 			
