@@ -374,7 +374,7 @@
       delete_word:'Delete',
       transfer_external: 'Select Which Number To Transfer To',
       business: 'Business:',
-      mobile: 'Mobile:',
+      mobile: 'Mobile',
       team_description:'Team description is used for search and provides useful information to the team members.',
       open:'Open',
       old:'Old',
