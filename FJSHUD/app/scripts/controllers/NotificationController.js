@@ -773,7 +773,6 @@ hudweb.controller('NotificationController',
 
   $scope.playVm = function(msg){
     phoneService.playVm(msg.vmId);
-    $scope.remove_notification(msg.xpid);
     $scope.showOverlay(false);
   };
 
