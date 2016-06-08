@@ -131,7 +131,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					if(numIcons == 0)
 						showGroup();
 					else{
-						if(numIcons < 3)
+						if(numIcons < 4 )
 						{	
 							for (var j = numIcons; j < 4; j++){
 								showGroupImg(null, j);
