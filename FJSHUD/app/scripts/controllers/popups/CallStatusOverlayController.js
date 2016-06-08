@@ -16,6 +16,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.alreadyMonitored = false;
 	$scope.topAlreadyWhispered = false;
 	$scope.bottomAlreadyWhispered = false;
+	$scope.topUserProfile;
 
 	$scope.transferResults;
 	$scope.transferContacts = [];
@@ -39,6 +40,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				}
 				break;
 			case 'conference':
+				// this is if transferring own call to conference room...
 				// sort by displaying home server conference rooms first...
 				firstArr = [];
 				secondArr = [];
@@ -54,6 +56,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 					firstArr = firstArr.concat(secondArr);
 					$scope.conferences = firstArr;
 				});
+				$scope.topUserProfile = contactService.getContact($scope.onCall.xpid);
 				$scope.onCall.call.fullProfile = contactService.getContact($scope.$parent.overlay.data.call.contactId);
 	
 				$scope.screen = 'conference';
@@ -109,6 +112,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		$scope.addError = null;
 		
 		if (screen == 'conference') {
+			// if transferring a call (that is NOT my own call) to a conference room...
 			firstArr = [];
 			secondArr = [];
 			conferenceService.getConferences().then(function(data) {
@@ -127,6 +131,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			$scope.selectedConf = null;
 			$scope.meToo = {};
 			$scope.meToo.me;
+			$scope.topUserProfile = $scope.onCall;
 		}
 		else if (screen == 'transfer') {
 			// for queue calls, always use main call object
