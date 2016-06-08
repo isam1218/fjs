@@ -87,7 +87,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 			if (!$scope.original.callerContactId)
 				$scope.profile = null;
 		}
-		else if ($scope.profile.firstName && $scope.profile.firstName !== undefined) {
+		else if ($scope.profile.fullName !== undefined) {
 			$scope.type = 'Contact';
 			$scope.isFavorite = groupService.isFavorite($scope.profile.xpid);
 		}
