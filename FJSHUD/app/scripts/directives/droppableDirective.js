@@ -153,49 +153,49 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 										// new conference
 										else {
 											conferenceService.getConferences().then(
-															function(data) {
-																var conferences = data.conferences;
-																var found = null;
-																var len = conferences.length;
+												function(data) {
+													var conferences = data.conferences;
+													var found = null;
+													var len = conferences.length;
 
-																// find first empty room on same server
-																for ( var i = 0; i < len; i++) {
-																	if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1
-																		&& conferences[i].status
-																		&& (!conferences[i].members || conferences[i].members.length == 0)) {
-																			found = conferences[i].xpid;
-																			break;
-																	}
-																}
+													// find first empty room on same server
+													for ( var i = 0; i < len; i++) {
+														if (conferences[i].serverNumber.indexOf($rootScope.meModel.server_id) != -1
+															&& conferences[i].status
+															&& (!conferences[i].members || conferences[i].members.length == 0)) {
+																found = conferences[i].xpid;
+																break;
+														}
+													}
 
-																// try again for linked server
-																if (!found) {
-																	for ( var i = 0; i < len; i++) {
-																		// find first room on same server
-																		if (conferences[i].status
-																				&& !conferences[i].members
-																				|| conferences[i].members.length == 0) {
-																			found = conferences[i].xpid;
-																			break;
-																		}
-																	}
-																}
+													// try again for linked server
+													if (!found) {
+														for ( var i = 0; i < len; i++) {
+															// find first room on same server
+															if (conferences[i].status
+																	&& !conferences[i].members
+																	|| conferences[i].members.length == 0) {
+																found = conferences[i].xpid;
+																break;
+															}
+														}
+													}
 
-																if (found) {
-																	// transfer existing call
-																	httpService.sendAction('mycalls', 'transferToConference', { mycallId : scope.$parent.currentCall.xpid, conferenceId : found });
+													if (found) {
+														// transfer existing call
+														httpService.sendAction('mycalls', 'transferToConference', { mycallId : scope.$parent.currentCall.xpid, conferenceId : found });
 
-																	// add a brief timeout before adding the second user to the conference
-																	timeout = setTimeout(
-																			function() {
-																				httpService.sendAction('conferences', 'joinContact', { conferenceId : found, contactId : obj.xpid });
+														// add a brief timeout before adding the second user to the conference
+														timeout = setTimeout(
+																function() {
+																	httpService.sendAction('conferences', 'joinContact', { conferenceId : found, contactId : obj.xpid });
 
-																			},
-																			2000);
+																},
+																2000);
 
-																	$location.path('/conference/' + found + '/currentcall');
-																}
-															});
+														$location.path('/conference/' + found + '/currentcall');
+													}
+												});
 										}
 									}
 									// join conference normally
@@ -243,7 +243,22 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 
                       /* [TRANSFERRING UNANSWERED QUEUE CALLS (D&D)] */
                       // checking CP and server version *(CP < cp14 or server version < 3.5.1 does not receive this functionality HUDF-1424)*
-                      var cpFourteen = $rootScope.meModel.cp_location == "cp14" ? true : false;
+                      // add new CP versions to this array...
+                      var possibleCpVersions = ["cp14"];
+                      var cpFourteen = false;
+                       // check for "cp14" or "fcs-stg3-cp" or "fcs-stg-cp", etc for testing environment purposes (1st three letters of cp_location propertyValue string will be 'fcs')
+                      var parseReturnsFcs = $rootScope.meModel.cp_location.indexOf('fcs') != -1 && $rootScope.meModel.cp_location.indexOf('fcs') == 0 ? true : false;
+																												
+											for (var j = 0; j < possibleCpVersions.length; j++){
+												if ($rootScope.meModel.cp_location == possibleCpVersions[j]){
+													cpFourteen = true;
+													break;
+												}
+											}
+											if (parseReturnsFcs){
+												cpFourteen = true;
+											}
+                      // var cpFourteen = $rootScope.meModel.cp_location == "cp14" ? true : false;
                       var serverVersionCloud;
                       var serverVersionSplit = $rootScope.meModel.server_version.split('.');
                       var sv1 = serverVersionSplit[0];
