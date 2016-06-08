@@ -189,10 +189,6 @@ hudweb.controller('NotificationController',
     }
     return messages;
   };
-  
-  $scope.$on('play_voicemail', function(event, data){
-    $scope.remove_notification(data.xpid); 
-  });
 
   $scope.remove_notification = function(xpid){
     
@@ -777,7 +773,6 @@ hudweb.controller('NotificationController',
 
   $scope.playVm = function(msg){
     phoneService.playVm(msg.vmId);
-    $scope.remove_notification(msg.xpid);
     $scope.showOverlay(false);
   };
 
