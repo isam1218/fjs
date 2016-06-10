@@ -177,7 +177,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					{
 						
 							if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version && numIcons < 4){							
-								showGroupImg(profile.getAvatar(i, 28, 28, profile.members[i].fullProfile.icon_version), numIcons);								
+								showGroupImg(profile.members[i].fullProfile.getAvatar(28), numIcons);								
 							    numIcons++;
 							}
 						
