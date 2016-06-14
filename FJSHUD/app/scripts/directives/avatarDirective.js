@@ -118,26 +118,10 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			}
 			else if (profile.name) {			
 				if (profile.members){
-					var mLen = profile.members.length;
-					var numIcons = 0;
-					$(element).empty();
-					
-					for (var i = 0; i < mLen; i++){
-						if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version && numIcons < 4){							
-							showGroupImg(profile.getAvatar(i, 28, 28, profile.members[i].fullProfile.icon_version), numIcons);							
-						    numIcons++;
-						}
-					}
-					if(numIcons == 0)
-						showGroup();
-					else{
-						if(numIcons < 4 )
-						{	
-							for (var j = numIcons; j < 4; j++){
-								showGroupImg(null, j);
-							}
-						}
-					}
+					populateGroupAvatars(profile);					
+					$rootScope.$on('fdpImage_synced', function(event, data) {
+						populateGroupAvatars(profile, data);												
+					});
 				}
 			}
 			else
@@ -169,6 +153,47 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				var cur_div = $('<div class="GroupAvatarItem GroupAvatarItem_'+idx+'"></div>');
 				$(cur_div).append($(img));
 				$(element).append(cur_div);
+			}
+			
+			function populateGroupAvatars(profile, data)
+			{
+				var mLen = profile.members.length;
+				var numIcons = 0;
+				$(element).empty();																			
+				for (var i = 0; i < mLen; i++){
+					if(data)
+					{
+						if (!document.getElementById('AppLoading')) {
+							var dLen = data.length;
+							for (var j = 0; j < dLen; j++) {
+								if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version && profile.members[i].contactId == data[j].xpid && numIcons < 4){							
+									showGroupImg(httpService.get_avatar(data[j].xpid, 28, 28, data[j].xef001iver), numIcons);										
+								    numIcons++;
+								}
+							}
+						}
+					}
+					else
+					{
+						
+							if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version && numIcons < 4){							
+								showGroupImg(profile.members[i].fullProfile.getAvatar(28), numIcons);								
+							    numIcons++;
+							}
+						
+					}	
+				}
+				
+				if(numIcons == 0)
+					showGroup();
+				else{
+					if(numIcons < 4 )
+					{	
+						for (var j = numIcons; j < 4; j++){
+							showGroupImg(null, j);
+						}
+					}
+				}									
 			}
 			
 			function loadImage(el, url) {
