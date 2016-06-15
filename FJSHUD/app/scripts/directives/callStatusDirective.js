@@ -36,12 +36,26 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 		      return;
 		    }
 				var myContact = contactService.getContact(scope.meModel.my_pid);
-				// if i'm on a call and clicking on the person i'm talking to...
-				if (myContact.call){
-					if (myContact.call.contactId == contact.call.xpid){
-						return;
+		    // if i'm on a call...
+		    if (myContact.call){
+		    	var imTheBarger = false;
+		    	var bargerArray = myContact.call.fullProfile.call.bargers;
+		    	// check to see if I'm the barger of the call I'm trying to click on...
+					if (bargerArray){
+						for (var i = 0; i < bargerArray.length; i++){
+							if (bargerArray[i].xpid == scope.meModel.my_pid){
+								imTheBarger = true;
+								break;
+							}
+						}
 					}
-				}
+					// so long as I'm not the barger...
+		      if (myContact.call.barge === 0 && !imTheBarger){
+			      // if the person i'm talking to == contact clicked on
+			      if (myContact.call.contactId == contact.call.xpid)
+			        return;
+		      }
+		    }
 
 
 				switch(contact.call.type){
