@@ -253,9 +253,23 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
     var myContact = contactService.getContact($rootScope.myPid);
     // if i'm on a call...
     if (myContact.call){
-      // if the person i'm talking to == contact clicked on
-      if (myContact.call.contactId == contact.call.xpid)
-        return;
+    	var imTheBarger = false;
+    	var bargerArray = myContact.call.fullProfile.call.bargers;
+    	// check to see if I'm the barger of the call I'm trying to click on...
+			if (bargerArray){
+				for (var i = 0; i < bargerArray.length; i++){
+					if (bargerArray[i].xpid == $rootScope.myPid){
+						imTheBarger = true;
+						break;
+					}
+				}
+			}
+			// so long as I'm not the barger...
+      if (myContact.call.barge === 0 && !imTheBarger){
+	      // if the person i'm talking to == contact clicked on
+	      if (myContact.call.contactId == contact.call.xpid)
+	        return;
+      }
     }
 
 		$scope.showOverlay(true, 'CallStatusOverlay', contact);
