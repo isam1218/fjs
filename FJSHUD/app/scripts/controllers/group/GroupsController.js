@@ -74,7 +74,7 @@ hudweb.controller('GroupsController', ['$scope', '$rootScope', 'HttpService', 'G
         for (var i = 0, iLen = group.members.length; i < iLen; i++){
           var singleMember = group.members[i].fullProfile;
 		  
-          if (singleMember.fullName.toLowerCase().indexOf(query) != -1 || singleMember.primaryExtension.indexOf(query) != -1 || singleMember.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || singleMember.phoneMobile.indexOf(query) != -1 || singleMember.phoneMobile.replace(/\D/g,'').indexOf(query) != -1)
+          if (singleMember.fullName.toLowerCase().indexOf(query) != -1 || singleMember.primaryExtension.indexOf(query) != -1 || singleMember.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || singleMember.phoneMobile.indexOf(query) != -1 || singleMember.phoneMobile.replace(/\D/g,'').indexOf(query) != -1 || singleMember.email.toLowerCase().indexOf(query) != -1)
             return true;
         }
       }
