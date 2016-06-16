@@ -1063,8 +1063,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             firstCallIsWithExternal = true;
         }
         warmTransferTo = $scope.transferToDisplayName;
-        // place call# 1 on hold
-        $scope.holdCall($scope.currentCall);
+        
+        // As a result of HUDF-1339, placing a call on hold is done automatically as soon as a 2nd call is made, so don't need to do it manually here anymore.
+
         // place call #2 to wt-recipient
         phoneService.makeCall($scope.transferToDisplayName.primaryExtension);
         // grab callIds for both calls

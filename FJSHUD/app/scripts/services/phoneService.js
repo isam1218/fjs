@@ -424,9 +424,13 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		{
 			for(var cd in callsDetails)	
 			{
+				// if trying to call the same person a 2nd time...
 				if(callsDetails[cd].phone == number)
 				{							
 						call_already_in_progress = true;
+				} else {
+					// if user is calling a 2nd person, place 1st person on hold... (warm transfer functionality takes advantage of this)
+					holdCall(callsDetails[cd].xpid, true);
 				}
 			}	
 		}
