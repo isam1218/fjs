@@ -36,21 +36,22 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
 	//google analytics track page views
 	var chatPath = $location.path();
-	var contactChat = chatPath.includes("contact");
-	var queueChat = chatPath.includes("queue");
-	var groupChat = chatPath.includes("group");
-	var conferenceChat = chatPath.includes("conference");
+	
+	var contactChat = chatPath.indexOf("contact");
+	var queueChat = chatPath.indexOf("queue");
+	var groupChat = chatPath.indexOf("group");
+	var conferenceChat = chatPath.indexOf("conference");
 
-	if(groupChat){
+	if(groupChat != -1){
 		$analytics.pageTrack('group/chat');
 	}
-	else if(queueChat){
+	else if(queueChat != -1){
 		$analytics.pageTrack('queue/chat');
 	}
-	else if(conferenceChat){
+	else if(conferenceChat != -1){
 		$analytics.pageTrack('conference/chat');
 	}
-	else if(contactChat){
+	else if(contactChat != -1){
 		$analytics.pageTrack("contact/chat");
 	}
 	
