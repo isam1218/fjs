@@ -128,9 +128,14 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 						if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1 || contact.email.toLowerCase().indexOf(query) != -1) {
 							count++;
 							makeLine(contact);
-						}
+						} 
+
 					}
 				}
+
+				if (count === 0)
+					makeNoResultLine();
+				
 				
 				// conferences only
 				if (scope.conference) {
@@ -148,6 +153,12 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 			scope.$on('$destroy', function() {
 				removeOverlay();
 			});
+
+			function makeNoResultLine(){
+				var noResultLine = ('<div Class="NoResults">No Search Results</div>');
+				rows.append(noResultLine);
+
+			}
 			
 			// fill row content
 			function makeLine(contact) {
@@ -202,7 +213,6 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 					line.unbind('click');
 					line = null;
 				});
-				
 				rows.append(line);
 			}
 			
