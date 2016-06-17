@@ -69,7 +69,7 @@
                 </div>
               </div>
           </div>
-          <div class="Dialog-settings-row">
+          <div class="Dialog-settings-row" ng-if="currentCall.location.locationType != 'o'">
             <div class="XButton XButtonToggleSmall" ng-class="volume.micVolume == 0 ? 'XIcon24-MuteOn' : 'XIcon24-MuteOff'"
 
             ng-click="muteCall()"></div>
@@ -77,23 +77,25 @@
             <input type="range" min="0" max="1" step=".01" ng-model="volume.micVolume" ng-change="update_settings('hudmw_webphone_mic','update',volume.micVolume)"
             ></input>
          </div>
-	     <div class="Dialog-settings-row">
+         <div class="Dialog-settings-row" ng-if="currentCall.location.locationType == 'o'">
+            <div>&nbsp;</div>
+         	&nbsp;&nbsp;
+         </div>
+	     <div class="Dialog-settings-row" ng-if="currentCall.location.locationType != 'o'">
 	        <div class="XButton XButtonToggleSmall " ng-class="volume.spkVolume == 0 ? 'XIcon24-Speaker-Off' : 'XIcon24-Speaker-On'" ng-click="silentSpk()"></div>
 	        <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVolume" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVolume)"></input>
 	     </div>
-       </div>
-        <div class="RightSide">
-
-          <div class="row_buttons">
-            <!-- <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom" ng-click="showTransferComponent()" ng-if="currentCall.barge < 1 "><span class="CallControlButton">{{::verbage.transfer}}</span></button> -->
-            <!-- ^ Commented out transfer button for testing purposes  -->
+	     <div class="Dialog-settings-row" ng-if="currentCall.location.locationType == 'o'">
+            <div>&nbsp;</div>
+         	&nbsp;&nbsp;
+         </div>
+       </div>                          
+        <div class="RightSide">                                   
+          <div class="row_buttons"> 
             <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom" ng-click="showTransferComponent()" ng-if="currentCall.barge < 1 && cpFourteen && serverVersionCloud"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
             <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom" ng-click="showCallOvery('transfer',currentCall)" ng-if="currentCall.barge < 1 && (!cpFourteen || !serverVersionCloud)"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
             <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('conference',currentCall)" ng-if="currentCall.barge < 1"><span class="CallControlButton">{{::verbage.conf_room}}</span></button>
-            <button class="XButton CurrentCallBtn"
-            ng-class="currentCall.mute ? 'UnmuteBtn' : ''"
-            ng-click="muteConference()" ng-if="currentCall.type == 0"><span class="CallControlButton">{{ currentCall.mute ? verbage.UnMute : verbage.Mute}}</span></button>
-            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.state != 2 && currentCall.state != 3 && currentCall.state != 0" ng-click="parkCall(currentCall)" ng-if="currentCall.barge < 1 && currentCall.type != 0"><span class="CallControlButton">{{::verbage.Park}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-class="currentCall.mute ? 'UnmuteBtn' : ''" ng-click="muteConference()" ng-if="currentCall.type == 0"><span class="CallControlButton">{{ currentCall.mute ? verbage.UnMute : verbage.Mute}}</span></button>
             <div class="SelectBox XButton" ng-if="currentCall.barge > 0" style="width:97%" ng-click="showBargePopup($event,$element,true)">
                 <div class="SelectBoxText"><span class="CallControlButton">{{ currentCall.barge == 2 ? 'Barge' : (currentCall.barge == 3 ? 'Whisper' : 'Monitor')}}</span></div>
                 <div class="SelectBoxArrow"></div>
