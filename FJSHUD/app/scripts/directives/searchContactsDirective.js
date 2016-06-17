@@ -125,7 +125,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 						if (dupe) continue;
 						
 						// final query check
-						if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1) {
+						if (contact.displayName.toLowerCase().indexOf(query) != -1 || contact.primaryExtension.indexOf(query) != -1 || contact.phoneMobile.indexOf(query) != -1 || contact.primaryExtension.replace(/\D/g,'').indexOf(query) != -1 || contact.phoneMobile.replace(/\D/g,'').indexOf(query) != -1 || contact.email.toLowerCase().indexOf(query) != -1) {
 							count++;
 							makeLine(contact);
 						}

@@ -1,1 +1,0 @@
-fjs.utils.Console.log('Build number: ' + 'manual');
