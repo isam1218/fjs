@@ -573,7 +573,8 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
         if ($scope.meModel.my_department){
             var myDept = groupService.getGroup($scope.meModel.my_department);
-            $scope.meModel.department = myDept.name;
+            if (myDept)
+                $scope.meModel.department = myDept.name;
         }
 
         if(settings){
