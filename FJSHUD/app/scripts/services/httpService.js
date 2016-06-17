@@ -342,7 +342,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
         };
 		
 		// new task id
+		if(data != undefined){
 		data['a.taskId'] = '2_' + upload_taskId;
+		}
 		
 		var fd = new FormData();
     
@@ -382,7 +384,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		},false);
 		request.open("POST",requestURL, true);
 		request.send(fd);
-       
+       		
 	    upload_taskId++;
     };
 

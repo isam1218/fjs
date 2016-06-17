@@ -436,7 +436,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	};
 
 	$scope.uploadAttachments = function($files){
-      	
+      	var timestamp = ntpService.calibrateTime(new Date().getTime());
 		if($scope.showAlerts || !$scope.enableChat){
 			return;
 		}
@@ -447,7 +447,21 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
       		fileList.push($files[i].file);
 			
       	}
-      	
+      	var fileSize = fileList[0].size;
+      	if(fileSize > 10485760){
+      		$scope.messages.push({
+				message:"<strong>Your attachment exceeds the 10MB file size limit</strong>",
+				fullProfile: contactService.getContact($rootScope.myPid),
+				created: timestamp,
+				xpid: timestamp
+			});
+			setTimeout(function() {
+			scrollbox.scrollTop = scrollbox.scrollHeight;
+		}, 1);
+		
+      		
+      	}
+      	else{
         var data = {
             'action':'sendWallEvent',
             'a.targetId': chat.targetId,
@@ -463,7 +477,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
             "a.taskId": "1_0",
             "_archive": 0,
         };
+   	 
 		httpService.upload_attachment(data,fileList);
+	}
 		// local upload -> send to GA
 		sendGoogleAnalytic('Computer');
 	};
