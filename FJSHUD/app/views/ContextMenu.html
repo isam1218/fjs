@@ -176,7 +176,7 @@
 			<div class="ListRowActionButtonRemove"></div>
 			<span>{{::verbage.Remove}}</span>
 		</a>
-		<a class="Button" href="" ng-show="profile.displayName && !profile.primaryExtension" ng-click="editContact()">
+		<a class="Button" href="" ng-show="profile.displayName !== undefined && !profile.primaryExtension" ng-click="editContact()">
 			<div class="ListRowActionButtonEdit"></div>
 			<span>{{::verbage.Edit}}</span>
 		</a>
