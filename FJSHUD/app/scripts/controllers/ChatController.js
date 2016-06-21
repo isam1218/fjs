@@ -1,6 +1,6 @@
 hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', '$http','$analytics', function($scope, $rootScope, httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService, $http,$analytics) {
 	"use strict";
-
+		console.log("LOCATION",document.location.origin);
 	// redirect if not allowed
 	if ($scope.$parent.chatTabEnabled !== undefined && $scope.$parent.chatTabEnabled === false) {
 		// only for groups and queues
@@ -247,16 +247,22 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
   //One Drive
    var pickerOptions = {
-	  linkType: "webLink",
+   	  clientId: "2739a626-afb6-4926-bd88-da278fa95638",
+	  action: "share",
 	  multiSelect: true,
 	  openInNewWindow: true,
+	  advanced: {
+	    redirectUri: document.location.origin + "/oneDrive.html",
+	  },
 	  success: function(files) {
-	  	for(var i = 0;i<files.values.length;i++){
-  	  	var fileName = files.values[i].fileName;
+	  	console.log("FILES",files);
+
+	  	for(var i = 0;i<files.value.length;i++){
+  	  	var fileName = files.value[i].name;
 	    fileName = fileName + "";
-	    var fileLink = files.values[i].link;
+	    var fileLink = files.value[i].webUrl;
 	    fileLink = fileLink + "";
-	    var fileBytes = files.values[i].size;
+	    var fileBytes = files.value[i].size;
 	    fileBytes = formatBytes(fileBytes);
 	    fileBytes = fileBytes + "";
 
@@ -276,6 +282,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	};
   $scope.launchOneDrivePicker = function(){
     OneDrive.open(pickerOptions);
+    console.log("PICKER",pickerOptions);
       $scope.determineAudience();
 		sendGoogleAnalytic('OneDrive');
   };
