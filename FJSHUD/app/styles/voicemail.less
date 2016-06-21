@@ -1,23 +1,3 @@
-//out: voicemail.css
-.displayName{
-	font-size:12px;
-}
-.voicemail.vmails{
-	.vmsection{
-	  .displayName{
-	  	em, p{float: left;}
-	  	em{
-	  	  font-size: 10px;
-	  	  font-style: normal;
-	  	}
-	  	em.from{
-	  	  font-style: italic;
-	  	}
-	  	p{clear: none; max-width: 48%;}
-	  	.vmalternate{margin-top: 0px !important;}
-	  }
-	}
-}
 .vmsection{
 	margin:0px;
 	border: 0px;	
@@ -34,20 +14,6 @@
 	&:nth-child(odd) {
       background-color: #fff !important;
     }    
-	
-	&:hover{
-	    background-color: #fff !important;
-    	.displayName{
-             .vmtime{
-               visibility: hidden;
-             }
-             .vmcallbtn{
-               visibility: visible;
-               top: 4px;
-               right: 2px;
-             }
-        } 
-    }
     
     .Avatar.CallAvatar_Queue{
           margin: auto 0px auto -5px !important;
@@ -64,115 +30,9 @@
     .ConferenceAvatarSection.Avatar.ConferenceRecording{
         margin: 0.5em;
     }
-	.vmavatarsection{		
-		padding: 2.5px 5px;
-		
-		.vmavatar{
-			border-radius: 30px;
-			color: #009cff;
-			border: solid;
-			width: 2.5em;
-			height: 2.5em;
-		}
-	}	
-	.vminfo{
-		flex: 1;
-		-webkit-flex: 1;
-		position:relative;
-		padding-left:10px;
-		display:block;			
-		padding: 5px;
-		cursor: pointer;
-		font-size: 11px;
-		//line-height: 48px;
-		min-width: 0;     
-        min-height: 0;
-		
-		&:hover{
-		  .displayName{
-             .vmtime{
-               visibility: hidden;
-             }
-             .vmcallbtn{
-               visibility: visible;
-               top: 4px;
-               right: 2px;
-             }
-           }  
-		}
-		p.vmdisplay{
-		  padding:0;
-		  margin: 0;
-		  text-overflow : ellipsis;
-		  white-space : nowrap;
-		  overflow : hidden;
-		  max-width: 70%;
-		}
-		.displayName{ 
-            //position: absolute;
-            //top: 5px;
-            position: relative;
-            left: 5px;
-            right: 5px;                      
-            text-align: left;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            text-decoration: none;
-            color: #555;
-            white-space: nowrap;
-            line-height: 20px;
-            height: 30px;
-            
-            .ListDisplayName {
-              span{
-                height: 20px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-                font-size: 13px;
-                color: #222;
-                text-shadow: 0px 1px 0px rgba(255,255,255,0.3);
-              }  
-            }
-            .vmalternate{
-             .vmtime{
-                opacity: 1;
-                margin-left: 15px;
-                height: 20px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-                color: #666;
-                font-weight: normal;
-                font-size: 11px;
-             }
-            }
-            
-            em, p.vmdisplay{
-			 	float: left;
-		    }
-          }
-          .footnote{
-            position: relative;           
-                        
-            &.voicemails{
-            	white-space: normal !important;
-			    color: #222;			   
-			    font-style: normal;
-			    line-height: 16px;
-			    word-wrap: break-word;
-			    width: 100%;
-			    //vertical-align: bottom;
-                //height: 20px;
-                margin-bottom: -3px;
-                overflow: inherit !important;
-                display: inherit !important;
-            }         
-          }
-	}
 		
 	&:hover{
-	   background-color: #f0f0ff;
+	    background-color: #fff !important; 
 	   .vmcallbtn {                      
            background: #3c9c00 linear-gradient(#3c9c00, #328400);           
            color: #e8e8e8;
@@ -196,40 +56,7 @@
              text-shadow: 0 -1px 0 #000;
              box-shadow: 0 1px 1px rgba(0,0,0,0.2);
            }
-       }  
-       .vmtime{
-          visibility: hidden;
-       }          
-	}
-	&.recording{
-			.vminfo{
-			    line-height: inherit !important;
-			    .displayName{
-			    	height: 30px !important;			    	
-			    }
-				.footnote {
-					//height: 30px;
-    				//vertical-align: bottom;
-    				height: 15px;
-    				margin-left: 5px;
-    				
-    				.vmduration {
-    					margin-bottom: -4px;    					
-    				}
-    				
-    				.no_transcription,.transcription {
-    					margin-bottom: -18px;
-    					//vertical-align: bottom;
-    				}
-    				
-				}
-				 em, p.vmdisplay{
-				 	float: left;
-				 }
-			}
-      .Avatar.CallAvatar_Queue{
-        margin-left: 0px !important;
-      }
+       }         
 	}
 }
 
@@ -239,45 +66,6 @@
 	text-overflow:ellipsis;
 	white-space:nowrap;
 	
-	&.transcription,
-	&.no_transcription{
-		white-space:normal;
-		overflow: inherit !important;
-		text-overflow:inherit !important;
-		line-height: 16px;		
-	}
-	&.transcription{
-		color: #888;
-    	font-size: 12px;   
-    	max-width: 85%; 
-    	max-height: 320px;
-        overflow-y: hidden !important;
-        display: block;
-        
-        &:after {
-	        content:                    ' ';
-	        position:                   absolute;
-	        display:                    block;
-	        width:                      100%;
-	        height:                     1em;
-	        bottom:                     0px;
-	        left:                       0px;
-        }
-        &:before {
-	        content: "...";
-			text-align: right;
-			position: absolute;
-			display: block;
-			width: 2em;
-			height: 1em;
-			bottom: .4em;
-			right: 10px;
-        }
-	}
-	&.no_transcription{
-		color: #999;
-    	font-size: 11px;
-	}
 	&.vmduration{		
 		color: #fff;
 		font-size: 10px;
@@ -289,12 +77,6 @@
 		margin-left: 5px;
 	}
 }
-
-.vmdisplay{
-	display:inline-block;
-	color:#009CFF;
-}
-
 
 .vmduration{
 	background-color:#999;
@@ -334,38 +116,11 @@
          box-shadow: 0 1px 1px rgba(0,0,0,0.2);
        }
     }
-    .vmtime{
-        visibility:hidden;
-    }
-
    }
 	.vmcallbtn{
   		visibility:hidden;
   		right:0;
   		top:0;
   		position:absolute;
-	}
-	.vmtime{
-		visibility:visible;
-		position:relative;
-		font-size:11px;
-		font-weight: bold;
-	}
-
-
-}
-
-.vmlabel{
-	text-align:center;
-	color: #999;
-	text-shadow: 0px 2px 0px #fff;
-	line-height: 20px;
-	padding-top: 60px;
-	.vmlabelheader{
-		font-weight: bold;
-		font-size:14px;
-	}
-	.vmnomessage{
-		font-size:12px;
 	}
 }
