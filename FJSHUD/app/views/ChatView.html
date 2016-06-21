@@ -73,7 +73,7 @@
 	</div>
 
   
-  <div class="ChatInputFields" ng-if="enableChat" >
+  <div class="ChatInputFields" ng-class="::{'disableShare': showAlerts}" ng-if="enableChat">
 
     <div id="attachmentBox" ng-if="chat.attachmentItems" >
       <div class="attachmentTitle" id="topUploadTitle" flow-btn>Upload From Computer</div>
