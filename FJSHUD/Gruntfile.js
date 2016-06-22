@@ -255,7 +255,6 @@ module.exports = function(grunt) {
         'app/languageMap.js',
         'app/scripts/app.js',
         'app/jstz.min.js',
-        'app/oneDrive.html',
         'app/scripts/ui-bootstrap-tpls.js',
         'app/scripts/filters/**/*.js',
         'app/scripts/directives/**/*.js',
@@ -346,6 +345,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/styles/bootstrap.css'], dest: 'prod/'},
+          {expand: true, src: ['app/oneDrive.html'], dest: 'prod/'}
 
         ]
       },
@@ -362,12 +362,12 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/styles/bootstrap.css'], dest: 'dest/'},
+          {expand: true, src: ['app/oneDrive.html'], dest: 'dest/'},
           
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
               'app/jstz.min.js',
-              'app/oneDrive.html',
               'app/scripts/ui-bootstrap-tpls.js',
               'app/scripts/filters/**/*.js',
               'app/scripts/directives/**/*.js',
@@ -391,12 +391,12 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/boostrap.css'], dest: 'huc_dev/'},
+          {expand: true, src: ['app/oneDrive.html'], dest: 'huc_dev/'},
           
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
               'app/jstz.min.js',
-              'app/oneDrive.html',
               'app/scripts/ui-bootstrap-tpls.js',
               'app/scripts/filters/**/*.js',
               'app/scripts/directives/**/*.js',
