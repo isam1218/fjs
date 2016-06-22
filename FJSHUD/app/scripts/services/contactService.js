@@ -24,6 +24,7 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 	$rootScope.$on('contacts_synced', function(event, data) {
 		for (var i = 0, iLen = data.length; i < iLen; i++) {
 			var match = false;
+			var contact;
 				
 			// initial sync doesn't need to do this comparison
 			if (!$rootScope.isFirstSync) {
@@ -37,8 +38,10 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 							cLen--;
 						}
 						// regular update
-						else
+						else {
 							angular.extend(contacts[c], data[i]);
+							contact = contacts[c];
+						}
 						
 						match = true;
 						break;
@@ -49,9 +52,10 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 			// add new contact
 			if (!match && data[i].xef001type != 'delete') {
 				contacts.push(data[i]);
+				contact = contacts[contacts.length-1];
 				
 				// add avatar
-				contacts[contacts.length-1].getAvatar = function(size) {
+				contact.getAvatar = function(size) {
 					return httpService.get_avatar(this.xpid, size, size, this.icon_version); 
 				};
 			}
@@ -63,6 +67,10 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 				$rootScope.meModel.email = data[i].email;
 				$rootScope.meModel.ims = data[i].ims;
 			}
+			
+			// prevent blank name
+			if (contact && contact.displayName == '' && contact.jid != '')
+				contact.displayName = contact.jid;
 		}
 	});
 	

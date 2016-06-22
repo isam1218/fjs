@@ -1252,6 +1252,49 @@ hudweb.controller('NotificationController',
     deleteLastLongWaitNotification();
   });
 
+  var favicon = new Favico({
+    animation: 'none',
+    bgColor: '#27AD12',
+    fontFamilty: 'Arial',
+    fontStyle: 'normal',
+    type: 'rectangle',
+    pposition: 'down',
+    textColor: '#FFFFFF'
+  });
+
+  var isIE = false;
+  var isSafari = false;
+
+  if (isBrowserIE()){
+    // determine if IE
+    isIE = true;
+  }
+
+  var agent = navigator.userAgent.toLowerCase();
+  if(agent.indexOf('safari') != -1 && agent.indexOf('chrome') == -1){
+    // determine if Safari
+    isSafari = true;
+  }
+
+  $scope.$watch('todaysNotifications.length', function(newNotificationCount){
+    if (isIE || isSafari){
+      // if IE or Safari - just use a simple counter on title of browser tab
+      if (newNotificationCount === 0)
+        document.title = 'Fonality HUDWeb';
+      else 
+        document.title = '(' + newNotificationCount + ') ' + 'Fonality HUDWeb';
+    } else {
+      // otherwise if Chrome/FF -> call favicon with updated notification #
+      if (newNotificationCount > 0){
+        favicon.badge(newNotificationCount);
+      } else if (newNotificationCount === 0){
+        // or use original favicon if no new notifications
+        var replacement = document.getElementById('originalFavicon');
+        favicon.image(replacement);
+      }
+    }
+  });
+
   $scope.$on('quickinbox_synced', function(event,data){
   	if(data){
 			data.sort(function(a,b){
@@ -1337,6 +1380,7 @@ hudweb.controller('NotificationController',
 						addTodaysNotifications(notification);
 					}
 					//addTodaysNotifications(notification);
+
 				}
 				else if(notification.xef001type == "delete"){					
                     if (notification.xpid == pbxErrorId) {
