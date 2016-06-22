@@ -164,8 +164,7 @@ module.exports = function(grunt) {
           },
           files:{
             'prod/app/properties.js':['app/properties.js'],
-            'prod/app/index.version.html':['app/index.html'],
-            'prod/app/oneDrive.html':['app/oneDrive.html']
+            'prod/app/index.version.html':['app/index.html']
           }
       },dev:{
         options:{
@@ -183,8 +182,7 @@ module.exports = function(grunt) {
         },
           files:{
             'dest/app/properties.js':['app/properties.js'],
-            'dest/app/index.version.html':['app/index.html'],
-            'dest/app/oneDrive.version.html':['app/oneDrive.html']
+            'dest/app/index.version.html':['app/index.html']
           }
       },
       huc_dev:{
@@ -203,8 +201,7 @@ module.exports = function(grunt) {
         },
           files:{
             'huc_dev/app/properties.js':['app/properties.js'],
-            'huc_dev/app/index.version.html':['app/index.html'],
-            'huc_dev/app/oneDrive.html':['app/oneDrive.html']
+            'huc_dev/app/index.version.html':['app/index.html']
           }
       }
     },
@@ -348,6 +345,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/styles/bootstrap.css'], dest: 'prod/'},
+          {expand: true, src: ['app/oneDrive.html'], dest: 'prod/'},
 
         ]
       },
@@ -364,11 +362,13 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/styles/bootstrap.css'], dest: 'dest/'},
+          {expand: true, src: ['app/oneDrive.html'], dest: 'dest/'},
           
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
               'app/jstz.min.js',
+              'app/oneDrive.html',
               'app/scripts/ui-bootstrap-tpls.js',
               'app/scripts/filters/**/*.js',
               'app/scripts/directives/**/*.js',
@@ -392,11 +392,13 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/boostrap.css'], dest: 'huc_dev/'},
+          {expand: true, src: ['app/oneDrive.html'], dest: 'huc_dev/'}
           
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
               'app/jstz.min.js',
+              'app/oneDrive.html',
               'app/scripts/ui-bootstrap-tpls.js',
               'app/scripts/filters/**/*.js',
               'app/scripts/directives/**/*.js',
