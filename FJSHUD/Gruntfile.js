@@ -102,8 +102,7 @@ module.exports = function(grunt) {
             }
         },
         files:{
-            'dest/app/index.html':'app/index.html',
-            'dest/app/oneDrive.html':'app/oneDrive.html'
+            'dest/app/index.html':'app/index.html'
         }
       },
       dist:{
@@ -113,8 +112,7 @@ module.exports = function(grunt) {
             }
         },
         files:{
-            'prod/app/index.html':'prod/app/index.version.html',
-            'prod/app/oneDrive.html':'prod/app/oneDrive.version.html'
+            'prod/app/index.html':'prod/app/index.version.html'
         }
       },
       huc_dev:{
@@ -124,8 +122,7 @@ module.exports = function(grunt) {
             }
         },
         files:{
-            'huc_dev/app/index.html':'huc_dev/app/index.version.html',
-            'huc_dev/app/oneDrive.html':'huc_dev/app/oneDrive.version.html'
+            'huc_dev/app/index.html':'huc_dev/app/index.version.html'
         }
       }
 
@@ -168,7 +165,7 @@ module.exports = function(grunt) {
           files:{
             'prod/app/properties.js':['app/properties.js'],
             'prod/app/index.version.html':['app/index.html'],
-            'prod/app/oneDrive.version.html':['app/oneDrive.html']
+            'prod/app/oneDrive.html':['app/oneDrive.html']
           }
       },dev:{
         options:{
@@ -187,7 +184,7 @@ module.exports = function(grunt) {
           files:{
             'dest/app/properties.js':['app/properties.js'],
             'dest/app/index.version.html':['app/index.html'],
-            'prod/app/oneDrive.version.html':['app/oneDrive.html']
+            'dest/app/oneDrive.version.html':['app/oneDrive.html']
           }
       },
       huc_dev:{
@@ -207,7 +204,7 @@ module.exports = function(grunt) {
           files:{
             'huc_dev/app/properties.js':['app/properties.js'],
             'huc_dev/app/index.version.html':['app/index.html'],
-            'prod/app/oneDrive.version.html':['app/oneDrive.html']
+            'huc_dev/app/oneDrive.html':['app/oneDrive.html']
           }
       }
     },
