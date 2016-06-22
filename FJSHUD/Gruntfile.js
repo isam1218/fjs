@@ -255,6 +255,7 @@ module.exports = function(grunt) {
         'app/languageMap.js',
         'app/scripts/app.js',
         'app/jstz.min.js',
+        'app/oneDrive.html',
         'app/scripts/ui-bootstrap-tpls.js',
         'app/scripts/filters/**/*.js',
         'app/scripts/directives/**/*.js',
