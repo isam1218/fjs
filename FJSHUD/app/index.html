@@ -9,8 +9,9 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
-	<link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
-        <link rel="stylesheet" href="styles/main.css?v=<%- version %>">   
+      <link type="image/x-icon" rel="icon" id="favicon" href="img/Favicon.png">
+      <img id="originalFavicon" src="img/Favicon.png" style="display: none;"/>
+       <link rel="stylesheet" href="styles/main.css?v=<%- version %>">   
     <!--[if lt IE ]> 
         <link rel="stylesheet" href="styles/ie.css">  
     <![endif]-->
@@ -216,7 +217,8 @@
 	<!--config-->
     <script src="properties.js"></script>
     <script src="languageMap.js"></script>
-    <script src="jstz.min.js"></script> 
+    <script src="jstz.min.js"></script>
+    <script src="favico.js"></script>
     <script src="scripts/app.js"></script>
 
 	<!--filters-->
