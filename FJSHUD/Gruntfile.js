@@ -392,7 +392,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/boostrap.css'], dest: 'huc_dev/'},
-          {expand: true, src: ['app/oneDrive.html'], dest: 'huc_dev/'}
+          {expand: true, src: ['app/oneDrive.html'], dest: 'huc_dev/'},
           
           {expand: true, src: [
              'app/languageMap.js',
