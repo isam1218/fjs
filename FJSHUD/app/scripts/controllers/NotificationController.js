@@ -1255,7 +1255,7 @@ hudweb.controller('NotificationController',
   var favicon = new Favico({
     animation: 'none',
     bgColor: '#27AD12',
-    fontFamilty: 'Arial',
+    fontFamily: 'Arial',
     fontStyle: 'normal',
     type: 'rectangle',
     pposition: 'down',

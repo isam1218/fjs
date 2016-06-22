@@ -279,8 +279,8 @@
 				opt.w = opt.w * 1.65;
 				more = true;
 			}
-			opt.h = 10;
-			opt.w = 10;
+			opt.h = 9;
+			opt.w = 9;
 			opt.x = 0;
 			opt.y = 0;
 			// added the above 4 lines ^
@@ -299,7 +299,7 @@
 				_context.fillText(((opt.n > 9999) ? 9 : Math.floor(opt.n / 1000)) + 'k+', Math.floor(opt.x + opt.w / 2), Math.floor(opt.y + opt.h - opt.h * 0.2));
 			} else {
 				// _context.fillText(opt.n, Math.floor(opt.x + opt.w / 2), Math.floor(opt.y + opt.h - opt.h * 0.15));
-				_context.fillText(opt.n, 7.75, 11.5);
+				_context.fillText(opt.n, 7.75, 11.4);
 				// ^modified above
 			}
 			_context.closePath();
