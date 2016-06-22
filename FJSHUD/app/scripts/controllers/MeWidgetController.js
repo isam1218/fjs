@@ -1159,6 +1159,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.showOverlay(true, 'CallStatusOverlay', data);
     };
     $scope.formatIncoming = function(calllog,type){
+    	var regStr = /^9-/;
         switch(type){
             case "From":
                 if(calllog.incoming){
@@ -1167,12 +1168,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     }else{
                         return calllog.displayName;
                     }
-                }else{
-                    return $scope.verbage.you + " @ " + calllog.location;
+                }else{                	
+                    return $scope.verbage.you + " @ " + calllog.location.replace(regStr, '');
                 }
             case "To":
-                if(calllog.incoming){
-                    return $scope.verbage.you + " @ " + calllog.location;
+                if(calllog.incoming){                	
+                    return $scope.verbage.you + " @ " + calllog.location.replace(regStr, '');
                 }else{
                     if(calllog.phone){
                         return calllog.phone;
