@@ -102,7 +102,8 @@ module.exports = function(grunt) {
             }
         },
         files:{
-            'dest/app/index.html':'app/index.html'
+            'dest/app/index.html':'app/index.html',
+            'dest/app/oneDrive.html':'app/oneDrive.html'
         }
       },
       dist:{
@@ -112,7 +113,8 @@ module.exports = function(grunt) {
             }
         },
         files:{
-            'prod/app/index.html':'prod/app/index.version.html'
+            'prod/app/index.html':'prod/app/index.version.html',
+            'prod/app/oneDrive.html':'prod/app/oneDrive.html'
         }
       },
       huc_dev:{
@@ -122,7 +124,8 @@ module.exports = function(grunt) {
             }
         },
         files:{
-            'huc_dev/app/index.html':'huc_dev/app/index.version.html'
+            'huc_dev/app/index.html':'huc_dev/app/index.version.html',
+            'huc_dev/app/oneDrive.html':'huc_dev/app/oneDrive.html'
         }
       }
 
