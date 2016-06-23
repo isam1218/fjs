@@ -65,7 +65,6 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
 
 	// store recent
   if ($scope.conference.permissions === 0 || $scope.conference.permissions === 4){
-      console.error('have permission to visit conf room, adding this to recents - ', $scope.conference);
 	   storageService.saveRecent('conference', $scope.conferenceId);
   }
 	
