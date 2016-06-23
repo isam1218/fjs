@@ -67,7 +67,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		$scope.original = res.obj;
 		$scope.context = res.context;
 		$scope.widget = res.widget;
-		
+		$scope.fileLink = res.obj.data.attachment[0].fileLink;
 		$scope.reasons.show = false;
 		$scope.myQueue = false;
 		

@@ -135,7 +135,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				to: chat.targetId,
 				message: ' ',
 				// message: files[0].link,
-				data: '{"attachment":[{"dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+				data: '{"attachment":[{"fileLink":true, "dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
     	}
        
@@ -190,7 +190,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				to: chat.targetId,
 				message: ' ',
 				// message: files[0].link,
-				data: '{"attachment":[{"googleDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+				data: '{"attachment":[{"fileLink":true,"googleDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
 		}
    };
@@ -223,7 +223,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
       audience: chat.audience,
       to: chat.targetId,
       message: ' ',
-      data: '{"attachment":[{"box":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+      data: '{"attachment":[{"fileLink":true,"box":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
     });
 		}
 
@@ -269,7 +269,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	      audience: chat.audience,
 	      to: chat.targetId,
 	      message: ' ',
-	      data: '{"attachment":[{"oneDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+	      data: '{"attachment":[{"fileLink":true,"oneDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 	    });
 	}
 	    
