@@ -138,7 +138,7 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
         $location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
 		
 		// play sfx
-		phoneService.playSound("sent");
+		//phoneService.playSound("sent");
     };
 
 	$scope.selectCurrentDownload = function(download){
