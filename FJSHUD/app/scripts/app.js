@@ -125,7 +125,7 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			redirectTo: '/settings'
 		});
 })
-.run(function ($http, $templateCache, $rootScope, $location, $routeParams, StorageService, SettingsService, GroupService, QueueService, $timeout) {
+.run(function ($http, $templateCache, $rootScope, $location, $routeParams, StorageService, SettingsService, GroupService, QueueService, ConferenceService, $timeout) {
 	// cache native alert template
 	/*$http.get('views/nativealerts/Alert.html', { cache: $templateCache });
 	$http.get('views/nativealerts/CallAlert.html', { cache: $templateCache });
@@ -168,6 +168,25 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 		            break;
 		          case '/conference/':
 		            finalConfId = typeId.split('/')[0];
+		            var accessedConf = ConferenceService.getConference(finalConfId);
+		            // before taking user to specific room -> check for if a member of room
+		            var imACurrentMember = false;
+								if (accessedConf.members.length > 0){
+									for (var i = 0; i < accessedConf.members.length; i++){
+										if (accessedConf.members[i].contactId == $rootScope.myPid){
+											imACurrentMember = true;
+											break;
+										}
+									}
+								}
+								if (!imACurrentMember){
+									// if im not a current member of the conference room -> don't allow user to access a conference room he doesn't have permission to access
+									// check if i have permissions to access this room -> if no permission -> redirect to list
+			            if (accessedConf.permissions !== 0 && accessedConf.permissions !== 4){
+			            	$location.path('/conferences');
+			            }
+								}
+								// otherwise, if are a party to the conference room -> allow user to access room
 		            break;
 		        }
 		        finalSelected = typeId.split('/')[1];

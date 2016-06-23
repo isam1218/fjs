@@ -64,12 +64,15 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
   });
 
 	// store recent
-	storageService.saveRecent('conference', $scope.conferenceId);
+  if ($scope.conference.permissions === 0 || $scope.conference.permissions === 4){
+      console.error('have permission to visit conf room, adding this to recents - ', $scope.conference);
+	   storageService.saveRecent('conference', $scope.conferenceId);
+  }
 	
-	// update permission to view chat
-	$scope.$on('conferencestatus_synced', function(event, data) {
-		if($scope.conference.status){
-			var isJoined = $scope.conference.status.isMeJoined;
+  // update permission to view chat
+  $scope.$on('conferencestatus_synced', function(event, data) {
+    if($scope.conference.status){
+      var isJoined = $scope.conference.status.isMeJoined;
 		}
 		$scope.joined = isJoined || false;
 	});
