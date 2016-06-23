@@ -14,6 +14,8 @@
     <link rel="icon" href="/repository/fj.ui/1.3/img/XFavicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="/repository/fj.ui/1.3/img/XFavicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="../styles/main.css">
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
     <style> 
 
         #dialogheadicon{
@@ -30,21 +32,11 @@
             left: 10%;
             top: 4%;
         }
-    </style>
-	
-	<script type="text/javascript">
-		window.onload = function() {
-			// delete cookie so we don't get stuck here
-			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-		};
-	</script>
+    </style>		
 </head>
 <body>
 <div class="popupHolder DialogHolder" >
-    
-
-
-    <div class="Overlay">
+ <div class="Overlay">
     <div class="Foreground">
         
         <div class="Header" >
@@ -58,11 +50,62 @@
                 <div>Please close this HUDweb tab.</div>
             </div>
         </div>
+        <input type="button" value="CTRL+Z" id="close" style="display: none"/>
     </div>
+ </div>
 </div>
-</div>
-<script>
-	
-</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		//window.onload = function() {
+			// delete cookie so we don't get stuck here
+			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+						
+			if(localStorage['secondTab_loaded'])
+			{
+				localStorage.removeItem('secondTab_loaded');							
+
+				function keyEvent(ev) {
+				     var eventObj = $.Event(ev, {'keyCode': 65, 'which': 65, 'ctrlKey': true});	    
+                    /*set 'ctrl+w'*/				  	      				   
+				    $('body').trigger(eventObj);			   
+				}											
+				
+				 $('body').on("keydown keyup", function(e){//keypress 
+					//if(!((e.keyCode == 87 || e.which == 87) && e.ctrlKey))										
+					//	return true;	
+					e.preventDefault();       
+					//alert(e.type +': key:' +e.which+ '-'+ e.ctrlKey);		    
+					//return false;																
+				});
+				 
+				// Trigger all 3 just in case
+			    keyEvent("keydown");
+			    //keyEvent("keypress");
+			    keyEvent("keyup");    
+				    
+				 /* var closebtn = document.getElementById('close'),  // button ctrl z  
+				      closeEvt = document.createEvent('KeyboardEvents'); // ctrl z event  
+				      closeEvt.initKeyboardEvent(
+				           'keydown', 
+				           true,     // key down events bubble 
+				           true,     // and they can be cancelled 
+				           document.defaultView,  // Use the default view 
+				           true,        // ctrl 
+				           false,       // alt
+				           false,        //shift
+				           false,       //meta key 
+				           87,          // keycode
+				           0
+				          );  
+				  closebtn.addEventListener('click', function(){
+				    	  document.dispatchEvent(closeEvt); 
+				  }, false);
+				  $(closebtn).trigger('click');*/
+			}	
+			else
+				localStorage['secondTab_loaded'] = 'true';
+		//};
+	});
+	</script>
 </body>
 </html>

@@ -260,10 +260,18 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	
 	this.setUnload = function() {	
 		unload = true;
+		
+		if(!cookieInterval)
+		{	
+			var cookieInterval = setInterval(function(){
+				// give it a short expiration date
+				document.cookie = "tab=true; path=/; expires=" + new Date(new Date().getTime() + 5000).toGMTString();
+			}, 5000);
+		}
 		// stupid warning
-		window.onbeforeunload = function() {			
-			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-			
+		window.onbeforeunload = function() {	
+			window.clearInterval(cookieInterval);
+			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";			
 			return "Are you sure you want to navigate away from this page?";
 		};
 	};
