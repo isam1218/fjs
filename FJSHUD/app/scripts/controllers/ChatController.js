@@ -386,7 +386,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 			return 'img/XIcon-PreviewDocument.png';
 		// show mysterious image
 		else
-			return 'img/XIcon-UnknownDocument.png';
+			return 'img/XIcon-UnknownDocument.png';	
 	};
 
 	$scope.$on('sameUserFileShareIconClick', function(data){
@@ -466,6 +466,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		httpService.upload_attachment(data,fileList);
 		// local upload -> send to GA
 		sendGoogleAnalytic('Computer');
+		
+		phoneService.playSound('sent');
 	};
 	
 	// keep scrollbar at bottom until chats are loaded
