@@ -272,7 +272,7 @@
       voicemail_tab:'Voicemails',
       my_recordings_tab:'My Recordings',
       my_videos_tab:'Video Collaborations',
-      no_transcriptions:'no transcription available',
+      no_transcriptions:'Transcription not available.',
 
       action:'Actions',
       mark_all_incoming_vm_read:'Mark as read all incoming voicemails',
