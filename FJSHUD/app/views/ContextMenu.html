@@ -103,7 +103,7 @@
 			<span>{{::verbage.leave}}</span>
 		</a>
 
-		<div ng-show="widget == 'chat' && original.data.attachment && !fileLink">
+		<div ng-show="widget == 'chat' && original.data.attachment && !original.data.attachment[0].fileLink">
 			<a class="Button" href="" ng-click="deleteAttachment()">
 				<div class="ListRowActionButtonRemove"></div>
 				<span>{{::verbage.delete_word}}</span>
