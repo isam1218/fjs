@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'QueueService', 'HttpService', 'StorageService', '$routeParams', function ($scope, $rootScope, queueService, httpService, storageService, $routeParams) {
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'QueueService', 'HttpService', 'StorageService', '$routeParams', 'CallStatusService', function ($scope, $rootScope, queueService, httpService, storageService, $routeParams, callStatusService) {
   $scope.que = {};
   $scope.que.query = '';
   $scope.query = "";
@@ -62,33 +62,13 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
   $scope.showCallStatus = function($event, contact) {
     $event.stopPropagation();
     $event.preventDefault();
-    // if its my card
-    if (contact.xpid == $rootScope.myPid || contact.call.type === 0)
+    // if this service-function returns true -> it's a trap! User is trying to click on own cso so do not show
+    if (callStatusService.blockOverlay(contact)){
       return;
-
-    var myContact = contactService.getContact($rootScope.myPid);
-    // if i'm on a call...
-    if (myContact.call){
-      var imTheBarger = false;
-      var bargerArray = myContact.call.fullProfile.call.bargers;
-      // check to see if I'm the barger of the call I'm trying to click on...
-      if (bargerArray){
-        for (var i = 0; i < bargerArray.length; i++){
-          if (bargerArray[i].xpid == $rootScope.myPid){
-            imTheBarger = true;
-            break;
-          }
-        }
-      }
-      // so long as I'm not the barger...
-      if (myContact.call.barge === 0 && !imTheBarger){
-        // if the person i'm talking to == contact clicked on
-        if (myContact.call.contactId == contact.call.xpid)
-          return;
-      }
+    } else {
+      // if user isn't clicking on own -> then show overlay
+      $scope.showOverlay(true, 'CallStatusOverlay', contact);
     }
-
-    $scope.showOverlay(true, 'CallStatusOverlay', contact);
   };
 
   $scope.$on("$destroy", function () {

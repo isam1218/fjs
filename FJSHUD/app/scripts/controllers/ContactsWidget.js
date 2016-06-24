@@ -1,4 +1,4 @@
-hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'SettingsService', '$location', function($scope, $rootScope, myHttpService, contactService, groupService, settingsService,$location) {
+hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'ContactService', 'GroupService', 'SettingsService', '$location', 'CallStatusService', function($scope, $rootScope, myHttpService, contactService, groupService, settingsService,$location, callStatusService) {
 
 	$scope.query = "";
 	$scope.contacts = [];
@@ -116,37 +116,17 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	};
 	*/
 
+
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();
-    $event.preventDefault();
-    // if the contact is mine
-    if (contact.xpid == $rootScope.myPid || contact.call.type === 0)
-      return;
-
-    var myContact = contactService.getContact($rootScope.myPid);
-    // if i'm on a call...
-    if (myContact.call){
-			var imTheBarger = false;
-			var bargerArray = myContact.call.fullProfile.call.bargers;
-			// check to see if I'm the barger of the call I'm trying to click on...
-			if (bargerArray){
-				for (var i = 0; i < bargerArray.length; i++){
-					if (bargerArray[i].xpid == $rootScope.myPid){
-						imTheBarger = true;
-						break;
-					}
-				}
-			}
-			// so long as I'm not the barger...
-			if (myContact.call.barge === 0 && !imTheBarger){
-	      // if the person i'm talking to is the contact clicked on
-	      if (myContact.call.contactId == contact.call.xpid)
-	        return;
-			}
-    }
-
-    // show overlay
-		$scope.showOverlay(true, 'CallStatusOverlay', contact);
+		$event.preventDefault();
+		// if this service-function returns true -> it's a trap! User is trying to click on own cso so do not show
+		if (callStatusService.blockOverlay(contact)){
+			return;
+		} else {
+			// if user isn't clicking on own -> then show overlay
+			$scope.showOverlay(true, 'CallStatusOverlay', contact);
+		}
 	};
 
 	// add favorites action (via directive)
