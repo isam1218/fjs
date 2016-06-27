@@ -8,6 +8,12 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		opened: null
 	};
     $scope.fromTo = false;
+	
+	// automatically open corresponding voicemail
+	if ($rootScope.vmToOpen) {
+		$scope.vm.opened = $rootScope.vmToOpen;
+		$rootScope.vmToOpen = null;
+	}
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},

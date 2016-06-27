@@ -208,52 +208,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		httpService.sendAction('groupcontacts', 'removeContactsFromFavorites', {contactIds: $scope.profile.xpid});
 	};
 	
-	$scope.downloadRecording = function(){		
-		//get the audio file path
-		var path = $scope.original.voicemailMessageKey ? 'vm_download?id=' + $scope.original.voicemailMessageKey : 'media?key=callrecording:' + $scope.original.xpid;
-		$scope.downloadLink =  httpService.get_audio(path);
-		
-	    window.onbeforeunload = null;	
-	    
-	    setTimeout(function(){
-	    	if(httpService.getUnload())
-			{
-				window.onbeforeunload = function() {			
-					document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-					
-					return "Are you sure you want to navigate away from this page?";
-				};
-			}
-        }, 1000);	    			
-	};	
-	
-	$scope.deleteRecording = function() {
-		var type;
-		
-		if ($scope.widget == 'recordings') {
-			httpService.sendAction('callrecording', 'remove', {id: $scope.original.xpid});
-			type = $scope.original.xpid;
-		}
-		else {
-			httpService.sendAction('voicemailbox', 'delete', {id: $scope.original.xpid});
-			type = $scope.original.voicemailMessageKey;
-		}
-		
-		// close player?		
-		if (document.getElementById('voicemail_player_source').src.indexOf(type) != -1) {
-			$timeout(function() {
-				$('.TopBarVoicemailControls .XButtonClose').trigger('click');
-			}, 100);
-		}
-	};
-	
-	$scope.markAsRead = function(read) {
-		httpService.sendAction("voicemailbox", "setReadStatusAll", {
-			read: read, 
-			ids: $scope.original.xpid
-		});
-	};
-	
 	$scope.deleteAttachment = function() {
 		httpService.sendAction("streamevent", "deleteEvent", {xpid: $scope.original.xpid});
 	};
@@ -269,12 +223,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		}
 		else if($scope.context == 'recent'){
 			gaLabel = 'Recents List';
-		}
-		else if ($scope.widget == 'voicemails'){
-			gaLabel = "Calls/Recordings - Voicemail - Call";
-		}
-		else if ($scope.widget == 'recordings'){
-			gaLabel = "Calls/Recordings - Recordings - Call";
 		}
 		else if ($scope.widget == 'dock'){
 			gaLabel = "From Dock";

@@ -19,6 +19,10 @@ hudweb.directive('player', ['$parse', '$sce', '$filter', 'HttpService', function
 			var progress = element.children()[2];
 			
 			audio.onloadeddata = function() {
+				clearTimeout(retry);
+				audio.onstalled = null;
+				audio.onerror = null;
+				
 				// user can now play audio
 				element.removeClass('not-loaded');
 				
@@ -96,7 +100,7 @@ hudweb.directive('player', ['$parse', '$sce', '$filter', 'HttpService', function
 					httpService.sendAction('voicemailbox', 'setReadStatus', {'read': true, id: data.xpid});
 			};
 			
-			audio.onerror = function() {
+			var onFailed = function() {
 				// retry 3x, then give up
 				if (attempts < 3) {
 					retry = setTimeout(function() {
@@ -109,6 +113,10 @@ hudweb.directive('player', ['$parse', '$sce', '$filter', 'HttpService', function
 					progress.innerHTML = 'Unable to load ' + (data.voicemailMessageKey ? 'voicemail' : 'recording');
 				}
 			};
+			
+			// double up error checking
+			audio.onstalled = onFailed;			
+			audio.onerror = onFailed;
 			
 			scope.$on("$destroy", function() {
 				clearTimeout(retry);
@@ -126,6 +134,7 @@ hudweb.directive('player', ['$parse', '$sce', '$filter', 'HttpService', function
 				audio.onpause = null;
 				audio.onplay = null;
 				audio.onended = null;
+				audio.onstalled = null;
 				audio.onerror = null;
 				audio = null;
 			});

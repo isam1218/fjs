@@ -383,6 +383,8 @@ hudweb.controller('NotificationController',
           endPath = calllogPath;
         break;
       case 'vm':
+	    $rootScope.vmToOpen = message.vmId;
+		
         if (message.senderId || message.fullProfile)
           endPath = "/" + message.audience + "/" + xpid + '/voicemails';
         else
