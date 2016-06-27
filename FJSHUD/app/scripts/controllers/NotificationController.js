@@ -773,11 +773,6 @@ hudweb.controller('NotificationController',
     
 	});
 
-  $scope.playVm = function(msg){
-    phoneService.playVm(msg.vmId);
-    $scope.showOverlay(false);
-  };
-
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);
 	};

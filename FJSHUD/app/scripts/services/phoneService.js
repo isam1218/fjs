@@ -471,17 +471,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			}
 		}
 	};
-	//Given an Xpid we loop through the list of voicemails and broadcast to the controller that will play the voicemail
-	var playVm = function(xpid){
-		for (var i = 0, iLen = voicemails.length; i < iLen; i++) {
-			if (voicemails[i].xpid == xpid) {
-				$rootScope.$broadcast('play_voicemail', voicemails[i]);
-				voicemails[i].readStatus = true;
-				break;
-			}
-		}
-	};
-
 
 	var addonActivateTab = function() {
             if(!context.addonProxyElement) {
@@ -847,9 +836,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	    			};
 	    			$rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 					break;
-				case '/PlayVM':
-					playVm(xpid);
-					break;
 				case '/CallBack':
 					makeCall(xpid);
 					return;
@@ -870,11 +856,12 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 					var messagetype = queryArray[2];
 					var queueId = queryArray[3];
 					var audience = queryArray[4];
+					var vmId = queryArray[5];
 
 					if (messagetype == 'q-alert-rotation' || messagetype == 'q-alert-abandoned')
 						showQueue(queueId, audience, messagetype, messagexpid);
 					else 
-						goToNotificationChat(xpid, audience, messagexpid, messagetype);
+						goToNotificationChat(xpid, audience, messagexpid, messagetype, vmId);
 
 					break;
 				case '/callAndRemove':
@@ -937,7 +924,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		httpService.deleteFromWorker('quickinbox', xpid);
 	};
 
-	var goToNotificationChat = function(xpid, audience,mxpid, mtype){
+	var goToNotificationChat = function(xpid, audience,mxpid, mtype, vmId){
 
 		switch(audience){
 			case 'contacts':
@@ -953,7 +940,12 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				audience = "conference";
 				break;
 		}
-		if (audience == 'queue' && mtype == 'q-broadcast')
+		
+		if (mtype == 'vm' && vmId) {
+			$rootScope.vmToOpen = vmId;
+			$location.path('/calllog/voicemails');
+		}
+		else if (audience == 'queue' && mtype == 'q-broadcast')
 			$location.path("/" + audience + "/" + xpid + "/alerts");
 		else
 			$location.path("/" + audience + "/" + xpid + "/chat");
@@ -1320,7 +1312,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
 	this.acceptCall = acceptCall;
-	this.playVm = playVm;
 
 	this.transfer = function(xpid,number){
 		httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
