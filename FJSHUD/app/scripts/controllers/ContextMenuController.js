@@ -7,7 +7,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 	$scope.type;
 	$scope.widget;
 	$scope.context;
-	$scope.downloadLink = "";
 	
 	var transferFeed;
 	var transferAction = 'transferToContact';

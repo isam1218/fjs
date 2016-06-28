@@ -34,13 +34,19 @@
 			.vm.material-icons {
 				color: #015D73 !important;
 			}
+			
+			& > .material-icons {
+				visibility: visible !important;
+			}
 		}
 		
 		& > .material-icons {
 			color: #015d73;
 			font-size: 36px;
 			width: 36px;
+			height: 36px;
 			margin-left: 20px;
+			visibility: hidden;
 		}
 		
 		&:not(:last-child) .details {
@@ -50,9 +56,14 @@
 		.body {
 			flex: 1;
 			-webkit-flex: 1;
+			min-width: 0;
 			margin-left: 11px;
 					
 			&.recording {
+				.name span {
+					font-weight: bold !important;
+				}
+				
 				.buttons {
 					width: 50%;
 					margin: 0 auto 11px auto !important;
@@ -82,9 +93,12 @@
 				.name {
 					font-size: 17px;
 					color: #333333;
-					width: 230px;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+					overflow: hidden;
+					padding-right: 11px;
+					flex: 1;
+					-webkit-flex: 1;
 					
 					&::first-letter {
 						text-transform: uppercase;
@@ -92,9 +106,8 @@
 				}
 				
 				.time {
+					padding-top: 2px;
 					text-align: right;
-					flex: 1;
-					-webkit-flex: 1;
 					
 					.date {
 						font-size: 15px;

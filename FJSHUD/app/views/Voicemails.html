@@ -32,7 +32,7 @@
 					<span ng-bind-html="::voicemail.displayName"></span>
 				</div>
 				<div class="time">
-					<div class="date">{{ ::voicemail.date | fondate: 'YYYY MMMM D, hh:mm a':fon_lang_code }}</div>
+					<div class="date">{{ ::voicemail.date | fondate: 'full' }}</div>
 					<div class="duration" ng-switch-when="false">{{ ::voicemail.duration | duration }}</div>
 				</div>
 			</div>
