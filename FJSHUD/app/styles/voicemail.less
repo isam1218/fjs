@@ -26,27 +26,26 @@
 		-webkit-flex-direction: row;
 		margin-top: 11px;
 		
-		&.unread {
+		&.read {
 			.name span {
-				font-weight: bold !important;
+				font-weight: normal !important;
 			}
 			
 			.vm.material-icons {
-				color: #015D73 !important;
+				color: #333333 !important;
 			}
 			
 			& > .material-icons {
-				visibility: visible !important;
+				visibility: hidden;
 			}
 		}
 		
 		& > .material-icons {
 			color: #015d73;
-			font-size: 36px;
+			font-size: 30px;
 			width: 36px;
 			height: 36px;
 			margin-left: 20px;
-			visibility: hidden;
 		}
 		
 		&:not(:last-child) .details {
@@ -59,11 +58,7 @@
 			min-width: 0;
 			margin-left: 11px;
 					
-			&.recording {
-				.name span {
-					font-weight: bold !important;
-				}
-				
+			&.recording {				
 				.buttons {
 					width: 50%;
 					margin: 0 auto 11px auto !important;
@@ -102,6 +97,10 @@
 					
 					&::first-letter {
 						text-transform: uppercase;
+					}
+					
+					span {
+						font-weight: bold;
 					}
 				}
 				
@@ -220,6 +219,10 @@
 						font-size: 24px;
 						padding: 6px 16px;
 						text-decoration: none;
+						
+						&.vm {
+							color: #015D73;
+						}
 					}
 				}
 			}
