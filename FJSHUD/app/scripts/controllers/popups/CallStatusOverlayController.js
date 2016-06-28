@@ -17,7 +17,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.topAlreadyWhispered = false;
 	$scope.bottomAlreadyWhispered = false;
 	$scope.topUserProfile;
-
+	$scope.currentUser = contactService.getContact($rootScope.myPid);
 	$scope.transferResults;
 	$scope.transferContacts = [];
 	$scope.transferType;
@@ -32,7 +32,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		switch($scope.$parent.overlay.data.screen){
 			case 'transfer':
 				$scope.screen = 'transfer';
-				$scope.transferFrom = contactService.getContact($scope.$parent.overlay.data.call.contactId);
+				$scope.transferFrom = contactService.getContact($scope.$parent.overlay.data.call.contactId);				
 				$scope.transferTo = null;
 
 				if(!$scope.transferFrom){
@@ -295,8 +295,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		/* Reference (DO NOT DELETE)
 		*CP Group Permission: HUD -- Transfer call to others' extensions
 		*if A is on call w/ B, and want to know if A can transfer B to C's primary extension, check the [transfer call to others' extensions permission] on B */
-		var personBeingTransferred = $scope.transferFrom;
-		return settingsService.isEnabled(personBeingTransferred.permissions, 4);
+		var personBeingTransferred = $scope.transferFrom;		
+		return settingsService.isEnabled(personBeingTransferred.permissions, 3) && settingsService.isEnabled($scope.transferTo.permissions, 4) ;
 	};
 
 	$scope.canTransferToVm = function(){
