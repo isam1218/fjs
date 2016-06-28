@@ -19,7 +19,7 @@
 	
 	<div class="Voicemail" 
 		ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid" 
-		ng-class="{'unread': !voicemail.readStatus}"
+		ng-class="{'read': voicemail.readStatus}"
 		ng-switch="vm.opened == voicemail.xpid"
 		ng-click="vm.opened = voicemail.xpid">
 		

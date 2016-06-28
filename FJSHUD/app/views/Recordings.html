@@ -10,6 +10,8 @@
 			ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid"
 			ng-switch="rec.opened == recording.xpid"
 			ng-click="rec.opened = recording.xpid">
+		
+			<div class="material-icons">mic</div>
 			
 			<div class="body recording">
 				<div class="info">
