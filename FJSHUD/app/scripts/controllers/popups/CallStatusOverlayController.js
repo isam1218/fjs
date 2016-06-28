@@ -16,8 +16,7 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 	$scope.alreadyMonitored = false;
 	$scope.topAlreadyWhispered = false;
 	$scope.bottomAlreadyWhispered = false;
-	$scope.topUserProfile;
-	$scope.currentUser = contactService.getContact($rootScope.myPid);
+	$scope.topUserProfile;	
 	$scope.transferResults;
 	$scope.transferContacts = [];
 	$scope.transferType;
