@@ -1,6 +1,8 @@
 hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', '$timeout', 'HttpService', 'ContactService', 'ConferenceService', 'QueueService', 'PhoneService', 'SettingsService', function($scope, $rootScope, $routeParams, $location, $timeout, httpService, contactService, conferenceService, queueService, phoneService, settingsService) {
-	$scope.rec = this;
-	$scope.rec.query = '';
+	$scope.rec = {
+		query: '',
+		opened: null
+	};
 	$scope.loading = true;
 	$scope.recordings = [];
 	
@@ -111,34 +113,24 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	
 	/* action items: */
 	
-	$scope.getLabel = function(rec) {
-		// use "to" or "from" depending on incoming/callee status
-		if (rec.queueId || ((rec.incoming && rec.calleeUserId == $rootScope.myPid) || (!rec.incoming && rec.callerUserId == $rootScope.myPid))) {
-			return $scope.verbage.to;
-		}
-		
-		return $scope.verbage.from;
-	};
-	
-	$scope.playRecording = function(recording) {
-		$rootScope.$broadcast('play_voicemail', recording);
-	};
-	
-	$scope.callNumber = function(e, number) {
-		e.stopPropagation();
-		phoneService.makeCall(number);
+	$scope.callNumber = function(rec) {
 		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "Calls/Recordings - Recordings - Call"});
+		
+		if (rec.conferenceId) {
+			var params = {
+				conferenceId: rec.conferenceId,
+				contactId: $rootScope.myPid
+			};
+			
+			httpService.sendAction("conferences", "joinContact", params);
+					
+			$location.path('/conference/' + rec.conferenceId + '/currentcall');
+		}
+		else
+			phoneService.makeCall(rec.calleePhone);
 	};
 	
-	$scope.joinConference = function(e, xpid) {
-		e.stopPropagation();
-		
-		var params = {
-			conferenceId: xpid,
-			contactId: $rootScope.myPid,
-		};
-		httpService.sendAction("conferences", "joinContact", params);
-				
-		$location.path('/conference/' + xpid + '/currentcall');
+	$scope.deleteFile = function(rec) {
+		httpService.sendAction('callrecording', 'remove', {id: rec.xpid});
 	};
 }]);

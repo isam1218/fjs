@@ -1,7 +1,7 @@
 <div ng-if="contextShow">
 <div class="Arrow Left"></div>
 <div class="TopRow" ng-if="type != 'Transfer'" ng-switch="type == 'Contact' && profile != null">
-	<div class="Contact" ng-switch-when="true" ng-switch="widget && widget != 'voicemails' && widget != 'recordings'">
+	<div class="Contact" ng-switch-when="true">
 		<div>
 			<avatar profile="profile" context="context"></avatar>
 			<div class="info">
@@ -12,13 +12,13 @@
 			</div>
 		</div>
 
-		<div class="Numbers" ng-switch-when="true">
+		<div class="Numbers">
 			<div>email:</div> <span>{{ profile.email }}</span>
 			<br/>
 			<div>ext:</div> <span>{{ profile.primaryExtension }}</span>
 		</div>
 
-		<div class="Numbers" ng-switch-when="true">
+		<div class="Numbers">
 			<div>mobile:</div> <span>{{ profile.phoneMobile }}</span>
 			<br/>
 			<div>phone:</div> <span>{{ profile.phoneBusiness }}</span>
@@ -39,39 +39,6 @@
  </div>
 </div>
 <div class="BottomRow Actions" ng-show="!reasons.show && type != 'Transfer'">
-	<!-- recordings -->
-	<div ng-if="widget == 'recordings' && profile.xpid != myPid ">	<!-- type =='Contact' &&  -->
-		<a class="Button" href="" ng-show="widget == 'recordings'" ng-click="deleteRecording()">
-			<div class="ListRowActionButtonRemove"></div>
-			<span>{{::verbage.delete_word}}</span>
-		</a>
-		<a class="Button" href="" ng-show="!profile && original.calleePhone" ng-click="callNumber(original.calleePhone)">
-			<div class="ListRowActionButtonCall"></div>
-			<span>{{::verbage.call_back}}</span>
-		</a>
-	</div>
-
-
-	<!-- voicemails -->
-	<div ng-if="widget == 'voicemails' && profile.xpid != myPid"><!-- type =='Contact' &&  -->
-		<a class="Button" href="" ng-click="deleteRecording()">
-			<div class="ListRowActionButtonRemove"></div>
-			<span>{{::verbage.delete_word}}</span>
-		</a>
-		<a class="Button" href="" ng-show="!original.readStatus" ng-click="markAsRead(true)">
-			<div class="ListRowActionButtonRead"></div>
-			<span>Read</span>
-		</a>
-		<a class="Button" href="" ng-show="original.readStatus" ng-click="markAsRead(false)">
-			<div class="ListRowActionButtonUnread"></div>
-			<span>Unread</span>
-		</a>
-		<a class="Button" href="" ng-show="!profile && original.phone" ng-click="callNumber(original.phone)">
-			<div class="ListRowActionButtonCall"></div>
-			<span>{{::verbage.call_back}}</span>
-		</a>
-	</div>
-
 	<!-- queue calls -->
 	<div ng-if="widget == 'queue'">
 		<a class="Button" href="" ng-show="context.agent.xpid != myPid" ng-click="takeQueueCall()">
@@ -109,18 +76,6 @@
 				<span>{{::verbage.delete_word}}</span>
 			</a>
 		</div>
-		<a class="Button" href="" ng-show="widget == 'voicemails' && context && context.fullProfile && context.fullProfile.xpid == meModel.my_pid" ng-click="deleteRecording()">
-			<div class="ListRowActionButtonRemove"></div>
-			<span>{{::verbage.delete_word}}</span>
-		</a>
-		<a class="Button" href="" ng-show="widget == 'voicemails' && context && context.fullProfile && context.fullProfile.xpid == meModel.my_pid && !original.readStatus" ng-click="markAsRead(true)">
-			<div class="ListRowActionButtonRead"></div>
-			<span>Read</span>
-		</a>
-		<a class="Button" href="" ng-show="widget == 'voicemails' && context && context.fullProfile && context.fullProfile.xpid == meModel.my_pid && original.readStatus" ng-click="markAsRead(false)">
-			<div class="ListRowActionButtonUnread"></div>
-			<span>Unread</span>
-		</a>
 		<a class="Button" href="" ng-show="original.status.status == 'logout'" ng-click="loginQueue()">
 			<div class="ListRowActionButtonLogin"></div>
 			<span>{{::verbage.login}}</span>
@@ -136,10 +91,6 @@
 		<a class="Button" href="" ng-show="profile.phoneMobile" ng-click="callNumber(profile.phoneMobile)">
 			<div class="ListRowActionButtonMobile"></div>
 			<span>{{::verbage.mobile}}</span>
-		</a>
-		<a class="Button" ng-href="{{downloadLink}}" ng-show="(widget == 'voicemails'  || widget == 'recordings') && context && context.fullProfile && context.fullprofile.id == meModel.my_pid"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
-			<div class="ListRowActionButtonDownload"></div>
-			<span>Download</span>
 		</a>
 	</div>
 	<!-- contact -->
@@ -196,7 +147,7 @@
 			<span>{{::verbage.Call_Later}}</span>
 		</a>
 
-		<div ng-show="widget != 'voicemails' && widget != 'recordings'">
+		<div>
 			<a class="Button" href="" ng-show="canIntercom && profile.primaryExtension" ng-click="callInternal('callIntercom')">
 				<div class="ListRowActionButtonCall"></div>
 				<span>{{::verbage.Intercom}}</span>
@@ -242,10 +193,6 @@
 				<span>Screen Share</span>
 			</a>
 	  	</div>
-		 <a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
-			<div class="ListRowActionButtonDownload"></div>
-			<span>Download</span>
-		</a>
 	</div>
 
 	<!-- group -->
@@ -282,10 +229,6 @@
 			<div class="ListRowActionButtonScreenShare" ng-hide="hideScreenShare"></div>
 			<span ng-hide="hideScreenShare">Screen Share</span>
 		</a>
-		<a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
-			<div class="ListRowActionButtonDownload"></div>
-			<span>Download</span>
-		</a>
 	</div>
 
 	<!-- queue -->
@@ -310,10 +253,6 @@
             <div class="ListRowActionButtonReset"></div>
             <span>{{::verbage.Reset_Stats}}</span>
         </a>
-        <a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
-			<div class="ListRowActionButtonDownload"></div>
-			<span>Download</span>
-		</a>
 	</div>
 
 	<!-- conference -->
@@ -346,15 +285,11 @@
 			<div class="ListRowActionButtonFileShare"></div>
 			<span>{{::verbage.file_share}}</span>
 		</a>
-		<a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails' || widget == 'recordings'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
-			<div class="ListRowActionButtonDownload"></div>
-			<span>Download</span>
-		</a>
 	</div>
 
 	<!-- dockable -->
 	<div ng-show="profile.xpid  && profile.xpid != myPid && (profile.displayName || profile.name) && (profile.displayName !== undefined || profile.name !== undefined)">
-		<div ng-show="widget != 'voicemails' && widget != 'recordings'">
+		<div>
 			<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
 				<div class="ListRowActionButtonDock"></div>
 				<span>{{::verbage.dock}}</span>
@@ -362,12 +297,6 @@
 			<a class="Button" href="" ng-show="!canDock" ng-click="dockItem(false)">
 				<div class="ListRowActionButtonUndock"></div>
 				<span>{{::verbage.undock}}</span>
-			</a>
-		</div>
-        <div ng-show="widget == 'voicemails' && widget == 'recordings'">
-	        <a class="Button" ng-href="{{downloadLink}}" ng-show="widget == 'voicemails'"  target="_self" download="recording.mp3" ng-click="downloadRecording()">
-				<div class="ListRowActionButtonDownload"></div>
-				<span>Download</span>
 			</a>
 		</div>
 	</div>

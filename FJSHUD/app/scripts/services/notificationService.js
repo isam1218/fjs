@@ -159,7 +159,19 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 					var context_data = nd.context;
 					var context = context_data.split(':')[0];
 					var xpid = context_data.split(':')[1];
-					var route = nd.type == 'q-broadcast' ? 'alerts' : 'chat';
+					var route;
+
+					switch(nd.type) {
+						case 'q-broadcast':
+							route = 'alerts';
+							break;
+						case 'vm':
+							route = 'voicemails';
+							$rootScope.vmToOpen = nd.vmId;
+							break;
+						default:
+							route = 'chat';
+					}
 					
 					$rootScope.$evalAsync($location.path("/" + nd.audience + "/" + xpid + "/" + route));
 				}

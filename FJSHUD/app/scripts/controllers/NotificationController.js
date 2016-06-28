@@ -383,6 +383,8 @@ hudweb.controller('NotificationController',
           endPath = calllogPath;
         break;
       case 'vm':
+	    $rootScope.vmToOpen = message.vmId;
+		
         if (message.senderId || message.fullProfile)
           endPath = "/" + message.audience + "/" + xpid + '/voicemails';
         else
@@ -770,11 +772,6 @@ hudweb.controller('NotificationController',
 
     
 	});
-
-  $scope.playVm = function(msg){
-    phoneService.playVm(msg.vmId);
-    $scope.showOverlay(false);
-  };
 
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);

@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8">
     <title>Fonality HUDWeb</title>
-    <meta name="description" content="">
+    <meta name="description" content="Fonality HUDWeb">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-      <link type="image/x-icon" rel="icon" id="favicon" href="img/Favicon.png">
-      <img id="originalFavicon" src="img/Favicon.png" style="display: none;"/>
-       <link rel="stylesheet" href="styles/main.css?v=<%- version %>">   
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="image/x-icon" rel="icon" id="favicon" href="img/Favicon.png">
+    <img id="originalFavicon" src="img/Favicon.png" style="display: none;"/>
+    <link rel="stylesheet" href="styles/main.css?v=<%- version %>">   
+
     <!--[if lt IE ]> 
         <link rel="stylesheet" href="styles/ie.css">  
     <![endif]-->
@@ -192,6 +192,9 @@
 		include-once="views/ContextMenu.html"
 		ng-controller="ContextMenuController">
 	</div>
+	
+	<iframe id="download_file"></iframe>
+	
     <!--bower components-->
     <script src="properties.js"></script>
 	<link rel="stylesheet" href="styles/bootstrap.css">
@@ -251,6 +254,7 @@
     <script src="scripts/directives/autofocusDirective.js"></script>
     <script src="scripts/directives/clickAnywhereDirective.js"></script>
     <script src="scripts/directives/dropboxClickDirective.js"></script>
+    <script src="scripts/directives/audioPlayerDirective.js"></script>
 
     <!--controllers-->
     <script src="scripts/controllers/MainController.js"></script>

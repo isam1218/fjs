@@ -3,9 +3,17 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 
     $scope.voicemails = [];     
     $scope.query = "";
-    $scope.tester = {};
-    $scope.tester.query = "";
+    $scope.vm = {
+		query: '',
+		opened: null
+	};
     $scope.fromTo = false;
+	
+	// automatically open corresponding voicemail
+	if ($rootScope.vmToOpen) {
+		$scope.vm.opened = $rootScope.vmToOpen;
+		$rootScope.vmToOpen = null;
+	}
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},
@@ -111,7 +119,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     };
 
     $scope.voiceFilter = function(){
-        var query = $scope.tester.query.toLowerCase();
+        var query = $scope.vm.query.toLowerCase();
         return function(voicemail){
             if (voicemail.displayName.toLowerCase().indexOf(query) !== -1 || voicemail.phone.indexOf(query) !== -1 ){
                 return true;
@@ -143,21 +151,36 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
         httpService.sendAction("voicemailbox","removeReadMessages",{messages: voicemailIds});
     };
 	
-	// send to top navigation controller
-	$scope.playVoicemail = function(voicemail) {
-		$rootScope.$broadcast('play_voicemail', voicemail);
+	$scope.shortenText = function(txt) {
+		if (txt.length < 130)
+			return txt;
+		else
+			return txt.substring(0, 130) + '...';
 	};
+	
+	// button actions //
 
-  $scope.callExtension = function($event, contact) {
-    $event.stopPropagation();
-    $event.preventDefault();
-
-    ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "Calls/Recordings - Voicemail - Call"});
+	$scope.callExtension = function(contact) {
+		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "Calls/Recordings - Voicemail - Call"});
     
-    httpService.sendAction('me', 'callTo', {phoneNumber: contact.phone});
+		httpService.sendAction('me', 'callTo', {phoneNumber: contact.phone});
   
-    storageService.saveRecent('contact', contact.xpid);
-  };
-
-
+		storageService.saveRecent('contact', contact.xpid);
+	};
+	
+	$scope.updateStatus = function(vm) {
+		if (vm.readStatus === true)
+			httpService.sendAction('voicemailbox', 'setReadStatus', {'read': false, id: vm.xpid});
+		else
+			httpService.sendAction('voicemailbox', 'setReadStatus', {'read': true, id: vm.xpid});
+	};
+	
+	$scope.deleteFile = function(vm) {
+		httpService.sendAction('voicemailbox', 'delete', {id: vm.xpid});
+	};
+	
+	$scope.downloadFile = function(vm) {
+		var path = httpService.get_audio('vm_download?id=' + vm.voicemailMessageKey);
+		document.getElementById('download_file').setAttribute('src', path);
+	};
 }]);
