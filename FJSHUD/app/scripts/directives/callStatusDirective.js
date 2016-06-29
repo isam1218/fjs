@@ -1,5 +1,5 @@
-hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','ConferenceService', 'ContactService',
-	function($parse,$compile, $location, ntpService,conferenceService, contactService) {
+hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','ConferenceService', 'ContactService', 'CallStatusService',
+	function($parse,$compile, $location, ntpService,conferenceService, contactService, callStatusService) {
 	return {
 		restrict: 'E',
 		priority: -1,
@@ -31,42 +31,22 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 			}
 
 			scope.showCallOverlay = function(contact){
-				// if contact is mine
-		    if (contact.xpid == scope.meModel.my_pid || contact.call.type === 0){
-		      return;
-		    }
-				var myContact = contactService.getContact(scope.meModel.my_pid);
-		    // if i'm on a call...
-		    if (myContact.call){
-		    	var imTheBarger = false;
-		    	var bargerArray = myContact.call.fullProfile.call.bargers;
-		    	// check to see if I'm the barger of the call I'm trying to click on...
-					if (bargerArray){
-						for (var i = 0; i < bargerArray.length; i++){
-							if (bargerArray[i].xpid == scope.meModel.my_pid){
-								imTheBarger = true;
-								break;
+				// if this service-function returns true -> it's a trap! User is trying to click on own cso so do not show
+				if (callStatusService.blockOverlay(contact)){
+					return;
+				} else {
+					// otherwise -> display...
+					switch(contact.call.type){
+						case fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL:
+							var conference = conferenceService.getConference(contact.call.details.conferenceId);
+							if(conference && conference.permissions == 0){
+								$location.path('/conference/'+ contact.call.details.conferenceId);
 							}
-						}
+							break;
+						default:
+							scope.showOverlay(true, 'CallStatusOverlay', contact);
 					}
-					// so long as I'm not the barger...
-		      if (myContact.call.barge === 0 && !imTheBarger){
-			      // if the person i'm talking to == contact clicked on
-			      if (myContact.call.contactId == contact.call.xpid)
-			        return;
-		      }
-		    }
 
-
-				switch(contact.call.type){
-					case fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL:
-						var conference = conferenceService.getConference(contact.call.details.conferenceId);
-						if(conference && conference.permissions == 0){
-							$location.path('/conference/'+ contact.call.details.conferenceId);
-						}
-						break;
-					default:
-						scope.showOverlay(true, 'CallStatusOverlay', contact);
 				}
 			};
 

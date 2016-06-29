@@ -1,4 +1,4 @@
-hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService) {
+hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'CallStatusService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService, callStatusService) {
 	var column;
 	var request;
 	$scope.gadgets = [];
@@ -246,33 +246,13 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();
     $event.preventDefault();
-		// if the contact is mine
-    if (contact.xpid == $rootScope.myPid || contact.call.type == 0)
+		// if this service-function returns true -> User is trying to click on own cso so do not show
+    if (callStatusService.blockOverlay(contact)){
       return;
-
-    var myContact = contactService.getContact($rootScope.myPid);
-    // if i'm on a call...
-    if (myContact.call){
-    	var imTheBarger = false;
-    	var bargerArray = myContact.call.fullProfile.call.bargers;
-    	// check to see if I'm the barger of the call I'm trying to click on...
-			if (bargerArray){
-				for (var i = 0; i < bargerArray.length; i++){
-					if (bargerArray[i].xpid == $rootScope.myPid){
-						imTheBarger = true;
-						break;
-					}
-				}
-			}
-			// so long as I'm not the barger...
-      if (myContact.call.barge === 0 && !imTheBarger){
-	      // if the person i'm talking to == contact clicked on
-	      if (myContact.call.contactId == contact.call.xpid)
-	        return;
-      }
+    } else {
+    	// if user isn't clicking on own -> then display
+      $scope.showOverlay(true, 'CallStatusOverlay', contact);
     }
-
-		$scope.showOverlay(true, 'CallStatusOverlay', contact);
 	};
 
 	$scope.joinConference = function(conference) {
