@@ -1662,7 +1662,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			//this is a hack for too address the call hold and unhold issue 
 			//to properlly fix we need to redo the mappings so that it makes sense
 			for(var i = 0; i < sip_calls_to_delete.length; i++){
-				callStillExists = false;
+				var callStillExists = false;
 				for(detail in callsDetails){
 					if(callsDetails[detail].sipId){
 						callStillExists = true;
