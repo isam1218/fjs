@@ -1,4 +1,4 @@
-hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', 'SettingsService', '$location',  function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService, storageService, settingsService ,$location){
+hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService', 'SettingsService', '$location', 'CallStatusService', function($scope, $rootScope, contactService, groupService, conferenceService, queueService, httpService, storageService, settingsService ,$location, callStatusService){
 
   $scope.totalContacts = [];
   $scope.totalGroups = [];
@@ -120,33 +120,13 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
   $scope.showCallStatus = function($event, contact) {
     $event.stopPropagation();
     $event.preventDefault();
-    // if the contact is mine
-    if (contact.xpid == $rootScope.myPid || contact.call.type == 0)
+    // if this service-function returns true -> it's a trap! User is trying to click on own cso so do not show
+    if (callStatusService.blockOverlay(contact)){
       return;
-
-    var myContact = contactService.getContact($rootScope.myPid);
-    // if i'm on a call...
-    if (myContact.call){
-      var imTheBarger = false;
-      var bargerArray = myContact.call.fullProfile.call.bargers;
-      // check to see if I'm the barger of the call I'm trying to click on...
-      if (bargerArray){
-        for (var i = 0; i < bargerArray.length; i++){
-          if (bargerArray[i].xpid == $rootScope.myPid){
-            imTheBarger = true;
-            break;
-          }
-        }
-      }
-      // so long as I'm not the barger...
-      if (myContact.call.barge === 0 && !imTheBarger){
-        // if the person i'm talking to == contact clicked on
-        if (myContact.call.contactId == contact.call.xpid)
-          return;
-      }
+    } else {
+      // if user isn't clicking on own -> then show overlay
+      $scope.showOverlay(true, 'CallStatusOverlay', contact);
     }
-
-    $scope.showOverlay(true, 'CallStatusOverlay', contact);
   };
 
   settingsService.getSettings().then(function(data) {
