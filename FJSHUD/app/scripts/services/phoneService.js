@@ -1603,6 +1603,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	$rootScope.$on("mycalls_synced",function(event,data){
 		if(data){
 			var i = 0;
+			var sip_calls_to_delete = [];
+
 			for(var i = 0, iLen = data.length; i < iLen; i++){
 
 				if(data[i].xef001type == "delete"){
@@ -1611,7 +1613,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 					nservice.dismiss('INCOMING_CALL',data[i].xpid);
 
 					if(call){
-						delete sipCalls[callsDetails[data[i].xpid].sipId];
+						//delete sipCalls[callsDetails[data[i].xpid].sipId];
+						sip_calls_to_delete.push(callsDetails[data[i].xpid].sipId);
 						delete callsDetails[data[i].xpid];
 					}
 
@@ -1654,6 +1657,20 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 						nservice.dismiss("INCOMING_CALL",data[i].xpid);
 					else
 						context.displayCallAlert(data[i]);
+				}
+			}
+			//this is a hack for too address the call hold and unhold issue 
+			//to properlly fix we need to redo the mappings so that it makes sense
+			for(var i = 0; i < sip_calls_to_delete.length; i++){
+				callStillExists = false;
+				for(detail in callsDetails){
+					if(callsDetails[detail].sipId){
+						callStillExists = true;
+						break;
+					}
+				}
+				if(!callStillExists){
+					delete sipCalls[sip_calls_to_delete[i]];
 				}
 			}
 		}
