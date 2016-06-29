@@ -1663,7 +1663,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			//to properlly fix we need to redo the mappings so that it makes sense
 			for(var i = 0; i < sip_calls_to_delete.length; i++){
 				var callStillExists = false;
-				for(detail in callsDetails){
+				for(var detail in callsDetails){
 					if(callsDetails[detail].sipId){
 						callStillExists = true;
 						break;
