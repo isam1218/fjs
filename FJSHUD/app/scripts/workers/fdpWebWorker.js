@@ -136,8 +136,12 @@ function sync_request(f){
 						// full replace
 						if (synced_data[feed][key].xef001type == 'F'){
 							if(data_obj[feed]){
-								data_obj[feed][key].items = synced_data[feed][key].items;
-							}else{
+								if (data_obj[feed][key])
+									data_obj[feed][key].items = synced_data[feed][key].items;
+								else
+									data_obj[feed][key] = synced_data[feed][key];
+							}
+							else{
 								data_obj[feed] = synced_data[feed];
 							}
 						}
