@@ -208,12 +208,12 @@
 
           <!-- Transfer Buttons -->
           <div class="TransferButtons">
-            <button  class="XButton CurrentCallBtn ColdTransfer" ng-if="!changeWarmButton" ng-disabled="!enableColdTransfer()" ng-click="coldTransfer()" droppable="Contact"><span class="CallControlButton">Cold Transfer</span></button>
+            <button  class="XButton CurrentCallBtn ColdTransfer" ng-if="!changeWarmButton" ng-disabled="!enableColdTransfer() || !canTransferToOthers" ng-click="coldTransfer()" droppable="Contact"><span class="CallControlButton">Cold Transfer</span></button>
 
-            <button  class="XButton CurrentCallBtn WarmTransfer" ng-if="!changeWarmButton" ng-disabled="transferType == 'external' || !warmTransferButtonEnabled" ng-click="goToWarmTransfer()" droppable="Contact"><span class="CallControlButton">Warm Transfer</span></button>
-            <button  class="XButton CurrentCallBtn CompleteTransfer" ng-class="changeWarmButton ? 'CompleteTransferFinal' : ''" ng-if="changeWarmButton" ng-disabled="transferType == 'external' || !warmTransferButtonEnabled || !warmTransferToConnected" ng-click="completeWarmTransfer()" droppable="Contact"><span class="CallControlButton">Complete Transfer</span></button>
+            <button  class="XButton CurrentCallBtn WarmTransfer" ng-if="!changeWarmButton" ng-disabled="transferType == 'external' || !warmTransferButtonEnabled || !canTransferToOthers" ng-click="goToWarmTransfer()" droppable="Contact"><span class="CallControlButton">Warm Transfer</span></button>
+            <button  class="XButton CurrentCallBtn CompleteTransfer" ng-class="changeWarmButton ? 'CompleteTransferFinal' : ''" ng-if="changeWarmButton" ng-disabled="transferType == 'external' || !warmTransferButtonEnabled || !warmTransferToConnected || !canTransferToOthers" ng-click="completeWarmTransfer()" droppable="Contact"><span class="CallControlButton">Complete Transfer</span></button>
 
-            <button  class="XButton CurrentCallBtn ToVoicemail" ng-if="!changeWarmButton" ng-disabled="transferType == 'external' || !toVMButtonEnabled" ng-click="transferToVM()" droppable="Contact"><span class="CallControlButton">To Voicemail</span></button>
+            <button  class="XButton CurrentCallBtn ToVoicemail" ng-if="!changeWarmButton" ng-disabled="transferType == 'external' || !toVMButtonEnabled || !canTransferToVoicemail" ng-click="transferToVM()" droppable="Contact"><span class="CallControlButton">To Voicemail</span></button>
 
           </div>
           <div class="CancelSection">

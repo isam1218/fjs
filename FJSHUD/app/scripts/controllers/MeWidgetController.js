@@ -940,6 +940,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             phoneService.setMicSensitivity($rootScope.volume.mic);
             $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
         }
+        
+        var personBeingTransferred = $scope.currentCall.fullProfile ? $scope.currentCall.fullProfile : $scope.currentCall;
+        
+        /* Reference (DO NOT DELETE)
+        *CP Group Permission: HUD -- Transfer call to others' extensions
+        *if A is on call w/ B, and want to know if A can transfer B to C's primary extension, check the [transfer call to others' extensions permission] on B 
+        *using this permission as the basis for both cold and warm transfers*/
+        $scope.canTransferToOthers = settingsService.isEnabled(personBeingTransferred.permissions, 4);
+        
+        /* Reference (DO NOT DELETE)
+        *CP Group Permission: HUD -- Transfer call to VM
+        *if A is on call w/ B, and want to know if A can transfer B to C's VM --> check the transferToVM permission on B. */
+        $scope.canTransferToVoicemail = settingsService.isEnabled(personBeingTransferred.permissions, 5);
     };
 
     $scope.transferFilter = function(){
