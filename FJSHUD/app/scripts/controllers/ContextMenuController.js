@@ -66,10 +66,8 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		$scope.original = res.obj;
 		$scope.context = res.context;
 		$scope.widget = res.widget;
-		
 		$scope.reasons.show = false;
 		$scope.myQueue = false;
-		
 		// get type
 		if($scope.original.type && $scope.original.type == 'transfer')
 		{

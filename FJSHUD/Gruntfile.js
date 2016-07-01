@@ -346,6 +346,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'prod/'},
           {expand: true, src: ['app/styles/bootstrap.css'], dest: 'prod/'},
+          {expand: true, src: ['app/oneDrive.html'], dest: 'prod/'}
 
         ]
       },
@@ -362,6 +363,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/styles/bootstrap.css'], dest: 'dest/'},
+          {expand: true, src: ['app/oneDrive.html'], dest: 'dest/'},
           
           {expand: true, src: [
              'app/languageMap.js',
@@ -391,6 +393,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/scripts/workers/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/boostrap.css'], dest: 'huc_dev/'},
+          {expand: true, src: ['app/oneDrive.html'], dest: 'huc_dev/'},
           
           {expand: true, src: [
              'app/languageMap.js',

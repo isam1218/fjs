@@ -1,6 +1,5 @@
 hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$routeParams', 'ContactService', 'PhoneService', '$timeout', '$location', '$filter', 'SettingsService', 'StorageService', 'NtpService', '$http','$analytics', function($scope, $rootScope, httpService, $routeParams, contactService, phoneService, $timeout, $location, $filter, settingsService, storageService, ntpService, $http,$analytics) {
 	"use strict";
-
 	// redirect if not allowed
 	if ($scope.$parent.chatTabEnabled !== undefined && $scope.$parent.chatTabEnabled === false) {
 		// only for groups and queues
@@ -136,7 +135,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				to: chat.targetId,
 				message: ' ',
 				// message: files[0].link,
-				data: '{"attachment":[{"dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+				data: '{"attachment":[{"fileLink":true, "dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
     	}
        
@@ -191,7 +190,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				to: chat.targetId,
 				message: ' ',
 				// message: files[0].link,
-				data: '{"attachment":[{"googleDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+				data: '{"attachment":[{"fileLink":true,"googleDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
 		}
    };
@@ -224,7 +223,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
       audience: chat.audience,
       to: chat.targetId,
       message: ' ',
-      data: '{"attachment":[{"box":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+      data: '{"attachment":[{"fileLink":true,"box":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
     });
 		}
 
@@ -247,16 +246,21 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
   //One Drive
    var pickerOptions = {
-	  linkType: "webLink",
+   	  clientId: "2739a626-afb6-4926-bd88-da278fa95638",
+	  action: "share",
 	  multiSelect: true,
 	  openInNewWindow: true,
+	  advanced: {
+	    redirectUri: document.location.origin + "/oneDrive.html",
+	  },
 	  success: function(files) {
-	  	for(var i = 0;i<files.values.length;i++){
-  	  	var fileName = files.values[i].fileName;
+
+	  	for(var i = 0;i<files.value.length;i++){
+  	  	var fileName = files.value[i].name;
 	    fileName = fileName + "";
-	    var fileLink = files.values[i].link;
+	    var fileLink = files.value[i].webUrl;
 	    fileLink = fileLink + "";
-	    var fileBytes = files.values[i].size;
+	    var fileBytes = files.value[i].size;
 	    fileBytes = formatBytes(fileBytes);
 	    fileBytes = fileBytes + "";
 
@@ -265,7 +269,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	      audience: chat.audience,
 	      to: chat.targetId,
 	      message: ' ',
-	      data: '{"attachment":[{"oneDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
+	      data: '{"attachment":[{"fileLink":true,"oneDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 	    });
 	}
 	    
@@ -436,7 +440,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	};
 
 	$scope.uploadAttachments = function($files){
-      	
+      	var timestamp = ntpService.calibrateTime(new Date().getTime());
 		if($scope.showAlerts || !$scope.enableChat){
 			return;
 		}
@@ -447,7 +451,21 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
       		fileList.push($files[i].file);
 			
       	}
-      	
+      	var fileSize = fileList[0].size;
+      	if(fileSize > 10485760){
+      		$scope.messages.push({
+				message:"<strong>Your attachment exceeds the 10MB file size limit</strong>",
+				fullProfile: contactService.getContact($rootScope.myPid),
+				created: timestamp,
+				xpid: timestamp
+			});
+			setTimeout(function() {
+			scrollbox.scrollTop = scrollbox.scrollHeight;
+		}, 1);
+		
+      		
+      	}
+      	else{
         var data = {
             'action':'sendWallEvent',
             'a.targetId': chat.targetId,
@@ -463,7 +481,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
             "a.taskId": "1_0",
             "_archive": 0,
         };
+   	 
 		httpService.upload_attachment(data,fileList);
+	}
 		// local upload -> send to GA
 		sendGoogleAnalytic('Computer');
 		
