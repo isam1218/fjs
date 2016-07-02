@@ -251,7 +251,13 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	  multiSelect: true,
 	  openInNewWindow: true,
 	  advanced: {
-	    redirectUri: document.location.origin + "/oneDrive.html",
+	    //redirectUri: document.location.origin + "/oneDrive.html",
+	    redirectUri: "https://localhost:9800/app/oneDrive.html",
+	     redirectUri: "https://hudweb-stage4.fonality.com/oneDrive.html",
+	     redirectUri: "https://hudweb-stage3.fonality.com/oneDrive.html",
+	     redirectUri: "https://huc-qa.fonality.com/oneDrive.html",
+	     redirectUri: "https://huc-dev.fonality.com/oneDrive.html",
+	     redirectUri: "https://hudweb.fonality.com/oneDrive.html",
 	  },
 	  success: function(files) {
 
