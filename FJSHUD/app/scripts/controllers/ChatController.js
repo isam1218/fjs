@@ -245,19 +245,25 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
   };   
 
   //One Drive
+  if(document.location.origin == "https://hudweb-stage3.fonality.com")
+  	$scope.redirectUri = "https://hudweb-stage3.fonality.com/oneDrive.html";
+  else if(document.location.origin == "https://localhost:9800")
+  	$scope.redirectUri = "https://localhost:9800/app/oneDrive.html";
+  else if(document.location.origin == "https://hudweb-stage4.fonality.com")
+  	$scope.redirectUri = "https://hudweb-stage4.fonality.com/oneDrive.html";
+  else if(document.location.origin == "https://huc-qa.fonality.com")
+  	$scope.redirectUri = "https://huc-qa.fonality.com/oneDrive.html";
+  else if(document.location.origin == "https://huc-dev.fonality.com")
+  	$scope.redirectUri = "https://huc-dev.fonality.com/oneDrive.html";
+  else if(document.location.origin == "https://hudweb.fonality.com")
+  	$scope.redirectUri = "https://hudweb.fonality.com/oneDrive.html";
    var pickerOptions = {
    	  clientId: "2739a626-afb6-4926-bd88-da278fa95638",
 	  action: "share",
 	  multiSelect: true,
 	  openInNewWindow: true,
 	  advanced: {
-	    //redirectUri: document.location.origin + "/oneDrive.html",
-	    redirectUri: "https://localhost:9800/app/oneDrive.html",
-	     redirectUri: "https://hudweb-stage4.fonality.com/oneDrive.html",
-	     redirectUri: "https://hudweb-stage3.fonality.com/oneDrive.html",
-	     redirectUri: "https://huc-qa.fonality.com/oneDrive.html",
-	     redirectUri: "https://huc-dev.fonality.com/oneDrive.html",
-	     redirectUri: "https://hudweb.fonality.com/oneDrive.html",
+	    redirectUri: $scope.redirectUri,
 	  },
 	  success: function(files) {
 
