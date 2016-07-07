@@ -12,6 +12,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
 	var version = 0;
 	var soundDelay = true;
+	var playChatSound = false;
 	var cutoff = ntpService.calibrateTime(new Date().getTime());
 	var scrollbox = {};
 	var chat = {}; // internal controller data
@@ -139,7 +140,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				data: '{"attachment":[{"dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
     	}
-       
+        
+        playChatSound = true;
     },
 
     // Optional. Called when the user closes the dialog without selecting a file
@@ -194,6 +196,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				data: '{"attachment":[{"googleDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
 		}
+   	 
+   	 playChatSound = true;
    };
 
    $scope.onCancel = function () {
@@ -227,7 +231,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
       data: '{"attachment":[{"box":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
     });
 		}
-
+  	
+  	playChatSound = true;
   });
 
   boxSelect.cancel(function(){
@@ -267,8 +272,10 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	      message: ' ',
 	      data: '{"attachment":[{"oneDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 	    });
-	}
 	    
+	}
+	  	
+	  	playChatSound = true; 
 
 	},
 	  cancel: function() {  },
@@ -370,6 +377,11 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	};
 
 	$scope.getAttachment = function(attachment){
+		if(playChatSound)
+		{	
+			phoneService.playSound('sent');
+	        playChatSound = false;
+		}
 		// show image as is
 		if (attachment && attachment.oneDrive)
 			return 'img/OneDrive-logo-90.png';
@@ -467,7 +479,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		// local upload -> send to GA
 		sendGoogleAnalytic('Computer');
 		
-		phoneService.playSound('sent');
+		phoneService.playSound('sent');        
 	};
 	
 	// keep scrollbar at bottom until chats are loaded
