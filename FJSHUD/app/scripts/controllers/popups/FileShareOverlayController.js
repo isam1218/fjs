@@ -134,11 +134,11 @@ hudweb.controller('FileShareOverlayController', ['$scope', '$location', '$sce', 
         $scope.upload.flow.cancel();
         $scope.$parent.showOverlay(false);
 		
-		// go to chat page
-        $location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');
+        // play sfx
+		phoneService.playSound("sent");
 		
-		// play sfx
-		//phoneService.playSound("sent");
+		// go to chat page
+        $location.path('/' + $scope.audience + '/' + $scope.targetId + '/chat');			
     };
 
 	$scope.selectCurrentDownload = function(download){
