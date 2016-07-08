@@ -1814,7 +1814,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 
         var callStart = ntpService.calibrateNativeTime(call.created);
         var holdStart = ntpService.calibrateNativeTime(call.holdStart);
-
+        var regStr = /^(9-|91-|1-)/;	
         data = {
               "notificationId": call.xpid, 
               "leftButtonText" : left_buttonText,
@@ -1823,7 +1823,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
               "rightButtonId" : right_buttonID,
               "leftButtonEnabled" : true,
               "rightButtonEnabled" : right_buttonEnabled,
-              "callerName" : call.displayName, 
+              "callerName" : call.displayName.replace(regStr, ''), 
               "callStatus" : call.incoming ? 'Incoming call for' : "Outbound call for",
               "callCategory" : callType,
               "muted" : call.mute ? "1" : "0",
