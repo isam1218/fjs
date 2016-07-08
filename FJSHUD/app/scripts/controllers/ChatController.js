@@ -599,7 +599,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				found.push(data[i]);				
 			}
 			
-			if(data[i].data.attachment.length > 0 && playChatSound)
+			if(data[i].data && data[i].data.attachment && data[i].data.attachment.length > 0 && playChatSound)
 			{	
 				if(incoming)
 					phoneService.playSound("received");
