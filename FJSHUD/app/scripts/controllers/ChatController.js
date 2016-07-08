@@ -12,6 +12,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 
 	var version = 0;
 	var soundDelay = true;
+	var playChatSound = false;
 	var cutoff = ntpService.calibrateTime(new Date().getTime());
 	var scrollbox = {};
 	var chat = {}; // internal controller data
@@ -53,8 +54,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	}
 	else if(contactChat != -1){
 		$analytics.pageTrack("contact/chat");
-	}
-	
+	}	
 
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
@@ -139,6 +139,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				data: '{"attachment":[{"dropbox":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
     	}
+        
+        playChatSound = true;
     },
 
     // Optional. Called when the user closes the dialog without selecting a file
@@ -193,6 +195,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				data: '{"attachment":[{"googleDrive":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
 			});
 		}
+   	 
+   	 playChatSound = true;
    };
 
    $scope.onCancel = function () {
@@ -226,6 +230,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
       data: '{"attachment":[{"box":true, "dropboxFile":"'+fileName+'","dropboxLink":"'+fileLink+'","fileBytes":"'+fileBytes+'"}]}'
     });
 		}
+  	
+  	playChatSound = true;
   });
 
   boxSelect.cancel(function(){
@@ -267,6 +273,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	    });
 	    
 	}
+	  	
+	  	playChatSound = true; 
 
 	},
 	  cancel: function() {  },
@@ -464,6 +472,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		httpService.upload_attachment(data,fileList);
 		// local upload -> send to GA
 		sendGoogleAnalytic('Computer');
+		
+		phoneService.playSound('sent');        
 	};
 	
 	// keep scrollbar at bottom until chats are loaded
@@ -569,12 +579,14 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 				found.push(data[i]);				
 			}
 			
-			if(data[i].data.attachment.length > 0)
+			if(data[i].data.attachment.length > 0 && playChatSound)
 			{	
 				if(incoming)
 					phoneService.playSound("received");
 				else
-					phoneService.playSound('sent');				
+					phoneService.playSound('sent');		
+					
+				playChatSound = false;			
 			}
 		}
 
