@@ -473,7 +473,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 		// local upload -> send to GA
 		sendGoogleAnalytic('Computer');
 		
-		phoneService.playSound('sent');        
+		playChatSound = true;
 	};
 	
 	// keep scrollbar at bottom until chats are loaded
