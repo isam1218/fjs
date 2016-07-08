@@ -39,7 +39,7 @@
 				<div class="Contact">
 					<avatar profile="onCall.call.fullProfile"></avatar>
 					<div class="Name">
-						<strong>{{ ::onCall.call.displayName }}</strong>
+						<strong>{{ ::onCall.call.displayName | formatPhoneNumber }}</strong>
 						<br/>
 						<span>{{ ::onCall.call.phone }}</span>
 					</div>
@@ -68,7 +68,7 @@
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<div class="name">
-									<strong>{{ ::barger.displayName }}</strong>
+									<strong>{{ ::barger.displayName  | formatPhoneNumber }}</strong>
 									<span>#{{ ::barger.primaryExtension }}</span>
 								</div>
 							</div>
@@ -108,7 +108,7 @@
 				<div class="Contact">
 					<avatar profile="transferFrom"></avatar>
 					<div class="Name">
-						<strong>{{ transferFrom.displayName }}</strong>
+						<strong>{{ transferFrom.displayName | formatPhoneNumber }}</strong>
 						<br/>
 						x{{ transferFrom.primaryExtension ? transferFrom.primaryExtension : transferFrom.phone }}
 					</div>
@@ -133,7 +133,7 @@
 						<avatar profile="contact"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
-								<strong>{{ ::contact.displayName }}</strong>
+								<strong>{{ ::contact.displayName  | formatPhoneNumber }}</strong>
 								<br/>
 								<div class="ListRowStatusIcon XIcon-QueueStatus-{{contact.queue_status}}"></div>
 								<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
@@ -146,7 +146,7 @@
 						<avatar profile="contact"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
-								<strong>{{ ::contact.displayName }}</strong>
+								<strong>{{ ::contact.displayName  | formatPhoneNumber }}</strong>
 								<br/>
 								<div class="ListRowStatusIcon XIcon-QueueStatus-{{contact.queue_status}}"></div>
 								<div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
@@ -183,7 +183,7 @@
 						<avatar profile="transferTo"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
-								<strong>{{ transferTo.displayName }}</strong>
+								<strong>{{ transferTo.displayName | formatPhoneNumber }}</strong>
 								<br/>
 								<div class="ListRowStatusIcon XIcon-QueueStatus-{{transferTo.queue_status}}"></div>
 								<div class="ListRowStatusIcon XIcon-ChatStatus-{{transferTo.hud_status || 'offline' }}"></div>
@@ -194,7 +194,7 @@
 						<avatar profile="transferTo"></avatar>
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
-								<strong>{{ transferTo.displayName }}</strong>
+								<strong>{{ transferTo.displayName | formatPhoneNumber }}</strong>
 								<br/>
 								{{transferTo.contactNumber}}
 							</div>
@@ -252,7 +252,7 @@
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<div class="name">
-									<strong>{{ ::topUserProfile.displayName }}</strong>
+									<strong>{{ ::topUserProfile.displayName | formatPhoneNumber }}</strong>
 									<span>{{ ::topUserProfile.primaryExtension }}</span>
 								</div>
 							</div>
@@ -263,7 +263,7 @@
 						<div class="ListRowContent">
 							<div class="ListRowTitle">
 								<div class="name">
-									<strong>{{ ::onCall.call.displayName }}</strong>
+									<strong>{{ ::onCall.call.displayName | formatPhoneNumber }}</strong>
 									<span>{{ ::onCall.call.phone }}</span>
 								</div>
 							</div>
