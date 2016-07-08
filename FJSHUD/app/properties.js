@@ -1,11 +1,11 @@
 var fjs = {};
 
 fjs.CONFIG = {
-	SERVER: {
-	        serverURL: "<%= serverUrl %>"
-		   	, loginURL: "<%= loginUrl %>"
-	      , ppsServer: "<%= ppsServer %>"
-	}
+    SERVER: {
+        serverURL: {{ server_url }}
+                , loginURL: {{ login_url }}
+      , ppsServer: {{ pps_url }}
+    }
     , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','weblauncher_task','mycalls','groups','voicemailbox','calllog','server','location_status', 
             'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status',
             'queue_call','queuepermissions', 'queue_stat_calls',
@@ -59,5 +59,3 @@ fjs.CONFIG = {
     BOX_CLIENT_ID: 'e002eyntxr19ajn0skc77f2oqqior03a',
     ONEDRIVE_CLIENT_ID: '000000004818C953'
 };
-fjs.CONFIG.SERVER.loginURL = "https://dev4.fon9.com:5501";
-fjs.CONFIG.SERVER.serverURL = "https://dev4.fon9.com:8081";
