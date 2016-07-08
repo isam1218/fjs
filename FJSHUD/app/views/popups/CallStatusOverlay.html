@@ -20,7 +20,7 @@
 				<div class="Contact top">
 					<avatar profile="onCall"></avatar>
 					<div class="Name">
-						<strong>{{ ::onCall.displayName }}</strong>
+						<strong>{{ ::onCall.displayName | formatPhoneNumber }}</strong>
 						<br/>
 						x{{ ::onCall.primaryExtension }}
 					</div>

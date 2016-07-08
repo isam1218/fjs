@@ -42,7 +42,7 @@
 				<div>
 					<avatar profile="call.fullProfile" type="{{::call.type}}" context="calllog"></avatar>
 				</div>
-				<div class="Name SmallFont-{{ :: call.displayName.length > 15 ? true : false}}"><div> {{ ::call.displayName }}</div></div>
+				<div class="Name SmallFont-{{ :: call.displayName.length > 15 ? true : false}}"><div> {{ ::call.displayName | formatPhoneNumber}}</div></div>
 				<div class="Phone SmallFont-{{ :: call.phone.length > 12 ? true : false}}">
 					<span ng-click="makeCall(call)">{{ ::call.phone }}</span>
 				</div>
