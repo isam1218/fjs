@@ -1,4 +1,4 @@
-hudweb.service('SettingsService', ['$q', '$location', '$rootScope', 'HttpService', 'ContactService', function($q, $location, $rootScope, httpService, contactService) {	
+hudweb.service('SettingsService', ['$q', '$location', '$rootScope', '$routeParams', 'HttpService', 'ContactService', function($q, $location, $rootScope, $routeParams, httpService, contactService) {	
 	var service = this;
 	
 	var deferSettings = $q.defer();
@@ -95,14 +95,10 @@ hudweb.service('SettingsService', ['$q', '$location', '$rootScope', 'HttpService
 				// licenses from MyPermissions.java
 				permissions.showCallCenter = service.isEnabled(data[i].propertyValue, 10);
 				$rootScope.showCallCenter = permissions.showCallCenter;
-							
-				if(!$rootScope.showCallCenter)
-				{
-					var locationArray = $location.path().split('/');
 					
-					if(locationArray[1] == 'contact')					
-						$location.path('/contact/' + locationArray[2] + '/chat');						
-				}
+				// redirect if permission was taken
+				if(!$rootScope.showCallCenter && $routeParams.contactId && ($routeParams.route == 'queues' || $routeParams.route == 'recordings'))	
+					$location.path('/contact/' + $routeParams.contactId + '/chat');
 				
 				localStorage['showCallCenter'] = $rootScope.showCallCenter;
 				// Call Center license determines whether or not a user can record
