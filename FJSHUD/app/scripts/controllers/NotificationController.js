@@ -382,13 +382,18 @@ hudweb.controller('NotificationController',
         else
           endPath = calllogPath;
         break;
-      case 'vm':
-	    $rootScope.vmToOpen = message.vmId;
-		
+      case 'vm':		
         if (message.senderId || message.fullProfile)
           endPath = "/" + message.audience + "/" + xpid + '/voicemails';
         else
           endPath = "/calllog/voicemails";
+	  
+		// if already on tab, broadcast id
+		if ($location.path() == endPath)
+			$rootScope.$broadcast('vmToOpen', message.vmId);
+		else
+			$rootScope.vmToOpen = message.vmId;
+	  
         break;
       case 'q-broadcast':
         endPath = "/" + message.audience + "/" + message.queueId + '/alerts';

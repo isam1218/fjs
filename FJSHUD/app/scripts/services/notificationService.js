@@ -167,7 +167,13 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 							break;
 						case 'vm':
 							route = 'voicemails';
-							$rootScope.vmToOpen = nd.vmId;
+							
+							// check if already on tab
+							if ($location.path() == "/" + nd.audience + "/" + xpid + "/" + route)
+								$rootScope.$broadcast('vmToOpen', nd.vmId);
+							else
+								$rootScope.vmToOpen = nd.vmId;
+								
 							break;
 						default:
 							route = 'chat';

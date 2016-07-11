@@ -49,11 +49,11 @@
 					<player data="voicemail"></player>
 					
 					<div class="buttons">
-						<span class="material-icons" ng-click="callExtension(voicemail)">call</span>
-						<a class="material-icons" ng-href="#contact/{{::voicemail.fullProfile.xpid}}/chat" ng-if="::voicemail.fullProfile.primaryExtension">chat</a>
-						<span class="material-icons" ng-click="downloadFile(voicemail)">file_download</span>
-						<span class="vm material-icons" ng-click="updateStatus(voicemail)">voicemail</span>
-						<span class="material-icons" ng-click="deleteFile(voicemail)">delete</span>
+						<span class="material-icons" title="Call" ng-click="callExtension(voicemail)">call</span>
+						<a class="material-icons" title="Chat" ng-href="#contact/{{::voicemail.fullProfile.xpid}}/chat" ng-if="::voicemail.fullProfile.primaryExtension">chat</a>
+						<span class="material-icons" title="Download" ng-click="downloadFile(voicemail)">file_download</span>
+						<span class="vm material-icons" title="Mark as {{ voicemail.readStatus ? 'unread' : 'read' }}" ng-click="updateStatus(voicemail)">voicemail</span>
+						<span class="material-icons" title="Delete" ng-click="deleteFile(voicemail)">delete</span>
 					</div>
 				</div>
 			</div>

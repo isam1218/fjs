@@ -14,6 +14,10 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 		$scope.vm.opened = $rootScope.vmToOpen;
 		$rootScope.vmToOpen = null;
 	}
+	
+	$scope.$on('vmToOpen', function(event, data) {
+		$scope.vm.opened = data;
+	});
 
     $scope.voice_options = [
         {display_name:$scope.verbage.sort_alphabetically, type:"displayName", desc: false},

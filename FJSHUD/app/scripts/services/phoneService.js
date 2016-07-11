@@ -942,8 +942,13 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 		
 		if (mtype == 'vm' && vmId) {
-			$rootScope.vmToOpen = vmId;
-			$location.path('/calllog/voicemails');
+			// check if already on tab
+			if ($location.path() == '/calllog/voicemails')
+				$rootScope.$broadcast('vmToOpen', vmId);
+			else {
+				$rootScope.vmToOpen = vmId;
+				$location.path('/calllog/voicemails');
+			}
 		}
 		else if (audience == 'queue' && mtype == 'q-broadcast')
 			$location.path("/" + audience + "/" + xpid + "/alerts");
