@@ -23,7 +23,7 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 		// search contacts by display name or primary extension
 		contactService.getContacts().then(function(data) {
 			for (var i = 0, len = data.length; i < len; i++) {
-				if (data[i].displayName.toLowerCase().indexOf(query) != -1 || data[i].primaryExtension.indexOf(query) != -1)
+				if (data[i].displayName.toLowerCase().indexOf(query) != -1 || data[i].primaryExtension.indexOf(query) != -1 || data[i].email.toLowerCase().indexOf(query) != -1)
 					$scope.contacts.push(data[i]);
 			}
 		});
@@ -33,8 +33,19 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 			var groups = data.groups;
 			
 			for (var i = 0, len = groups.length; i < len; i++) {
-				if (groups[i].name.toLowerCase().indexOf(query) != -1 || groups[i].description.toLowerCase().indexOf(query) != -1 || groups[i].extension.indexOf(query) != -1){
-					$scope.groups.push(groups[i]);
+				var indGrp = groups[i];
+				if (indGrp.name.toLowerCase().indexOf(query) != -1 || indGrp.description.toLowerCase().indexOf(query) != -1 || indGrp.extension.indexOf(query) != -1){
+					$scope.groups.push(indGrp);
+				}
+				if (indGrp.members.length > 0){
+					for (var m = 0; m < indGrp.members.length; m++){
+						var individualGrpMember = indGrp.members[m];
+						if (individualGrpMember.fullProfile){
+							if (individualGrpMember.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || individualGrpMember.fullProfile.primaryExtension.indexOf(query) != -1 || individualGrpMember.fullProfile.email.toLowerCase().indexOf(query) != -1){
+								$scope.groups.push(indGrp);
+							}
+						}
+					}
 				}
 			}
 
@@ -59,8 +70,19 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 			var queues = data.queues;
 			
 			for (var i = 0, len = queues.length; i < len; i++) {
-				if (queues[i].name.toLowerCase().indexOf(query) != -1){
-					$scope.queues.push(queues[i]);
+				var individualQ = queues[i];
+				if (individualQ.name.toLowerCase().indexOf(query) != -1){
+					$scope.queues.push(individualQ);
+				}
+				if (individualQ.members.length > 0){
+					for (var j = 0; j < individualQ.members.length; j++){
+						var indQMember = individualQ.members[j];
+						if (indQMember.fullProfile){
+							if (indQMember.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || indQMember.fullProfile.primaryExtension.indexOf(query) != -1 || indQMember.fullProfile.email.toLowerCase().indexOf(query) != -1){
+								$scope.queues.push(individualQ);
+							}
+						}
+					}
 				}
 			}
 			for (var j = 0; j < $scope.queues.length; j++){
@@ -82,8 +104,11 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 					// if there's a member in the conference room --> want to also return any conference rooms that a searched-for user may be in
 					var singleConf = conferences[i];
 					for (var j = 0, jLen = singleConf.members.length; j < jLen; j++){
-						if (singleConf.members[j].displayName.toLowerCase().indexOf(query) != -1 || singleConf.members[j].fullProfile.primaryExtension.indexOf(query) != -1)
-							$scope.conferences.push(singleConf);
+						var singleConfMember = singleConf.members[j];
+						if (singleConfMember.fullProfile){
+							if (singleConfMember.fullProfile.displayName.toLowerCase().indexOf(query) != -1 || singleConfMember.fullProfile.primaryExtension.indexOf(query) != -1 || singleConfMember.fullProfile.email.toLowerCase().indexOf(query) != -1)
+								$scope.conferences.push(singleConf);
+						}
 					}
 				}
 			}
