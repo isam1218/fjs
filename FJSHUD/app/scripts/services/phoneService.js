@@ -1412,7 +1412,9 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	};
 	this.holdCalls = function(){
 		for(var callId in callsDetails){
-			holdCall(callId,true);
+			if (callsDetails[callId].state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
+				holdCall(callId,true);
+			}
 		}
 	};
 
