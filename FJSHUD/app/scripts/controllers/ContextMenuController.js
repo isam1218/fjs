@@ -546,6 +546,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 				conferenceId: xpid,
 				contactId: $rootScope.myPid,
 			};
+			phoneService.holdCalls();
 			httpService.sendAction("conferences", "joinContact", params);
 					
 			$location.path('/conference/' + xpid + '/currentcall');

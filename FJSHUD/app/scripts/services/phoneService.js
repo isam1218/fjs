@@ -429,8 +429,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				{							
 						call_already_in_progress = true;
 				} else {
-					// if user is calling a 2nd person, place 1st person on hold... (warm transfer functionality takes advantage of this)
-					holdCall(callsDetails[cd].xpid, true);
+					// if user is calling a 2nd (or 3rd) person, place 1st person (or 2nd person) on hold... (warm transfer functionality takes advantage of this)
+					this.holdCalls();
 				}
 			}	
 		}

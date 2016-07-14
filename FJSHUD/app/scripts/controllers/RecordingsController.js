@@ -137,6 +137,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 			conferenceId: xpid,
 			contactId: $rootScope.myPid,
 		};
+		phoneService.holdCalls();
 		httpService.sendAction("conferences", "joinContact", params);
 				
 		$location.path('/conference/' + xpid + '/currentcall');

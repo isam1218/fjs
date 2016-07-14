@@ -1,4 +1,4 @@
-hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService','$analytics', function($rootScope, $scope, $location, conferenceService, httpService, settingsService, $analytics) {
+hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$location', 'ConferenceService', 'HttpService', 'SettingsService', '$analytics', 'PhoneService', function($rootScope, $scope, $location, conferenceService, httpService, settingsService, $analytics, phoneService) {
 	$scope.query = '';
 	$scope.totals = {};
 	$scope.sortBy = 'location';
@@ -102,6 +102,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 		}
 		
 		if (found) {
+			phoneService.holdCalls();
 			httpService.sendAction("conferences", "joinContact", {
 				conferenceId: found,
 				contactId: $rootScope.myPid,
@@ -125,7 +126,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 				conferenceId: $scope.targetId,
 				contactId: $scope.meModel.my_pid,
 			};
-
+			phoneService.holdCalls();
 			httpService.sendAction("conferences","joinContact",params);
 
 			
