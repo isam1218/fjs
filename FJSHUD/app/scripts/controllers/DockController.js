@@ -1,4 +1,4 @@
-hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'CallStatusService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService, callStatusService) {
+hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'CallStatusService', 'PhoneService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService, callStatusService, phoneService) {
 	var column;
 	var request;
 	$scope.gadgets = [];
@@ -260,6 +260,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			conferenceId: conference.xpid,
 			contactId: $rootScope.myPid,
 		};
+		phoneService.holdCalls();
 		httpService.sendAction("conferences", "joinContact", params);
 
 		$location.path('/conference/' + conference.xpid);

@@ -124,7 +124,8 @@ hudweb.controller('CallLogController', ['$scope', '$rootScope', '$routeParams', 
 				conferenceId: call.conferenceId,
 				contactId: $rootScope.meModel.my_pid
 			};
-
+			// hold my calls if i'm joining the conference room
+			phoneService.holdCalls();
 			httpService.sendAction("conferences","joinContact",params);	
 		}	
 		else

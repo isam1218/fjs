@@ -1,4 +1,4 @@
-hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService','$analytics', function($scope, $rootScope, $timeout, contactService, groupService, conferenceService, queueService, httpService, storageService, $analytics) {
+hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'HttpService', 'StorageService','$analytics', 'PhoneService', function($scope, $rootScope, $timeout, contactService, groupService, conferenceService, queueService, httpService, storageService, $analytics, phoneService) {
 	$scope.searched = false;
 
 	//track search page view with angularactics
@@ -132,11 +132,10 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 
 	// clicked on call button
     $scope.callExtension = function($event, contact){
-		$event.stopPropagation();
-		$event.preventDefault();
-	  
+			$event.stopPropagation();
+			$event.preventDefault();
+			phoneService.holdCalls();	  
 	    httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
-	  
 	    storageService.saveRecent('contact', contact.xpid);
     };
 	
