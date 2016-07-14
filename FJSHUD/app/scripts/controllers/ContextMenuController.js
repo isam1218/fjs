@@ -305,6 +305,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 	};
 	
 	$scope.takeParkedCall = function(){
+		phoneService.holdCalls();
 		httpService.sendAction('parkedcalls', 'transferFromPark', {
 			parkedCallId: $scope.original.xpid,
 			contactId: $rootScope.myPid
@@ -312,6 +313,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 	};
 	
 	$scope.takeQueueCall = function() {
+		phoneService.holdCalls();
 		httpService.sendAction('queue_call', 'transferToMe', {
 			queueCallId: $scope.context.xpid
 		});
@@ -326,11 +328,13 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 					contactId: $rootScope.myPid,
 					groupId: group.xpid
 				};
+				phoneService.holdCalls();
 				httpService.sendAction('groups', action, params);
 			}
 		}
 		// single user
 		else{
+			phoneService.holdCalls();
 			httpService.sendAction('contacts', action, {toContactId: $scope.profile.xpid});
 			storageService.saveRecent('contact', $scope.profile.xpid);
 		}

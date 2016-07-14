@@ -202,6 +202,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				contactId: $scope.onCall.xpid
 			});
 			if ($scope.meToo.me) {
+				// if I'm joining the conf, place my other calls on hold...
+				phoneService.holdCalls();
 				httpService.sendAction('conferences', 'joinContact', {conferenceId: $scope.selectedConf.xpid, contactId: $rootScope.myPid});
 			}
 			// close and redirect

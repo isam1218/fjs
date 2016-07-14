@@ -153,7 +153,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
     $event.preventDefault();
 
     ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "Calls/Recordings - Voicemail - Call"});
-    
+    phoneService.holdCalls();
     httpService.sendAction('me', 'callTo', {phoneNumber: contact.phone});
   
     storageService.saveRecent('contact', contact.xpid);

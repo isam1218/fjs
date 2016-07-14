@@ -1,4 +1,4 @@
-hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'QueueService', 'HttpService', 'StorageService', '$routeParams', function ($scope, $rootScope, queueService, httpService, storageService, $routeParams) {
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'QueueService', 'HttpService', 'StorageService', '$routeParams', 'PhoneService', function ($scope, $rootScope, queueService, httpService, storageService, $routeParams, phoneService) {
   $scope.que = {};
   $scope.que.query = '';
   $scope.query = "";
@@ -53,10 +53,10 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
   $scope.callExtension = function($event, contact) {
     $event.stopPropagation();
     $event.preventDefault();
+    phoneService.holdCalls();
+    httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
 
-  httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
-
-  storageService.saveRecent('contact', contact.xpid);
+    storageService.saveRecent('contact', contact.xpid);
   };
 
   $scope.showCallStatus = function($event, contact) {

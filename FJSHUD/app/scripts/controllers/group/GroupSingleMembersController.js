@@ -1,5 +1,5 @@
-hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService',
-	function($scope, $rootScope, $routeParams, groupService, contactService, httpService, storageService) {
+hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$routeParams', 'GroupService', 'ContactService', 'HttpService', 'StorageService', 'PhoneService',
+	function($scope, $rootScope, $routeParams, groupService, contactService, httpService, storageService, phoneService) {
 	$scope.groupId = $routeParams.groupId;
 	$scope.group = groupService.getGroup($scope.groupId);
 	$scope.members = $scope.group.members;
@@ -23,11 +23,10 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
   }
 
   $scope.callExtension = function($event, contact){
-    $event.stopPropagation();
-    $event.preventDefault();
-
+     $event.stopPropagation();
+     $event.preventDefault();
+     phoneService.holdCalls();
 	   httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
-
 	   storageService.saveRecent('contact', contact.xpid);
   };
 

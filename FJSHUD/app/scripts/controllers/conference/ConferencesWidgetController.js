@@ -126,6 +126,7 @@ hudweb.controller('ConferencesWidgetController', ['$rootScope', '$scope', '$loca
 				conferenceId: $scope.targetId,
 				contactId: $scope.meModel.my_pid,
 			};
+			// hold my calls if I'm joining the conf
 			phoneService.holdCalls();
 			httpService.sendAction("conferences","joinContact",params);
 
