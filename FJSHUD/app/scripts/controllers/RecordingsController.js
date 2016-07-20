@@ -5,6 +5,8 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	};
 	$scope.loading = true;
 	$scope.recordings = [];
+	// display call back button under all recording use cases except queue recordings...
+	$scope.hideQueueRecordingCallBackButton = false;
 	
 	var syncFilter;
 	var target;
@@ -13,8 +15,11 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 		// find targetKey based on current widget
 		if ($routeParams.conferenceId)
 			target = 'conferences:' + $routeParams.conferenceId;
-		else if ($routeParams.queueId)
+		else if ($routeParams.queueId){
 			target = 'queues:' + $routeParams.queueId;
+			// don't want to display call back button under queue recording tab
+			$scope.hideQueueRecordingCallBackButton = true;
+		}
 		else if ($routeParams.groupId && $scope.group)
 			target = 'groups:' + $routeParams.groupId;
 		else if ($routeParams.contactId)
