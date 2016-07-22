@@ -13,7 +13,7 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
 
 	$scope.tabs = [{upper: $scope.verbage.chat, lower: 'chat', idx: 0}, 
 	{upper: $scope.verbage.members, lower: 'members', idx: 1}, 
-	{upper: $scope.verbage.voicemail, lower: 'voicemails', idx: 2}, 
+	{upper: $scope.verbage.voicemail_tab, lower: 'voicemails', idx: 2}, 
 	{upper: $scope.verbage.page, lower: 'page', idx: 3}, 
 	{upper: $scope.verbage.recordings, lower: 'recordings', idx: 4},
   {upper: $scope.verbage.group_info, lower: 'info', idx: 5}
