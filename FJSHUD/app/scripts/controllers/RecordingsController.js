@@ -138,4 +138,9 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	$scope.deleteFile = function(rec) {
 		httpService.sendAction('callrecording', 'remove', {id: rec.xpid});
 	};
+	
+	$scope.downloadFile = function(rec) {
+		var path = httpService.get_audio('media?key=callrecording:' + rec.xpid);
+		document.getElementById('download_file').setAttribute('src', path);
+	};
 }]);
