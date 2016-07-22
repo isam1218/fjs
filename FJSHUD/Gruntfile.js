@@ -144,7 +144,10 @@ module.exports = function(grunt) {
     },
     bower_concat: {
       dist: {
-        dest: 'app/scripts/bower.js'
+        dest: 'app/scripts/bower.js',
+        dependencies: {
+          "angular": ["jquery"]
+        }
       }
     },
     template:{
