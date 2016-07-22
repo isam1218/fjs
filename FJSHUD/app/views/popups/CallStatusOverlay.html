@@ -110,7 +110,7 @@
 					<div class="Name">
 						<strong>{{ transferFrom.displayName | formatPhoneNumber }}</strong>
 						<br/>
-						x{{ transferFrom.primaryExtension ? transferFrom.primaryExtension : transferFrom.phone }}
+						<span>x{{ transferFrom.primaryExtension ? transferFrom.primaryExtension : transferFrom.phone }}</span>
 					</div>
 					
 					<div class="Time">{{ timeElapsed }}</div>
