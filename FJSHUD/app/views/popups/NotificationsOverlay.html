@@ -218,7 +218,7 @@
                    
                         <div class="LeftBarNotificationMessageSection" ng-init="old_notifications_to_display = getMessage(message); multiple_old_notifications = getMultipleNotifications(message)">
                             <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'"  ng-click="go_to_notification_chat(message)">{{::message.displayName}}<div class="NotificationTime">{{::  message.time | fondate:'full' }} </div></div>
-                               <div class="NotificationType">...{{ message.message }} <span ng-if="::message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
+                               <div class="NotificationType">...{{ message.label }} <span ng-if="::message.audience == 'gchat'">{{::verbage_conference_room}}</span></div>
 
                             <div class="NotificationMessage" ng-click="go_to_notification_chat(message)">
 	                           <p>
