@@ -615,7 +615,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 			
 			// only play sound once per sync
 			// isInFocus is required to avoid conflicts with notification sfx
-			if (!soundDelay && phoneService.isInFocus() && incoming)
+			if (!soundDelay && phoneService.getBrowserOnFocus() && incoming)
 				phoneService.playSound("received");
 			
 			// jump to bottom if new messages were found
