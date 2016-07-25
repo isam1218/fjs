@@ -55,12 +55,6 @@
           </a>
         </span>
         <span>
-          <a href="#/queue/{{ ::queueId + '/calllog'}}" ng-click="saveQTab('calllog', 4)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 4}">
-            <div class="inner">{{tabs[4].upper}}</div>
-            <div class="arrow"></div>
-          </a>
-        </span>
-        <span>
           <a href="#/queue/{{ ::queueId + '/recordings'}}" ng-click="saveQTab('recordings', 5)" ng-show="recordingPermission" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 5}">
             <div class="inner">{{tabs[5].upper}}</div>
             <div class="arrow"></div>
@@ -85,8 +79,6 @@
          include-once="views/ChatView.html" ng-controller="ChatController" flow-init
           flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
          ></div>
-    <div ng-switch-when="calllog" class="ListView CallLog"
-         include-once="views/CallLog.html" ng-controller="CallLogController"></div>
     <div ng-switch-when="recordings" class="ListView WithToolBar"
          include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
     <div ng-switch-when="alerts" class="ListView ChatView"

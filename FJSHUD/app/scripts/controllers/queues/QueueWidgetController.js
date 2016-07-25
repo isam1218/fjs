@@ -47,6 +47,9 @@ hudweb.controller('QueueWidgetController', ['$scope', '$rootScope', '$routeParam
 
     // if route is defined (click on specific tab or manaully enter url)...
     if ($routeParams.route){
+		if ($routeParams.route == 'calllog')
+			$location.path('queue/' + $routeParams.queueId + '/agents');
+		
         $scope.selected = $routeParams.route;
         for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++){
             if ($scope.tabs[i].lower == $routeParams.route){

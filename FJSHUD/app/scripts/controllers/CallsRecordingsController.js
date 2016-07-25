@@ -1,18 +1,16 @@
-hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', 'SettingsService','$http','$analytics', function($scope, $rootScope, $routeParams, settingsService,$http,$analytics) {
+hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeParams', 'SettingsService', '$http', '$location', '$analytics', function($scope, $rootScope, $routeParams, settingsService, $http, $location, $analytics) {
   // routing
-  $scope.tabs = [{upper: $scope.verbage.call_log_tab, lower: 'calllog'}, {upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'},{upper: $scope.verbage.my_videos_tab, lower: 'videos'}];
+  $scope.tabs = [{upper:$scope.verbage.voicemail_tab, lower: 'voicemails'}, {upper: $scope.verbage.my_recordings_tab, lower: 'recordings'}];
+  
   //google analytics page tracking
-      if($routeParams.route == 'calllog'){
-        $analytics.pageTrack('/calllog/calllog');
+      if($routeParams.route == 'calllog' || $routeParams.route == 'videos'){
+		  $location.path('/calllog/voicemails');
       }
       else if($routeParams.route == 'voicemails'){
         $analytics.pageTrack('/calllog/voicemails');
       }
       else if($routeParams.route == 'recordings'){
         $analytics.pageTrack('/calllog/recordings');
-      }
-      else if($routeParams.route == 'videos'){
-        $analytics.pageTrack('/calllog/videos');
       }
 
   
@@ -51,43 +49,6 @@ hudweb.controller('CallsRecordingsController', ['$scope', '$rootScope', '$routeP
       return true;
     };
   }; 
-
-  var getURL = function(action) {
-
-    var url = 
-       action
-      + '?callback=JSON_CALLBACK'
-      + '&fonalityUserId=' + $rootScope.myPid.split('_')[1]
-      + '&serverId=' + $rootScope.meModel.server_id
-      + '&serverType=' + ($rootScope.meModel.server.indexOf('pbxtra') != -1 ? 'pbxtra' : 'trixbox')
-      + '&authToken=' + localStorage.authTicket;
-    
-    return url;
-  };
-  settingsService.getPermissions().then(function(data) {
-       $scope.getVideo = data.showVideoCollab;
-       if($scope.getVideo == false){
-        $scope.showVideo = false;
-        $scope.tabs.splice(3,1);
-       }
-       else{
-        $scope.showVideo = true;
-       }
-      });
-if($routeParams.route == 'videos'){
-  settingsService.getSettings().then(function() {
-    var date = new Date();
-    var month = date.getMonth() + 1;
-    var toDate = date.getFullYear() + '-' + month+ '-' + date.getDate();
-    var prevMonth = date.getMonth();
-    var fromDate =  date.getFullYear() + '-' + prevMonth + '-' + date.getDate();
-    $http.post(fjs.CONFIG.SERVER.ppsServer +getURL('zoom/completedMeetingList')+'&email='+$rootScope.meModel.email+'&fromDate='+fromDate+'&toDate='+toDate).success(function(response){
-            
-            $scope.meetingList = response.meetings;
-           
-          });
-  });
-}
 
 }]);
 

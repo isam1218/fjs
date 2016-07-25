@@ -44,7 +44,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			url:"#/calllog", 
 			key:"CallLog", 
 			enabled:true, 
-			title: $scope.verbage.call_and_recordings
+			title: $scope.verbage.vm_and_recordings
 		},
 		{
 			url:"#/conferences", 

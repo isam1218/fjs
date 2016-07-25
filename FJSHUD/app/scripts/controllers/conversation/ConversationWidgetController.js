@@ -20,11 +20,13 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
     {upper: $scope.verbage.voicemail_tab, lower: 'voicemails'}, 
     {upper: $scope.verbage.group, lower: 'groups'}, 
     {upper: $scope.verbage.queues, lower: 'queues'}, 
-    {upper: $scope.verbage.call_log_tab, lower: 'calllog'}, 
     {upper: $scope.verbage.recordings, lower: 'recordings'}];
 	
     // if route is defined (click on specific tab or manaully enter url)...
     if ($routeParams.route){
+		if ($routeParams.route == 'calllog')
+			$location.path('contact/' + $routeParams.contactId + '/chat');
+		
         $scope.selected = $routeParams.route;
         for (var i = 0; i < $scope.tabs.length; i++){
             if ($scope.tabs[i].lower == $routeParams.route){

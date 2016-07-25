@@ -225,7 +225,7 @@
        fon_core_version:'FONcore Version',
        /***TOP NAVIGATION LABELS **/
        me:'ME',
-       call_and_recordings:'Calls & Recordings',
+       vm_and_recordings:'VM & Recordings',
        conferencing:'Conferencing',
        callcenter:'Call Center',
        zoom:'Video Collaboration',
@@ -763,7 +763,7 @@
        fon_core_version:'FONcoreバージョン',
       phone: '電話',
        me:'自席',
-       call_and_recordings:'通話と録音',
+       vm_and_recordings:'通話と録音',
        conferencing:'会議中',
        callcenter:'コールセンター',
        zoom:'ビデオ会議',
@@ -1300,7 +1300,7 @@
        fon_core_version:'FONcore Version',
        /***TOP NAVIGATION LABELS **/
        me:'Me',
-       call_and_recordings:'Calls & Recordings',
+       vm_and_recordings:'VM & Recordings',
        conferencing:'Conferencing',
        callcenter:'Call Center',
        zoom:'Video Collaboration',

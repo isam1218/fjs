@@ -1,7 +1,7 @@
 <div class="Widget CallLog" id="WidgetCallLog">
     <div class="WidgetHeader">
         <div class="TopBarItemAppIcon CallLog"></div>
-        <div class="WidgetHeaderTitle">{{::verbage.call_and_recordings}}</div>
+        <div class="WidgetHeaderTitle">{{::verbage.vm_and_recordings}}</div>
     </div>
     <div class="WidgetBody" ng-switch="selected">
         <div class="WidgetTabBar">
@@ -14,10 +14,8 @@
         </div>
             
         <!-- ng-view -->
-        <div ng-if="selected == 'calllog'" class="fj-content WidgetTabContent" include-once="views/CallLog.html" ng-controller="CallLogController"></div>
-        <div ng-if="selected == 'voicemails'" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Voicemails.html" ng-controller="VoicemailsController"></div>
-        <div ng-if="selected == 'recordings'" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
-        <div ng-if="selected == 'videos'" ng-show="showVideo" class="voicemail fj-content WidgetTabContent vmails" include-once="views/VideoCollaborations.html" ng-controller="RecordingsController"></div>
+        <div ng-switch-when="voicemails" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Voicemails.html" ng-controller="VoicemailsController"></div>
+        <div ng-switch-when="recordings" class="voicemail fj-content WidgetTabContent vmails" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
     </div>
 
 </div>
