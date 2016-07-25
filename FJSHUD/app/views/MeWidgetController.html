@@ -92,11 +92,11 @@
        </div>                          
         <div class="RightSide">                                   
           <div class="row_buttons"> 
-            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom" ng-click="showTransferComponent()" ng-if="currentCall.barge < 1 && cpFourteen && serverVersionCloud"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
-            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom" ng-click="showCallOvery('transfer',currentCall)" ng-if="currentCall.barge < 1 && (!cpFourteen || !serverVersionCloud)"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
-            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3)" ng-click="showCallOvery('conference',currentCall)" ng-if="currentCall.barge < 1"><span class="CallControlButton">{{::verbage.conf_room}}</span></button>
-            <button class="XButton CurrentCallBtn" ng-class="currentCall.mute ? 'UnmuteBtn' : ''" ng-click="muteConference()" ng-if="currentCall.type == 0"><span class="CallControlButton">{{ currentCall.mute ? verbage.UnMute : verbage.Mute}}</span></button>
-            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.state != 2 && currentCall.state != 3 && currentCall.state != 0" ng-click="parkCall(currentCall)" ng-if="currentCall.barge < 1 && currentCall.type != 0"><span class="CallControlButton">{{::verbage.Park}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom || call2" ng-click="showTransferComponent()" ng-if="currentCall.barge < 1 && cpFourteen && serverVersionCloud"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom || call2" ng-click="showCallOvery('transfer',currentCall)" ng-if="currentCall.barge < 1 && (!cpFourteen || !serverVersionCloud)"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3) || call2" ng-click="showCallOvery('conference',currentCall)" ng-if="currentCall.barge < 1"><span class="CallControlButton">{{::verbage.conf_room}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="call2" ng-class="currentCall.mute ? 'UnmuteBtn' : ''" ng-click="muteConference()" ng-if="currentCall.type == 0"><span class="CallControlButton">{{ currentCall.mute ? verbage.UnMute : verbage.Mute}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="(currentCall.state != 2 && currentCall.state != 3 && currentCall.state != 0) || call2" ng-click="parkCall(currentCall)" ng-if="currentCall.barge < 1 && currentCall.type != 0"><span class="CallControlButton">{{::verbage.Park}}</span></button>
             <div class="SelectBox XButton" ng-if="currentCall.barge > 0" style="width:97%" ng-click="showBargePopup($event,$element,true)">
                 <div class="SelectBoxText"><span class="CallControlButton">{{ currentCall.barge == 2 ? 'Barge' : (currentCall.barge == 3 ? 'Whisper' : 'Monitor')}}</span></div>
                 <div class="SelectBoxArrow"></div>
@@ -104,13 +104,13 @@
           </div>
 
           <div class="row_buttons">
-            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0" ng-if="currentCall.state == 2 || currentCall.state == 0" ng-click="holdCall(currentCall)"><span class="CallControlButton"> {{::verbage.Hold}}</span></button>
-            <button class="XButton talk" ng-if="currentCall.state == 3" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</button>
-			<button class="XButton record ng-class:{'XButtonRecordOn': currentCall.record}" ng-disabled="!canRecord || (currentCall.state != 2 && currentCall.state != 3)" ng-click="recordCall(currentCall)">
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || call2" ng-if="currentCall.state == 2 || currentCall.state == 0" ng-click="holdCall(currentCall)"><span class="CallControlButton"> {{::verbage.Hold}}</span></button>
+            <button class="XButton talk" ng-disabled="call2" ng-if="currentCall.state == 3" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</button>
+			<button class="XButton record ng-class:{'XButtonRecordOn': currentCall.record}" ng-disabled="!canRecord || (currentCall.state != 2 && currentCall.state != 3) || call2" ng-click="recordCall(currentCall)">
 				<span class="CallControlButton">{{::verbage.REC}}  </span>
 				<div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div>
 			</button>
-            <div class=" SelectBox XButton " type="move" data-ng-click="showLocationsPopup($event, $element, true)">
+            <div class=" SelectBox XButton " ng-disabled="call2" type="move" data-ng-click="showLocationsPopup($event, $element, true)">
               <div class="SelectBoxText">
                     <span class="CallControlButton">{{::verbage.move}}</span>
               </div>
@@ -118,8 +118,8 @@
 
           </div>
           <div class="row_buttons">
-            <button class="XButton dial CurrentCallBtn" ng-disabled="currentCall.state != 2 && currentCall.state != 3" data-ng-click="showDialPad($event)"> <span class="CallControlButton">#</span></button>
-            <div class="XButton CurrentCallBtnLong" ng-click="endCall(currentCall)"><span class="CallControlButton">{{currentCall.state == 0 ? verbage.decline : verbage.end}}</span></div>
+            <button class="XButton dial CurrentCallBtn" ng-disabled="(currentCall.state != 2 && currentCall.state != 3) || call2" data-ng-click="showDialPad($event)"> <span class="CallControlButton">#</span></button>
+            <div class="XButton CurrentCallBtnLong" ng-disabled="call2" ng-click="endCall(currentCall)"><span class="CallControlButton">{{currentCall.state == 0 ? verbage.decline : verbage.end}}</span></div>
           </div>
 
       </div>
