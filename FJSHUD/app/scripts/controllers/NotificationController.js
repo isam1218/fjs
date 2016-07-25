@@ -382,10 +382,7 @@ hudweb.controller('NotificationController',
         else
           endPath = calllogPath;
         break;
-      case 'vm':		
-        if (message.senderId || message.fullProfile)
-          endPath = "/" + message.audience + "/" + xpid + '/voicemails';
-        else
+      case 'vm':
           endPath = "/calllog/voicemails";
 	  
 		// if already on tab, broadcast id

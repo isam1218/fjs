@@ -169,7 +169,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 							route = 'voicemails';
 							
 							// check if already on tab
-							if ($location.path() == "/" + nd.audience + "/" + xpid + "/" + route)
+							if ($location.path() == '/calllog/voicemails')
 								$rootScope.$broadcast('vmToOpen', nd.vmId);
 							else
 								$rootScope.vmToOpen = nd.vmId;
@@ -179,7 +179,10 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 							route = 'chat';
 					}
 					
-					$rootScope.$evalAsync($location.path("/" + nd.audience + "/" + xpid + "/" + route));
+					if (route == 'voicemails')
+						$rootScope.$evalAsync($location.path('/calllog/voicemails'));
+					else
+						$rootScope.$evalAsync($location.path("/" + nd.audience + "/" + xpid + "/" + route));
 				}
 				
 				focusBrowser();
