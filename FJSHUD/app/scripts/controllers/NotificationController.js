@@ -283,6 +283,29 @@ hudweb.controller('NotificationController',
     return new_notifications;
   };
 
+    $scope.get_new_and_away_notifications= function(){
+    
+    var new_notifications = $scope.notifications.filter(function(item){
+      var date = new Date(item.time);
+      var today = new Date();
+      var toReturn = false;
+      if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+        if(date.getDate() == today.getDate()){
+            toReturn = true;
+        }
+      }
+
+      return toReturn; 
+    });
+        if(new_notifications.length > 0 )
+          $scope.hasNewNotifications = true;
+        
+        $scope.newNotificationsLength = new_notifications.length;     
+        $scope.newNotifications = new_notifications;
+      
+    return new_notifications;
+  };
+
 
 
   $scope.get_away_notifications= function(){
