@@ -1057,7 +1057,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var warmTransferFrom;
     var warmTransferTo;
     var call1;
-    var call2;
+    $scope.call2;
     $scope.warmTransferToConnected;
     $rootScope.secondCall = false;
 
@@ -1097,9 +1097,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                             call1 = data[i];
                         } 
                     }
-                    // set call2
+                    // set $scope.call2
                     if (data[i].contactId == warmTransferTo.xpid){
-                        call2 = data[i];
+                        $scope.call2 = data[i];
                         if (data[i].state === 2){
                             $scope.warmTransferToConnected = true;
                         }
@@ -1117,7 +1117,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         var feed = 'mycalls';
         var params = {};
         params.callId1 = call1.xpid;
-        params.callId2 = call2.xpid;
+        params.callId2 = $scope.call2.xpid;
         myHttpService.sendAction(feed, action, params);
         $scope.changeWarmButton = false;
         $scope.warmTransferButtonEnabled = false;
@@ -1140,14 +1140,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.toVMButtonEnabled = false;
     };
 
-    // cancel transfer link/button
-    $scope.cancelTransfer = function(){
-        // if at warm transfer screen cancel -> means we want to hang up call #2
-        if ($scope.changeWarmButton || $scope.warmTransferToConnected){
-            phoneService.hangUp(call2.xpid);
-            $scope.warmTransferToConnected = false;
-        }
-
+    var clearTransferPanel = function(){
         $scope.showResult = false;
         $scope.transfer.search = '';
         $scope.transferComponent = false;
@@ -1159,6 +1152,46 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.changeWarmButton = false;
         $rootScope.secondCall = false;
     };
+
+    // cancel transfer link/button
+    $scope.cancelTransfer = function(){
+        // if at warm transfer screen cancel -> means we want to hang up call #2
+        if ($scope.changeWarmButton || $scope.warmTransferToConnected){
+            phoneService.hangUp($scope.call2.xpid);
+            $scope.warmTransferToConnected = false;
+        }
+        clearTransferPanel();
+    };
+
+    // watching for $scope.call2 of WT to hang up so that can take call1 off of hold
+    $scope.$on('mycalls_synced', function(event, data){
+        for (var i = 0; i < data.length; i++){
+            // look for delete flag
+            if (data[i].xef001type == "delete"){
+                // if $scope.call2 of a WT exists...
+                if ($scope.call2){
+                    // match the delete flag xpid w/ $scope.call2 xpid cuz that means $scope.call2 has disconnected and we want to unhold call1
+                    if (data[i].xpid == $scope.call2.xpid){
+                        // loop thru mycalls change state of call1 from hold -> unhold
+                        for(var call = 0; call < data.length; call++){
+                            // loop thru my remaining calls, run check for call1...
+                            if (call1 && data[call]){
+                                // if my call is on hold -> take off of hold & clear transfer UI
+                                if(call1.xpid == data[call].xpid && data[call].state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
+                                    $scope.warmTransferToConnected = false;
+                                    clearTransferPanel();
+                                    phoneService.holdCall(data[call].xpid, false);
+                                    break;
+                                }
+                            }
+                        }
+                        // reset $scope.call2
+                        $scope.call2 = {};
+                    }
+                }
+            }
+        }
+    });
 
     $scope.showCallOvery = function(screen){
 		// create temp object for overlay
