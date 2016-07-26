@@ -1118,11 +1118,21 @@ hudweb.controller('NotificationController',
          var oldVms = phoneService.getVoiceMailsFor(notification.senderId,notification.audience);
          var vm = phoneService.getVoiceMail(notification.vmId);
          notification.vm = vm;
+		 
          if(newVms.length < 1){
-              $scope.remove_notification(notification.xpid);
-            }
-         notification.label = 'you have ' +  newVms.length + ' new voicemail(s)';
-         notification.message = 'you have ' +  oldVms.length + ' unread voicemail(s)';
+			notification.label = 'you have ' +  oldVms.length + ' unread voicemail(s)';
+			
+			// remove from today
+			for (var i = 0, len = $scope.todaysNotifications.length; i < len; i++){
+				if ($scope.todaysNotifications[i].xpid == notification.xpid) {
+					$scope.todaysNotifications.splice(i,1);
+					break;
+				}
+			}			
+         }
+		 else
+			notification.label = 'you have ' +  newVms.length + ' new voicemail(s)';
+		
         // if displayname is a phone number -> add the hypens to make external notifications consistent...
         if (notification.fullProfile == null && notification.displayName.split('').length == 10 && !isNaN(parseInt(notification.displayName)))
           notification.displayName = notification.displayName.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
