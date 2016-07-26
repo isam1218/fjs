@@ -1208,22 +1208,39 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         switch(type){
             case "From":
                 if(calllog.incoming){
-                    if(calllog.phone){
-                        return calllog.phone;
-                    }else{
+                    if (calllog.displayName){
                         return calllog.displayName;
+                    } else {
+                        return calllog.phone;
                     }
-                }else{                	
-                   return $scope.verbage.you + " @ " + calllog.location; 
+                }else{
+                    var parsedLocation = calllog.location;
+                    if (parsedLocation == "HUDweb"){
+                        // location is HUDWeb -> print out HUD Softphone
+                        return "HUD Softphone";
+                    } else if (parsedLocation.split('').length <= 4){
+                        // calllog.location is a 4 digit-extension -> it is an office line (assumes office extensions are no more than 4 digits)
+                        return "Office";
+                    } else {
+                        // this catches everything else, mobile numbers have a length of at least 10...
+                        return "Carrier";
+                    }
                 }
             case "To":
-                if(calllog.incoming){                	
-                    return $scope.verbage.you + " @ " + calllog.location;
+                if(calllog.incoming){
+                    var parsedLocation = calllog.location;
+                    if (parsedLocation == "HUDweb"){
+                        return "HUD Softphone";
+                    } else if (parsedLocation.split('').length <= 4){
+                        return "Office";
+                    } else {
+                        return "Carrier";
+                    }
                 }else{
-                    if(calllog.phone){
-                        return calllog.phone;
-                    }else{
+                    if (calllog.displayName){
                         return calllog.displayName;
+                    } else {
+                        return calllog.phone;
                     }
                 }
         }
