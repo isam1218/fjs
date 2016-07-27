@@ -1746,6 +1746,13 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 					hangUp(data.notificationId);
 					return;
 				case 'CALL_ACCEPTED':
+					// cycle thru my calls and any of the calls that aren't the current call -> place on hold
+					for (call in callsDetails){
+						if(call != data.notificationId){
+							holdCall(call, true);
+						}
+					}
+					// accept the current incoming call
 					acceptCall(data.notificationId);
 					return;
 				case 'CHAT_REQUEST':
@@ -1756,11 +1763,14 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 					holdCall(data.notificationId,true);
 					return;
 				case 'talk':
+					// cycle thru all of my calls... 
 					for(call in callsDetails){
-						if(call != data.notificationId){
-							holdCall(call, true);
+						// ...all of my calls that aren't the current call and aren't already on hold -> place on hold
+						if(callsDetails[call].xpid != data.notificationId && callsDetails[call].state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
+							holdCall(callsDetails[call].xpid, true);
 						}
 					}
+					// take the chosen current call off of hold
 					holdCall(data.notificationId,false);
 					return;
 			}
