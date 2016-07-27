@@ -1216,22 +1216,23 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 }else{
                     var parsedLocation = calllog.location;
                     if (parsedLocation == "HUDweb"){
-                        // location is HUDWeb -> print out HUD Softphone
+                        // calls made via webphone print out location as 'HUDWeb' -> print out 'HUD Softphone'
                         return "HUD Softphone";
-                    } else if (parsedLocation.split('').length <= 4){
-                        // calllog.location is a 4 digit-extension -> it is an office line (assumes office extensions are no more than 4 digits)
+                    } else if (parsedLocation.split('').length <= 6){
+                        // an office extension isn't longer than 6 digits, otherwise it would be a local phone number -> print out 'Office'
                         return "Office";
                     } else {
-                        // this catches everything else, mobile numbers have a length of at least 10...
+                        // this catches everything else, mobile numbers should have a length of at least 10...
                         return "Carrier";
                     }
                 }
+                break;
             case "To":
                 if(calllog.incoming){
                     var parsedLocation = calllog.location;
                     if (parsedLocation == "HUDweb"){
                         return "HUD Softphone";
-                    } else if (parsedLocation.split('').length <= 4){
+                    } else if (parsedLocation.split('').length <= 6){
                         return "Office";
                     } else {
                         return "Carrier";
@@ -1243,6 +1244,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                         return calllog.phone;
                     }
                 }
+                break;
         }
     };
 
