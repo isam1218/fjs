@@ -57,7 +57,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 				});
 				$scope.topUserProfile = contactService.getContact($scope.onCall.xpid);
 				$scope.onCall.call.fullProfile = contactService.getContact($scope.$parent.overlay.data.call.contactId);
-	
 				$scope.screen = 'conference';
 				$scope.selectedConf = null;
 				$scope.meToo = 0;
@@ -244,6 +243,20 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		$scope.bottomUserCanMonitorFinal = $scope.bottomUserCanBarge ? !$scope.alreadyMonitored : false;
 		$scope.bottomUserCanWhisperFinal = $scope.bottomUserCanBarge ? !$scope.bottomAlreadyWhispered : false;
 	});
+
+	$scope.determineSteal = function(originalCall){
+		if (originalCall){
+			var top = settingsService.isEnabled(originalCall.permissions, 3);
+		}
+		var bottomUser = contactService.getContact(originalCall.call.fullProfile.xpid);
+		if (originalCall && bottomUser){
+			var bottom = settingsService.isEnabled(bottomUser.permissions, 3);
+		}
+		// if either one shows up as false -> don't have steal other call perm -> disable the conf button
+		if (!bottom || !top){
+			return true;
+		}
+	};
 
 	// this isn't the isXferFromEnabled personal-permission; it's the contact-based permission which determines if I can transfer another call (call I'm not a part of) from 1 party to another...
 	$scope.determineTransferFrom = function(originalCall, bottom){
