@@ -1681,9 +1681,14 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				}
 			}
 		}
-		if (data[0].incoming){
-			storageService.saveRecent('contact', data[0].contactId);
-		}		
+		// checking for just data[0].incoming doesn't take into account delete flags...
+		for (var j = 0; j < data.length; j++){
+			// need to loop thru mycalls (storageService takes care of duplicates for us)
+			if (data[j].incoming){
+				// if an incoming call -> save to recents
+				storageService.saveRecent('contact', data[j].contactId);
+			}
+		}
 
 		deferred.resolve(formatData());
 		$rootScope.$broadcast('calls_updated', callsDetails);
