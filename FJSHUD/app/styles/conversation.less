@@ -75,7 +75,7 @@
               left: 10px !important;
               float: left;
         }
-        .Avatar.AvatarNormal{
+        .Avatar{
               float: left;
         } 
         .WidgetStat {
@@ -114,41 +114,6 @@
                     }
                 }
             }
-            .Avatar.CallAvatar.CallAvatar_Office{
-                width: 40px !important;
-                height: 40px !important;                
-                background: url("../img/XAvatarBorder.png") no-repeat -5px -95px !important;                
-                margin: 2px 5px !important;           
-                border: none;        
-        
-                img{
-                    height: 32px !important;
-                    width: 32px !important;
-                    margin: 4px !important;
-                    border-radius: 40px !important;
-                    -webkit-border-radius: 40px !important;
-                }
-                
-                &:hover{
-                   .AvatarInteractable {
-                    display: block; 
-                   }                    
-                }                
-        
-                .AvatarInteractable {                            
-                    height: 40px !important;
-                    width: 40px !important;
-                    position: absolute !important;
-                    border: none !important;
-                    right: 0 !important;
-                    bottom: 0 !important;
-                    left: 0 !important;
-                    top: 0 !important;
-                    display: none;                                 
-                    background: url("../img/XAvatarBorder.png") no-repeat -50px -95px !important;
-                
-                }
-             }
           }
        }
   }
@@ -255,11 +220,6 @@
     clear: both;
     margin: 1px auto;
     }
-
-      .Avatar {
-        display: inline-block;
-    border-radius: 20px;
-      }
     
       .CallLineTop {
         display: inline-block;
@@ -288,52 +248,6 @@
     color: gray;
       }
     }
-
-.AttachmentsHolder 
-{
-  .AttachmentsList{
-    position : relative;
-    
-    .Avatar
-    {
-        position : relative;
-        display : inline-block;
-        width : 128px;
-        height : 120px;
-        background-color : white;
-        border : 1px solid #ccc;
-        border-radius : 2px;
-        -webkit-border-radius : 2px;
-        margin : 5px;
-        text-align : center;
-        line-height : 100px;
-        
-        .AvatarCustomPH
-        {
-            position : absolute;
-            bottom : 0px;
-            left : 0px;
-            right : 0px;
-            height : 18px;
-            color : #515115;
-            overflow : hidden;
-            text-align : center;
-            font-size : 12px;
-            text-overflow : ellipsis;
-            white-space : nowrap;
-            line-height : normal;
-        }
-        .AvatarImgPH
-        {
-            position : relative;
-            max-width : 90px;
-            max-height : 90px;
-            margin-top : 9px;
-            vertical-align : middle;
-        }
-     }
-   } 
-}
 
 .AttachmentsList .fj-content-items
 {

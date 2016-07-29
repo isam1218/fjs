@@ -12,22 +12,10 @@
       top: 0;
 	  width: 100%;
     }
-    .Avatar.AvatarBig{
+    .Avatar{
       float: left;
-	  width: 90px !important;
-      height: 90px !important;
-      position: relative;
       left: 0px;
       top: 0px;
-      border: 1px solid #779c00;
-      border-radius: 4px;
-      -webkit-border-radius: 4px;
-
-      img{
-        width: 86px !important;
-        height: 86px !important;
-        margin: 1px;
-      }
     }
 
     .Preferences-Holder{
@@ -191,7 +179,7 @@
                     border-bottom: solid 1px #ccc;
 
                     .Avatar{
-                      margin: 10px 5px 5px 5px;
+                      margin: 5px;
                     }
                     .ListRowContent{
                       border-left: none !important;
@@ -263,7 +251,7 @@
                   margin-left: 25px;
 
                   .Avatar{
-                    margin: 8px 5px 5px 5px;
+                    margin: 5px;
                   }
                   .ListRowContent{
                     border-left: none !important;
@@ -453,61 +441,6 @@
                 }
                 .Avatar{
                   margin-top: 8px;
-                  border: none;
-                  width: 40px;
-                  height: 40px;
-
-                  &.CallAvatar_External{
-                    background: url("../img/XAvatarBorder.png") no-repeat -5px -140px;
-                    .AvatarInteractable {
-                        background: url("../img/XAvatarBorder.png") no-repeat -50px -140px;
-                    }
-                  }
-
-                  &.CallAvatar_Office{
-                    background: url("../img/XAvatarBorder.png") no-repeat -5px -95px;
-                    .AvatarInteractable {
-                       background: url("../img/XAvatarBorder.png") no-repeat -50px -95px;
-                    }
-                  }
-
-                  &.CallAvatar_External{
-                    background: url("../img/XAvatarBorder.png") no-repeat -5px -140px;
-                    .AvatarInteractable {
-                        background: url("../img/XAvatarBorder.png") no-repeat -50px -140px;
-                    }
-                  }
-                  &.CallAvatar_Queue{
-                    background: url("../img/XAvatarBorder.png") no-repeat -5px -185px;
-                    .AvatarInteractable {
-                        background: url("../img/XAvatarBorder.png") no-repeat -50px -185px;
-                    }
-                  }
-                  img{
-                      height: 32px;
-                      width: 32px;
-                      margin: 4px;
-                      border-radius: 40px;
-                      -webkit-border-radius: 40px;
-                  }
-
-                  &:hover{
-                     .AvatarInteractable {
-                      display: block;
-                     }
-                  }
-
-                  .AvatarInteractable {
-                      height: 40px;
-                      width: 40px;
-                      position: absolute;
-                      border: none;
-                      right: 0;
-                      bottom: 0;
-                      left: 0;
-                      top: 0;
-                      display: none;
-                  }
                 }
             }
             .RightSide{
@@ -848,29 +781,20 @@
         padding-bottom: 30px;
 
         & > label,
-        .AvatarSmall,
+        .Avatar,
         .XButton
         {
              float: left;
         }
-        .AvatarSmall,
+        .Avatar,
         .XButton
         {
             clear: none;
         }
 
-        .AvatarSmall{
+        .Avatar{
             vertical-align: top;
-            margin-top: -6px;
-            height: 40px;
-            width: 40px;
-            border: 1px solid #779C00;
-            border-radius: 2px 2px 2px 2px;
-            -webkit-border-radius: 2px 2px 2px 2px;
-            img{
-                    height: 38px;
-                    width: 38px;
-            }
+            margin-top: -4px;
         }
         .XButton{
             margin-left: 10px;

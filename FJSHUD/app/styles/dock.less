@@ -174,26 +174,20 @@
 		padding: .25em;
 		text-decoration: none;
 		white-space: nowrap;
-		/*font-size: .8em;*/
 		display: flex;
 		display: -webkit-flex;
 		flex-direction: row;
 		-webkit-flex-direction: row;
-		max-height: 40px;
+		height: 40px;
 	    min-width: 0;     
         min-height: 0;
         
 	    span{
 	       margin-top: -3px;
 	    }
-		& > .Avatar {
-			margin-top: 0;
-			height: 32px;
-			width: 32px;
-		}
 	
 		&.Single {
-		background: linear-gradient(to bottom, #EEEEEF, #DDDDDE);
+			background: linear-gradient(to bottom, #EEEEEF, #DDDDDE);
 		}
 		
 		& > div {
@@ -201,28 +195,8 @@
 			vertical-align: top;
 			
 			&.CallStatus{
-                border: 1px solid #CCC;
-                border-radius: 3px;
-                -webkit-border-radius: 3px;
-                background-color: #fff;
-                height: 34px;
-                width: 34px;
-                padding: 1px;
-                
-                .CallAvatar.CallAvatar_Office, 
-                .CallAvatar_Office, .CallAvatar{
-                  width: 30px;
-                  height: 30px;
-                  img{
-                   width: 28px;
-                   height: 28px;
-                   margin-top: -2px;
-                   &.default{
-                    margin-left: -1px;
-                   }
-                  }
-                }
-          }
+				padding: 1px;
+			}
 		}
 	
 		.Title {

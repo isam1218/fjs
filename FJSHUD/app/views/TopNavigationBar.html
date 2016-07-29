@@ -2,9 +2,9 @@
 
 <div class="TopBarIcons">
 	<a ng-href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons | filter: {enabled: true}"  ng-show="showNavIcon(icon)"  >		
-		<div class="Avatar AvatarNormal TopBarItemAppIcon" ng-show="::icon.key == 'Me'" >
-			<img class="AvatarImgPH" data-ng-src="{{ getAvatar() }}" onerror="this.src='img/Generic-Avatar-28.png'" />
-			<div class="AvatarForeground AvatarInteractable"></div>
+		<div class="Avatar SingleAvatar" ng-show="::icon.key == 'Me'" >
+			<div></div>
+			<img data-ng-src="{{ getMeAvatarUrl(40, 40) }}" onerror="this.src='img/Generic-Avatar-28.png'" />
 		</div>
 		<div class="TopBarItemAppIcon {{ ::icon.key }}" ng-show="::icon.key != 'Me'"  ></div>
 		<div class="TopBarItemAppName" >{{ ::icon.title }}</div>

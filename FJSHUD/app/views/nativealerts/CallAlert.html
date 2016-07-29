@@ -74,11 +74,9 @@
 				<div class="NotificationDivider"></div>
 				<div class="NotificationSection open" >
           <avatar
-            ng-class="::message.type == 'vm' || message.type == 'missed-call' || message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation' ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'"
             ng-if="::message.type != 'error'"
             ng-click="go_to_notification_chat(message)" 
-            profile="::checkIfGroup(message)"
-            type="::determineAvatarType(message)">
+            profile="::checkIfGroup(message)">
           </avatar>  
 
 					<div class="LeftBarNotificationMessageSection">

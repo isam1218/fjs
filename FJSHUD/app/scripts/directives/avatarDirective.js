@@ -8,7 +8,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 	$rootScope.$on('fdpImage_synced', function(event, data) {
 		if (!document.getElementById('AppLoading')) {
 			for (var i = 0, len = data.length; i < len; i++) {
-				$('.Avatar.' + data[i].xpid + ' img').attr('src', httpService.get_avatar(data[i].xpid, 28, 28, data[i].xef001iver));
+				$('.Avatar img.' + data[i].xpid).attr('src', httpService.get_avatar(data[i].xpid, 28, 28, data[i].xef001iver));
 			}
 		}
 	});
@@ -22,8 +22,8 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		link: function(scope, element, attrs) {
 			var obj = $parse(attrs.profile)(scope);
 			var profile = obj && obj.fullProfile ? obj.fullProfile : obj;
-			var avatarObjType = $parse(attrs.type)(scope);
 			var context, widget, rect;
+			
 			if (attrs.context) {
 				widget = attrs.context.split(':')[0];
 				context = attrs.context.split(':')[1];
@@ -32,73 +32,36 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			/**
 				AVATAR IMAGES
 			*/
-			// change class for special circle avatar
-			// all avatars not in dock or contact widget...
+			
+			// change class for special call avatar
 			if (attrs.type){
-				var classy = 'CallAvatar CallAvatar_';
-				// notifications...
-				if (avatarObjType.type){
-					switch(avatarObjType.type){
-						case 2:
-						case 5:
-							// chat msg --> square avatar
-							element.addClass('AvatarNormal');
-							break;
-						case 3:
-							// Queues
-							if (avatarObjType.msgType == 'q-alert-abandoned' || avatarObjType.msgType == 'q-alert-rotation'){
-								// long wait/abandoned Q call --> (orange circle avatar)
+				var classy = 'Call_';
+				
+				switch(attrs.profile){
+					case 'vm.myProfile':
+					case 'member':
+					case 'recorder':
+						// vms/confs/records --> only blue circles
+						classy += 'Office';
+						break;
+					default:
+						switch(parseInt(attrs.type)) {
+							case 1:
+							case 3:
 								classy += 'Queue';
-								element.addClass(classy);
-							} else {
-								// Q chat/broadcast/alert --> avatar normal [square avatar]
-								element.addClass('AvatarNormal');
-							}
-							break;
-						case 4:
-							// missed call / voicemail
-							if (profile && profile.displayName)
-								classy += 'Office';
-							else if (!profile)
-								classy += 'External';
-							element.addClass(classy);
-							break;
-					}
-				} else {
-					// non-notifications...
-					switch(attrs.profile){
-						case 'vm.myProfile':
-						case 'member':
-						case 'recorder':
-							// vms/confs/records --> only blue circles
-							classy += 'Office';
-							element.addClass(classy);
-							break;
-						default:
-							if (attrs.profile !== 'recording'){
-								element.addClass('AvatarNormal');
-							}
-							// if group call/page/intercom (any part of app) --> blue circle
-							if (attrs.type == "1"){
-								classy += "Office";
-								element.addClass(classy);
 								break;
-							}
-							// all else --> queue is orange circle, external is green circle, internal is blue
-							if (avatarObjType == 3 || avatarObjType == 1)
-								classy += 'Queue';
-							else if (avatarObjType == 5)
+							case 5:
 								classy += 'External';
-							else
+								break;
+							default:
 								classy += 'Office';
-							element.addClass(classy);
-							break;
-					}
+								break;
+						}
+						
+						break;
 				}
-			}
-			else {
-				// dock and contact widget -> all square avatars
-				element.addClass('AvatarNormal');
+				
+				element.addClass(classy);
 			}
 
 			// not a valid object, but still show an avatar
@@ -113,92 +76,55 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			// single vs group
 			else if (profile.firstName) {
 				showSingle();
+				
 				if (profile.icon_version)
-					loadImage(element.find('img'), profile.getAvatar(28));
+					loadImage(element.find('img'), profile);
 			}
-			else if (profile.name) {			
-				if (profile.members){
-					populateGroupAvatars(profile);					
-					$rootScope.$on('fdpImage_synced', function(event, data) {
-						populateGroupAvatars(profile, data);												
-					});
+			else if (profile.name && profile.members) {
+				showGroup();
+				
+				// find two members with avatars
+				var found = 0;
+				
+				for (var i = 0, len = profile.members.length; i < len; i++) {
+					if (profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version) {
+						loadImage(angular.element(element.find('img')[found]), profile.members[i].fullProfile);
+						found++;
+						
+						if (found == 2)
+							break;
+					}
 				}
 			}
 			else
 				showSingle();
 			
 			// set up watchers for avatars that may change
-			if (widget == 'context' || widget == 'callstatus') {
+			if (widget == 'callstatus') {
 				scope.$watch($parse(attrs.profile), function (newObj) {
 					showSingle();
-					loadImage(element.find('img'), newObj ? newObj.getAvatar(28) : '');
+					
+					if (newObj && newObj.xpid)
+						loadImage(element.find('img'), newObj);
 				});
 			}
 			
-			// also attach xpid to listen for updates
-			element.addClass(profile.xpid);
-			
 			function showSingle() {
-				element.html('<img class="AvatarImgPH default" src="' + url + 'img/Generic-Avatar-28.png" />');
+				element.addClass('SingleAvatar');
+				element.html('<div></div><img src="' + url + 'img/Generic-Avatar-28.png" />');
 			}
 			
 			function showGroup() {
-				element.html('<div class="GroupAvatarItem GroupAvatarItem_0"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_1"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_2"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div><div class="GroupAvatarItem GroupAvatarItem_3"><img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" /></div>');
+				element.addClass('GroupAvatar');
+				element.html('<div><div></div><img src="' + url + 'img/Generic-Avatar-28.png" /></div><div><div></div><img src="' + url + 'img/Generic-Avatar-28.png" /></div>');
 			}
 			
-			function showGroupImg(img_url, idx) {
-				var img = $('<img class="GroupAvatarItemImg default" src="' + url + 'img/Generic-Avatar-28.png" />');
-				if(img_url && img_url != null)
-					img = $('<img class="GroupAvatarItemImg default" src="' + img_url + '" />');
-				var cur_div = $('<div class="GroupAvatarItem GroupAvatarItem_'+idx+'"></div>');
-				$(cur_div).append($(img));
-				$(element).append(cur_div);
-			}
-			
-			function populateGroupAvatars(profile, data)
-			{
-				var mLen = profile.members.length;
-				var numIcons = 0;
-				$(element).empty();																			
-				for (var i = 0; i < mLen; i++){
-					if(data)
-					{
-						if (!document.getElementById('AppLoading')) {
-							var dLen = data.length;
-							for (var j = 0; j < dLen; j++) {
-								if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version && profile.members[i].contactId == data[j].xpid && numIcons < 4){							
-									showGroupImg(httpService.get_avatar(data[j].xpid, 28, 28, data[j].xef001iver), numIcons);										
-								    numIcons++;
-								}
-							}
-						}
-					}
-					else
-					{
-						
-							if (profile.members[i] && profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version && numIcons < 4){							
-								showGroupImg(profile.members[i].fullProfile.getAvatar(28), numIcons);								
-							    numIcons++;
-							}
-						
-					}	
-				}
-				
-				if(numIcons == 0)
-					showGroup();
-				else{
-					if(numIcons < 4 )
-					{	
-						for (var j = numIcons; j < 4; j++){
-							showGroupImg(null, j);
-						}
-					}
-				}									
-			}
-			
-			function loadImage(el, url) {
+			function loadImage(el, profile) {
 				var img = new Image();
-				img.src = url;
+				img.src = profile.getAvatar(28);
+				
+				// also attach xpid to listen for updates
+				el.addClass(profile.xpid);
 
 				// replace default image with loaded image and make sure to kill event listeners
 				img.onload = function(){
@@ -219,18 +145,9 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			
 			// context menu doesn't apply to everyone, sorry
 			if (widget) {
-				// still interactable
-				if (widget == 'callstatus') {
-					element.append('<div class="AvatarForeground AvatarInteractable"></div>');
-					
-					return;
-				}
-				else if (widget == 'context' || widget == 'drag' || widget == 'zoom')
+                if (widget == 'callstatus' || widget == 'drag' || widget == 'zoom')
 					return;
 			}
-			
-			// add arrow to indicate menu
-			element.append('<div class="AvatarForeground AvatarInteractable"></div>');
 			
 			element.bind('mouseenter', function(e) {
 				rect = element[0].getBoundingClientRect();

@@ -3,7 +3,6 @@
 <div class="TopRow" ng-if="type != 'Transfer'" ng-switch="type == 'Contact' && profile != null">
 	<div class="Contact" ng-switch-when="true">
 		<div>
-			<avatar profile="profile" context="context"></avatar>
 			<div class="info">
 				<span ng-bind-html="profile.displayName"></span>
 				<br/>

@@ -451,15 +451,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         return true;
     };
     $scope.lastMillis = 0;
-    $scope.getMeAvatarUrl = function(width,height){
-        var pid;
-        if($scope.meModel["my_pid"]){
-            pid = $scope.meModel["my_pid"];
-        }
-
-        var imageUrl = myHttpService.get_avatar(pid,width,height,icon_version);
-        return imageUrl;
-    };
 
     $scope.languages;
     $scope.languageSelect;
@@ -1455,17 +1446,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     });
    
     var dtmf_input = "";
-    var icon_version = $scope.meModel.icon_version;
-    $scope.$on("fdpImage_synced",function(event,data){
-        if(data){
-            for (var i = 0, len = data.length; i < len; i++) {
-                if(data[i].xpid == $scope.meModel.my_pid){
-                    icon_version = data[i].xef001iver;
-                    $scope.meModel.icon_version = icon_version;
-                }
-            }
-        }
-    });
 
     // this is for determining whether to show old transfer UI vs new transfer UI. If CP14 & cloud server --> show new transfer UI
     $scope.cpFourteen = false;

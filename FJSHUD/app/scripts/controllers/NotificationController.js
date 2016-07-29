@@ -1203,21 +1203,6 @@ hudweb.controller('NotificationController',
     }
   };
 
-  $scope.determineAvatarType = function(msg){
-    var avatarObj = {};
-    avatarObj.msgType = msg.type;
-    if (msg.audience == 'group')
-      avatarObj.type = 2;
-    else if (msg.audience == 'queue')
-      avatarObj.type = 3;
-    else if (msg.type == 'vm' || msg.type == 'missed-call')
-      avatarObj.type = 4;
-    else if (msg.type == 'chat' || (msg.type == 'description' && msg.audience == 'contact'))
-      avatarObj.type = 5;
-
-    return avatarObj;
-  };
-
   $scope.$on('$routeChangeSuccess', function(event,data){
     for (var i = 0, iLen = $scope.notifications.length; i < iLen; i++){
       var singleMsg = $scope.notifications[i];
