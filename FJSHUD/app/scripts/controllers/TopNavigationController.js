@@ -154,11 +154,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 
 	}
 	}
-
-
-  $scope.getAvatar = function() {
-    return httpService.get_avatar($rootScope.myPid, 28, 28,icon_version);
-  };
   
   queueService.getQueues().then(function() {
     $scope.queue = queueService.getMyQueues();
@@ -167,18 +162,6 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
   // refresh
   $scope.$on('queue_members_status_synced', function() {
     $scope.queue = queueService.getMyQueues();
-  });
-  
-  var icon_version;
-
-  $scope.$on("fdpImage_synced",function(event,data){
-      if(data){
-          for(var i = 0, len = data.length; i < len; i++){
-              if(data[i].xpid == $rootScope.myPid){
-                  icon_version = data[i].xef001iver;
-              }
-          }
-      } 
   });
 
   $scope.logout = function() {

@@ -4,7 +4,7 @@
     </div>
   
     <div class="ListView">
-	<div ng-show="isTheirGroup()">
+	<div ng-if="isTheirGroup()">
 		<div class="DepartmentHeader">
       <div class="HeaderTitle DeptTeamHeader">{{::verbage.department}}</div>
 		  <div class="footnote"> {{::verbage.member_of_department}} </div>

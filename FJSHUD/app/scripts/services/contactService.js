@@ -122,6 +122,8 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 					// attach full profile, if present
 					if (data[i].contactId)
 						contacts[c].call.fullProfile = angular.extend({}, service.getContact(data[i].contactId));
+					else
+						contacts[c].call.fullProfile = null;
 					
 					match = true;
 					break;

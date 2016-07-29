@@ -143,6 +143,19 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 			$scope.showOverlay(false);
 		}
 	};
+	
+    $scope.getMeAvatarUrl = function(width, height){
+        return myHttpService.get_avatar($rootScope.myPid, width, height, $rootScope.meModel.icon_version);
+    };
+
+	$scope.$on("fdpImage_synced", function(event, data){
+        for(var i = 0, len = data.length; i < len; i++){
+            if(data[i].xpid == $rootScope.myPid){
+                $rootScope.meModel.icon_version = data[i].xef001iver;
+				break;
+            }
+        }
+	});
 
 	$scope.$on('no_license',function(event,data){
 		var data = {};

@@ -90,10 +90,8 @@
                      <div class="NotificationSection"> 
     
                         <avatar
-                            ng-class="::message.type == 'vm' || message.type == 'missed-call' || message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation'  ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
                             ng-click="go_to_notification_chat(message)"
-                            profile="::checkIfGroup(message)"
-                            type="::determineAvatarType(message)">
+                            profile="::checkIfGroup(message)">
                         </avatar>                  
                         <div class="LeftBarNotificationMessageSection" ng-init="new_notifications_to_display = getMessage(message); multiple_new_notifications = getMultipleNotifications(message)">                         
                             <div ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" ng-click="go_to_notification_chat(message)"><div class="displayName">{{::message.displayName}}</div> <div class="NotificationTime">{{  message.time | fondate:'full' }} </div></div> 
@@ -150,10 +148,8 @@
                      <div class="NotificationSection"> 
     
                         <avatar
-                            ng-class="::message.type == 'vm' || message.type == 'missed-call' || message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation'  ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
                             ng-click="go_to_notification_chat(message)"
-                            profile="::checkIfGroup(message)"
-                            type="::determineAvatarType(message)">
+                            profile="::checkIfGroup(message)">
                         </avatar>                  
 
                         <div class="LeftBarNotificationMessageSection" ng-init="away_notifications_to_display = getMessage(message);multiple_away_notifications = getMultipleNotifications(message)">
@@ -209,10 +205,8 @@
                      <div class="NotificationSection"> 
     
                         <avatar
-                            ng-class="::message.type == 'vm' || message.type == 'missed-call' || message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation'  ? '' : 'LeftBarNotificationAvatarSection NotificationAvatar'" 
                             ng-click="go_to_notification_chat(message)"
-                            profile="::checkIfGroup(message)"
-                            type="::determineAvatarType(message)">
+                            profile="::checkIfGroup(message)">
                         </avatar>                  
 
                    

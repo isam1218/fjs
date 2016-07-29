@@ -56,7 +56,7 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 				event.preventDefault();
 			});
 
-			scope.$watch("contact.call",function(){
+			scope.$watchCollection("contact.call",function(){
 				updateContact(contact);
 			});
 
