@@ -107,6 +107,9 @@ hudweb.service('SettingsService', ['$q', '$location', '$rootScope', '$routeParam
 				permissions.showZipwhip = service.isEnabled(data[i].propertyValue, 16);
 				permissions.canTransferFrom = service.isEnabled(data[i].propertyValue, 4);
 
+				// permissions.showInphonex = service.isEnabled(data[i].propertyValue, x);
+				// !!! - after setting ^ this permission, don't forget to change 'enabled' property in inphonex obj in $scope.appIcons in TopNavigationController to 'false'
+
 				// group permissions from MyPermissions.java
 				permissions.recordingEnabled = service.isEnabled(data[i].propertyValue, 14);
 				permissions.deleteMyRecordingEnabled = service.isEnabled(data[i].propertyValue, 15);

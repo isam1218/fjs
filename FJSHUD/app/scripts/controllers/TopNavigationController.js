@@ -89,6 +89,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
       title: "Inphonex"
     }
     ];
+
+  // ***need to change for inphonex: enabled property of appIcons obj, and add the final else if branch to the below me_synced sync....
 	
 	$scope.$on('me_synced', function() {
 		settingsService.getPermissions().then(function(data) {
@@ -102,6 +104,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 					$scope.appIcons[i].enabled = data.showVideoCollab;
 				else if ($scope.appIcons[i].key == 'CallCenter')
 					$scope.appIcons[i].enabled = data.showCallCenter;
+        // else if ($scope.appIcons[i].key == 'Inphonex')
+        //   $scope.appIcons[i].enabled = data.showInphonex;
 			}
 		});
 	});	
