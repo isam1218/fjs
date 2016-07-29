@@ -81,7 +81,13 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			key:"Zipwhip", 
 			enabled:false, 
 			title: "Zipwhip"
-		}
+		},
+    {
+      url:"#/inphonex",
+      key:"Inphonex",
+      enabled:true,
+      title: "Inphonex"
+    }
     ];
 	
 	$scope.$on('me_synced', function() {
