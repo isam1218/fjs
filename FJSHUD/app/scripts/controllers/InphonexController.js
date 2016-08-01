@@ -20,7 +20,8 @@ hudweb.controller('InphonexController', ['$scope', '$rootScope', '$http', 'Setti
 			.success(function(data, status, headers, config){
 				if (data && data.launchurl){
 					// if launchurl is present -> dynamically load the src attribute of iframe
-					console.log('Success: inphonex pps post request');
+					console.log('Success: inphonex pps post request sent to - ', fjs.CONFIG.SERVER.ppsServer + getInphonexUrl('inphonex/launchurl'));
+					console.log('Success: pps returns the following launch url to load in iframe - ', data.launchurl);
 					document.getElementById('Inphonexiframe').src = data.launchurl;
 				}
 				// google analytics

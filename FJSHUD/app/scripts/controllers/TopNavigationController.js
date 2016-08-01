@@ -83,10 +83,10 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			title: "Zipwhip"
 		},
     {
-      url:"#/inphonex",
+      url:"#/usageanalytics",
       key:"Inphonex",
       enabled:true,
-      title: "Inphonex"
+      title: "Usage Analytics"
     }
     ];
 

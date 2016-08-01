@@ -121,7 +121,7 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			templateUrl: 'views/Zipwhip.html',
 			controller: 'ZipwhipController'
 		})
-		.when('/inphonex',
+		.when('/usageanalytics',
 		{
 			templateUrl: 'views/Inphonex.html',
 			controller: 'InphonexController'
