@@ -305,15 +305,28 @@
 	</div>
 </div>
 <div class="BottomRow transfer" ng-show="!reasons.show && type == 'Transfer'">
-<!-- Transfer to External -->
-    <div ng-if="type ==  'Transfer'">
+		<!-- Transfer to External -->
+    <div ng-if="type ==  'Transfer' && 'business' && !contactObj">
         <div id="labels">
     		<span>{{::verbage.business}} </span>
-    		<span class="bottomElement">{{::verbage.mobile}} </span>
+    		<span class="bottomElement">{{::verbage.mobile_colon}} </span>
     	</div>
     	<div id="numbers">
     		<a href="" ng-click="transferToExternal('business', original.business, callId)">{{::business}}</a>
     		<a href="" ng-click="transferToExternal('mobile', externalXpid, callId)" class="bottomElement">{{::mobile}}</a>
+    	</div>
+    </div>
+    <!-- Transfer to Internal -->
+    <div ng-if="type == 'Transfer' && contactObj">
+        <div id="labels">
+    		<span>Extension: </span>
+    		<span>Voicemail: </span>
+    		<span ng-if="contactObj.phoneMobile">Mobile: </span>
+    	</div>
+    	<div id="numbers">
+    		<a href="" ng-click="transferToInternal('extension', callId, contactObj, params)">{{::contactObj.primaryExtension}}</a>
+    		<a href="" ng-click="transferToInternal('vm', callId, contactObj, params)">{{::contactObj.primaryExtension}}</a>
+    		<a href="" ng-click="transferToInternal('mobile', callId, contactObj, params)" ng-if="contactObj.phoneMobile">{{::contactObj.phoneMobile}}</a>
     	</div>
     </div>
 </div>
