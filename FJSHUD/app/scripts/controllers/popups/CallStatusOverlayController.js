@@ -70,13 +70,6 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		$scope.screen = 'call';
 	}
 	
-	$scope.getCallStatusAvatar = function(call) {
-		if (call && call.contactId)
-			return httpService.get_avatar(call.contactId, 28, 28);
-		else
-			return 'img/Generic-Avatar-28.png';
-	};
-	
 	$scope.bargeCall = function(type, xpid) {
 		httpService.sendAction('contacts', type + 'Call', {contactId: xpid});
 		$scope.showOverlay(false);

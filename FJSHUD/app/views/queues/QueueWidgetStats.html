@@ -77,7 +77,7 @@
 				<div><div class="TwistieArrow" ng-class="row[member.xpid] ? 'Open' : 'Closed'"></div></div>
 			</div>
 			
-			<div class="Details" ng-show="row[member.xpid]">
+			<div class="Details" ng-if="row[member.xpid]">
 				<div class="SubHeader">{{::verbage.other_queues}}</div>
 				<div class="Row" ng-repeat="other in member.otherQueues track by other.queue.xpid" ng-click="goToQueue(other.queue.xpid)">
 					<div>&nbsp;</div>
@@ -94,9 +94,7 @@
 				<div class="ActiveCall" ng-if="member.call.startedAt">
 					<div class="Info">
 						<div class="Arrow"></div>
-						<div class="Avatar CallAvatar CallAvatar_Queue">
-							<img class="AvatarImgPH" src="img/Generic-Avatar-28.png" />
-						</div>
+						<avatar profile="member.call.fullProfile" type="1"></avatar>
 						<div class="Name">{{ member.call.displayName + ' (' + member.call.phone + ')' }}</div>
 						<div class="Time" timer="member.call.startedAt"></div>
 					</div>

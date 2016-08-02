@@ -94,14 +94,6 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 				// find favorites group
 				if (groups[i].name.toLowerCase() == 'favorites')
 					favoriteID = groups[i].xpid;
-			
-				// add avatars
-				groups[i].getAvatar = function(index, size) {
-					if (this.members && this.members[index] !== undefined)
-						return httpService.get_avatar(this.members[index].contactId, size, size);
-					else
-						return 'img/Generic-Avatar-' + size + '.png';
-				};
 			}
 		}
 		else {
@@ -152,14 +144,6 @@ hudweb.service('GroupService', ['$q', '$rootScope', 'ContactService', 'HttpServi
 					
 					groups[groups.length-1].members = [];
 					groups[groups.length-1].originator = '';
-					
-					// add avatar
-					groups[groups.length-1].getAvatar = function(index, size) {
-						if (this.members && this.members[index] !== undefined)
-							return httpService.get_avatar(this.members[index].contactId, size, size);
-						else
-							return 'img/Generic-Avatar-' + size + '.png';
-					};
 				}
 			}
 		}

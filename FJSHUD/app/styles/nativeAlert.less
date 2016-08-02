@@ -10,13 +10,15 @@
     src: url(fonts/LDFComicSans.ttf);
   }
   
-	.SingleAvatar, .GroupAvatar > div {
-		border-radius: 0;
-		background-color: #8DB4BD !important;
-	}
-	  
-	.SingleAvatar div, .GroupAvatar div div {
-		display: none;
+	.Avatar {		
+		& > div {
+			border-radius: 0;
+			background-color: #8DB4BD !important;
+		}
+		
+		.Darken {
+			display: none !important;
+		}
 	}
   
   .CallStatusIconContainer{
@@ -188,6 +190,7 @@
             width: 40px;
             height: 40px;
             top: -2px;
+			font-size: 16px;
 			
 			img {
 				width: 100%;

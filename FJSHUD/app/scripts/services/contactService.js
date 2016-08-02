@@ -53,11 +53,6 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 			if (!match && data[i].xef001type != 'delete') {
 				contacts.push(data[i]);
 				contact = contacts[contacts.length-1];
-				
-				// add avatar
-				contact.getAvatar = function(size) {
-					return httpService.get_avatar(this.xpid, size, size, this.icon_version); 
-				};
 			}
 			
 			// fill in missing meModel data
@@ -165,6 +160,11 @@ hudweb.service('ContactService', ['$q', '$rootScope', 'NtpService', 'HttpService
 				// update avatar version
 				if (data[i].xpid == contacts[c].xpid) {
 					contacts[c].icon_version = data[i].xef001iver;
+					
+					// me
+					if (data[i].xpid == $rootScope.myPid)
+						$rootScope.meModel.icon_version = data[i].xef001iver;
+					
 					break;
 				}
 			}

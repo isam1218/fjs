@@ -190,7 +190,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 				}
 				// unknown
 				else {
-					line.append('<div class="Avatar AvatarSmall"><img src="img/Generic-Avatar-14.png"/></div>');	
+					line.append('<div class="Avatar"><div><img src="img/Generic-Avatar.png"/></div></div>');	
 					
 					content = '<div class="ListRowContent"><div class="ListRowTitle"><div class="name"><strong>Unknown number</strong></div>';
 

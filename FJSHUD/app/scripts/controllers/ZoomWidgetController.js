@@ -424,13 +424,6 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 		$scope.$digest();
     };
 
-     $scope.getAvatarUrl = function(xpid,width, height) {
-        if(xpid){
-            return httpService.get_avatar(xpid,width,height);
-        }
-    };
-
-
     $scope.deleteContact = function(contactId){
         for (var i = 0, iLen = $scope.addedContacts.length; i < iLen; i++) {
             if($scope.addedContacts[i].xpid == contactId){

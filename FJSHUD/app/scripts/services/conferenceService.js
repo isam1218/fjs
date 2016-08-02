@@ -51,16 +51,9 @@ function($q, $rootScope, $location, $routeParams, contactService, httpService, n
 			conferences = data;
 			deferred.resolve(formatData());
 				
-			// add avatar function
+			// add members
 			for (var i = 0, len = conferences.length; i < len; i++) {
 				conferences[i].members = [];
-				
-				conferences[i].getAvatar = function(index, size) {
-					if (this.members && this.members[index] !== undefined)
-						return httpService.get_avatar(this.members[index].contactId, size, size);
-					else
-						return 'img/Generic-Avatar-' + size + '.png';
-				};
 			}
 		}
 		else {
@@ -90,14 +83,6 @@ function($q, $rootScope, $location, $routeParams, contactService, httpService, n
 					conferences.push(data[i]);
 					
 					conferences[conferences.length-1].members = [];
-					
-					// add avatar
-					conferences[conferences.length-1].getAvatar = function (index, size) {
-						if (this.members && this.members[index] !== undefined)
-							return httpService.get_avatar(this.members[index].contactId, size, size);
-						else
-							return 'img/Generic-Avatar-' + size + '.png';
-					};
 				}
 			}
 			httpService.getFeed('conferencepermissions');

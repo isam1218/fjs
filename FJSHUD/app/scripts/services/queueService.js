@@ -98,13 +98,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', '$location', 'ContactService
 				queues[i].longestWait = 0;
 				queues[i].longestWaitDuration = 0;
 				queues[i].longestActive = 0;
-				
-				queues[i].getAvatar = function (index, size) {
-					if (this.members && this.members[index] !== undefined)
-						return httpService.get_avatar(this.members[index].contactId, size, size);
-					else
-						return 'img/Generic-Avatar-' + size + '.png';
-				};
 			}
 		}
 		else {
@@ -133,14 +126,6 @@ hudweb.service('QueueService', ['$rootScope', '$q', '$location', 'ContactService
 					
 					queues[queues.length-1].calls = [];
 					queues[queues.length-1].members = [];
-					
-					// add avatar
-					queues[queues.length-1].getAvatar = function (index, size) {
-						if (this.members && this.members[index] !== undefined)
-							return httpService.get_avatar(this.members[index].contactId, size, size);
-						else
-							return 'img/Generic-Avatar-' + size + '.png';
-					};
 				}
 			}
 		}

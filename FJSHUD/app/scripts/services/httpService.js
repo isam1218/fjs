@@ -320,7 +320,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     	if (pid)
            	return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID + (xversion ? '&xver=' + xversion : '');
 		else
-            return "img/Generic-Avatar-Small.png";
+            return "img/Generic-Avatar.png";
 	};
 	
 	this.get_audio = function(key) {

@@ -104,10 +104,43 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 			
 			var iconUrl;
 			
-			if (data.fullProfile)
-				iconUrl = data.fullProfile.getAvatar(64);
+			if (data.fullProfile) {
+				// user's image
+				if (data.fullProfile.icon_version) {
+					iconUrl = httpService.get_avatar(data.fullProfile.xpid, 40, 40, data.fullProfile.icon_version);
+				}
+				// create one from scratch
+				else {
+					var canvas = document.createElement("canvas");
+					var ctx = canvas.getContext("2d");					
+					canvas.width = canvas.height = 40;
+
+					// bg
+					ctx.fillStyle = '#8DB4BD';
+					ctx.fillRect(0, 0, 40, 40);
+
+					// text
+					var split = data.fullProfile.displayName.split(' ');
+					var fName = split[0].charAt(0);
+					var lName = '';
+						
+					if (split.length > 1)
+						lName = split[split.length-1].charAt(0);
+						
+					ctx.textBaseline = 'middle';
+					ctx.textAlign = 'center';
+					ctx.font = '16px Arial';
+					ctx.fillStyle = '#ffffff';
+					ctx.fillText(fName + lName, 20, 20);
+	  
+					// export
+					iconUrl = canvas.toDataURL();
+					
+					canvas = null;
+				}
+			}
 			else if (data.type != 'error')
-				iconUrl = "img/Generic-Avatar-28.png";
+				iconUrl = "img/Generic-Avatar.png";
 			else
 				iconUrl = 'img/Generic-Error.png';
 

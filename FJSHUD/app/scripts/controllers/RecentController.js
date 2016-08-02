@@ -267,19 +267,6 @@ hudweb.controller('RecentController', ['$scope', '$rootScope', 'ContactService',
       conferencePagesShown++;
   };
 
-  $scope.getAvatarUrl = function(conference, index) {
-    if (conference.members) {
-      if (conference.members[index] !== undefined) {
-        var xpid = conference.members[index].contactId;
-        return httpService.get_avatar(xpid,28,28);
-      } else {
-        return 'img/Generic-Avatar-28.png';
-      }
-    } else {
-        return 'img/Generic-Avatar-28.png';
-    }
-  };
-
   $scope.getDroppableType = function(type) {
 	switch(type) {
 		case 'contact':

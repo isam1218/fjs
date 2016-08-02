@@ -3,40 +3,53 @@
 	width: 34px;
 	height: 34px;
 	text-align: center;
+	color: #ffffff;
+	font-size: 14px;
 	display: inline-block;
 		
 	img {
 		width: 100%;
 		height: 100%;
 		border: 0;
+		background-color: white;
 	}
 	
-	&.SingleAvatar {
+	& > div {
 		background-color: #8DB4BD;
 		border-radius: 50%;
 		overflow: hidden;
+		position: absolute;
+		display: flex;
+		display: -webkit-flex;
+		align-items: center;
+		-webkit-align-items: center;
+	}
 	
-		&.Call_Office {
+	&.SingleAvatar {
+		& > div {
+			width: 100%;
+			height: 100%;
+		}
+	
+		&.Call_Office > div {
 			border: 1px solid #24a0fe !important;
 		}
 		
-		&.Call_Queue {
+		&.Call_Queue > div {
 			border: 1px solid #fd5c2a !important;
 		}
 		
-		&.Call_External {
+		&.Call_External > div {
 			border: 1px solid #00ad33 !important;
 		}
 	}
 	
 	&.GroupAvatar {
+		font-size: 10px;
+		
 		& > div {
-			position: absolute;
 			width: 23px;
 			height: 23px;
-			border-radius: 50%;
-			overflow: hidden;
-			background-color: #8DB4BD;
 			
 			&:nth-child(1) { 
 				top: 0;
@@ -51,24 +64,32 @@
 		}
 	}
 	
-	// dark overlay
-	&.SingleAvatar div, &.GroupAvatar div div {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: black;
-		opacity: 0;
+	.Initials {
+		flex: 1;
+		-webkit-flex: 1;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+		-moz-user-select: none;
+		text-transform: uppercase;
 	}
 	
-	&:hover {
-		&.SingleAvatar, &.GroupAvatar > div {
-			background-color: #75969E;
-		}
+	.Darken {
+		position: absolute;
+		width: 100%;
+		max-width: 100% !important;
+		height: 100%;
+		top: 0;
+		left: 0;
+		background-color: black;
+		opacity: .25;
+		display: none;
+	}
+	
+	&:hover > div {
+		background-color: #75969E;
 		
-		&.SingleAvatar div, &.GroupAvatar div div {
-			opacity: .25;
+		.Darken {
+			display: block;
 		}
 	}
 }
@@ -76,13 +97,18 @@
 // center avatars are medium-sized
 .Widget .WidgetHeader .Avatar,
 .QueueList .Block .Avatar,
-.Widget .ListRow .Avatar:not([class*="Call_"]) {
+.Widget .ListRow:not(.Small) .Avatar:not([class*="Call_"]) {
 	width: 40px;
 	height: 40px;
+	font-size: 16px;
 	
-	&.GroupAvatar div {
-		width: 26px;
-		height: 26px;
+	&.GroupAvatar {
+		font-size: 12px;
+		
+		& > div {
+			width: 26px;
+			height: 26px;
+		}
 	}
 }
 
@@ -90,6 +116,7 @@
 .WidgetMe .WidgetHeader .Avatar {
 	width: 90px;
 	height: 90px;
+	font-size: 40px;
 }
 
 .AvatarWarningSmall{

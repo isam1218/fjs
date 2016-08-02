@@ -48,10 +48,6 @@ hudweb.controller('NotificationController',
   $scope.displayAlert = false;
   $scope.clearOld;
   $scope.alertDuration = settingsService.getSetting('alert_call_duration');    
-
-  $scope.getAvatar = function(pid){
-    return myHttpService.get_avatar(pid,40,40);
-  };
   
     $scope.addError = function(type) {
         for (var i = 0, len = $scope.errors.length; i < len; i++) {

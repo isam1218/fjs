@@ -29,10 +29,7 @@
               <div class="file-input Dialog-settings-row" flow-init="{testChunks:false}" flow-files-submitted="flow_cleanup($files)" flow-name="avatar.flow" flow-file-added="change_avatar($file)">
 
                 <label class="queueBlock">{{::verbage.avatar}}:</label>
-                <div class="Avatar SingleAvatar">
-				  <div></div>
-                  <img onerror="this.src='img/Generic-Avatar-Small.png'" data-ng-src="{{getMeAvatarUrl(40,40)}}" />
-                </div> 
+                <avatar profile="me"></avatar>
                 <div class="XButton"><span flow-btn flow-drop>{{::verbage.Upload}}</span></div>               
               </div>
             </div>  

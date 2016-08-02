@@ -971,13 +971,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		$rootScope.$broadcast('recentAdded', {id: xpid, type: 'contact', time: new Date().getTime()});
 	};
 
-
-	var getAvatar = function(pid){
-		return HttpService.get_avatar(pid,40,40);
-	};
-
-
-
 	var showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall);
 	};

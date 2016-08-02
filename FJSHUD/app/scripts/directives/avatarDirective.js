@@ -1,6 +1,7 @@
-hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', 'HttpService', 'GroupService', function($rootScope, $parse, $timeout, settingsService, httpService, groupService) {
+hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService', 'HttpService', function($rootScope, $parse, $timeout, settingsService, httpService) {
 	var overlay = angular.element(document.getElementById('ContextMenu'));	
 	var url = location.href.replace(location.hash, '');
+	var defaultSize = 40;
 	var timer;
 	var current;
 	
@@ -8,12 +9,26 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 	$rootScope.$on('fdpImage_synced', function(event, data) {
 		if (!document.getElementById('AppLoading')) {
 			for (var i = 0, len = data.length; i < len; i++) {
-				$('.Avatar img.' + data[i].xpid).attr('src', httpService.get_avatar(data[i].xpid, 28, 28, data[i].xef001iver));
+				var avatars = document.querySelectorAll('.Avatar div[class="' + data[i].xpid + '"]');
+				
+				for (var j = 0; j < avatars.length; j++) {
+					var size = avatars[j].getAttribute('size');
+					
+					avatars[j].innerHTML = '<div class="Darken"></div><img src="' + httpService.get_avatar(data[i].xpid, size, size, data[i].xef001iver) + '" />';
+				}
+				
+				avatars = null;
 			}
 		}
 	});
 	
-	// used as <avatar profile="member" context="widget:parent" type="{{callType}}"></avatar> where context and type are optional
+	/*
+		<avatar profile="member" // required user object
+				context="widget:parent" // string of app area + optional data object
+				type="{{callType}}" // integer to add colored border
+				size="width" // integer to change default img src size
+		</avatar>
+	*/
 	return {
 		restrict: 'E',
 		replace: true,
@@ -63,80 +78,89 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				
 				element.addClass(classy);
 			}
-
-			// not a valid object, but still show an avatar
-			if (!profile || !profile.xpid) {
-				if (attrs.profile && attrs.profile == 4)
-					showGroup();
-				else
-					showSingle();
+			
+			// group vs single
+			if (attrs.profile == 4 || (profile && profile.name && profile.members)) {
+				element.addClass('GroupAvatar');
 				
-				return;
-			}
-			// single vs group
-			else if (profile.firstName) {
-				showSingle();
-				
-				if (profile.icon_version)
-					loadImage(element.find('img'), profile);
-			}
-			else if (profile.name && profile.members) {
-				showGroup();
-				
-				// find two members with avatars
+				// find two group members to include
 				var found = 0;
+				var html = '';
 				
-				for (var i = 0, len = profile.members.length; i < len; i++) {
-					if (profile.members[i].fullProfile && profile.members[i].fullProfile.icon_version) {
-						loadImage(angular.element(element.find('img')[found]), profile.members[i].fullProfile);
-						found++;
+				if (profile.members) {
+					for (var i = 0, len = profile.members.length; i < len; i++) {
+						if (profile.members[i].fullProfile) {
+							html += getAvatar(profile.members[i].fullProfile);
 						
-						if (found == 2)
-							break;
+							found++;						
+							if (found == 2) break;
+						}
 					}
 				}
+				
+				// fill in any missing avatars
+				for (var i = found; i < 2; i++) {
+					html += getAvatar(null);
+				}
+				
+				element.html(html);
 			}
-			else
-				showSingle();
+			else {
+				element.addClass('SingleAvatar');
+				element.html(getAvatar(profile));
+			}
 			
 			// set up watchers for avatars that may change
 			if (widget == 'callstatus') {
-				scope.$watch($parse(attrs.profile), function (newObj) {
-					showSingle();
-					
-					if (newObj && newObj.xpid)
-						loadImage(element.find('img'), newObj);
+				scope.$watch($parse(attrs.profile), function (newObj, oldObj) {
+					if (newObj != oldObj)
+						element.html(getAvatar(newObj));
 				});
 			}
 			
-			function showSingle() {
-				element.addClass('SingleAvatar');
-				element.html('<div></div><img src="' + url + 'img/Generic-Avatar-28.png" />');
+			if (attrs.profile == 'me') {
+				// if myself, pull data from rootscope
+				settingsService.getSettings().then(function() {
+					var temp = {
+						xpid: $rootScope.myPid,
+						displayName: $rootScope.meModel.display_name,
+						icon_version: $rootScope.meModel.icon_version
+					};
+					
+					element.html(getAvatar(temp));
+				});
 			}
 			
-			function showGroup() {
-				element.addClass('GroupAvatar');
-				element.html('<div><div></div><img src="' + url + 'img/Generic-Avatar-28.png" /></div><div><div></div><img src="' + url + 'img/Generic-Avatar-28.png" /></div>');
-			}
-			
-			function loadImage(el, profile) {
-				var img = new Image();
-				img.src = profile.getAvatar(28);
+			function getAvatar(profile) {
+				var html = '';
+				var classy = '';
+				var size = attrs.size ? attrs.size : defaultSize;
 				
-				// also attach xpid to listen for updates
-				el.addClass(profile.xpid);
-
-				// replace default image with loaded image and make sure to kill event listeners
-				img.onload = function(){
-					el.attr("src", img.src);
-					img.onload = null;
-					img.onerror = null;
-				};
-
-				img.onerror = function(){
-					img.onload = null;
-					img.onerror = null;
-				};
+				if (profile && profile.displayName) {
+					// remember xpid so we can update src later on
+					classy = ' class="' + profile.xpid + '"';
+					
+					// user's custom image
+					if (profile.icon_version) {						
+						html = '<div class="Darken"></div><img src="' + httpService.get_avatar(profile.xpid, size, size, profile.icon_version) + '" />';
+					}
+					// initials
+					else {
+						var split = profile.displayName.split(' ');
+						var fName = split[0].charAt(0);
+						var lName = '';
+						
+						if (split.length > 1)
+							lName = split[split.length-1].charAt(0);
+						
+						html = '<div class="Initials">' + fName + lName + '</div>';
+					}
+				}
+				// default image
+				else
+					html = '<div class="Darken"></div><img src="' + url + 'img/Generic-Avatar.png" />';
+				
+				return ('<div' + classy + ' size="' + size + '">' + html + '</div>');
 			}
 			
 			/**
@@ -144,10 +168,8 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			*/
 			
 			// context menu doesn't apply to everyone, sorry
-			if (widget) {
-                if (widget == 'callstatus' || widget == 'drag' || widget == 'zoom')
-					return;
-			}
+            if (!profile || !profile.xpid || widget == 'callstatus' || widget == 'drag' || widget == 'zoom')
+				return;
 			
 			element.bind('mouseenter', function(e) {
 				rect = element[0].getBoundingClientRect();

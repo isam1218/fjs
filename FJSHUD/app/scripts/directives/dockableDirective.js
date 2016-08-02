@@ -1,6 +1,4 @@
-hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope', function(httpService, $parse, $compile, $rootScope) {
-	var defaultImage = "this.src='img/Generic-Avatar-28.png'";
-	
+hudweb.directive('dockable', ['HttpService', '$parse', '$compile', '$rootScope', function(httpService, $parse, $compile, $rootScope) {	
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {

@@ -9,19 +9,6 @@ hudweb.controller('ConversationWidgetQueuesController', ['$scope', '$rootScope',
     $scope.search = {};
     $scope.search.query = '';
 
-    $scope.getAvatarUrl = function(queue, index) {
-        
-        if(queue.members){
-            if (queue.members[index] !== undefined) {
-                var xpid = queue.members[index];
-                return httpService.get_avatar(xpid,14,14);
-            }
-            else
-                return 'img/Generic-Avatar-14.png';
-
-        }
-    };
-
     $scope.queueLoginAll = function(){
         httpService.sendAction("contacts","agentLoginAll", {contactId:$scope.contactId});
     };
