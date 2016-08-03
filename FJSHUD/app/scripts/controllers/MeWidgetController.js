@@ -1199,24 +1199,43 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         switch(type){
             case "From":
                 if(calllog.incoming){
-                    if(calllog.phone){
-                        return calllog.phone;
-                    }else{
+                    if (calllog.displayName){
                         return calllog.displayName;
+                    } else {
+                        return calllog.phone;
                     }
-                }else{                	
-                   return $scope.verbage.you + " @ " + calllog.location; 
-                }
-            case "To":
-                if(calllog.incoming){                	
-                    return $scope.verbage.you + " @ " + calllog.location;
                 }else{
-                    if(calllog.phone){
-                        return calllog.phone;
-                    }else{
-                        return calllog.displayName;
+                    var parsedLocation = calllog.location;
+                    if (parsedLocation == "HUDweb"){
+                        // calls made via webphone print out location as 'HUDWeb' -> print out 'HUD Softphone'
+                        return "HUD Softphone";
+                    } else if (parsedLocation.split('').length <= 6){
+                        // an office extension isn't longer than 6 digits, otherwise it would be a local phone number -> print out 'Office'
+                        return "Office";
+                    } else {
+                        // this catches everything else, mobile numbers should have a length of at least 10...
+                        return "Carrier";
                     }
                 }
+                break;
+            case "To":
+                if(calllog.incoming){
+                    var parsedLocation = calllog.location;
+                    if (parsedLocation == "HUDweb"){
+                        return "HUD Softphone";
+                    } else if (parsedLocation.split('').length <= 6){
+                        return "Office";
+                    } else {
+                        return "Carrier";
+                    }
+                }else{
+                    if (calllog.displayName){
+                        return calllog.displayName;
+                    } else {
+                        return calllog.phone;
+                    }
+                }
+                break;
         }
     };
 
