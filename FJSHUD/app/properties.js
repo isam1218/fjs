@@ -2,19 +2,11 @@ var fjs = {};
 
 fjs.CONFIG = {
     SERVER: {
-        serverURL: {{ server_url }}
-                , loginURL: {{ login_url }}
-      , ppsServer: {{ pps_url }}
-    }
-    , FEEDS:['me', 'contacts', 'locations', 'settings','calls', 'queues','conferences','weblauncher_task','mycalls','groups','voicemailbox','calllog','server','location_status', 
-            'queuelogoutreasons','queue_members', 'queuemembercalls','queue_members_stat','queue_members_status',
-            'queue_call','queuepermissions', 'queue_stat_calls',
-            'calldetails',  'grouppermissions', 'groupcontacts', 
-            'contactpermissions', 'contactstatus', 'fdpImage',   'group_page_member',
-            'weblauncher', 'weblaunchervariables',  
-            'streamevent','conferencemembers',
-            'conferencepermissions','conferencestatus','parkedcalls','mycalldetails','i18n_langs','quickinbox',]
-    , 
+        serverURL: {{ server_url }},
+        loginURL: {{ login_url }},
+		ppsServer: {{ pps_url }}
+    }, 
+	FEEDS: ['me', 'contacts', 'fdpImage', 'locations', 'settings', 'calls', 'queues','conferences', 'weblauncher_task', 'mycalls', 'groups', 'voicemailbox', 'calllog', 'server','location_status', 'queuelogoutreasons', 'queue_members', 'queuemembercalls', 'queue_members_stat', 'queue_members_status', 'queue_call','queuepermissions', 'queue_stat_calls', 'calldetails', 'grouppermissions', 'groupcontacts', 'contactpermissions', 'contactstatus', 'group_page_member', 'weblauncher', 'weblaunchervariables', 'streamevent', 'conferencemembers', 'conferencepermissions', 'conferencestatus', 'parkedcalls', 'mycalldetails', 'i18n_langs', 'quickinbox'], 
     CALL_STATES:{
         CALL_UNKNOWN:-1,
         CALL_RINGING:0,
@@ -30,7 +22,6 @@ fjs.CONFIG = {
         EXTERNAL_CALL:5,
         CALL_MENU:6,
     },
-    
     BARGE_TYPE:{
         BARGE:2,
         MONITOR:1,
