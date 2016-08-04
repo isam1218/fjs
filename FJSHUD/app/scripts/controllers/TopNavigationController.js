@@ -85,12 +85,10 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
     {
       url:"#/usageanalytics",
       key:"Inphonex",
-      enabled:true,
+      enabled:false,
       title: "Usage Analytics"
     }
     ];
-
-  // ***need to change for inphonex: enabled property of appIcons obj, and add the final else if branch to the below me_synced sync....
 	
 	$scope.$on('me_synced', function() {
 		settingsService.getPermissions().then(function(data) {
@@ -109,6 +107,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			}
 		});
 	});	
+  // ^ ***Inphonex permission is hardcoded to false (appIcon is commented out) until CP changes are in place***
 
 	$scope.checkEmail = function(key,url){
 			

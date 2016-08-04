@@ -121,11 +121,12 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			templateUrl: 'views/Zipwhip.html',
 			controller: 'ZipwhipController'
 		})
-		.when('/usageanalytics',
-		{
-			templateUrl: 'views/Inphonex.html',
-			controller: 'InphonexController'
-		})
+		// ***commented out accessed to inphonex until CP permissions updated...
+		// .when('/usageanalytics',
+		// {
+		// 	templateUrl: 'views/Inphonex.html',
+		// 	controller: 'InphonexController'
+		// })
 		.otherwise({
 			redirectTo: '/settings'
 		});
