@@ -373,7 +373,7 @@
       send_message:'Send Message',
       delete_group:'Delete Group',
       delete_word:'Delete',
-      transfer_external: 'Select Which Number To Transfer To',
+      transfer_external: 'Select which number to transfer to:',
       business: 'Business:',
       mobile: 'Mobile',
       mobile_colon: 'Mobile:',

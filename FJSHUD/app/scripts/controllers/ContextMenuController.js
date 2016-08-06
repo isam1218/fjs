@@ -279,7 +279,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		httpService.sendAction(transferFeed, transferAction, transferParams);	
 		hideOverlay(500);
 		return;
-		//return;
 	};
 	
 	$scope.takeParkedCall = function(){
