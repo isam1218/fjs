@@ -123,7 +123,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				settingsService.getSettings().then(function() {
 					var temp = {
 						xpid: $rootScope.myPid,
-						displayName: $rootScope.meModel.display_name,
+						fullName: $rootScope.meModel.display_name,
 						icon_version: $rootScope.meModel.icon_version
 					};
 					
@@ -136,7 +136,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 				var classy = '';
 				var size = attrs.size ? attrs.size : defaultSize;
 				
-				if (profile && profile.displayName) {
+				if (profile && profile.fullName) {
 					// remember xpid so we can update src later on
 					classy = ' class="' + profile.xpid + '"';
 					
@@ -146,7 +146,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 					}
 					// initials
 					else {
-						var split = profile.displayName.split(' ');
+						var split = profile.fullName.split(' ');
 						var fName = split[0].charAt(0);
 						var lName = '';
 						
