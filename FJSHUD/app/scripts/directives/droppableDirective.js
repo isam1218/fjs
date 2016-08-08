@@ -277,6 +277,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 							if (scope.gadget && !scope.gadget.data.primaryExtension) {
 								if (scope.gadget.data.phoneMobile && scope.gadget.data.phoneBusiness) {
 									enterElement(scope.gadget.data.phoneBusiness, scope.gadget.data.phoneMobile, scope.gadget.data.xpid);
+									return;
 								} else if (scope.gadget.data.phoneMobile) {
 									// transfer to mobile number
 									transferToExternal('mobile',scope.gadget.data.xpid);
@@ -290,6 +291,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 							} else if (scope.contact && !scope.contact.primaryExtension) {
 								if (scope.contact.phoneMobile && scope.contact.phoneBusiness) {
 									enterElement(scope.contact.phoneBusiness, scope.contact.phoneMobile, scope.contact.xpid);
+									return;
 								} else if (scope.contact.phoneMobile) {
 									// mobile
 									transferToExternal('mobile',scope.contact.xpid);
@@ -303,6 +305,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 							} else if (scope.item && !scope.item.primaryExtension) {
 								if (scope.item.phoneMobile && scope.item.phoneBusiness) {
 									enterElement(scope.item.phoneBusiness, scope.item.phoneMobile, scope.item.xpid);
+									return;
 								} else if (scope.item.phoneMobile) {
 									// mobile
 									transferToExternal('mobile',scope.item.xpid);
@@ -314,7 +317,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 								}
 							}
 
-							/* [TRANSFERRING TO INTERNAL CONTACT (D&D)] */
+							/* [TRANSFERRING TO INTERNAL CONTACT (Drag & Drop)] */
 							feed = 'calls';
 							// queue call vs my call vs other's call
 							if (obj.agentContactId)
@@ -325,16 +328,25 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 								params.fromContactId = obj.xpid;
 
 							// contact id comes from multiple places
-							if (scope.contact)
+							if (scope.contact){
 								params.toContactId = scope.contact.xpid;
-							else if (scope.member)
+								// enterElement has extra arguments if internal transfer
+								enterElement(scope.contact.phoneBusiness, scope.contact.phoneMobile, scope.contact.xpid, scope.contact, params);
+							}
+							else if (scope.member){
 								params.toContactId = scope.member.contactId;
-							else if (scope.gadget)
+								enterElement(scope.member.phoneBusiness, scope.member.phoneMobile, scope.member.fullProfile.xpid, scope.member.fullProfile, params);
+							}
+							else if (scope.gadget){
 								params.toContactId = scope.gadget.data.xpid;
-							else if (scope.item)
+								enterElement(scope.gadget.data.phoneBusiness, scope.gadget.data.phoneMobile, scope.gadget.data.xpid, scope.gadget.data, params);
+							}
+							else if (scope.item){
 								params.toContactId = scope.item.xpid;
+								enterElement(scope.item.phoneBusiness, scope.item.phoneMobile, scope.item.xpid, scope.item, params);
+							}
 
-							httpService.sendAction(feed, action, params);
+							// httpService.sendAction(feed, action, params);
 						}
 					}//end transfer call
 
@@ -343,14 +355,14 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 						timeout = null;
 					}, 100);
 
-					function enterElement(business, mobile, externalXpid){
+					function enterElement(business, mobile, externalXpid, contact, params){
 						var avatar = element[0].getElementsByClassName('Avatar')[0];
 						rect = avatar.getBoundingClientRect();
 						$timeout.cancel(timer);
 
 						if (overlay.css('display') != 'block') {
 							// delay
-							timer = $timeout(showOverlay(business, mobile, externalXpid), settingsService.getSetting('avatar_hover_delay')*1000);
+							timer = $timeout(showOverlay(business, mobile, externalXpid, contact, params), settingsService.getSetting('avatar_hover_delay')*1000);
 						}
 						else if (current != element) {
 							// hovered over a new avatar
@@ -360,7 +372,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 						current = element;
 					};
 
-					function showOverlay(business, mobile, externalXpid) {
+					function showOverlay(business, mobile, externalXpid, contact, params) {
 						overlay.bind('mouseleave', function(e) {
 							// keep open if user moves back onto avatar
 							for (var i = 0, iLen = current.children().length; i < iLen; i++)  {
@@ -381,6 +393,9 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 						obj.mobile = mobile;
 						obj.externalXpid = externalXpid;
 						obj.callId = obj.xpid;
+						// extra properties added to obj if user drop-transfers to an interal contact...
+						obj.contactObj = contact;
+						obj.params = params;
 
 						// send data to controller
 						var data = {

@@ -72,10 +72,15 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		if($scope.original.type && $scope.original.type == 'transfer')
 		{
 			$scope.type = 'Transfer';
-			$scope.business = formatNumber($scope.original.business);//$scope.original.business.length > 11 ? $scope.original.business : '1-'+ $scope.original.business.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
-			$scope.mobile = formatNumber($scope.original.mobile);//$scope.original.mobile.length > 10 ? $scope.original.mobile : '1-'+ $scope.original.mobile.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');			
+			if ($scope.original.business)
+				$scope.business = formatNumber($scope.original.business);//$scope.original.business.length > 11 ? $scope.original.business : '1-'+ $scope.original.business.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');
+			if ($scope.original.mobile)
+				$scope.mobile = formatNumber($scope.original.mobile);//$scope.original.mobile.length > 10 ? $scope.original.mobile : '1-'+ $scope.original.mobile.replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3');			
+			
 			$scope.externalXpid = $scope.original.externalXpid;
-			$scope.callId = $scope.original.callId;			
+			$scope.callId = $scope.original.callId;
+			$scope.contactObj = $scope.original.contactObj;
+			$scope.params = $scope.original.params;
 		}	
 		else if ($scope.original.parkExt !== undefined) {
 			$scope.type = 'Contact';
@@ -231,6 +236,33 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: gaLabel});
 	};
 	
+	$scope.transferToInternal = function(type, callId, contactObj, params){
+		var transferFeed, transferAction;
+		var transferParams = {};
+		switch (type){
+			case 'mobile':
+				transferFeed = 'mycalls';
+				transferAction = 'transferToContactMobile';
+				transferParams.mycallId = callId;
+				transferParams.toContactId = contactObj.xpid;
+				break;
+			case 'vm':
+				transferFeed = 'mycalls';
+				transferAction = 'transferToVoicemail';
+				transferParams.mycallId = callId;
+				transferParams.toContactId = params.toContactId;
+				break;
+			case 'extension':
+				transferFeed = 'calls';
+				transferAction = 'transferToContact';
+				transferParams = params;
+				break;
+		}
+		httpService.sendAction(transferFeed, transferAction, transferParams);
+		hideOverlay(500);
+		return;
+	}
+
 	$scope.transferToExternal = function(type, toWhom, callId) {
 		switch (type) {
 			case 'mobile':
@@ -246,7 +278,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		transferParams.mycallId = callId;		
 		httpService.sendAction(transferFeed, transferAction, transferParams);	
 		hideOverlay(500);
-		//return;
+		return;
 	};
 	
 	$scope.takeParkedCall = function(){
