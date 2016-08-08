@@ -143,7 +143,7 @@
                   <span>To:</span>
                   <input type="search" ng-show="transferComponent && !showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="SearchSection" placeholder="Enter Phone Number, Extension or Contact Name" />
 
-                  <div class="ListRow" ng-show="transferComponent && showResult" ng-click="showResultFalse()">
+                  <div class="ListRow" ng-if="transferComponent && showResult" ng-click="showResultFalse()">
                     <avatar profile="transferToDisplayName"></avatar>
                     <div class="ListRowContent" ng-switch="transferToDisplayName.call != null">
                       <div class="ListRowTitle">
