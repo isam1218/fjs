@@ -187,7 +187,7 @@
 	<div ng-include="currentPopup.url"></div>
 	<div ng-include="overlay.url" ng-if="overlay.show"></div>
 
-	<div id="ContextMenu"
+	<div ng-class="type == 'Transfer' ? 'transferbg' : ''" id="ContextMenu"
 		include-once="views/ContextMenu.html"
 		ng-controller="ContextMenuController">
 	</div>
