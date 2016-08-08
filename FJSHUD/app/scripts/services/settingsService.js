@@ -107,6 +107,9 @@ hudweb.service('SettingsService', ['$q', '$location', '$rootScope', '$routeParam
 				permissions.showZipwhip = service.isEnabled(data[i].propertyValue, 16);
 				permissions.canTransferFrom = service.isEnabled(data[i].propertyValue, 4);
 
+				// bit for inphonex should be 18, need to verify when CP changes are complete (8-4-16)
+				permissions.showInphonex = service.isEnabled(data[i].propertyValue, 18);
+
 				// group permissions from MyPermissions.java
 				permissions.recordingEnabled = service.isEnabled(data[i].propertyValue, 14);
 				permissions.deleteMyRecordingEnabled = service.isEnabled(data[i].propertyValue, 15);

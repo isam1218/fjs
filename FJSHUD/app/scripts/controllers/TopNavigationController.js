@@ -81,7 +81,13 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 			key:"Zipwhip", 
 			enabled:false, 
 			title: "Zipwhip"
-		}
+		},
+    {
+      url:"#/usageanalytics",
+      key:"Inphonex",
+      enabled:false,
+      title: "Usage Analytics"
+    }
     ];
 	
 	$scope.$on('me_synced', function() {
@@ -96,9 +102,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 					$scope.appIcons[i].enabled = data.showVideoCollab;
 				else if ($scope.appIcons[i].key == 'CallCenter')
 					$scope.appIcons[i].enabled = data.showCallCenter;
+        // else if ($scope.appIcons[i].key == 'Inphonex')
+        //   $scope.appIcons[i].enabled = data.showInphonex;
 			}
 		});
 	});	
+  // ^ ***Inphonex permission is hardcoded to false (appIcon is commented out) until CP changes are in place***
 
 	$scope.checkEmail = function(key,url){
 			
