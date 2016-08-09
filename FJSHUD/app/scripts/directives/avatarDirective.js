@@ -5,7 +5,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 	var timer;
 	var current;
 	
-	// show updated avatars
+	// show new avatars by image
 	$rootScope.$on('fdpImage_synced', function(event, data) {
 		if (!document.getElementById('AppLoading')) {
 			for (var i = 0, len = data.length; i < len; i++) {
@@ -22,7 +22,32 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 		}
 	});
 	
-	/*
+	// show new avatars by name
+	$rootScope.$on('contacts_synced', function(event, data) {
+		if (!document.getElementById('AppLoading')) {
+			for (var i = 0, len = data.length; i < len; i++) {
+				// we only care about external contacts
+				if (data[i].xef001type != 'delete' && !data[i].primaryExtension) {
+					var split = data[i].fullName.split(' ');
+					var fName = split[0].charAt(0);
+					var lName = '';
+						
+					if (split.length > 1)
+						lName = split[split.length-1].charAt(0);
+						
+					var avatars = document.querySelectorAll('.Avatar div[class="' + data[i].xpid + '"] .Initials');
+					
+					// update initials
+					for (var j = 0; j < avatars.length; j++)
+						avatars[j].innerHTML = fName + lName;
+					
+					avatars = null;
+				}
+			}
+		}
+	});
+	
+	/**
 		<avatar profile="member" // required user object
 				context="widget:parent" // string of app area + optional data object
 				type="{{callType}}" // integer to add colored border
