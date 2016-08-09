@@ -46,6 +46,20 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 							|| obj.recorded !== undefined)
 						type = 'Call';
 
+					// checking for when a user attempts to drag a call to an external contact that doesn't have any attached phone numbers (want to disable drop-capabaility-UI)
+					// An external contact: 1) only has "Call" type in drops array, and 2) does not have a primaryExtension (and in this case no phoneMobile nor phoneBusiness properties)
+					if (drops.length === 1 && drops[0] == "Call"){
+						if (scope.contact && !scope.contact.primaryExtension && !scope.contact.phoneMobile && !scope.contact.phoneBusiness){
+							// dragging call to CONTACT PANEL external which has no phone #s attached to it -> cant D&D
+							return;
+						} else if (scope.gadget && !scope.gadget.data.primaryExtension && !scope.gadget.data.phoneMobile && !scope.gadget.data.phoneBusiness){
+							// dragging call to DOCKED external which has no phone #s attached to it -> cant D&D
+							return;
+						} else if (scope.item && !scope.item.primaryExtension && !scope.item.phoneMobile && !scope.item.phoneBusiness){
+							// dragging call to RECENT external which has no phone #s attached to it -> cant D&D
+							return;
+						}
+					}
 					// check for allowed cases
 					if (drops.indexOf(type) != -1
 						&& (!$(this).hasClass('InnerDock') || obj.xpid != $rootScope.myPid)) {
@@ -286,6 +300,9 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 									// transfer to business number
 									transferToExternal('business',scope.gadget.data.phoneBusiness);
 									return;
+								} else {
+									// external contact w/ no linked phone #s at all -> disable D&D
+									return;
 								}
 								// else if drag to contact panel...
 							} else if (scope.contact && !scope.contact.primaryExtension) {
@@ -300,6 +317,9 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 									// business
 									transferToExternal('business',scope.contact.phoneBusiness);
 									return;
+								} else {
+									// external contact w/ no linked phone #s at all -> disable D&D
+									return;
 								}
 								// else if drag to recents...
 							} else if (scope.item && !scope.item.primaryExtension) {
@@ -313,6 +333,9 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 								} else if (scope.item.phoneBusiness) {
 									// business
 									transferToExternal('business',scope.item.phoneBusiness);
+									return;
+								} else {
+									// external contact w/ no linked phone #s at all -> disable D&D
 									return;
 								}
 							}
