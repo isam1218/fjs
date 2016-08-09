@@ -122,7 +122,7 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			controller: 'ZipwhipController'
 		})
 		// ***commented out accessed to inphonex until CP permissions updated...
-		.when('/usageanalytics',
+		.when('/callanalytics',
 		{
 			templateUrl: 'views/Inphonex.html',
 			controller: 'InphonexController'
