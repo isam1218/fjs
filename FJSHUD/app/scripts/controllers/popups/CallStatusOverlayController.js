@@ -241,12 +241,15 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		if (originalCall){
 			var top = settingsService.isEnabled(originalCall.permissions, 3);
 		}
-		var bottomUser = contactService.getContact(originalCall.call.fullProfile.xpid);
-		if (originalCall && bottomUser){
-			var bottom = settingsService.isEnabled(bottomUser.permissions, 3);
+		// need to run a check for private caller, which will not have a fullProfile (otherwise code breaks and conference button displays)...
+		if (originalCall && originalCall.call && originalCall.call.fullProfile){
+			var bottomUser = contactService.getContact(originalCall.call.fullProfile.xpid);
+			if (bottomUser){
+				var bottom = settingsService.isEnabled(bottomUser.permissions, 3);
+			}
 		}
 		// if either one shows up as false -> don't have steal other call perm -> disable the conf button
-		if (!bottom || !top){
+		if (bottom == false || top == false){
 			return true;
 		}
 	};
