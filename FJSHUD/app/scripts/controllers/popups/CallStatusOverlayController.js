@@ -249,9 +249,9 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 			var top = settingsService.isEnabled(originalCall.permissions, 3);
 		}
 		// need to run a check for private caller, which will not have a fullProfile (otherwise code breaks and conference button displays)...
-		if (originalCall.call.fullProfile){
+		if (originalCall && originalCall.call && originalCall.call.fullProfile){
 			var bottomUser = contactService.getContact(originalCall.call.fullProfile.xpid);
-			if (originalCall && bottomUser){
+			if (bottomUser){
 				var bottom = settingsService.isEnabled(bottomUser.permissions, 3);
 			}
 		}
