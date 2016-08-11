@@ -1588,6 +1588,10 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
+	this.parseOutHyphens = function(phoneNumber){
+		phoneNumber = phoneNumber.replace(/-/g,"");
+		return phoneNumber;
+	};
 
 	$rootScope.$on("mycalldetails_synced", function(event,data){
 		if(data){
