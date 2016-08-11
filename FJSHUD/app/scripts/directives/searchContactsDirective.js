@@ -1,4 +1,4 @@
-hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'ContactService', function($rootScope, $document, $compile, contactService) {
+hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'ContactService', 'PhoneService', function($rootScope, $document, $compile, contactService, phoneService) {
 	var contacts = [];
 	
 	contactService.getContacts().then(function(data) {
@@ -148,7 +148,7 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 							makeLine(null);
 						
 						// parse out hypens from inputted phone #
-						if (!isNaN(parseOutHypens(element.val())))
+						if (!isNaN(phoneService.parseOutHyphens(element.val())))
 							joinBtn.attr('disabled', false);
 						else
 							joinBtn.attr('disabled', true);
@@ -159,11 +159,6 @@ hudweb.directive('contactSearch', ['$rootScope', '$document', '$compile', 'Conta
 			scope.$on('$destroy', function() {
 				removeOverlay();
 			});
-
-			function parseOutHypens(phoneNumber){
-				phoneNumber = phoneNumber.replace(/-/g,"");
-				return phoneNumber;
-			}
 
 			function makeNoResultLine(){
 				var noResultLine = ('<div Class="NoResults">No Search Results</div>');
