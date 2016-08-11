@@ -1,4 +1,4 @@
-hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$timeout', '$location', '$rootScope', function(httpService, conferenceService, settingsService, $parse, $timeout, $location, $rootScope) {
+hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$timeout', '$location', '$rootScope', 'QueueService', function(httpService, conferenceService, settingsService, $parse, $timeout, $location, $rootScope, queueService) {
 	var timeout;
 	var overlay = angular.element(document.getElementById('ContextMenu'));
 	var current, timer;
@@ -267,12 +267,10 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 							else
 								serverVersionCloud = true;
 
-							// incoming queue calls have the 'taken' property on the obj and it will have value 'false' if incoming. They do not have type property...
-							// other calls have no 'taken' property on the obj
-							// so checking to see if it's an incoming, unanswered q call, *and also if user meets the server and CP requirements (see HUDF-1424)*
-							if (obj.taken != null && obj.taken === false && serverVersionCloud && cpFourteen) {
+
+							var transferUnanswered = function(queueCallId){
+								params.queueCallId = queueCallId;
 								feed = 'queue_call';
-								params.queueCallId = obj.xpid;
 								// if drag to leftbar...(scope has contact property on it), else if (item for recents), else dragging to dock...
 								if (scope.contact)
 									params.contactId = scope.contact.xpid;
@@ -283,6 +281,38 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 								// else drag to dock
 	
 								httpService.sendAction(feed, action, params);
+								return;
+							};
+
+							// A. ****dragging my ringing-state queue call from the LOWER LEFT NOTIFICATION call control area****
+							var queueCallMatch = false;
+							var myCurrentQueue;
+							if (obj.state === fjs.CONFIG.CALL_STATES.CALL_RINGING && obj.details.queueId && serverVersionCloud && cpFourteen){
+								myCurrentQueue = queueService.getQueue(obj.details.queueId);
+								for (var i = 0; i < myCurrentQueue.calls.length; i++){
+									// if it's the queue call that I'm on...
+									var currentQCall = myCurrentQueue.calls[i];
+										if (currentQCall.agentContactId === $rootScope.myPid){
+											// that queue call hasn't been taken yet
+											if (currentQCall.taken === false){
+											params.queueCallId = currentQCall.xpid;
+											queueCallMatch = true;
+											}
+										}
+								}
+								// prevent being able to transfer the unanswered queue call a 2nd time in a row (when it becomes active state after 1st transfer)...
+								if (queueCallMatch === true){
+									transferUnanswered(params.queueCallId);
+									return;
+								}
+							}
+
+							// B. ****dragging unanswered queue call from QUEUE CALL TAB****
+							// incoming queue calls have the 'taken' property on the obj and it will have value 'false' if incoming. They do not have type property...
+							// other calls have no 'taken' property on the obj
+							// so checking to see if it's an incoming, unanswered q call, *and also if user meets the server and CP requirements (see HUDF-1424)*
+							if (obj.taken != null && obj.taken === false && serverVersionCloud && cpFourteen) {
+								transferUnanswered(obj.xpid);
 								return;
 							}
 
