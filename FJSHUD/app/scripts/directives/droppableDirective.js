@@ -284,30 +284,21 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 								return;
 							};
 
-							// A. ****dragging my ringing-state queue call from the LOWER LEFT NOTIFICATION call control area****
-							var queueCallMatch = false;
-							var myCurrentQueue;
-							if (obj.state === fjs.CONFIG.CALL_STATES.CALL_RINGING && obj.details.queueId && serverVersionCloud && cpFourteen){
-								myCurrentQueue = queueService.getQueue(obj.details.queueId);
-								for (var i = 0; i < myCurrentQueue.calls.length; i++){
-									// if it's the queue call that I'm on...
-									var currentQCall = myCurrentQueue.calls[i];
-										if (currentQCall.agentContactId === $rootScope.myPid){
-											// that queue call hasn't been taken yet
-											if (currentQCall.taken === false){
-											params.queueCallId = currentQCall.xpid;
-											queueCallMatch = true;
-											}
-										}
-								}
-								// prevent being able to transfer the unanswered queue call a 2nd time in a row (when it becomes active state after 1st transfer)...
-								if (queueCallMatch === true){
-									transferUnanswered(params.queueCallId);
-									return;
-								}
+
+							// A. ****PREVENT dragging my ringing-state queue call from the LOWER LEFT NOTIFICATION call control area****
+							if (obj.state === fjs.CONFIG.CALL_STATES.CALL_RINGING && obj.details.queueId){
+								return;
 							}
 
-							// B. ****dragging unanswered queue call from QUEUE CALL TAB****
+
+							// B. *** non-FCS servers: PREVENT display of internal-contact-transfer-POPUP on attempted unanswered q call transfer since they don't support transferring unanswered queue calls
+							// This prevents code from reaching the D&D transfer to Internal Contact section for non-FCS servers...
+							if ( (!serverVersionCloud || !cpFourteen) && (obj.taken != null && obj.taken === false) ){
+								return;
+							}
+
+
+							// C. ****dragging unanswered queue call from QUEUE CALL TAB****
 							// incoming queue calls have the 'taken' property on the obj and it will have value 'false' if incoming. They do not have type property...
 							// other calls have no 'taken' property on the obj
 							// so checking to see if it's an incoming, unanswered q call, *and also if user meets the server and CP requirements (see HUDF-1424)*
@@ -316,13 +307,6 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 								return;
 							}
 
-							// C. *** Don't display internal-contact-transfer-popup for non-fcs servers since they don't support transferring unanswered queue calls
-							// This prevents code from reaching the D&D transfer to Internal Contact section for non-FCS servers...
-							if (!serverVersionCloud || !cpFourteen){
-								if ( (obj.state === fjs.CONFIG.CALL_STATES.CALL_RINGING && obj.details.queueId) || (obj.taken != null && obj.taken === false) ){
-									return;
-								}
-							}
 
 							/* [TRANSFERRING TO EXTERNAL CONTACT (D&D)] */
 							// if drag to dock...
