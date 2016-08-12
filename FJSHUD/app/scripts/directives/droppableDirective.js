@@ -1,4 +1,4 @@
-hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$timeout', '$location', '$rootScope', function(httpService, conferenceService, settingsService, $parse, $timeout, $location, $rootScope) {
+hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsService', '$parse', '$timeout', '$location', '$rootScope', 'QueueService', function(httpService, conferenceService, settingsService, $parse, $timeout, $location, $rootScope, queueService) {
 	var timeout;
 	var overlay = angular.element(document.getElementById('ContextMenu'));
 	var current, timer;
@@ -267,12 +267,10 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 							else
 								serverVersionCloud = true;
 
-							// incoming queue calls have the 'taken' property on the obj and it will have value 'false' if incoming. They do not have type property...
-							// other calls have no 'taken' property on the obj
-							// so checking to see if it's an incoming, unanswered q call, *and also if user meets the server and CP requirements (see HUDF-1424)*
-							if (obj.taken != null && obj.taken === false && serverVersionCloud && cpFourteen) {
+
+							var transferUnanswered = function(queueCallId){
+								params.queueCallId = queueCallId;
 								feed = 'queue_call';
-								params.queueCallId = obj.xpid;
 								// if drag to leftbar...(scope has contact property on it), else if (item for recents), else dragging to dock...
 								if (scope.contact)
 									params.contactId = scope.contact.xpid;
@@ -284,7 +282,31 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 	
 								httpService.sendAction(feed, action, params);
 								return;
+							};
+
+
+							// A. ****PREVENT dragging my ringing-state queue call from the LOWER LEFT NOTIFICATION call control area****
+							if (obj.state === fjs.CONFIG.CALL_STATES.CALL_RINGING && obj.details.queueId){
+								return;
 							}
+
+
+							// B. *** non-FCS servers: PREVENT display of internal-contact-transfer-POPUP on attempted unanswered q call transfer since they don't support transferring unanswered queue calls
+							// This prevents code from reaching the D&D transfer to Internal Contact section for non-FCS servers...
+							if ( (!serverVersionCloud || !cpFourteen) && (obj.taken != null && obj.taken === false) ){
+								return;
+							}
+
+
+							// C. ****dragging unanswered queue call from QUEUE CALL TAB****
+							// incoming queue calls have the 'taken' property on the obj and it will have value 'false' if incoming. They do not have type property...
+							// other calls have no 'taken' property on the obj
+							// so checking to see if it's an incoming, unanswered q call, *and also if user meets the server and CP requirements (see HUDF-1424)*
+							if (obj.taken != null && obj.taken === false && serverVersionCloud && cpFourteen) {
+								transferUnanswered(obj.xpid);
+								return;
+							}
+
 
 							/* [TRANSFERRING TO EXTERNAL CONTACT (D&D)] */
 							// if drag to dock...
@@ -339,6 +361,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 									return;
 								}
 							}
+
 
 							/* [TRANSFERRING TO INTERNAL CONTACT (Drag & Drop)] */
 							feed = 'calls';
