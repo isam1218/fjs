@@ -316,6 +316,14 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 								return;
 							}
 
+							// C. *** Don't display internal-contact-transfer-popup for non-fcs servers since they don't support transferring unanswered queue calls
+							// This prevents code from reaching the D&D transfer to Internal Contact section for non-FCS servers...
+							if (!serverVersionCloud || !cpFourteen){
+								if ( (obj.state === fjs.CONFIG.CALL_STATES.CALL_RINGING && obj.details.queueId) || (obj.taken != null && obj.taken === false) ){
+									return;
+								}
+							}
+
 							/* [TRANSFERRING TO EXTERNAL CONTACT (D&D)] */
 							// if drag to dock...
 							if (scope.gadget && !scope.gadget.data.primaryExtension) {
@@ -369,6 +377,7 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 									return;
 								}
 							}
+
 
 							/* [TRANSFERRING TO INTERNAL CONTACT (Drag & Drop)] */
 							feed = 'calls';
