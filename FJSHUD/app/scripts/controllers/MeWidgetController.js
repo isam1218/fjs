@@ -1006,9 +1006,12 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     // used to determine whether to enable cold transfer button
     $scope.enableColdTransfer = function(){
+        var nonHypenNumber = phoneService.parseOutHyphens($scope.transfer.search);
         if ($scope.coldTransferButtonEnabled)
             return true;
-        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length >= 10))
+        else if ( (!isNaN(nonHypenNumber)) && nonHypenNumber.length >= 10)
+            return true;
+        else if ( (!isNaN($scope.transfer.search)) && $scope.transfer.search.length >= 10)
             return true;
         else if ($scope.transferType == 'external')
             return true;
@@ -1021,17 +1024,18 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         var action;
         var feed = 'mycalls';
         var params = {};
+        var nonHypenNumber = phoneService.parseOutHyphens($scope.transfer.search);
         params.mycallId = $scope.currentCall.xpid;
         // receiver can be external, inputted extension, inputted phone number, etc.
         if ($scope.transferType == 'external')
             params.toNumber = $scope.transferTo.contactNumber ? $scope.transferTo.contactNumber : $scope.transferTo.phoneMobile ? $scope.transferTo.phoneMobile : $scope.transferTo.phoneBusiness;
-        else if ((!isNaN($scope.transfer.search) && $scope.transfer.search.length >= 10))
-            params.toNumber = $scope.transfer.search;
+        else if ((!isNaN(nonHypenNumber) && $scope.transfer.search.length >= 10))
+            params.toNumber = nonHypenNumber;
         else
             params.toContactId = $scope.selectedTransferToContact.xpid;
 
         // feed action
-        if ($scope.transferType == 'external' || (!isNaN($scope.transfer.search) && $scope.transfer.search.length > 4))
+        if ($scope.transferType == 'external' || (!isNaN(nonHypenNumber) && $scope.transfer.search.length > 4))
             action = 'transferTo';
         else if ($scope.selectedTransferToContact.primaryExtension == '')
             action = 'transferToMobile';
