@@ -330,8 +330,10 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		// if clicking on the selectionBox
 		if (display == 'selectionBox'){
 			// if selected box is an external phone #
-			if (!isNaN(selectionInput) && selectionInput.length > 4){
+			var nonHypenNumber = phoneService.parseOutHyphens(selectionInput);
+			if (!isNaN(nonHypenNumber) && selectionInput.length > 4){
 				$scope.transferType = 'external';
+				selectionInput = nonHypenNumber;
 				$scope.transferTo = createTmpExternalContact(selectionInput);
 			} 
 			
