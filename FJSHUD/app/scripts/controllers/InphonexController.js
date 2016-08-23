@@ -20,14 +20,14 @@ hudweb.controller('InphonexController', ['$scope', '$rootScope', '$http', 'Setti
 			.success(function(data, status, headers, config){
 				if (data && data.launchurl){
 					// if launchurl is present -> dynamically load the src attribute of iframe
-					console.log('(1) Success: inphonex pps post request sent to - ', fjs.CONFIG.SERVER.ppsServer + getInphonexUrl('inphonex/launchurl'));
-					console.log('(2) Success: pps returns the following launch url to load in iframe - ', data.launchurl);
+					console.log('(1) Success: inphonex pps post request sent to - ', fjs.CONFIG.SERVER.ppsServer + getInphonexUrl('inphonex/launchurl'), ' ||| PPS returns the following launch url to load in iframe - ', data.launchurl);
 					document.getElementById('Inphonexiframe').src = data.launchurl;
 				}
 				// google analytics
 				// ga('send', 'event', {eventCategory: 'Inphonex', eventAction: 'Access', eventLabel: 'Center Column'});
 			})
 			.error(function(data, status, headers, config){
+				alert('Error fetching Inphonex data - check console for details.');
 				console.error('error resulting from pinging pps for inphonex url | error message:  ', data, status, headers, config);
 			});
 
