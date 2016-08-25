@@ -904,9 +904,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.transferType;
     $scope.transferToDisplayName = {};
     $scope.showResult = false;
+    $scope.transferOpened = false;
 
     $scope.showTransferComponent = function(){
         $scope.transferComponent = true;
+        $scope.transferOpened = true;
         // populate transferrable contacts
         contactService.getContacts().then(function(data){
             // transferFrom is the person I'm currently talking to...

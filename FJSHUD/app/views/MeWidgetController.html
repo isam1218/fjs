@@ -90,7 +90,7 @@
        </div>                          
         <div class="RightSide">                                   
           <div class="row_buttons"> 
-            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom || call2" ng-click="showTransferComponent()" ng-if="currentCall.barge < 1 && cpFourteen && serverVersionCloud"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom || call2 || transferOpened" ng-click="showTransferComponent()" ng-if="currentCall.barge < 1 && cpFourteen && serverVersionCloud"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
             <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom || call2" ng-click="showCallOvery('transfer',currentCall)" ng-if="currentCall.barge < 1 && (!cpFourteen || !serverVersionCloud)"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
             <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3) || call2" ng-click="showCallOvery('conference',currentCall)" ng-if="currentCall.barge < 1"><span class="CallControlButton">{{::verbage.conf_room}}</span></button>
             <button class="XButton CurrentCallBtn" ng-disabled="call2" ng-class="currentCall.mute ? 'UnmuteBtn' : ''" ng-click="muteConference()" ng-if="currentCall.type == 0"><span class="CallControlButton">{{ currentCall.mute ? verbage.UnMute : verbage.Mute}}</span></button>
