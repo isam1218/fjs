@@ -141,7 +141,7 @@
               <form ng-submit="inputtedSearch()">
                 <div class="FormInterior">
                   <span>To:</span>
-                  <input type="search" ng-show="transferComponent && !showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="SearchSection" placeholder="Enter Phone Number, Extension or Contact Name" />
+                  <input type="search" ng-show="transferComponent && !showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="SearchSection" autocomplete="off" placeholder="Enter Phone Number, Extension or Contact Name" />
 
                   <div class="ListRow" ng-if="transferComponent && showResult" ng-click="showResultFalse()">
                     <avatar profile="transferToDisplayName"></avatar>
