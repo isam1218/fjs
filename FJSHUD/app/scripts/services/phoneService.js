@@ -319,14 +319,14 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 					}
 				
 					// check plugin version
-					version = phonePlugin.version;
+					/*version = phonePlugin.version;
 					$rootScope.pluginVersion = phonePlugin.version;
 						
 					if ($rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1)
-						$rootScope.$broadcast('plugin_error', 'update');
+						$rootScope.$broadcast('plugin_error', 'update');*/
 				}
-				else
-					$rootScope.$broadcast('plugin_error', 'install');
+				/*else
+					$rootScope.$broadcast('plugin_error', 'install');*/
 			}
 		}
 	});
@@ -1021,9 +1021,9 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		webphone.onopen = function(e){};
 		webphone.onclose = function(e){};
 
-		webphone.onerror = function(e){
+		/*webphone.onerror = function(e){
 			$rootScope.$broadcast('plugin_error', 'install');
-		};
+		};*/
 
 		webphone.onmessage = function(e){
 			if(e.data){
@@ -1041,8 +1041,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				initWS();
 				webphone.close();
 				
-				if ($rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1)
-					$rootScope.$broadcast('plugin_error', 'update');
+				/*if ($rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1)
+					$rootScope.$broadcast('plugin_error', 'update');*/
 			}
 		};
 
