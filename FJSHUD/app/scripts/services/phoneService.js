@@ -17,7 +17,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	$rootScope.volume.spkVolume = 0;
 	$rootScope.volume.micVolume = 0;
 	$rootScope.pluginVersion = undefined;
-	$rootScope.latestVersion = fjs.CONFIG.PLUGIN_VERSION[$rootScope.platform + '_' + ($rootScope.browser == "Chrome" ? 'NEW' : 'OLD')];
 	var devices = [];
 	var inputDevices = [];
 	var outputDevices = [];

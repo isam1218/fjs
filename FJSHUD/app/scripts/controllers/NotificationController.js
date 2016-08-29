@@ -1157,13 +1157,6 @@ hudweb.controller('NotificationController',
     return $sce.trustAsHtml(str);
   };
 
-  $scope.isPluginUptoDate = function(){
-    if($rootScope.pluginVersion != undefined){
-        return $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) > -1;
-    }else{
-        return true;
-    }
-  };
 
   $scope.checkIfGroup = function(msg){
     if (msg != undefined && msg.audience == 'group'){
