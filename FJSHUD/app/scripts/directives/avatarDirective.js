@@ -74,6 +74,7 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			*/
 			
 			// change class for special call avatar
+
 			if (attrs.type){
 				var classy = 'Call_';
 				
@@ -100,7 +101,6 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 						
 						break;
 				}
-				
 				element.addClass(classy);
 			}
 			
@@ -137,9 +137,29 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			
 			// set up watchers for avatars that may change
 			if (widget == 'callstatus') {
-				scope.$watch($parse(attrs.profile), function (newObj, oldObj) {
-					if (newObj != oldObj)
-						element.html(getAvatar(newObj));
+				scope.$watch(attrs.profile, function (newObj, oldObj) {
+					if (newObj && newObj != oldObj) {
+						element.html(getAvatar(newObj.fullProfile ? newObj.fullProfile : newObj));
+						
+						if (newObj.type && newObj.type != oldObj.type) {
+							var classy = 'Call_';
+							
+							switch(parseInt(newObj.type)) {
+								case 1:
+								case 3:
+									classy += 'Queue';
+									break;
+								case 5:
+									classy += 'External';
+									break;
+								default:
+									classy += 'Office';
+									break;
+							}
+						
+							element[0].className = element[0].className.replace(/Call_[a-zA-z]*/, classy);
+						}
+					}
 				});
 			}
 			
