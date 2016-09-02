@@ -82,20 +82,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	}
 
-	//this.cancelled = false;
 	browser_on_focus = true;
-	//var isCancelled = false;
 
-	//set the 'cancelled' flag
-	/*this.setCancelled = function(is_cancelled)
-	{
-		isCancelled = is_cancelled;
-	}*/
-	//get the 'cancelled' flag
-	/*this.getCancelled = function()
-	{
-		return isCancelled ;
-	}*/
 
 	//get the browser onFocus flag
 	this.getBrowserOnFocus = function()
@@ -158,13 +146,9 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			tabInFocus = true;
 			if(settingsService.getSetting('hudmw_show_alerts_always') != "true"){
 				//if the new notification service is running it will dismiss the incoming call
-				if(nservice.isEnabled()){
 					for(var detail in callsDetails){
 						nservice.dismiss('INCOMING_CALL',detail);
 					}
-				}else{
-					removeNotification();
-				}
 			}
 		}
 	};
@@ -174,9 +158,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	{
 		browser_on_focus = focused;
 		
-		/*if(nservice.isEnabled()){
-			isCancelled = nservice.getCancelled();
-		}*/
 		
 		// let native app know what's up
 		if (nativeApp) {
@@ -185,32 +166,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				value: focused
 			}));
 		}
-		
-		//remove if the alert was closed
-		/*if(isCancelled)
-		{
-			if(nservice.isEnabled()){
-				for(var detail in callsDetails){
-					nservice.dismiss('INCOMING_CALL',detail);
-				}
-			}
-			else
-				removeNotification();
-			
-			context.isDocumentHidden(true);								
-		}
-		else
-		{
-			if(focused)
-			{									
-				if(settingsService.getSetting('hudmw_show_alerts_always') != 'true')
-					context.isDocumentHidden(true);	
-				else
-					context.isDocumentHidden(false);				
-			}
-			else		
-				context.isDocumentHidden(false);
-		}*/
+
 	};
 	
 	//attach the events to the window
