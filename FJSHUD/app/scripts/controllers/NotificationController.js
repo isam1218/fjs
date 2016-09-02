@@ -721,6 +721,8 @@ hudweb.controller('NotificationController',
     if(displayDesktopAlert){
     	phoneService.setCancelled(false);
 			if(nservice.isEnabled()){
+        $scope.displayAlert = true;
+            $timeout(displayNotification, 1500);
 				for (var i = 0; i < $scope.calls.length; i++){
 				 if(alertDuration != "entire"){
 					 if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && $scope.calls[i].xef001type != 'delete')

@@ -9,6 +9,10 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
         var isCancelled = false;
 
+        if($rootScope.browser == "Chrome" || $rootScope.browser == "Firefox"){
+        	enabled = true;
+        }
+
 		//initialize the Notification service for the new webphone notifications
 		var initNSService = function(){
 			if(notifyPipe) return;
@@ -26,7 +30,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				}));
            	
 				context.setCancelled(false);
-           		enabled = true;
+           		//enabled = true;
            	};
 
            	notifyPipe.onmessage = function (evt) {
@@ -50,7 +54,7 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             // when the connection is closed, this method is called
            notifyPipe.onclose = function () {
             	notifyPipe = false;
-            	enabled = false;
+            	//enabled = false;
             	setTimeout(function(){initNSService()}, 500);
 
             };

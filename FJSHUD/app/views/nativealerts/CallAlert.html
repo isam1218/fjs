@@ -60,7 +60,7 @@
 		</div>   
 		
 		<div class="scroller" id="scroller">  	
-	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-if="message.displayDesktopAlert">			
+	        <!-- <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid" ng-if="message.displayDesktopAlert">			
 				<div class="NotificationHeader">
 					<div class="NotificationHeaderBackground">
 						<div onclick="mouseClick(this)" action="#/RemoveNotification?{{::message.xpid}}">
@@ -121,7 +121,7 @@
 					</div>
 				</div>
 
-			</div>
+			</div> -->
  
 			<!-- errors -->
 			<div class="Messages error" ng-repeat="error in errors track by error.xpid">	
