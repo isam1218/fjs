@@ -5,16 +5,13 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		this.errors = [];
 		
 		var notifyPipe = false;
-		var enabled = false;
+		var enabled = true;
 		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
         var isCancelled = false;
 
-        if($rootScope.browser == "Chrome" || $rootScope.browser == "Firefox"){
-        	enabled = true;
-        }
-
 		//initialize the Notification service for the new webphone notifications
 		var initNSService = function(){
+
 			if(notifyPipe) return;
 
 			notifyPipe = new WebSocket('wss://webphone.fonality.com:10843');
