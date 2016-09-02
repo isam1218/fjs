@@ -1058,6 +1058,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     // used to advance to 2nd warm transfer screen (places call #1 on hold then places call #2 to wt-recipient)
     $scope.goToWarmTransfer = function(){
+
         var firstCallIsWithExternal = false;
         $scope.warmTransferToConnected = false;
         // ^ to keep the 'Complete Transfer' button disabled until wt-recipient answers
@@ -1104,6 +1105,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         });
         $scope.changeWarmButton = true;
         $scope.transferComponent = true;
+        // add 3rd party (last leg of warm transfer) to warm-transfer-initiater's (User A's) recent's tab
+        if ($scope.transferToDisplayName.xpid)
+            storageService.saveRecent('contact', $scope.transferToDisplayName.xpid);
     };
 
     // finalizes warm transfer by calling new API (this would be the last action by the user to complete wt)
