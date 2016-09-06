@@ -120,7 +120,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	
 	$scope.callNumber = function(rec) {
 		ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "Calls/Recordings - Recordings - Call"});
-		
+		// call back a conference room...
 		if (rec.conferenceId) {
 			var params = {
 				conferenceId: rec.conferenceId,
@@ -131,8 +131,23 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 					
 			$location.path('/conference/' + rec.conferenceId + '/currentcall');
 		}
-		else
-			phoneService.makeCall(rec.calleePhone);
+		else {
+			// call back a contact...
+			// if it's MY recording -> don't call me, call the other person
+			if (rec.fullProfile && rec.fullProfile.xpid != $rootScope.myPid){
+				// handle both internal contacts and external contacts...
+				if (rec.fullProfile.primaryExtension != "")
+					phoneService.makeCall(rec.fullProfile.primaryExtension);
+				else if (rec.fullProfile.phoneMobile)
+					phoneService.makeCall(rec.fullProfile.phoneMobile);
+				else if (rec.fullProfile.phoneBusiness)
+					phoneService.makeCall(rec.fullProfile.phoneBusiness);
+			}
+			else if (rec.callerUserId && rec.callerUserId != $rootScope.myPid)
+				phoneService.makeCall(rec.callerPhone)
+			else if (rec.calleeUserId && rec.calleeUserId != $rootScope.myPid)
+				phoneService.makeCall(rec.calleePhone)
+		}
 	};
 	
 	$scope.deleteFile = function(rec) {
