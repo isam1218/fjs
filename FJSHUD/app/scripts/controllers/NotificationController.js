@@ -72,15 +72,6 @@ hudweb.controller('NotificationController',
 				data.displayName = 'Error';
 				data.message = 'Click to open details';
 				break;
-			case 'browserPlugin':
-				data.displayName = 'Browser Plugin';
-				
-				if (!$rootScope.pluginVersion)
-					data.message = 'Click to download & install';
-				else
-					data.message = 'Click to update';
-				
-				break;
 		}
         
         $scope.errors.push(data);
@@ -123,13 +114,7 @@ hudweb.controller('NotificationController',
         }
     });
 	
-	// softphone
-	$scope.$on('plugin_error', function(data) {
-		// doesn't apply to non-plugin browsers
-		if (!navigator.userAgent.match(/CrOS|Edge|Linux/)) {
-			$scope.addError('browserPlugin');
-		}
-	});
+
   
   $scope.getMultipleNotifications = function(message){	
 	  var messages = message.message && message.message != null && message.message != "" ? ((message.message).indexOf('\n') != -1 ? (message.message).split('\n') : (message.message) ) : '';
@@ -1029,13 +1014,6 @@ hudweb.controller('NotificationController',
     return $sce.trustAsHtml(str);
   };
 
-  $scope.isPluginUptoDate = function(){
-    if($rootScope.pluginVersion != undefined){
-        return $rootScope.pluginVersion.localeCompare($rootScope.latestVersion) > -1;
-    }else{
-        return true;
-    }
-  };
 
   $scope.checkIfGroup = function(msg){
     if (msg != undefined && msg.audience == 'group'){

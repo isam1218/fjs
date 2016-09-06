@@ -17,7 +17,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	$rootScope.volume.spkVolume = 0;
 	$rootScope.volume.micVolume = 0;
 	$rootScope.pluginVersion = undefined;
-	$rootScope.latestVersion = fjs.CONFIG.PLUGIN_VERSION[$rootScope.platform + '_' + ($rootScope.browser == "Chrome" ? 'NEW' : 'OLD')];
 	var devices = [];
 	var inputDevices = [];
 	var outputDevices = [];
@@ -232,15 +231,9 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 						 session.addEventListener("NetworkStatus", onNetworkStatus);
 					}
 				
-					// check plugin version
-					version = phonePlugin.version;
-					$rootScope.pluginVersion = phonePlugin.version;
-						
-					if ($rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1)
-						$rootScope.$broadcast('plugin_error', 'update');
+
 				}
-				else
-					$rootScope.$broadcast('plugin_error', 'install');
+
 			}
 		}
 	});
@@ -913,10 +906,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		webphone.onopen = function(e){};
 		webphone.onclose = function(e){};
 
-		webphone.onerror = function(e){
-			$rootScope.$broadcast('plugin_error', 'install');
-		};
-
 		webphone.onmessage = function(e){
 			if(e.data){
 				// new native app
@@ -933,8 +922,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				initWS();
 				webphone.close();
 				
-				if ($rootScope.pluginVersion.localeCompare($rootScope.latestVersion) == -1)
-					$rootScope.$broadcast('plugin_error', 'update');
 			}
 		};
 
