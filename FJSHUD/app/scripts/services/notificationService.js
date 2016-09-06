@@ -5,12 +5,11 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		this.errors = [];
 		
 		var notifyPipe = false;
-		var enabled = false;
 		var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
-        var isCancelled = false;
 
 		//initialize the Notification service for the new webphone notifications
 		var initNSService = function(){
+
 			if(notifyPipe) return;
 
 			notifyPipe = new WebSocket('wss://webphone.fonality.com:10843');
@@ -25,8 +24,6 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
   
 				}));
            	
-				context.setCancelled(false);
-           		enabled = true;
            	};
 
            	notifyPipe.onmessage = function (evt) {
@@ -35,11 +32,6 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             		return;
             	}else{
 					response = JSON.parse(evt.data);
-					
-					if(response.notificationEventType == 'CLOSE')
-						context.setCancelled(true);
-					else
-						context.setCancelled(false);
 					$rootScope.$broadcast("notification_action",response);
             	}
             };
@@ -50,29 +42,13 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
             // when the connection is closed, this method is called
            notifyPipe.onclose = function () {
             	notifyPipe = false;
-            	enabled = false;
             	setTimeout(function(){initNSService()}, 500);
 
             };
 		};
 
-		//set the 'cancelled' flag
-		this.setCancelled = function(is_cancelled)
-		{
-			isCancelled = is_cancelled;
-		};
-		//get the 'cancelled' flag
-		this.getCancelled = function()
-		{
-			return isCancelled ;
-		};
 		
 		this.initNSService = initNSService;		
-
-		this.isEnabled = function(){
-			return enabled;
-		};
-
 
 	    this.sendData =  function(data,retry,type){
 			if(retry == undefined)retry = 0;

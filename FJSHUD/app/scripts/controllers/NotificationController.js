@@ -45,7 +45,6 @@ hudweb.controller('NotificationController',
   $scope.showNew = false;
   $scope.showAway = false;
   $scope.showOld = false;
-  $scope.displayAlert = false;
   $scope.clearOld;
   $scope.alertDuration = settingsService.getSetting('alert_call_duration');    
   
@@ -88,12 +87,7 @@ hudweb.controller('NotificationController',
 		
 		// update native alert
 		if (displayDesktopAlert) {
-			if (nservice.isEnabled())
 				phoneService.displayWebphoneNotification(data, 'error', false);
-			else {
-				$scope.displayAlert = true;
-				$timeout(displayNotification, 1500);
-			}
 		}
     };
     
@@ -102,19 +96,7 @@ hudweb.controller('NotificationController',
             // find existing and remove
             if ($scope.errors[i].xpid == type) {
                 $scope.errors.splice(i, 1);
-		
-				// update native alert
-				if (displayDesktopAlert && !nservice.isEnabled()) {
-					if ($scope.todaysNotifications.length > 0 || $scope.calls.length > 0 || $scope.errors.length > 0) {
-					  $scope.displayAlert = true;
-					  $timeout(displayNotification, 1500);    
-					}
-					else {
-					  phoneService.cacheNotification(undefined,0,0);
-					  phoneService.removeNotification();
-					}
-				}
-		
+
                 break;
             }
         }
@@ -190,14 +172,6 @@ hudweb.controller('NotificationController',
     
     myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
     myHttpService.deleteFromWorker('quickinbox', xpid);
-
-    if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
-      $scope.displayAlert = true;     
-    }else{
-      phoneService.cacheNotification(undefined,0,0);
-      phoneService.removeNotification();
-    }
-    // call this method so can delete tmp barge notifications
     delete_notification_from_notifications_and_today(xpid);
   };
 
@@ -441,8 +415,7 @@ hudweb.controller('NotificationController',
         break;
       }
     }
-    $scope.displayAlert = true;
-    $timeout(cacheNotification,1000);
+
   };
 
   $scope.holdCall = function(xpid,isHeld){
@@ -530,16 +503,6 @@ hudweb.controller('NotificationController',
       }
     }
     $scope.alertDuration = data['alert_call_duration'];
-    
-    if(!phoneService.getCancelled() && data['hudmw_show_alerts_always'] == 'true' && phoneService.isAlertShown()){
-        if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
-          $scope.displayAlert = true;
-          //$timeout(displayNotification, 2500); 
-        }
-    }else{ 
-        phoneService.removeNotification();
-        phoneService.isDocumentHidden(true);
-    }
 
   });
 
@@ -595,7 +558,7 @@ hudweb.controller('NotificationController',
       bargeFlag = true;
       $scope.notifications.unshift(extraNotification);
       $scope.todaysNotifications.push(extraNotification);
-      if (displayDesktopAlert && nservice.isEnabled())
+      if (displayDesktopAlert)
         phoneService.displayWebphoneNotification(extraNotification,"",false);
     }
   };
@@ -632,7 +595,6 @@ hudweb.controller('NotificationController',
 
   $scope.$on('calls_updated',function(event,data){
     displayDesktopAlert = false;
-    phoneService.setCancelled(false);
     var toDisplayFor = settingsService.getSetting('alert_call_display_for');
     var alertDuration = settingsService.getSetting('alert_call_duration');      
     if(!phoneService.getPhoneState() && $rootScope.meModel.location.locationType == 'w'){
@@ -715,90 +677,12 @@ hudweb.controller('NotificationController',
         	$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
     else
 			$('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
-	
-		
-       	
-    if(displayDesktopAlert){
-    	phoneService.setCancelled(false);
-			if(nservice.isEnabled()){
-				for (var i = 0; i < $scope.calls.length; i++){
-				 if(alertDuration != "entire"){
-					 if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && $scope.calls[i].xef001type != 'delete')
-		            	  phoneService.displayCallAlert($scope.calls[i]);
-		             else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
-		            	  nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);
-		             else if ($scope.calls[i].xef001type == 'delete') 
-		            	  nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid); 
-				 }
-				 else
-				 {
-					 if ($scope.calls[i].xef001type == 'delete') 
-						 nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);
-					 else
-						 phoneService.displayCallAlert($scope.calls[i]); 
-				 }	 
-					 
-				}
-			}else{//other browsers
-				for (var i = 0; i < $scope.calls.length; i++){
-					if(alertDuration != "entire"){
-				 	    if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-				 		   phoneService.removeNotification();
-
-				 		   return;
-				 	    }
-				    }
-				}	
-        		$scope.displayAlert = true;
-        		$timeout(displayNotification, 1500);
-			}
-    }else{
-
-      if(nservice.isEnabled()){
-        for (var i = 0; i < $scope.calls.length; i++){
-           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
-        } 
-      }else{
-    	phoneService.removeNotification();
-    	
-        if($scope.calls.length > 0){
-           $scope.displayAlert = true;            
-            $timeout(cacheNotification,1000);
-        }
-      }
-    }
-
-    
+	   
 	});
 
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);
 	};
-
-	var displayNotification = function(){
-		
-		var element = document.getElementById("Alert");
-		if(element){
-			var content = element.innerHTML;
-			 if($scope.calls.length > 0 || $scope.todaysNotifications.length > 0 || $scope.errors.length > 0){
-               phoneService.displayNotification(content,element.offsetWidth,element.offsetHeight);
-             }else{
-               phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-             }
-		}
-		element = null;
-		$scope.displayAlert = false;
-	};
-
-  var cacheNotification = function(){
-     var element = document.getElementById("Alert");
-      if(element){
-              var content = element.innerHTML;
-              phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-      }
-      element = null;
-      $scope.displayAlert = false;
-  };
 
 	$window.onfocus = function() {
 		// delete notifications when hudweb is back in focus
@@ -850,17 +734,9 @@ hudweb.controller('NotificationController',
 			case "disabled":
 				//$scope.phoneSessionEnabled = false;
 				break;
-			case 'displayNotification':
-				if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
-		          $scope.displayAlert = true;
-		          $timeout(displayNotification, 2000); 
-		        }else{
-		          phoneService.cacheNotification(undefined,0,0);
-		        }
-				break;
-            case 'dismissError':
-                $scope.dismissError(data.type);
-                break;
+      case 'dismissError':
+        $scope.dismissError(data.type);
+        break;
 		}
 		if($scope.isRinging)
 		{
@@ -1017,23 +893,13 @@ hudweb.controller('NotificationController',
       					 
    
       if (displayDesktopAlert){
-        	phoneService.setCancelled(false);
                if ($scope.todaysNotifications.length > 0){
                       phoneService.setStayHidden(false);
-                       if(nservice.isEnabled()){
                           phoneService.displayWebphoneNotification(item,"",false);
-                          //nservice.displayWebNotification(item);
-                       }else{
-							phoneService.getPlugin().then(function() {
-								$scope.displayAlert = true;
-								$timeout(displayNotification, 1500);
-							});
-                       }
+
              }
-      }else{
-          $scope.displayAlert = true;
-          $timeout(cacheNotification,1000);
-     }
+      }
+
     }
   };
 
@@ -1042,15 +908,6 @@ hudweb.controller('NotificationController',
     delete_notification_from_notifications_and_today(notification.xpid);
     $rootScope.currentNotificationLength = $scope.todaysNotifications.length;
 
-		if($scope.todaysNotifications.length > 0 || $scope.calls.length > 0){
-			$scope.displayAlert = true;
-			
-			if(displayDesktopAlert)
-				$timeout(displayNotification, 1500);		
-		}else{
-			phoneService.removeNotification();
-			phoneService.cacheNotification(undefined,0,0);
-		}
 	};
 
 	var deleteLastLongWaitNotification = function(){
