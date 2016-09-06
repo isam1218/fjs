@@ -102,34 +102,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		var hidden;
 		if(document.hidden || !isForceHidden){//) && !isAlertShown
 			tabInFocus = false;
-			if(context.shouldAlertDisplay()){
-					if(!$.isEmptyObject(callsDetails)){
-						for(var detail in callsDetails){
-							if(alertDuration != "entire"){
-				              if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && callsDetails[detail].xef001type != 'delete'){
-				            	  context.displayCallAlert(callsDetails[detail]);
-				              }
-				              else if(callsDetails[detail].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
-				            	  nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);  
-				              else if (callsDetails[detail].xef001type == 'delete') 
-									nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);
-					 		}
-					 		else
-					 		{
-					 			if (callsDetails[detail].xef001type == 'delete') 
-									nservice.dismiss("INCOMING_CALL",callsDetails[detail].xpid);
-					 			else
-					 			{
-					 				if((settingsService.getSetting('alert_call_outgoing') == 'true' && !callsDetails[detail].incoming) || 
-					 				   (settingsService.getSetting('alert_call_incoming') == 'true' && callsDetails[detail].incoming))
-					 					context.displayCallAlert(callsDetails[detail]);
-					 			}	
-					 		}	
-					 			
-						}
-					}
-
-			}
+	
 
 			if (session) {
 				activityChecker = setInterval(function() {
@@ -1565,21 +1538,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 					}
 				}
 				
-				if(settingsService.getSetting('alert_call_duration') != "entire"){
-					if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && data[i].xef001type != 'delete')
-		            	  context.displayCallAlert(data[i]);
-		            else if(data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
-		            	nservice.dismiss("INCOMING_CALL",data[i].xpid);
-		            else if (data[i].xef001type == 'delete')
-		            	nservice.dismiss("INCOMING_CALL",data[i].xpid);
-			    }
-				else
-				{
-					if (data[i].xef001type == 'delete') 
-						nservice.dismiss("INCOMING_CALL",data[i].xpid);
-					else
-						context.displayCallAlert(data[i]);
-				}
+			
 			}
 			//this is a hack for too address the call hold and unhold issue 
 			//to properlly fix we need to redo the mappings so that it makes sense
@@ -1706,70 +1665,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			nservice.sendData({message:"focus"},0,"FOCUS");
 	};
 
-	this.displayCallAlert = function(call){
-		var data = {};
-	    var left_buttonText;
-	    var right_buttonText;
-	    var left_buttonID;
-	    var right_buttonID;
-	    var right_buttonEnabled;
-	    var callType;
-
-	    if(call.state == fjs.CONFIG.CALL_STATES.CALL_RINGING){
-	              left_buttonText = call.incoming ? "Decline" : "Cancel";
-	              right_buttonText = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm' ? "Accept" : "";
-	              left_buttonID = "CALL_DECLINED";
-	              right_buttonID = "CALL_ACCEPTED";
-	              right_buttonEnabled = call.incoming && call.location.locationType != 'm' && $rootScope.meModel.location.locationType != 'm';
-	    }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
-          left_buttonText = "END";
-          left_buttonID = "CALL_DECLINED";
-          if(call.type != fjs.CONFIG.CALL_TYPES.CONFERENCE_CALL){
-              right_buttonID = "CALL_ON_HOLD";
-              right_buttonEnabled = true;
-              right_buttonText = "HOLD";  
-          }else{
-              //right_buttonID = "CALL_ON_HOLD";
-              right_buttonEnabled = false;
-              right_buttonText = "HOLD";  
-            
-          }
-
-        }else if(call.state == fjs.CONFIG.CALL_STATES.CALL_HOLD){
-          right_buttonText = "TALK";
-          right_buttonEnabled = true;
-          right_buttonID = "talk";
-        }
-        if(call.type == fjs.CONFIG.CALL_TYPES.QUEUE_CALL){
-          callType = "Queue";
-        }else if(call.type == fjs.CONFIG.CALL_TYPES.EXTERNAL_CALL){
-          callType = "External";
-        }else{
-          callType = "Office";
-        }
-      
-
-        var callStart = ntpService.calibrateNativeTime(call.created);
-        var holdStart = ntpService.calibrateNativeTime(call.holdStart);
-        var regStr = /^(9-|91-|1-)/;	
-        data = {
-              "notificationId": call.xpid, 
-              "leftButtonText" : left_buttonText,
-              "rightButtonText" : right_buttonText,
-              "leftButtonId" : left_buttonID,
-              "rightButtonId" : right_buttonID,
-              "leftButtonEnabled" : true,
-              "rightButtonEnabled" : right_buttonEnabled,
-              "callerName" : call.displayName.replace(regStr, ''), 
-              "callStatus" : call.incoming ? 'Incoming call for' : "Outbound call for",
-              "callCategory" : callType,
-              "muted" : call.mute ? "1" : "0",
-              "record" : call.record ? "1" : "0",
-            "created": callStart,
-            "holdStart": holdStart
-        };
-        this.displayWebphoneNotification(data,"INCOMING_CALL",true);
-	 };
 
 	 this.getLocationPromise = function(){
 	 	return deferredLocations.promise;

@@ -677,54 +677,12 @@ hudweb.controller('NotificationController',
         	$('.LeftBarNotificationSection.notificationsSection').addClass('withCalls');
     else
 			$('.LeftBarNotificationSection.notificationsSection').removeClass('withCalls');
-	
-		
-       	
-    if(displayDesktopAlert){
-          
-				for (var i = 0; i < $scope.calls.length; i++){
-				 if(alertDuration != "entire"){
-					 if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_RINGING && $scope.calls[i].xef001type != 'delete')
-              phoneService.displayCallAlert($scope.calls[i]);
-		             else if($scope.calls[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED)
-		            	  nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);
-		             else if ($scope.calls[i].xef001type == 'delete') 
-		            	  nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid); 
-				 }
-				 else
-				 {
-					 if ($scope.calls[i].xef001type == 'delete') 
-						 nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);
-					 else
-						 phoneService.displayCallAlert($scope.calls[i]); 
-				 }	 
-					 
-				}
-
-    }
-    else{
-
-        for (var i = 0; i < $scope.calls.length; i++){
-           nservice.dismiss("INCOMING_CALL",$scope.calls[i].xpid);   
-        } 
-    }
-
-    
+	   
 	});
 
 	$scope.showCurrentCallControls = function(currentCall){
 		$location.path("settings/callid/"+currentCall.xpid);
 	};
-
-
-  var cacheNotification = function(){
-     var element = document.getElementById("Alert");
-      if(element){
-              var content = element.innerHTML;
-              phoneService.cacheNotification(content,element.offsetWidth,element.offsetHeight);
-      }
-      element = null;
-  };
 
 	$window.onfocus = function() {
 		// delete notifications when hudweb is back in focus
