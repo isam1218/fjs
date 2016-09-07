@@ -1,6 +1,6 @@
 hudweb.controller('NotificationController', 
-  ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 'GroupService', '$timeout','NtpService','NotificationService', '$sce', '$window',
-  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,groupService,$timeout,ntpService,nservice, $sce, $window){
+  ['$scope', '$rootScope', 'HttpService', '$routeParams', '$location','PhoneService','ContactService','QueueService','SettingsService','ConferenceService', 'GroupService', '$timeout','NtpService','NotificationService', '$sce', '$window', 'StorageService',
+  function($scope, $rootScope, myHttpService, $routeParam,$location,phoneService, contactService,queueService,settingsService,conferenceService,groupService,$timeout,ntpService,nservice, $sce, $window, storageService){
   var playChatNotification = false;
   var displayDesktopAlert = true;
   $scope.notifications = nservice.notifications  || [];
@@ -443,6 +443,11 @@ hudweb.controller('NotificationController',
     }
 
     ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: 'From Notification'});
+    if (message.fullProfile)
+      storageService.saveRecent('contact', message.fullProfile.xpid);
+    else if (message.displayName.indexOf('Conference') != -1) {
+      storageService.saveRecent('conference', message.xpid);
+    }
   };
   
   $scope.joinZoom = function(message) {

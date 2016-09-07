@@ -1,4 +1,4 @@
-hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', '$timeout', 'HttpService', 'ContactService', 'ConferenceService', 'QueueService', 'PhoneService', 'SettingsService', function($scope, $rootScope, $routeParams, $location, $timeout, httpService, contactService, conferenceService, queueService, phoneService, settingsService) {
+hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams', '$location', '$timeout', 'HttpService', 'ContactService', 'ConferenceService', 'QueueService', 'PhoneService', 'SettingsService', 'StorageService', function($scope, $rootScope, $routeParams, $location, $timeout, httpService, contactService, conferenceService, queueService, phoneService, settingsService, storageService) {
 	$scope.rec = {
 		query: '',
 		opened: null
@@ -148,6 +148,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 			else if (rec.calleeUserId && rec.calleeUserId != $rootScope.myPid)
 				phoneService.makeCall(rec.calleePhone)
 		}
+		storageService.saveRecent('contact', rec.fullProfile.xpid);
 	};
 	
 	$scope.deleteFile = function(rec) {
