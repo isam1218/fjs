@@ -445,8 +445,9 @@ hudweb.controller('NotificationController',
     ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: 'From Notification'});
     if (message.fullProfile)
       storageService.saveRecent('contact', message.fullProfile.xpid);
-    else
-      storageService.saveRecent('contact', message.xpid);
+    else if (message.displayName.indexOf('Conference') != -1) {
+      storageService.saveRecent('conference', message.xpid);
+    }
   };
   
   $scope.joinZoom = function(message) {
