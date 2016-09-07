@@ -19,12 +19,6 @@ hudweb.controller('GroupSingleController', ['$scope', '$rootScope', '$routeParam
   {upper: $scope.verbage.group_info, lower: 'info', idx: 5}
   ];
 
-  //if no group exists when clicking on the group chat notification give error message.
-   if($scope.group == null){
-    $location.path("/settings");
-    alert("We apologize but this Group no longer exists");
-  }
-
   // store recent
   storageService.saveRecent('group', $scope.groupID);
 

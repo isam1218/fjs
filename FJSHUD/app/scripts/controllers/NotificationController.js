@@ -326,7 +326,15 @@ hudweb.controller('NotificationController',
       case 'description':
       case 'barge message':
       case 'gchat':
-        endPath = "/" + message.audience + "/" + xpid + '/chat';
+
+        //check to make sure if message audience was a group and wasn't deleted. Else create path for chat.
+        var groupChat = groupService.getGroup(xpid);
+        if(message.audience == "group" && groupChat == null){
+          alert("We apologize but this Group no longer exists");  
+        }
+        else{
+          endPath = "/" + message.audience + "/" + xpid + '/chat';
+        }
         break;
       case 'missed-call':
         // external contact --> go to voicemails tab
@@ -360,11 +368,14 @@ hudweb.controller('NotificationController',
         $scope.remove_notification(message.xpid);
         break;
     }
-
+      
+    
     $location.path(endPath);
     $scope.remove_notification(message.xpid);
     $scope.showOverlay(false);
   };
+
+  
   
   $scope.showQueue = function(message)
     {
