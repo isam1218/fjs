@@ -276,46 +276,17 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
   };
 
 	var hangUp = function(xpid){
-		var call = context.getCall(xpid);
-		if(call){
-			if(context.webphone){
-				//messageSoftphone({a : 'hangUp', value : call.sip_id});
-				httpService.sendAction('mycalls','hangup',{mycallId:xpid});
-			}else{
-				call.hangUp();
-			}
-		}else{
-			httpService.sendAction('mycalls','hangup',{mycallId:xpid});
-		}
+		httpService.sendAction('mycalls','hangup',{mycallId:xpid});
 	};
 
-	/*var holdCall = function(xpid,isHeld){
-		if(isHeld){
-        	httpService.sendAction('mycalls','transferToHold',{mycallId:xpid});
-		}else{
-	       	httpService.sendAction('mycalls','transferFromHold',{mycallId:xpid,toContactId:$rootScope.meModel.my_pid});
-		}
-	};*/
-
 	var holdCall = function(xpid, isHeld){
-		var call = context.getCall(xpid);
-		
-		if (call) {
-			if (context.webphone)
-				messageSoftphone({a: 'hold', value: call.sip_id});
-			else
-				call.hold = isHeld;
-		}
-		else {		
-			if (isHeld) {
-				httpService.sendAction('mycalls', 'transferToHold', {mycallId: xpid});
-			}
-			else {
-				httpService.sendAction('mycalls', 'transferFromHold', {
-					mycallId: xpid,
-					toContactId: $rootScope.meModel.my_pid
-				});
-			}
+		if (isHeld){
+			httpService.sendAction('mycalls', 'transferToHold', {mycallId: xpid});
+		} else {
+			httpService.sendAction('mycalls', 'transferFromHold', {
+				mycallId: xpid,
+				toContactId: $rootScope.meModel.my_pid
+			});
 		}
 	};
 
@@ -326,7 +297,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 		number = number.replace(/\D+/g, '');
 		var call_already_in_progress = false;
-		
+		// if there is a call in progress already (callsDetails is NOT empty obj)...
 		if(!$.isEmptyObject(callsDetails))
 		{
 			for(var cd in callsDetails)	
@@ -341,37 +312,14 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				}
 			}	
 		}
-		if(!call_already_in_progress)
-		{	
-	        if($rootScope.meModel.location.locationType == 'w'){
-	        	if(context.webphone && number)
-	        	{	
-	        		messageSoftphone({a : 'call', value : number});
-	        	}else if(phone && number != ""){
-	        		phone.makeCall(number);
-				}else{
-	        		httpService.sendAction('me', 'callTo', {phoneNumber: number});
-				}
-			}else{
-				httpService.sendAction('me', 'callTo', {phoneNumber: number});
-				
-			}	
+		// if no call already in progress AKA if this is the 1st call
+		if(!call_already_in_progress) {	
+			httpService.sendAction('me', 'callTo', {phoneNumber: number});
 		}  
-    };
+  };
 
 	var acceptCall = function(xpid){
-		var call = context.getCall(xpid);
-		if(call){
-			if(context.webphone){
-				context.webphone.send(JSON.stringify({a : 'accept', value : call.sip_id}));
-			}else{
-				call.accept();
-			}
-
-		}else{
-			httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
-		}
-
+		httpService.sendAction('mycalls', 'answer',{mycallId:xpid});
 		for(var i in callsDetails){
 			if(i != xpid && callsDetails[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED){
 				holdCall(i,true);
