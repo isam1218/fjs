@@ -71,8 +71,8 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 		};
 
 		this.displayWebNotification = function(data){
-			if (!Notification) {
-				return;
+			if (!("Notification" in window)) {
+			    return;
 			}
       
 			if (Notification.permission !== "granted")
