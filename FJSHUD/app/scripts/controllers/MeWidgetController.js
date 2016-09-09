@@ -1156,6 +1156,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     // cancel transfer link/button
     $scope.cancelTransfer = function(){
+        $scope.transferOpened = false;
         // if at warm transfer screen cancel -> means we want to hang up call #2
         if ($scope.changeWarmButton || $scope.warmTransferToConnected){
             phoneService.hangUp($scope.call2.xpid);
