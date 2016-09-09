@@ -9,7 +9,14 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="image/x-icon" rel="icon" id="favicon" href="img/Favicon.gif" />
-    <link rel="stylesheet" href="styles/main.css?v=<%- version %>">   
+    
+    <!-- @if NODE_ENV='development' --> 
+    <link rel="stylesheet" href="styles/main.css?v=<%- version %>"> 
+		<!-- @endif -->
+
+    <!-- @if NODE_ENV='production' -->
+    <link rel="stylesheet" href="styles/main.min.css?v=<%- version %>"> 
+    <!-- @endif --> 
 
     <!--[if lt IE ]> 
         <link rel="stylesheet" href="styles/ie.css">  
@@ -331,6 +338,7 @@
 	<script src="scripts/bower.min.js?v=<%- version %>"></script>
 	<script src="scripts/fjs.min.js?v=<%- version %>"> </script>
 	<script src="scripts/templates.js?v=<%- version %>"></script>
+
 
 	<!-- @endif --> 
     
