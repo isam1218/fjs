@@ -475,9 +475,9 @@ hudweb.controller('NotificationController',
       $scope.overlay = 'groups';
   };
 
-  $scope.activatePhone = function(){
-       myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
-  };
+  $scope.$on('settings_updated',function(event,data){
+    $scope.alertDuration = data['alert_call_duration'];
+  });
 
   var prepareBargeNotification = function(contactObj){
     var myCallBarger = contactObj.call.bargers[0];
