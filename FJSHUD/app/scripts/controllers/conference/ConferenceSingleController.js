@@ -177,8 +177,6 @@ hudweb.controller('ConferenceSingleController', ['$scope', '$rootScope', 'Confer
       }else{
       	$scope.addExternalToConference(member.phone);
       }
-
-      $scope.removeRefused(member);
   };
 
   $scope.joinConference = function(){
