@@ -29,23 +29,7 @@
 						</div>
 					</div>
 					
-					<div class="NotificationDivider"></div>
-					
-					
-					<div ng-switch-when="anotherDevice" class="NotificationSection error" ng-click="$parent.activatePhone()">
-						<div class="LeftBarNotificationAvatarSection" style="display:inline-block"> 
-							<div class="AvatarWarningSmall"></div>
-						</div>
-					
-						<div class="LeftBarNotificationMessageSection"> 
-							<div class="chatNotification error">
-								<div class="content"><span ng-bind-html="::error.displayName"></span> <div class="NotificationTime"></div></div> 
-								<div ></div>
-								<div class="NotificationMessage" ng-bind-html="::error.message"></div>
-							</div>
-							
-						</div>
-					 </div> 
+					<div class="NotificationDivider"></div>					 
 					
 					<div ng-switch-when="networkError" class="NotificationSection error" ng-click="showOverlay(true, 'NetworkErrorsOverlay', {})">
 						<div class="LeftBarNotificationAvatarSection" style="display:inline-block"> 

@@ -64,10 +64,6 @@ hudweb.controller('NotificationController',
 		};
 			
 		switch(type) {
-			case 'anotherDevice':
-				data.displayName = 'Web Phone';
-				data.message = 'Phone registered on another device. Click on this message to set this instance as active.';
-				break;
 			case 'networkError':
 				data.displayName = 'Error';
 				data.message = 'Click to open details';
@@ -158,13 +154,6 @@ hudweb.controller('NotificationController',
     myHttpService.sendAction('quickinbox','remove',{'pid':xpid});
     myHttpService.deleteFromWorker('quickinbox', xpid);
     delete_notification_from_notifications_and_today(xpid);
-  };
-
-  $scope.remove_anotherDevice_notification = function(){
-    if ($scope.displayAnotherDeviceNotification)
-      $scope.displayAnotherDeviceNotification = false;
-    else if (!$scope.displayAnotherDeviceNotification)
-      $scope.displayAnotherDeviceNotification = true;
   };
 
   $scope.showNotifications = function(flag)
@@ -485,27 +474,6 @@ hudweb.controller('NotificationController',
     else
       $scope.overlay = 'groups';
   };
-  
-  $scope.$on('another_device', function() {
-	  // we already know device is unregistered, so just show error again
-	  $scope.addError('anotherDevice');
-  });
-
-  $scope.$on('settings_updated',function(event,data){
-    if(data['instanceId'] != undefined){
-      if(data['instanceId'] != localStorage.instance_id){
-        // another instance being used --> display msg
-        $scope.addError('anotherDevice');
-        phoneService.registerPhone(false);
-      }else{
-        // no other device -> remove msg
-        $scope.dismissError('anotherDevice');
-        phoneService.registerPhone(true);
-      }
-    }
-    $scope.alertDuration = data['alert_call_duration'];
-
-  });
 
   $scope.activatePhone = function(){
        myHttpService.updateSettings('instanceId','update',localStorage.instance_id); 
