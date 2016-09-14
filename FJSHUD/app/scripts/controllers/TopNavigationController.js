@@ -111,8 +111,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
   $scope.openPreferences = function(){
     $modal.open({
       animation: $scope.animationsEnabled,
-      templateUrl: 'Preferences.html',
-      controller: 'MeWidgetController',
+      templateUrl: 'views/Preferences.html',
+      controller: 'PreferencesController',
       size: 'lg'
     });
   };
