@@ -33,7 +33,7 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
 
     $scope.tabs = [
                    {label:$scope.verbage.general,option:'General',isActive:true},
-                   {label:$scope.verbage.phone,option:'Phone',isActive:true},
+                   /*{label:$scope.verbage.phone,option:'Phone',isActive:true},*/
                    {label:$scope.verbage.web_launcher,option:'Web Launcher',isActive:true},
                    {label:$scope.verbage.queues,option:'Queues',isActive:true},
                    {label:$scope.verbage.my_account,option:'Account',isActive:true},
@@ -87,50 +87,50 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
                 localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
                 $scope.$parent.selected = $scope.selected;
                 break;
-            case "Phone":
+/*            case "Phone":
+                $scope.selected = $scope.tabs[1];
+                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
+                $scope.toggleObject = {item: index};
+                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
+                $scope.$parent.selected = $scope.selected;
+                break;*/
+            case "Web Launcher":
                 $scope.selected = $scope.tabs[1];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
                 localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
                 $scope.$parent.selected = $scope.selected;
                 break;
-            case "Web Launcher":
+            case "Queues":
                 $scope.selected = $scope.tabs[2];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
                 localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
                 $scope.$parent.selected = $scope.selected;
                 break;
-            case "Queues":
+            case "Account":
                 $scope.selected = $scope.tabs[3];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
                 localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
                 $scope.$parent.selected = $scope.selected;
                 break;
-            case "Account":
+            case "Alerts":
                 $scope.selected = $scope.tabs[4];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
                 localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
                 $scope.$parent.selected = $scope.selected;
                 break;
-            case "Alerts":
+            case "CP":
                 $scope.selected = $scope.tabs[5];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
                 localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
                 $scope.$parent.selected = $scope.selected;
                 break;
-            case "CP":
-                $scope.selected = $scope.tabs[6];
-                localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
-                $scope.toggleObject = {item: index};
-                localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
-                $scope.$parent.selected = $scope.selected;
-                break;
             case "About":
-                $scope.selected = $scope.tabs[7];
+                $scope.selected = $scope.tabs[6];
                 localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] = JSON.stringify($scope.selected);
                 $scope.toggleObject = {item: index};
                 localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] = JSON.stringify($scope.toggleObject);
