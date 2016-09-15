@@ -106,7 +106,7 @@ hudweb.service('SettingsService', ['$q', '$location', '$rootScope', '$routeParam
 				permissions.showIntellinote = service.isEnabled(data[i].propertyValue, 15);
 				permissions.showZipwhip = service.isEnabled(data[i].propertyValue, 16);
 				permissions.canTransferFrom = service.isEnabled(data[i].propertyValue, 4);
-				permissions.showFonalityDialer = true;//service.isEnabled(data[i].propertyValue, 18);
+				permissions.showFonalityDialer = service.isEnabled(data[i].propertyValue, 19);
 				// bit for inphonex should be 18
 				permissions.showInphonex = service.isEnabled(data[i].propertyValue, 18);
 
