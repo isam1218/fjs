@@ -13,10 +13,6 @@ hudweb.controller('LocationsController',['$scope', '$rootScope', '$routeParams',
         }
 	});
 	
-	// show another device error
-	if (settingsService.getSetting('instanceId') != localStorage.instance_id) {
-		$rootScope.$broadcast('another_device', true);
-	}
     
     $scope.setLocation = function(locationId){
         httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
