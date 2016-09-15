@@ -63,13 +63,13 @@
             <div class="Section">
                 <div class="review">
 					<!-- embed types -->
-					<img class="CurrentDownload DownloadPreview" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'img'" />
+					<img style="vertical-align: top;" class="CurrentDownload DownloadPreview" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'img'" />
 
-					<iframe class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'doc' || embedType == 'text'"></iframe>
+					<iframe style="vertical-align: top;" class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'doc' || embedType == 'text'"></iframe>
 
-					<video class="CurrentDownload" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'video'" controls>Your browser doesn't support HTML5 video.</video>
+					<video style="vertical-align: top;" class="CurrentDownload" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'video'" controls>Your browser doesn't support HTML5 video.</video>
 
-					<audio class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'audio'" controls>Your browser doesn't support HTML5 audio.</audio>
+					<audio style="vertical-align: top;" class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'audio'" controls>Your browser doesn't support HTML5 audio.</audio>
                 </div>
             </div>
 
@@ -86,7 +86,7 @@
                 </div>
 
                 <div class="AttachmentDownload">
-                    <div ng-repeat="download in downloadables" class="ListRow Small Downloadables" ng-click="selectCurrentDownload(download)">
+                    <div style="vertical-align: top;" ng-repeat="download in downloadables" class="ListRow Small Downloadables" ng-click="selectCurrentDownload(download)">
                         <div style="display:inline-block;width:40px" class="Center">
                             <img class="AvatarSmall Center" ng-src="{{::getPreviewIcon(download.url, download.fileName)}}" />
                         </div>

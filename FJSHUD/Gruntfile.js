@@ -269,7 +269,22 @@ module.exports = function(grunt) {
         dest: 'app/scripts/fjs.min.js'
       }
     }
-    , 
+    ,
+    cssmin: {
+      dist:{
+        src: 'prod/app/styles/main.css',
+        dest: 'prod/app/styles/main.min.css'
+      },
+      huc_dev:{
+        src: 'huc_dev/app/styles/main.css',
+        dest: 'huc_dev/app/styles/main.min.css'
+      },
+      dev:{
+        src: 'dest/app/styles/main.css',
+        dest: 'dest/app/styles/main.min.css'
+      }
+    }
+    ,
     uglify:{
       dev:{
         options:{
@@ -416,7 +431,7 @@ module.exports = function(grunt) {
     }
   });
 
-
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-string-replace');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -432,8 +447,8 @@ module.exports = function(grunt) {
 
   
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
-  grunt.registerTask('build-dist', ['template:dist','concat','ngtemplates','bower_concat','preprocess:dist','less:dist','uglify:dist','copy:dist','zip']);
-  grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev','uglify:dev','copy:dev','zip']);
-  grunt.registerTask('build-huc-dev', ['concat','template:huc_dev','preprocess:huc_dev','less:huc_dev','uglify:huc_dev','copy:huc_dev','zip']);
+  grunt.registerTask('build-dist', ['template:dist','concat','ngtemplates','bower_concat','preprocess:dist','less:dist', 'cssmin:dist', 'uglify:dist','copy:dist','zip']);
+  grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev', 'cssmin:dev','uglify:dev','copy:dev','zip']);
+  grunt.registerTask('build-huc-dev', ['concat','template:huc_dev','preprocess:huc_dev','less:huc_dev', 'cssmin:huc_dev' ,'uglify:huc_dev','copy:huc_dev','zip']);
   grunt.registerTask('jenkins-build', ['string-replace', 'concat', 'closure-compiler', 'zip', 'copy']);
 };

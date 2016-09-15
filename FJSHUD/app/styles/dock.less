@@ -34,8 +34,9 @@
   &.Moving {
     border: 1px dashed #358503;
     border-width: 1px;
-    -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
-    -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+    border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+    // -moz-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
+    // -webkit-border-image: url("../img/marching-ants.gif") 1 repeat repeat;
   }
   
   .InnerDock {
@@ -264,7 +265,6 @@
                 padding-right: 2px;
                 font-size: 10px;
                 border-radius: 6px;
-                -webkit-border-radius: 6px;
                 text-align: center;
                 //background-image: -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
                 color: #888;
@@ -506,7 +506,7 @@
 	   	background: #000066 !important; /* !important is needed by the polyfill */
 	}
 	progress::-webkit-progress-bar {
-	    -webkit-border-radius:50px;
+	    border-radius:50px;
 
 	}
 	progress {
@@ -514,11 +514,11 @@
 	}
 	progress::-moz-progress-bar { 
 	    background: #72E673;   
-		-moz-border-radius:50px;
+		border-radius:50px;
 	}
 	progress::-webkit-progress-value {
 	    background: #72E673;
-	   -webkit-border-radius:50px;
+	   border-radius:50px;
 
 	}
 	progress[aria-valuenow]:before  {
