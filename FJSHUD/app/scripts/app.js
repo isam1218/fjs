@@ -126,6 +126,11 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			templateUrl: 'views/Inphonex.html',
 			controller: 'InphonexController'
 		})
+		.when('/fonalitydialer',
+		{
+			templateUrl: 'views/FonalityDialer.html',
+			controller: 'FonalityDialerController'
+		})
 		.otherwise({
 			redirectTo: '/settings'
 		});
