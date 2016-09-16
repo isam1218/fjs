@@ -7,6 +7,7 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 	$scope.type;
 	$scope.widget;
 	$scope.context;
+	$scope.showDock = true;
 	
 	var transferFeed;
 	var transferAction = 'transferToContact';
@@ -161,6 +162,11 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 		if ($scope.profile) {
 			settingsService.getSettings().then(function(data) {
 				$scope.canDock = true;
+
+				// hide dock icon if don't have permission to view conference room
+				if ($scope.type == 'ConferenceRoom' && (($scope.profile.permissions != 0 && $scope.profile.permissions != 4)) || $scope.profile.permissions == 6 ){
+					$scope.showDock = false;
+				}
 				var regex = new RegExp($scope.profile.xpid + '$', 'g'); // end of string
 				
 				for (var key in data) {
