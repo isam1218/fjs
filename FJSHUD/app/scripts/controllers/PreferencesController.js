@@ -1,5 +1,5 @@
-hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 'ConferenceService', 'QueueService', 'GroupService',
-    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService, conferenceService, queueService, groupService) {
+hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'HttpService','PhoneService','$routeParams','ContactService','$filter','$timeout','SettingsService', 'StorageService', 'ConferenceService', 'QueueService', 'GroupService','$modal','$modalInstance',
+    function($scope, $rootScope, $http, myHttpService,phoneService,$routeParam,contactService,$filter,$timeout,settingsService, storageService, conferenceService, queueService, groupService,$modal,$modalInstance) {
     var context = this;
     var MAX_AUTO_AWAY_TIMEOUT = 2147483647;
     var soundManager;
@@ -54,6 +54,11 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
         $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
         $scope.language = $rootScope.language || 'us';
     });
+
+    $scope.closePreferences = function(){
+        $modalInstance.close();
+
+    };
 
     $scope.truncateLongString = function()
     {

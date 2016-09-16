@@ -1,12 +1,12 @@
 
  <div class="fj-vbox-space Preferences-Holder" >
-  	<div class="PreferencesSectionTitle">{{::verbage.preferences}}</div>
+  	<div class="PreferencesSectionTitle">{{::verbage.preferences}}
+  	<i class="material-icons" ng-click="closePreferences()">close</i>
+  	</div>
   	<div class="PreferencesContent">
       <ul class="PreferencesTabBar" style="width:90px;float:left;margin:0;">
         <li href="" ng-repeat="tab in ::tabs" ng-show="tab.isActive" ng-click="saveMeTab(tab.option, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
-          <div class="PrefTabLabel {{language}}" style="color:#333333;
-    margin-bottom: 10px;
-    font-size: 14px;">{{ ::tab.label }}</div>
+          <div class="PrefTabLabel {{language}}">{{ ::tab.label }}</div>
           <!-- <div class="arrow"></div> -->
         </li>
       </ul>
