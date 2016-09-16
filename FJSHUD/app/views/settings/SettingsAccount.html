@@ -1,12 +1,16 @@
-          <div class="ListSection">
+          <div class="PreferenceSection" ng-click="myAccount = !myAccount">
+            
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">{{::verbage.my_account}}</div>
-              <div class="ListSectionHeaderRight"></div>
+              <div class="ListSectionHeaderTitle" ng-if="!myAccount">{{::verbage.my_account}}</div>
+              <!-- <div class="ListSectionHeaderRight"></div> -->
+             
             </div>
-            <div class="ListSectionBody">{{::verbage.my_account_info}}</div>
+            <div class="ListSectionBody" ng-if="!myAccount">{{::verbage.my_account_info}}</div>
+             <i class="material-icons" ng-if="!myAccount">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-if="myAccount" >keyboard_arrow_down</i>
           </div>
-          <div class="ListPage">
-            <div class="ListPageHeader"></div>
+          <div class="PreferencePage" ng-if="myAccount">
+            <div class="ListSectionHeaderTitle" >{{::verbage.my_account}}</div>
               <div class="Dialog-settings-row">
               <label class="queueBlock">{{::verbage.login}}:</label>
               <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.login">
@@ -16,15 +20,17 @@
               <input class="text DialogSettingInput" readonly="true" ng-model="meModel.server">
             </div>
           </div>
-          <div class="ListSection">
+          <div class="PreferenceSection" ng-click="myInfo = !myInfo">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">{{::verbage.my_personal_info}}</div>
+              <div class="ListSectionHeaderTitle" ng-if="!myInfo">{{::verbage.my_personal_info}}</div>
               <div class="ListSectionHeaderRight"></div>
             </div>
-          <div class="ListSectionBody"></div>
+            <div class="ListSectionBody" ng-if="!myInfo"></div>
+            <i class="material-icons" ng-if="!myInfo">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-if="myInfo" >keyboard_arrow_down</i>
           </div>
-          <div class="ListPage">
-            <div class="ListPageHeader"></div>
+          <div class="PreferencePage" ng-if="myInfo">
+            <div class="ListSectionHeaderTitle" >{{::verbage.my_personal_info}}</div>
             <div class="Dialog-settings-row">
               <div class="file-input Dialog-settings-row" flow-init="{testChunks:false}" flow-files-submitted="flow_cleanup($files)" flow-name="avatar.flow" flow-file-added="change_avatar($file)">
 

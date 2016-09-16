@@ -889,8 +889,7 @@
     padding-top:20px;
  }
 
- .ListSection.general{
-   height: 70px;
+ .PreferenceSection{
    border-top:1px solid lightgray;
 
    .ListSectionHeaderTitle{
@@ -898,16 +897,37 @@
    color:#686868;
    }
 
+   .ListSectionBody{
+   margin-bottom:20px;
+   }
+
    .material-icons{
    float: right;
    font-size: 30px;
-   margin-top: -8px;
+   margin-top: -20px;
    margin-right: 5px;
    cursor:pointer;
    }
+
+   .material-icons.down{
+   margin-top:10px;
+   }
+
+   &:hover{
+   background-color:lightgray;
+   }
  }
 
- .ListPage.general{
+ .PreferencePage{
+
+    .ListSectionHeaderTitle{
+   font-size:15px;
+   color:#686868;
+   margin-left:0;
+   margin-bottom: 20px;
+   }
+
+   
 
    border:none;
   border-radius:none;
@@ -922,6 +942,8 @@
   -webkit-box-shadow: none;
   min-height: 60px;
  }
+
+
 
  .ListSection.general,
  .ListPage.general{
@@ -949,23 +971,7 @@
         }
     }
  }
-.ListPage.launcher{
-    position: relative;
-   // border: solid 1px #efefef;
-    border-top: none;
-    background-color: #fff;
-    border-radius: 6px;
-    box-shadow: 0px 0px 2px #999 inset;
-    min-height: 60px;
-    padding:10px;
-    //padding-top: 0px !important;
 
-    .ListPageHeader{
-        position: relative;
-        height: 1px;
-        //padding-bottom: 10px;
-    }
-}
 .ListSection.launcher,
 .ListPage.launcher{
    .weblauncher-variables{

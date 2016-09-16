@@ -1,12 +1,14 @@
-          <div class="ListSection  launcher">
+          <div class="PreferenceSection" ng-click="wlSettings= !wlSettings">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">{{::verbage.web_launcher}}</div>
+              <div class="ListSectionHeaderTitle" ng-if="!wlSettings">{{::verbage.web_launcher}}</div>
               <div class="ListSectionHeaderRight"></div>
             </div>
-            <div class="ListSectionBody">{{::verbage.general_settings}}</div>
+            <div class="ListSectionBody" ng-if="!wlSettings">{{::verbage.general_settings}}</div>
+            <i class="material-icons" ng-if="!wlSettings">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-if="wlSettings" >keyboard_arrow_down</i>
           </div>
-          <div class="ListPage launcher">
-            <div class="ListPageHeader"></div>
+          <div class="PreferencePage" ng-if="wlSettings">
+            <div class="ListSectionHeaderTitle" >{{::verbage.web_launcher}}</div>
             <div class="Dialog-settings-row">
               <div class="lblSelect">{{::verbage.web_launcher_profile}}</div>
               <select class="fj-hbox SelectBox SelectBoxSettings"
@@ -20,15 +22,17 @@
               <label><input name="lwa" type="checkbox" ng-model="currentWebLauncher.launchWhenCallAnswered" ng-disabled="currentWebLauncher.id != 'user_default'" ng-change="update_weblauncher_settings()">{{::verbage.launch_page_when_answered}}</label>
             </div>
           </div>
-          <div class="ListSection launcher">
+          <div class="PreferenceSection" ng-click="wlOutbound= !wlOutbound">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">{{::verbage.outbound_calls}}</div>
+              <div class="ListSectionHeaderTitle" ng-if="!wlOutbound">{{::verbage.outbound_calls}}</div>
               <div class="ListSectionHeaderRight"></div>
             </div>
-            <div class="ListSectionBody">{{::verbage.outbound_calls_settings}}</div>
+            <div class="ListSectionBody" ng-if="!wlOutbound">{{::verbage.outbound_calls_settings}}</div>
+            <i class="material-icons" ng-if="!wlOutbound">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-if="wlOutbound" >keyboard_arrow_down</i>
           </div>
-          <div class="ListPage launcher">
-            <div class="ListPageHeader"></div>
+          <div class="PreferencePage" ng-if="wlOutbound">
+            <div class="ListSectionHeaderTitle" >{{::verbage.outbound_calls}}</div>
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
               <span class="inputBlock">{{::verbage.web_launcher_on_new_calls}}</span>
@@ -74,15 +78,17 @@
             >
           </div>
         </div>
-        <div class="ListSection  launcher">
+        <div class="PreferenceSection" ng-click="wlInbound= !wlInbound">
           <div class="ListSectionHeader">
-            <div class="ListSectionHeaderTitle">{{::verbage.inbound_calls}}</div>
+            <div class="ListSectionHeaderTitle" ng-if="!wlInbound">{{::verbage.inbound_calls}}</div>
             <div class="ListSectionHeaderRight"></div>
           </div>
-          <div class="ListSectionBody">{{::verbage.inbound_call_settings}}</div>
+          <div class="ListSectionBody" ng-if="!wlInbound">{{::verbage.inbound_call_settings}}</div>
+          <i class="material-icons" ng-if="!wlInbound">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-if="wlInbound" >keyboard_arrow_down</i>
         </div>
-        <div class="ListPage  launcher">
-          <div class="ListPageHeader"></div>
+        <div class="PreferencePage" ng-if="wlInbound">
+          <div class="ListSectionHeaderTitle" >{{::verbage.inbound_calls}}</div>
           <div class="Dialog-settings-row">
             <div class="Dialog-check-block right">
               <span class="inputBlock">{{::verbage.web_launcher_on_new_calls}}</span>
@@ -123,15 +129,17 @@
             >
           </div>
         </div>
-        <div class="ListSection  launcher">
+        <div class="PreferenceSection" ng-click="wlVariables= !wlVariables">
           <div class="ListSectionHeader">
-            <div class="ListSectionHeaderTitle">{{::verbage.web_launcher_variables}}</div>
+            <div class="ListSectionHeaderTitle" ng-if="!wlVariables">{{::verbage.web_launcher_variables}}</div>
             <div class="ListSectionHeaderRight"></div>
           </div>
-          <div class="ListSectionBody">{{::verbage.web_launcher_var_desc}}</div>
+          <div class="ListSectionBody" ng-if="!wlVariables">{{::verbage.web_launcher_var_desc}}</div>
+          <i class="material-icons" ng-if="!wlVariables">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-if="wlVariables" >keyboard_arrow_down</i>
         </div>
-        <div class="ListPage  launcher">
-          <div class="ListPageHeader"></div>
+        <div class="PreferencePage" ng-if="wlVariables">
+          <div class="ListSectionHeaderTitle" >{{::verbage.web_launcher_variables}}</div>
           <div class="weblauncher-variables">
             <div class="scrollable-v">
               <div class="Dialog-settings-row">
