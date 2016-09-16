@@ -289,9 +289,9 @@
 	<!-- dockable -->
 	<div ng-show="profile.xpid  && profile.xpid != myPid && (profile.displayName || profile.name) && (profile.displayName !== undefined || profile.name !== undefined)">
 		<div>
-			<a class="Button" href="" ng-show="canDock" ng-click="dockItem(true)">
+			<a class="Button" href="" ng-show="canDock && showDock" ng-click="dockItem(true)">
 				<div class="ListRowActionButtonDock"></div>
-				<span>{{::verbage.dock}}</span>
+				<span>{{::verbage.dock}} </span>
 			</a>
 			<a class="Button" href="" ng-show="!canDock" ng-click="dockItem(false)">
 				<div class="ListRowActionButtonUndock"></div>
