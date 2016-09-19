@@ -10,7 +10,7 @@
           <div class="PreferencePage" ng-if="interfaceSettings">
             <div class="ListSectionHeaderTitle" >{{::verbage.interface_word}}</div>   
             <div class="Dialog-settings-row">
-              <div class="lblSelect"><p>{{::verbage.language}}:</p></div>
+              <div class="lblSelect">{{::verbage.language}}:</div>
               <select class="fj-hbox SelectBox SelectBoxSettings"
               ng-model="languageSelect"
               ng-options="language.name for language in languages"
