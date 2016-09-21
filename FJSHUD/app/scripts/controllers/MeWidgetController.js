@@ -94,8 +94,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     settingsService.getSettings().then(function(data) {
 		// grab settings from service (prevents conflict with dock)
 		$scope.settings = settings = data;
-		update_queues();
-		update_settings();
 
 		// localstorage logic
         $scope.globalXpid = $rootScope.myPid;
@@ -751,6 +749,23 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         phoneService.mute($scope.currentCall.xpid, !$scope.currentCall.mute);
     };
 
+    $scope.update_settings = function(type,action,model, currentObject){
+        switch(type){
+            case 'hudmw_webphone_mic':
+                myHttpService.updateSettings(type,action,model);
+                phoneService.setMicSensitivity(model);
+                break;
+            case 'hudmw_webphone_speaker':
+                myHttpService.updateSettings(type,action,model);
+                phoneService.setVolume(model);
+                break;
+            default:
+                myHttpService.updateSettings(type,action,model);
+                break;
+
+         }
+
+    };
 
     var updateTime = function() {
         if ($scope.currentCall && $scope.currentCall.startedAt) {
