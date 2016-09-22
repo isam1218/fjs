@@ -2,24 +2,12 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	function($q, $timeout, $rootScope, httpService,$compile,$location,settingsService, storageService,groupService,contactService,nservice,$routeParams,ntpService) {
 
 	var top_window = window.top;
-	var pluginHtml = '<object id="fonalityPhone" border="0" width="1" type="application/x-fonalityplugin" height="1"></object>';
-	var phonePlugin;
-	var nativeApp = false;
 	var version;
 	var deferred = $q.defer();
 	var deferredVM = $q.defer();
 	var deferredCalls = $q.defer();
 	var deferredLocations = $q.defer();
-	var deferredInputDevices = $q.defer();
-	var deferredOutputDevices = $q.defer();
-	var deferredPlugin = $q.defer();
-	$rootScope.volume = {};
-	$rootScope.volume.spkVolume = 0;
-	$rootScope.volume.micVolume = 0;
-	$rootScope.pluginVersion = undefined;
 	var devices = [];
-	var inputDevices = [];
-	var outputDevices = [];
 	var stayHidden = false;
 	var session;
 	var context = {};
@@ -34,18 +22,13 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	var isRegistered = false;
 	var isAlertShown = false;
 
-	var selectedDevices = {};
-	var	spkVolume;
-	var micVolume;
 	var locations = {};
 	var activityChecker;
 	var lastActivityCheck = 0;
 	var statusTimeout;
 
 	var soundEstablished = false;
-	var selectedDevices = {};
-	var	spkVolume;
-	var micVolume;
+
 
 	var weblauncher = {};
 	var alertPosition = {};
@@ -72,14 +55,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	var REG_STATUS_ONLINE = 1;
 
 	var extensionId = "olhajlifokjhmabjgdhdmhcghabggmdp";
-	if($rootScope.browser != "Chrome"){
-		$("#phonehtml").append($compile(pluginHtml)($rootScope));
-		phonePlugin = document.getElementById('fonalityPhone');
-		if(phonePlugin){
-			version = phonePlugin.version;
-			$rootScope.pluginVersion = phonePlugin.version;
-		}
-	}
+
 
 	browser_on_focus = true;
 
@@ -129,15 +105,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	var displayHideAlert = function(focused)
 	{
 		browser_on_focus = focused;
-		
-		
-		// let native app know what's up
-		if (nativeApp) {
-			context.webphone.send(JSON.stringify({
-				a: 'focus',
-				value: focused
-			}));
-		}
 
 	};
 	
@@ -168,19 +135,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}	
 	}
 
-	//this will attempt to send the web phone actions it will attempt three times before quitting
-	var messageSoftphone = function(data,retry){
-		if(retry == undefined)retry = 0;
-		if(context.webphone){
-			if(context.webphone.readyState == 1){
-				context.webphone.send(JSON.stringify(data));
-			}else{
-				if(retry > 3){
-					setTimeout(messageSoftphone(data,retry),5000);
-				}
-			}
-		}
-	};
 
     var isInFocus = function(){
       return tabInFocus;
@@ -189,9 +143,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
     this.isInFocus = isInFocus;
 
 	var registerPhone = function(isRegistered){
-		if(context.webphone){
-			messageSoftphone({a : 'reg', value : isRegistered});
-		}
 		if(phone){
 			phone.register(isRegistered);
 		}
@@ -206,56 +157,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
-
-	settingsService.getMe().then(function(data){
-		if($rootScope.browser == "Chrome"){
-			// chrome on chromebook and linux still won't work
-			if(!navigator.userAgent.match(/CrOS|Linux/) && !context.webphone && $rootScope.meModel.my_pid){
-				getWSVersion();
-        		//nservice.initNSService();
-        	}
-		}
-		else{
-			if(phonePlugin && $rootScope.meModel && $rootScope.meModel.my_jid){
-				var username = $rootScope.meModel.my_jid.split("@")[0];
-				if(!isRegistered && phonePlugin.getSession){
-					session = phonePlugin.getSession(username);
-					session.authorize(localStorage.authTicket,localStorage.nodeID,fjs.CONFIG.SERVER.serverURL);
-
-					if(session.attachEvent){
-						session.attachEvent("onStatus", sessionStatus);
-		                session.attachEvent("onNetworkStatus", onNetworkStatus);
-
-					}else{
-						 session.addEventListener("Status",sessionStatus, false);
-						 session.addEventListener("NetworkStatus", onNetworkStatus);
-					}
-				
-
-				}
-
-			}
-		}
-	});
-
-	var setVolume = function(volume){
-		if(context.webphone){
-			context.setSpeakerVolume(volume);
-		}
-		if(soundManager){
-			soundManager.speaker = volume;
-		}
-	};
-
-
-	var setMicSensitivity = function(sensitivity){
-		if(context.webphone){
-			context.setMicrophoneVolume(sensitivity);
-		}
-		if(soundManager){
-			soundManager.microphone = sensitivity;
-		}
-	};
 
 	var formatData = function(event) {
 		// format data that controller needs
@@ -487,91 +388,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			}
 	    }
     };
-
-	var onVolumeChanged = function(spkVolume,microphoneLevel){
-		$rootScope.volume.spkVolume = spkVolume;
-		$rootScope.volume.micVolume = microphoneLevel;
-	};
-
-	var sessionStatus = function(session_status){
-		if (session_status.status == 0 && !isRegistered) {
-
-            if(!alertPlugin && !phone){
-            	alertPlugin = session.alertAPI;
-				phone = session.phone;
-         		var url = $location.absUrl().split("#")[0] + "views/nativealerts/Alert.html";
-         		alertPlugin.initAlert(url);
-				removeNotification();
-         		activatePhone();
-				
-				setTimeout(function() {
-					deferredPlugin.resolve(alertPlugin);
-				}, 1000);
-
-            //isRegistered = true;
-			if(!soundEstablished){
-				soundManager = session.soundManager;
-				if(soundManager){
-					if(soundManager.attachEvent){
-						soundManager.attachEvent("onVolume", onVolumeChanged);
-					}else{
-						soundManager.addEventListener("Volume",onVolumeChanged,false);
-					}
-				}
-
-				devices = soundManager.devs;
-				inputDevices.length = 0;
-				outputDevices.length = 0;
-
-    			for(var i = 0; i < devices.length;i++){
-    			  	if(devices[i].input_count > 0){
-    			  		inputDevices.push(devices[i]);
-    			  	}
-    			  	if(devices[i].output_count > 0){
-    			  		outputDevices.push(devices[i]);
-    			  	}
-    			}
-				deferredInputDevices.resolve(inputDevices);
-				deferredOutputDevices.resolve(outputDevices);
-
-
-
-				var spkVolume = settingsService.getSetting('hudmw_webphone_speaker');
-				var micVolume = settingsService.getSetting('hudmw_webphone_mic');
-				$rootScope.volume.spkVolume = spkVolume;
-				$rootScope.volume.micVolume = micVolume;
-				if(spkVolume != undefined && micVolume != undefined && spkVolume != "" && micVolume != ""){
-					soundManager.speaker = parseFloat(spkVolume);
-					soundManager.microphone = parseFloat(micVolume);
-			        soundEstablished = true;
-			    }
-
-			}
-			setupListeners();
-
-		}
-
-
-			//registerPhone(true);
-
-         } else if (session_status.status == 1) {
-                isRegistered = false;
-                return;
-        } else if (session_status.status == 2) {
-        	$rootScope.$broadcast('network_status',undefined);
-            isRegistered = false;
-            return;
-        }
-	};
-	
-	this.getPlugin = function() {
-		return deferredPlugin.promise;
-	};
-
-	this.resetAlertPosition = function(){
-		alertPosition.x = 0;
-		alertPosition.y = 0;
-	};
 
 
 	onNetworkStatus = function(st){
@@ -832,206 +648,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
     var onAlertMouseEvent = function(event,x,y){
     };
 
-    var onSoundDeviceChanged = function(data){
-    	devices = soundManager.devs;
-		inputDevices.splice(0,inputDevices.length);
-		outputDevices.splice(0,outputDevices.length);
-
-    	for(var i = 0; i < devices.length;i++){
-    		if(devices[i].input_count > 0){
-    			inputDevices.push(devices[i]);
-    		}
-    		if(devices[i].output_count > 0){
-    			 outputDevices.push(devices[i]);
-    		}
-    	}
-
-    	$rootScope.$broadcast("phone_event",{event:"updateDevices"});
-    };
-
-    var getWSVersion = function(){
-    	var webphone = new WebSocket('wss://webphone.fonality.com:10443/version');
-		webphone.onopen = function(e){};
-		webphone.onclose = function(e){};
-
-		webphone.onmessage = function(e){
-			if(e.data){
-				// new native app
-				if (parseInt(e.data.charAt(0)) >= 2) {
-					httpService.startSocket();
-					nativeApp = true;
-				}
-				// old crusty webphone
-				else
-					nservice.initNSService();
-				
-				context.version = e.data;
-				$rootScope.pluginVersion = context.version;
-				initWS();
-				webphone.close();
-				
-			}
-		};
-
-	};
-
-    var initWS = function(){
-    	 if(context.webphone || session){
-    	 	setTimeout(initWS(),5000);
-    	 	return;
-    	 }
-    	authticket = localStorage.authTicket;
-        server = fjs.CONFIG.SERVER.serverURL;
-    	node = localStorage.nodeID;
-    	context.webphone = new WebSocket('wss://webphone.fonality.com:10443/' + encodeURIComponent(server) + '/' + encodeURIComponent(authticket) + '/' + encodeURIComponent(node));
-    	context.webphone.onopen = function(e){
-    			context.setEACTailLength = function(val) {
-                    if(context.webphone && val != context.getEACTailLength()) {
-                    	context.webphone.send(JSON.stringify({a : 'ec', value :val}));
-                    }
-                };
-               	context.setSpeakerVolume = function(val) {
-                    if(context.webphone && context.getSpeakerVolume() != val) {
-                    	context.webphone.send(JSON.stringify({a : 'soundvolume', value : parseFloat(val)}));
-                    }
-                };
-                context.setMicrophoneVolume = function(val) {
-                    if(context.webphone  && context.getMicrophoneVolume() != val) {
-                    	context.webphone.send(JSON.stringify({a : 'micvolume', value :parseFloat(val)}));
-                    }
-                };
-            	context.setInputDeviceId = function(devId) {
-                	var devices = context.getDevices();
-                    if(context.webphone) {
-                    	if(devices.length <= devId || !devices[devId] || devices[devId].input_count <= 0)devId = -1;
-                		context.webphone.send(JSON.stringify({a : 'inpdevs', value : devId}));
-                    }
-            	}
-            	context.setOutputDeviceId = function(devId) {
-                	var devices = context.getDevices();
-                    if(context.webphone) {
-                    	if(devices.length <= devId || !devices[devId] || devices[devId].output_count <= 0)devId = -2;
-                		context.webphone.send(JSON.stringify({a : 'outdevs', value : devId}));
-                    }
-            	}
-            context.setRingDeviceId = function(devId) {
-                var devices = context.getDevices();
-                  if(context.webphone) {
-                    	if(devices.length <= devId || !devices[devId] || devices[devId].output_count <= 0)devId = -2;
-                		context.webphone.send(JSON.stringify({a : 'ringdevs', value : devId}));
-                    }
-            	}
-
-            	$rootScope.$broadcast('phone_event',{event:"enabled"});
-
-		};
-		context.webphone.onclose = function(e){
-				context.webphone = false;
-
-            	$rootScope.$broadcast('phone_event',{event:"disabled"});
-
-				context.getSessionStatus = function() {return 0};
-				context.getPhoneStatus = function() {return 5};
-			    setTimeout(function(){initWS()}, 500);
-    	};
-		context.webphone.onerror = function(e){
-			if(context.webphone)context.webphone.close();
-
-		};
-		context.webphone.onmessage = function(e){
-
-			try
-    		  {
-    			  var msg = JSON.parse(e.data);
-				  
-				  // new native app actions
-				  if (nativeApp && msg.a == "notification")
-					  nservice.nativeAction(msg.value);
-
-    			  if (msg.sip_id){
-
-				  	sipCalls[msg.sip_id] = msg;
-				  }
-
-    			  if (msg.session_status!=undefined)
-    			  {
-      				var ss = parseInt(msg.session_status, 10);
-    				context.getSessionStatus = function(){return ss};
-    			  }
-    			  if (msg.phone_status!=undefined)
-    			  {
-       				var ps = parseInt(msg.phone_status, 10);
-
-					if(phone == undefined){
-						isRegistered = ps == 1;
-						var data = {
-							event:'state',
-							registration: isRegistered,
-						};
-						$rootScope.$broadcast('phone_event',data);
-
-					}
-
-    				context.getPhoneStatus = function(){return ps};
-    			  }
-    			  if (msg.devices!=undefined)
-    			  {
-    			  		devices = msg.devices;
-    			  		inputDevices.splice(0,inputDevices.length);
-						outputDevices.splice(0,outputDevices.length);
-
-    			  		for(var i = 0; i < msg.devices.length;i++){
-    			  			if(msg.devices[i].input_count > 0){
-    			  				inputDevices.push(msg.devices[i]);
-    			  			}
-    			  			if(msg.devices[i].output_count > 0){
-    			  				outputDevices.push(msg.devices[i]);
-    			  			}
-    			  		}
-						deferredInputDevices.resolve(inputDevices);
-						deferredOutputDevices.resolve(outputDevices);
-
-						if( !$rootScope.isFirstSync){
-							$rootScope.$broadcast("phone_event",{event:"updateDevices"});
-						}
-						context.getDevices = function() {return msg.devices};
-		          }
-    			  if (msg.inpdevs!=undefined)
-    			  {
-    				var id = parseInt(msg.inpdevs, 10);
-    				context.getInputDeviceId = function() {return id};
-                  }
-    			  if (msg.outdevs!=undefined)
-    			  {
-    				  var od = parseInt(msg.outdevs, 10);
-    				  context.getOutputDeviceId = function() {return od};
-    			  }
-    			  if (msg.ringdevs!=undefined)
-    			  {
-    				  var rd = parseInt(msg.ringdevs, 10);
-    				  context.getRingDeviceId = function() {return rd};
-    			  }
-    			  if (msg.micvolume!=undefined)
-    			  {
-    				  var mv = parseFloat(msg.micvolume);
-    				  $rootScope.volume.micVolume = mv;
-    				  context.getMicrophoneVolume = function() {return mv};
-    			  }
-    			  if (msg.soundvolume!=undefined)
-    			  {
-    				  var sv = parseFloat(msg.soundvolume);
-    				  $rootScope.volume.spkVolume = sv;
-    				  context.getSpeakerVolume = function() {return sv};
-    			  }
-    			  if (msg.ec!=undefined)
-    			  {
-    				  context.getEACTailLength = function() {return msg.ec};
-    			  }
-    			  if(msg.status!=undefined)thus.onCallStateChanged(msg);
-    		  } catch (ex) { }
-		};
-
-    };
 
     var setupListeners = function(){
 
@@ -1058,13 +674,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
     		}
     	}
 
-    	if(soundManager){
-    		if(soundManager.attachEvent){
-    			soundManager.attachEvent('onSoundDeviceChanged',onSoundDeviceChanged);
-    		}else{
-    			soundManager.addEventListener('SoundDevicesChanged', onSoundDeviceChanged);
-    		}
-    	}
     };
 
 	var isEnabled = function(permission, bit) {
@@ -1085,18 +694,9 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	};
 
 	this.getSelectedDevice = function(input){
-		if(context.webphone){
-			switch(input){
-				case 'inpdefid':
-					return context.getInputDeviceId();
-				case 'outdefid':
-					return context.getOutputDeviceId();
-				case 'ringdefid':
-					return context.getRingDeviceId();
-			}
-		}else{
+
 			return soundManager[input];
-		}
+		
 	};
 
 	//this method updates the audio device 
@@ -1105,30 +705,13 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	this.setAudioDevice = function(type, value){
 		switch(type){
             case 'Ring':
-                if(context.webphone){
-                	context.setRingDeviceId(value);
-                	localStorage.ringDeviceId = value;
-                }else{
-                	soundManager.ringdefid = value;
-                }
+                	soundManager.ringdefid = value;               
                 break;
-            case 'Input':
-                if(context.webphone){
-                	 context.setInputDeviceId(value);
-                	 localStorage.inputDeviceId = value;
-
-               }else{
-                	soundManager.inpdefid = value;
-                }
+            case 'Input':   
+                	soundManager.inpdefid = value;                
                 break;
-            case 'Output':
-                if(context.webphone){
-                	context.setOutputDeviceId(value);
-                	localStorage.outputDeviceId = value;
-
-                }else{
-                	soundManager.outdefid = value;
-                }
+            case 'Output': 
+                	soundManager.outdefid = value;                
                 break;
         }
 	};
@@ -1151,40 +734,23 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 
 	this.playTone = function(key,toPlay){
 		if(toPlay){
-			if(context.webphone){
-				context.webphone.send(JSON.stringify({a : 'play', value : key}));
-			}else{
-				session.getDTMFToneGenerator().play(key);
-			}
-
+				session.getDTMFToneGenerator().play(key);			
 		}else{
-			if(context.webphone){
-				context.webphone.send(JSON.stringify({a : 'stop'}));
-			}else{
-				session.getDTMFToneGenerator().stop();
-			}
+				session.getDTMFToneGenerator().stop();			
 		}
 	};
 
 	this.playTone = function(key,toPlay){
 		if(toPlay){
-			if(context.webphone){
-				context.webphone.send(JSON.stringify({a : 'play', value : key}));
-			}else{
+
 				session.getDTMFToneGenerator().play(key);
-			}
 
 		}else{
-			if(context.webphone){
-				context.webphone.send(JSON.stringify({a : 'stop'}));
-			}else{
+
 				session.getDTMFToneGenerator().stop();
-			}
 		}
 	};
 
-	this.setVolume = setVolume;
-	this.setMicSensitivity = setMicSensitivity;
 
 	//look for audio tag and play sound based on key
 	this.playSound = function(sound_key){
@@ -1219,9 +785,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	this.sendDtmf = function(xpid,entry){
 		var call = context.getCall(xpid);
 		if(call){
-			if(context.webphone)
-				context.webphone.send(JSON.stringify({a : 'dtmf', value : call.sip_id, digits : entry}));
-			else
+
 				call.dtmf(entry);
 		}
 	};
@@ -1233,23 +797,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
-	this.getInputDevices = function(){
-		return deferredInputDevices.promise;
-	};
-
-	this.getOutputDevices = function(){
-		return deferredOutputDevices.promise;
-	};
-
-
-	this.isPhoneActive = function(){
-		return context.webphone && context.webphone.readyState == 1  ? 'new_webphone' : ( (phonePlugin && phonePlugin.getSession) ? 'old_webphone' : false);
-
-	};
-	
-	this.isPluginInstalled = function() {
-		return (context.webphone || (phonePlugin && phonePlugin.version));
-	};
 
 	this.getVersion = function(){
 	return context.version ? context.version : (version ? version : 'undefined');

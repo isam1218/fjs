@@ -235,15 +235,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 	}
 
 
-    if(!phoneService.isPhoneActive()){
-            for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
-                if($scope.tabs[i].option == 'Phone'){
-                    $scope.tabs[i].isActive = false;
-                    break;
-                }
-            }
-     }
-
     //Starting with the webphone version 1.1.011769 it will no longer keep track of what device the user selected to alleviate issue HUDF-899
     //So we need manually set it (even though we were doing it before) so that means the getInputDevice ffrom phone service will be null when the
     //softphone is intialized
@@ -289,71 +280,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         // send loaded input (entire object) to update method
         $scope.updateAudioSettings($scope.currentDevices.selectedInput,'Input');
 	};
-
-    // sync
-   phoneService.getInputDevices().then(function(data){
-		$scope.inputDevices = data;
-
-        setInputAudioDevice();
-
-        // disable phone tab
-        if(!phoneService.isPhoneActive()){
-            for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
-                if($scope.tabs[i].option == 'Phone'){
-                    $scope.tabs[i].isActive = false;
-                    break;
-                }
-            }
-        }
-    });
-
-	phoneService.getOutputDevices().then(function(data){
-		$scope.outputDevices = data;
-
-		setOutputAudioDevice();
-	});
-
-  	$scope.updateAudioSettings = function(deviceObj, type){
-       if(deviceObj == null || deviceObj == undefined){
-            switch(type){
-                case 'Input':
-                    $scope.currentDevices.selectedInput = $scope.inputDevices[0];
-                    deviceObj = $scope.currentDevices.selectedInput;
-                    break;
-                case 'Output':
-                    $scope.currentDevices.selectedOutput = $scope.outputDevices[0];
-                    deviceObj = $scope.currentDevices.selectedOutput;
-                    break;
-                case 'Ring':
-                    $scope.currentDevices.selectedRingput = $scope.outputDevices[0];
-                    deviceObj = $scope.currentDevices.selectedRingput;
-                    break;
-            }
-        }
-        // SENDING ENTIRE DEVICE OBJ FOR YOU TO PLAY WITH...
-        phoneService.setAudioDevice(type,deviceObj.id);
-
-
-
-        // only saving name-property to localStorage
-        switch(type){
-            case 'Input':
-                // saving prev and current (name-prop only)
-                localStorage['previous_selectedInput_of_' + $rootScope.myPid] = localStorage['current_selectedInput_of_' + $rootScope.myPid];
-                localStorage['current_selectedInput_of_' + $rootScope.myPid] = deviceObj.name;
-                break;
-            case 'Output':
-
-                localStorage['previous_selectedOutput_of_' + $rootScope.myPid] = localStorage['current_selectedOutput_of_' + $rootScope.myPid];
-                localStorage['current_selectedOutput_of_' + $rootScope.myPid] = deviceObj.name;
-                break;
-            case 'Ring':
-
-                localStorage['previous_selectedRingput_of_' + $rootScope.myPid] = localStorage['current_selectedOutput_of_' + $rootScope.myPid];
-                localStorage['current_selectedRingput_of_' + $rootScope.myPid] = deviceObj.name;
-                break;
-        }
-    };
 
 
 
@@ -512,11 +438,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 break;
             case 'hudmw_webphone_mic':
                 myHttpService.updateSettings(type,action,model);
-                phoneService.setMicSensitivity(model);
                 break;
             case 'hudmw_webphone_speaker':
                 myHttpService.updateSettings(type,action,model);
-                phoneService.setVolume(model);
                 break;
             case 'hudw_lang':
 				if (model) {
@@ -623,8 +547,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 return (item.value==settings['recent_call_history_length']);
             });
 
-            $scope.volume.micVol = parseFloat(settings['hudmw_webphone_mic']);
-            $scope.volume.spkVol = parseFloat(settings['hudmw_webphone_speaker']);
             $scope.callLogSizeSelected = callLogSelected[0];
 
             if($scope.settings.queueWaitingThreshold){
@@ -930,7 +852,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         });
         if($scope.volume.micVolume == 0){
-            phoneService.setMicSensitivity($rootScope.volume.mic);
             $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
         }
         
@@ -1381,12 +1302,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.muteCall = function(){
        if($scope.volume.micVolume == 0){
-            phoneService.setMicSensitivity($rootScope.volume.mic);
             $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
 
         }else{
             $rootScope.volume.mic = angular.copy($scope.volume.micVolume);
-            phoneService.setMicSensitivity(0);
             $scope.update_settings('hudmw_webphone_mic','update',0);
        }
     };
@@ -1397,11 +1316,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.silentSpk = function(){
         if($scope.volume.spkVolume == 0){
-             phoneService.setVolume($scope.volume.spk);
              $scope.update_settings('hudmw_webphone_speaker','update',$rootScope.volume.spk);
         }else{
             $rootScope.volume.spk = angular.copy($scope.volume.spkVolume);
-            phoneService.setVolume(0);
             $scope.update_settings('hudmw_webphone_speaker','update',0);
          }
      };
@@ -1579,41 +1496,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 	});
 
 
-    $scope.$on('phone_event',function(event,data){
-        if(data){
-            var e = data.event;            
-            switch(e){
-                case 'state':
-                    $scope.phoneState = data.registration;
-                    $scope.phoneType = phoneService.isPhoneActive();
-                    for(i in $scope.tabs){
-                            if($scope.tabs[i].option == 'Phone'){
-                                $scope.tabs[i].isActive = ($scope.phoneType == 'new_webphone' || $scope.phoneType == 'old_webphone') ? true : false;
-                                break;
-                            }
-                    }
-                    break;
-                case "enabled":
-                    //$scope.pluginVersion = phoneService.getVersion();
-                    break;
-				case "updateDevices":
-					if($scope.inputDevices && $scope.inputDevices.length > 0 && $scope.outputDevices && $scope.outputDevices.length > 0){
-
-                        $scope.currentDevices.selectedInput = getPreviousInputDevice();
-                        $scope.updateAudioSettings($scope.currentDevices.selectedInput,'Input');
-
-                        $scope.currentDevices.selectedRingput = getPreviousRingDevice();
-                        $scope.currentDevices.selectedOutput = getPreviousOutputDevice();
-                        $scope.updateAudioSettings($scope.currentDevices.selectedRingput,'Ring');
-                        $scope.updateAudioSettings($scope.currentDevices.selectedOutput,'Output');
-                    }
-                    break;
-
-            }
-
-        }
-    });
-
     $scope.$on("queues_synced", function(event,data){
         if(data && data != undefined){
             $scope.queues = data;
@@ -1638,45 +1520,4 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         update_queues();
     });
 
-
-    var getPreviousInputDevice = function(){
-        var prev = localStorage['current_selectedInput_of_' + $rootScope.myPid];
-        for(var i = 0; i < $scope.inputDevices.length; i++){
-            if(prev == $scope.inputDevices[i].name){
-                return $scope.inputDevices[i];
-            }
-        }
-        return $scope.inputDevices[0];
-
-    };
-
-    var getPreviousOutputDevice = function(){
-        var prev = localStorage['current_selectedOutput_of_' + $rootScope.myPid];
-        for(var i = 0; i < $scope.outputDevices.length; i++){
-            if(prev == $scope.outputDevices[i].name){
-                return $scope.outputDevices[i];
-            }
-        }
-        return $scope.outputDevices[0];
-
-    };
-
-    var getPreviousRingDevice = function(){
-        var prev = localStorage['current_selectedOutput_of_' + $rootScope.myPid];
-        for(var i = 0; i < $scope.outputDevices.length; i++){
-            if(prev == $scope.outputDevices[i].name){
-                $scope.outputDevices[i];
-            }
-        }
-        return $scope.outputDevices[0];
-    };
-
-
-
-    $rootScope.isPluginUptoDate = function(){
-        return $scope.pluginVersion && ($scope.pluginVersion.localeCompare($scope.latestVersion)) > -1;
-    };
-    $scope.resetAlertPosition = function(){
-        phoneService.resetAlertPosition();
-    };
 }]);
