@@ -15,6 +15,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	var phone;
 	var notificationCache = {};
 	var soundManager;
+
 	var sipCalls = {};
 	var tabInFocus = true;
 	var callsDetails = {};
@@ -45,7 +46,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
      var CALL_STATUS_CLOSED = "2";
      var CALL_STATUS_ERROR = "3";
      $rootScope.callState = {};
-
+     $rootScope.volume = {};
      $rootScope.callState = fjs.CONFIG.CALL_STATES;          
      $rootScope.calltype = fjs.CONFIG.CALL_TYPES;
      $rootScope.bargetype = fjs.CONFIG.BARGE_TYPE;
@@ -141,21 +142,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
     };
 
     this.isInFocus = isInFocus;
-
-	var registerPhone = function(isRegistered){
-		if(phone){
-			phone.register(isRegistered);
-		}
-	};
-
-
-	var activatePhone = function(){
-		if(settingsService.getSetting('instanceId') != localStorage.instance_id){
-			registerPhone(false);
-		}else{
-			registerPhone(true);
-		}
-	};
 
 
 	var formatData = function(event) {
@@ -518,9 +504,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 					makeCall(phone); 
 					remove_notification(xpid); 
 					return;	
-				case '/activatePhone':
-					activatePhone();
-					return;
 				case '/showCallControlls':
 					showCurrentCallControls(xpid);
 					break;
@@ -693,28 +676,10 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
-	this.getSelectedDevice = function(input){
-
-			return soundManager[input];
-		
-	};
-
 	//this method updates the audio device 
 	//starting with webphone 1.1.011769 we will need to store the deviceIds in localstorage
 	//unfortunately if the user clears the cache it will default to the first device in the user list.
-	this.setAudioDevice = function(type, value){
-		switch(type){
-            case 'Ring':
-                	soundManager.ringdefid = value;               
-                break;
-            case 'Input':   
-                	soundManager.inpdefid = value;                
-                break;
-            case 'Output': 
-                	soundManager.outdefid = value;                
-                break;
-        }
-	};
+
   this.reportActivity = reportActivity;
 	this.hangUp = hangUp;
 	this.holdCall = holdCall;
@@ -727,30 +692,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	this.getPhoneState = function(){
 		return isRegistered;
 	};
-
-	this.getDtmfToneGenerator = function(){
-		return session.getDTMFToneGenerator();
-	}
-
-	this.playTone = function(key,toPlay){
-		if(toPlay){
-				session.getDTMFToneGenerator().play(key);			
-		}else{
-				session.getDTMFToneGenerator().stop();			
-		}
-	};
-
-	this.playTone = function(key,toPlay){
-		if(toPlay){
-
-				session.getDTMFToneGenerator().play(key);
-
-		}else{
-
-				session.getDTMFToneGenerator().stop();
-		}
-	};
-
 
 	//look for audio tag and play sound based on key
 	this.playSound = function(sound_key){
@@ -1081,8 +1022,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		httpService.deleteFromWorker('weblauncher_task', task.xpid);
 	};
 	
-	this.registerPhone = registerPhone;
-
 	var storeIncomingCallToRecent = function(incomingCallerXpid){
 		var localPid = JSON.parse(localStorage.me);
 		var recent = JSON.parse(localStorage['recents_of_' + localPid]);

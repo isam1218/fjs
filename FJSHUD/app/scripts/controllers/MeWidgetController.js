@@ -234,55 +234,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		myHttpService.getFeed('i18n_langs');
 	}
 
-
-    //Starting with the webphone version 1.1.011769 it will no longer keep track of what device the user selected to alleviate issue HUDF-899
-    //So we need manually set it (even though we were doing it before) so that means the getInputDevice ffrom phone service will be null when the
-    //softphone is intialized
-
-    var setOutputAudioDevice = function(){
-        // loadedOutput/loadedRingput should be a device name (the object's name property, not the entire object)
-        var loadedOutput = localStorage['current_selectedOutput_of_' + $rootScope.myPid] ? localStorage['current_selectedOutput_of_' + $rootScope.myPid] : $scope.outputDevices[0].name;
-        var loadedRingput = localStorage['current_selectedRingput_of_' + $rootScope.myPid] ? localStorage['current_selectedRingput_of_' + $rootScope.myPid] : $scope.outputDevices[0].name;
-
-        // load output/ringput from 2 saves ago...
-        var prevOutput = localStorage['previous_selectedInput_of_' + $rootScope.myPid] ? localStorage['previous_selectedInput_of_' + $rootScope.myPid] : $scope.inputDevices[0].name;
-        var prevRingput = localStorage['previous_selectedInput_of_' + $rootScope.myPid] ? localStorage['previous_selectedRingput_of_' + $rootScope.myPid] : $scope.inputDevices[0].name;;
-
-        for (var i = 0; i < $scope.outputDevices.length; i++){
-            // if output device name matches, provide that object and set as selectedOutput/Ringput
-            if ($scope.outputDevices[i].name == loadedOutput){
-                $scope.currentDevices.selectedOutput = $scope.outputDevices[i];
-            }
-            if ($scope.outputDevices[i].name == loadedRingput){
-                $scope.currentDevices.selectedRingput = $scope.outputDevices[i];
-            }
-        }
-        // $scope.selectedOutput is the entire object, not just the name property
-        $scope.updateAudioSettings($scope.currentDevices.selectedOutput,'Output');
-        $scope.updateAudioSettings($scope.currentDevices.selectedRingput,'Ring');
-
-    };
-
-
-	var setInputAudioDevice = function(){
-        // loadedInput should be a device name (the object's name property, not the entire object)
-        var loadedInput = localStorage['current_selectedInput_of_' + $rootScope.myPid] ? localStorage['current_selectedInput_of_' + $rootScope.myPid] : $scope.inputDevices[0].name;
-
-        // load input from 2 saves ago...
-        var prevInput = localStorage['previous_selectedInput_of_' + $rootScope.myPid] ? localStorage['previous_selectedInput_of_' + $rootScope.myPid] : $scope.inputDevices[0].name;
-
-        for (var i = 0; i < $scope.inputDevices.length; i++){
-            // if input device name matches, provide that object and set as selectedInput
-            if ($scope.inputDevices[i].name == loadedInput){
-                $scope.currentDevices.selectedInput = $scope.inputDevices[i];
-            }
-        }
-        // send loaded input (entire object) to update method
-        $scope.updateAudioSettings($scope.currentDevices.selectedInput,'Input');
-	};
-
-
-
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
      */
@@ -546,6 +497,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             var callLogSelected = $scope.callLogSizeOptions.filter(function(item){
                 return (item.value==settings['recent_call_history_length']);
             });
+
+            $scope.volume.micVol = parseFloat(settings['hudmw_webphone_mic']);
+            $scope.volume.spkVol = parseFloat(settings['hudmw_webphone_speaker']);
 
             $scope.callLogSizeSelected = callLogSelected[0];
 
@@ -1433,26 +1387,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     });
 
-    //listen for key_press broadcasted from a root_controller
-    $scope.$on("key_press", function(event,data){
-            dtmf_input = dtmf_input + data;
-            $scope.call_obj.phoneNumber = $scope.call_obj.phoneNumber + data;
-            phoneService.playTone(data,true);
-            setTimeout(function(){
-                   phoneService.playTone(data,false);
-                },100);
 
-
-            if($scope.currentCall){
-
-
-                setTimeout(function(){
-                   phoneService.sendDtmf($scope.currentCall.xpid,dtmf_input);
-                    dtmf_input = "";
-                },900);           
-            }
-
-    });
     $scope.$on('i18n_langs_synced',function(event,data){
 		if(data){
 			var language_id;
