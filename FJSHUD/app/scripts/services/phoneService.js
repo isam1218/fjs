@@ -20,7 +20,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 	var tabInFocus = true;
 	var callsDetails = {};
 	$rootScope.meModel = {};
-	var isRegistered = false;
 	var isAlertShown = false;
 
 	var locations = {};
@@ -179,7 +178,7 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 
 
 	var makeCall = function(number){
-		if(!isRegistered && $rootScope.meModel.location.locationType == 'w'){
+		if($rootScope.meModel.location.locationType == 'w'){
 			return;
 		}
 		number = number.replace(/\D+/g, '');
@@ -330,50 +329,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
           $rootScope.$evalAsync($rootScope.$broadcast('phone_event',data));
 		}
 	};
-
-	//call back to verify account status of the old softphone.
-	var accStatus = function(account_) {
-        if (account_) {
-			$timeout.cancel(statusTimeout);
-			
-			if (account_.status == REG_STATUS_ONLINE) {
-                isRegistered = true;
-				
-				if ($rootScope.phoneError)
-					$rootScope.$broadcast('network_issue', null);
-            } 
-			else if(account_.status == REG_STATUS_UNKNOWN){
-				var unknown = true;
-                isRegistered = false;
-			}
-			else{
-                isRegistered = false;
-				
-				if ($rootScope.phoneError)
-					$rootScope.$broadcast('network_issue', null);
-			}
-
-			var data = {
-				event:'state',
-				registration: isRegistered,
-			};
-			
-			// delay register check in case user was simply switching devices
-			if (unknown) {
-				statusTimeout = $timeout(function() {
-					// plus error
-					$rootScope.$broadcast('network_issue', 'phoneError');
-					$rootScope.$broadcast('phone_event', data);
-				}, 1000);
-			}
-			else {
-				// normal update
-				statusTimeout = $timeout(function() {
-					$rootScope.$broadcast('phone_event', data);
-				}, 1000);
-			}
-	    }
-    };
 
 
 	onNetworkStatus = function(st){
@@ -687,10 +642,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 
 	this.transfer = function(xpid,number){
 		httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
-	};
-
-	this.getPhoneState = function(){
-		return isRegistered;
 	};
 
 	//look for audio tag and play sound based on key
@@ -1113,10 +1064,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
                 if (locations[data[i].xpid]){
                     locations[data[i].xpid].status = data[i];
 					
-					// update softphone status manually
-                    if (locations[data[i].xpid].locationType == 'w'){
-                        locations[data[i].xpid].status.deviceStatus = isRegistered ? 'r' : 'u';
-                    }
                 }
             }
         }

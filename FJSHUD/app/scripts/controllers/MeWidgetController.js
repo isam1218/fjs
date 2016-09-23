@@ -35,7 +35,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }       
 	});
 
-    $scope.phoneState = phoneService.getPhoneState();
     $scope.timeElapsed = "00:00";
 
     $scope.getCurrentLocationTitle = function() {
