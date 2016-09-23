@@ -109,6 +109,7 @@
 
   </head>
   <body data-ng-controller="MainController" flow-prevent-drop>
+  	<div ng-if="downloadModal" include-once="views/popups/DownloadModal.html"></div>
   	<div id="phonehtml"> </div>
     <div id="AppLoading">
 		<div ng-cloak>
