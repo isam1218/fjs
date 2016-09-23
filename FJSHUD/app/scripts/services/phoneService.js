@@ -178,9 +178,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 
 
 	var makeCall = function(number){
-		if($rootScope.meModel.location.locationType == 'w'){
-			return;
-		}
 		number = number.replace(/\D+/g, '');
 		var call_already_in_progress = false;
 		// if there is a call in progress already (callsDetails is NOT empty obj)...
