@@ -12,12 +12,12 @@
           <div class="PreferencePage" ng-if="myAccount">
             <div class="ListSectionHeaderTitle" >{{::verbage.my_account}}</div>
               <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.login}}:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.login">
+              <label class="queueBlock Account">{{::verbage.login}}:</label>
+              <div ng-model="meModel.login">{{meModel.login}}</div>
               </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.Server}}: </label>
-              <input class="text DialogSettingInput" readonly="true" ng-model="meModel.server">
+              <label class="queueBlock Account">{{::verbage.Server}}: </label>
+              <div  ng-model="meModel.server">{{meModel.server}}</div>
             </div>
           </div>
           <div class="PreferenceSection" ng-click="myInfo = !myInfo">

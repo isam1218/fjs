@@ -4,7 +4,7 @@
   	<i class="material-icons" ng-click="closePreferences()">close</i>
   	</div>
   	<div class="PreferencesContent">
-      <ul class="PreferencesTabBar" style="width:90px;float:left;margin:0;">
+      <ul class="PreferencesTabBar">
         <li href="" ng-repeat="tab in ::tabs" ng-show="tab.isActive" ng-click="saveMeTab(tab.option, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
           <div class="PrefTabLabel {{language}}">{{ ::tab.label }}</div>
           <!-- <div class="arrow"></div> -->
