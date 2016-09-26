@@ -6050,6 +6050,8 @@ button.close {
   }
   .modal-preferences {
     width: 760px;
+  }
+  .modal-preferences .modal-content{
     border-radius:10px;
   }
 }

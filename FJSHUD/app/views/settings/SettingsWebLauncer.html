@@ -33,45 +33,49 @@
           </div>
           <div class="PreferencePage" ng-if="wlOutbound">
             <div class="ListSectionHeaderTitle" >{{::verbage.outbound_calls}}</div>
-          <div class="Dialog-settings-row">
+          <div class="Dialog-settings-row" >
             <div class="Dialog-check-block right">
               <span class="inputBlock">{{::verbage.web_launcher_on_new_calls}}</span>
-              <div class="labels">
-	              <label><input name="out.silent" type="checkbox"  ng-model="currentWebLauncher.outboundSilent"
+              <div class="labels" >
+              <ul>
+	              <li><label><input name="out.silent" type="checkbox"  ng-model="currentWebLauncher.outboundSilent"
 	              ng-disabled="currentWebLauncher.id != 'user_default'"
 	              ng-change="update_weblauncher_settings()"
 	            
-	              > {{::verbage.silent}}</label>
-	              <label><input name="out.auto" type="checkbox" ng-model="currentWebLauncher.outboundAuto"
+	              > {{::verbage.silent}}</label></li>
+	              <li><label><input name="out.auto" type="checkbox" ng-model="currentWebLauncher.outboundAuto"
 	                ng-disabled="currentWebLauncher.id != 'user_default'"
 	                ng-change="update_weblauncher_settings()"
 	            
-	              >{{::verbage.auto_launch}}</label>
+	              >{{::verbage.auto_launch}}</label></li>
+              </ul>
               </div>
             </div>
-            <input type="text" name="outbound" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outbound"
+            <input type="text" name="outbound"  class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outbound"
             ng-disabled="currentWebLauncher.id != 'user_default'"
             ng-change="update_weblauncher()"
             
             >
           </div>
-          <div class="Dialog-settings-row">
+          <div class="Dialog-settings-row" >
             <div class="Dialog-check-block right">
               <span class="inputBlock">{{::verbage.web_launcher_on_hang_ups}}</span>
-              <div class="labels">
-	              <label><input name="out.hangup.silent" type="checkbox" ng-model="currentWebLauncher.outboundHangupSilent"
+              <div class="labels" >
+              <ul>
+	              <li><label><input name="out.hangup.silent" type="checkbox" ng-model="currentWebLauncher.outboundHangupSilent"
 	                ng-disabled="currentWebLauncher.id != 'user_default'"
 	                ng-change="update_weblauncher_settings()"
 	            
-	              > {{::verbage.silent}}</label>
-	              <label><input name="out.hangup.auto" type="checkbox" ng-model="currentWebLauncher.outboundHangupAuto" 
+	              > {{::verbage.silent}}</label></li>
+	              <li><label><input name="out.hangup.auto" type="checkbox" ng-model="currentWebLauncher.outboundHangupAuto" 
 	                ng-disabled="currentWebLauncher.id != 'user_default'"
 	                ng-change="update_weblauncher_settings()"
 	            
-	              >{{::verbage.auto_launch}}</label>
+	              >{{::verbage.auto_launch}}</label></li>
+              </ul>
               </div>
             </div>
-            <input type="text" name="outbound.hangup" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outboundHangup"
+            <input type="text" name="outbound.hangup"  class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.outboundHangup"
             ng-disabled="currentWebLauncher.id != 'user_default'"
             ng-change="update_weblauncher()"
             
@@ -93,14 +97,17 @@
             <div class="Dialog-check-block right">
               <span class="inputBlock">{{::verbage.web_launcher_on_new_calls}}</span>
               <div class="labels">
-	              <label><input name="in.silent" type="checkbox" ng-model="currentWebLauncher.inboundSilent"
+              <ul>
+	              <li><label><input name="in.silent" type="checkbox" ng-model="currentWebLauncher.inboundSilent"
 	                ng-disabled="currentWebLauncher.id != 'user_default'"
 	                ng-change="update_weblauncher_settings()"
-	              > {{::verbage.silent}}</label>
+	              > {{::verbage.silent}}</label></li>
+                <li>
 	              <label><input name="in.auto" type="checkbox" ng-model="currentWebLauncher.inboundAuto"
 	                ng-disabled="currentWebLauncher.id != 'user_default'"
 					ng-change="update_weblauncher_settings()"
-	              > {{::verbage.auto_launch}}</label>
+	              > {{::verbage.auto_launch}}</label></li>
+              </ul>
 	          </div>
             </div>
             <input type="text" name="inbound" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.inbound"
@@ -112,14 +119,16 @@
             <div class="Dialog-check-block right">
               <span class="inputBlock">{{::verbage.web_launcher_on_hang_ups}}</span>
               <div class="labels">
-	              <label><input name="in.hangup.silent" type="checkbox"  ng-model="currentWebLauncher.inboundHangupSilent"
+              <ul>
+	              <li><label><input name="in.hangup.silent" type="checkbox"  ng-model="currentWebLauncher.inboundHangupSilent"
 	                ng-disabled="currentWebLauncher.id != 'user_default'"
 	                ng-change="update_weblauncher_settings()"
-	              > {{::verbage.silent}}</label>
-	              <label><input name="in.hangup.auto" type="checkbox" ng-model="currentWebLauncher.inboundHangupAuto" 
+	              > {{::verbage.silent}}</label></li>
+	              <li><label><input name="in.hangup.auto" type="checkbox" ng-model="currentWebLauncher.inboundHangupAuto" 
 	                ng-disabled="currentWebLauncher.id != 'user_default'"
 	                ng-change="update_weblauncher_settings()"            
-	              > {{::verbage.auto_launch}}</label>
+	              > {{::verbage.auto_launch}}</label></li>
+              </ul>
              </div> 
             </div>
             <input type="text" name="inbound.hangup" class="text DialogSettingWLInput" maxlength="255" ng-model="currentWebLauncher.inboundHangup"
