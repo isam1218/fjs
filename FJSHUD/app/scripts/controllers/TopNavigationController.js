@@ -113,7 +113,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
       animation: $scope.animationsEnabled,
       templateUrl: 'views/Preferences.html',
       controller: 'PreferencesController',
-      size: 'lg'
+      size: 'preferences'
     });
   };
 

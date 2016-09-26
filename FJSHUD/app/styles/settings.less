@@ -874,12 +874,14 @@
       }
  }
 
+
  .PreferencesSectionTitle{
     background: none;
-    height: 45px;
+    height: 54px;
+    width: 758px;
     text-align: center;
-    padding-top: 13px;
-    box-shadow: 0px 2px 4px lightgray;
+    padding-top: 18px;
+    box-shadow: 0px 2px 6px lightgray;
 
     .material-icons{
       float:right;
@@ -892,23 +894,26 @@
  }
 
  .PreferencesContent{
-    height: 600px;
-    max-height: 400px;
+    height: 544px;
+    max-height: 544px;
     overflow-y: auto;
     padding-top:20px;
  }
 
  .PreferenceSection{
-   border-top:1px solid lightgray;
+   border-top:1px solid #D9D9D9;
 
    .ListSectionHeaderTitle{
-   font-size:15px;
-   color:#686868;
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-top: 24px;
    }
 
    .ListSectionBody{
-   font-size:13px;
-   margin-bottom:20px;
+    font-size: 16px;
+    margin-bottom: 24px;
+    margin-top: 5px;
    }
 
    .material-icons{
@@ -917,24 +922,31 @@
    margin-top: -20px;
    margin-right: 5px;
    cursor:pointer;
+   color:#4A4A4A;
    }
 
    .material-icons.down{
    margin-top:10px;
+   color:#4A4A4A;
    }
 
    &:hover{
    background-color:#EEEEEE;
+   }
+
+   &:last-child{
+   border-bottom:1px solid #D9D9D9;
    }
  }
 
  .PreferencePage{
 
     .ListSectionHeaderTitle{
-   font-size:15px;
-   color:#686868;
-   margin-left:0;
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
    margin-bottom: 20px;
+   margin-left:0;
    }
 
    .Dialog-settings-row{
@@ -987,7 +999,72 @@
     }
  }
 
+ .CPSection{
+   border-top:1px solid lightgray;
 
+   .ListSectionHeaderTitle{
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-top: 24px;
+   }
+
+   .ListSectionBody{
+    font-size: 16px;
+    margin-top: 5px;
+   }
+
+
+   &:last-child{
+   border-bottom:1px solid #D9D9D9;
+   }
+ }
+
+ .CpPage{
+
+    .ListSectionHeaderTitle{
+   font-size:15px;
+   color:#686868;
+   margin-left:0;
+   margin-bottom: 20px;
+   }
+
+   .Dialog-settings-row{
+   width:370px;
+   margin-bottom:20px;
+
+    .fj-hbox.SelectBox.SelectBoxSettings{
+      float:right;
+      height:30px;
+      background:#EEEEEE;
+      background-image:url(../img/doubleArrow.png);
+      background-size: 13px;
+      background-repeat:no-repeat;
+      background-position:173px;
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+
+
+    }
+    .lblSelect{
+    margin-top:10px;
+    }
+   }
+
+   border:none;
+  border-radius:none;
+  padding-top:7px;
+  padding-bottom:20px;
+  padding-left:10px;
+  font-size: .8em;
+  font-size: 12px;
+  background-color: #fff; 
+  -webkit-border-radius: none;
+  box-shadow:none;
+  -webkit-box-shadow: none;
+  min-height: 60px;
+ }
 
  .ListSection.general,
  .ListPage.general{

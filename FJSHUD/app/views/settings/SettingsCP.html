@@ -1,74 +1,65 @@
-            <div class="PreferenceSection" ng-click="cpHome = !cpHome">
+            <div class="CPSection" >
               <div class="ListSectionHeader">
-                <div class="ListSectionHeaderTitle" ng-if="!cpHome">
+                <div class="ListSectionHeaderTitle" >
                   {{::verbage.HOME}}
                 </div>
               </div>
 
-              <div class="ListSectionBody" ng-if="!cpHome">
+              <div class="ListSectionBody" >
                 {{::verbage.user_control_panel}}
               </div>
-              <i class="material-icons" ng-if="!cpHome">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="cpHome" >keyboard_arrow_down</i>
+  
               </div>
 
-              <div class="PreferencePage" ng-if="cpHome">
-              <div class="ListSectionHeaderTitle">
-                  {{::verbage.HOME}}
-                </div>
+              <div class="CpPage" >
+ 
                 <a class="Link" target="_blank" ng-href=
                 "https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=home">
                 https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=home</a>
               </div>
             
 
-            <div class="PreferenceSection" ng-click="cpFeatures = !cpFeatures">
+            <div class="CPSection" >
               <div class="ListSectionHeader">
-                <div class="ListSectionHeaderTitle" ng-if="!cpFeatures">
+                <div class="ListSectionHeaderTitle" >
                   {{::verbage.features}}
                 </div>
               </div>
 
-              <div class="ListSectionBody" ng-if="!cpFeatures">
+              <div class="ListSectionBody" >
                {{::verbage.features_desc_sum}}
               </div>
-              <i class="material-icons" ng-if="!cpFeatures">keyboard_arrow_right</i>
-              <i class="material-icons down" ng-if="cpFeatures" >keyboard_arrow_down</i>
+ 
               </div>
-              <div class="PreferencePage" ng-if="cpFeatures">
-              <div class="ListSectionHeaderTitle">
-                  {{::verbage.features}}
-                </div>
+              <div class="CpPage" >
+
                 <a class="Link" target="_blank" ng-href=
                 "https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=features">
                 https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=features</a>
               </div>
             
 
-            <div class="PreferenceSection fj-visibility-true" ng-click="cpACD = !cpACD">
+            <div class="CPSection" >
               <div class="ListSectionHeader">
-                <div class="ListSectionHeaderTitle" ng-if="!cpACD">
+                <div class="ListSectionHeaderTitle" >
                   ACD
                 </div>
               </div>
 
-              <div class="ListSectionBody" ng-if="!cpACD">
+              <div class="ListSectionBody" >
                 {{::verbage.auto_call_distro}}
               </div>
-              <i class="material-icons" ng-if="!cpACD">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="cpACD" >keyboard_arrow_down</i>
-              </div>
-              <div class="PreferencePage" ng-if="cpACD">
-                <div class="ListSectionHeaderTitle" >
-                  ACD
-                </div>
+    
+              
+              <div class="CpPage" >
+
                 <a class="Link" target="_blank" ng-href=
                 "https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=list_queues">
                 https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=list_queues</a>
               </div>
-            
+            </div>
 
-            <div class="PreferenceSection fj-visibility-false" ng-click="cpReporting = !cpReporting">
+            <!-- <div class="PreferenceSection fj-visibility-false" ng-click="cpReporting = !cpReporting">
               <div class="ListSectionHeader">
                 <div class="ListSectionHeaderTitle" ng-if="!cpReporting">
                   {{::verbage.Reporting}}
@@ -88,5 +79,5 @@
                 <a class="Link" target="_blank" ng-href=
                 "https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=rep&amp;reporting=1">
                 https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=rep&amp;reporting=1</a>
-              </div>
+              </div> -->
             

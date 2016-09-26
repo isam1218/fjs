@@ -191,17 +191,6 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
     $scope.enableAutoAway;
     $scope.useColumnLayout;
 
-    $scope.callLogSizeOptions = [{id:1,value:10,label:'10 items'},
-    {id:2,value:20,label:'20 items'},
-    {id:3,value:30,label:'30 items'},
-    {id:4,value:40,label:'40 items'},
-    {id:5,value:50,label:'50 items'},
-    {id:6,value:60,label:'60 items'},
-     {id:7,value:70,label:'70 items'},
-    {id:8,value:80,label:'80 items'},
-    {id:9,value:90,label:'90 items'},
-    {id:10,value:100,label:'100 items'}];
-    $scope.callLogSizeSelected;
 
     $scope.autoAwayOptions = [{id:1,value:30000,label:'30 Seconds'},
     {id:2,value:60000,label:'1 minute'},
@@ -332,13 +321,10 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
             $scope.enableBusyRingBack = settings['busy_ring_back'] == "true";
 
             $scope.useColumnLayout = settings['use_column_layout'] == 'true';
-            var callLogSelected = $scope.callLogSizeOptions.filter(function(item){
-                return (item.value==settings['recent_call_history_length']);
-            });
+
 
             $scope.volume.micVol = parseFloat(settings['hudmw_webphone_mic']);
             $scope.volume.spkVol = parseFloat(settings['hudmw_webphone_speaker']);
-            $scope.callLogSizeSelected = callLogSelected[0];
 
             if($scope.settings.queueWaitingThreshold){
                 $scope.settings.queueWaitingThreshold = parseInt($scope.settings.queueWaitingThreshold);
