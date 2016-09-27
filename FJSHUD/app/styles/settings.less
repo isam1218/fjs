@@ -1100,6 +1100,7 @@
    .ListSectionBody{
     font-size: 16px;
     margin-top: 5px;
+    color: #4A4A4A;
    }
 
 
@@ -1491,9 +1492,10 @@ div.NewCall{
 .table.Queues{
       width: 99%;
       border: 1px solid #bbb;
+      border-bottom:3px solid #292F37;
       .QueueHeader {
         width: 100%;
-        border-bottom: solid 1px #bbb;
+        border-bottom: solid 1px #E6E8EB;
         background-color: #ddd;
         clear: both;
 
@@ -1501,10 +1503,10 @@ div.NewCall{
             display: inline-block;
             test-align: center;
             color: #666;
-            font-size: 11px;
+            font-size: 12px;
             float: left;
             clear: none;
-            height: 24px;
+            height: 30px;
             line-height: 24px;
             white-space: nowrap;
             text-overflow: clip;
@@ -1515,28 +1517,37 @@ div.NewCall{
             &:first-child{
               font-weight: bold;
               font-size: 13px;
-              width: 33.333%;
+              width: 33.30%;
               text-align: center;
-              border-right: 1px solid #BBB;
             }
         }
         &:not(.top){
           .QueueSetting.QueueSettingHeader {
-            border-bottom: 1px solid #BBB;
+            border-bottom: 1px solid #E6E8EB;
 
              &:nth-child(3){
-                border-right: 1px solid #BBB;
+                border-right: 1px solid #E6E8EB;
             }
           }
         }
 
         &.top{
 
+          div:first-child{
+            background-color:#292F37;
+            border-right:none;
+          }
+
             .QueueSetting {
-                color: #0093f0;
+                color: #ffffff;
                 width: 33.333%;
                 &:nth-child(2){
-                    border-right: 1px solid #BBB;
+                        background-color: #292F37;
+                        padding-top: 5px;
+                }
+                &:nth-child(3){
+                        background-color: #292F37;
+                        padding-top: 5px;
                 }
             }
         }
@@ -1553,11 +1564,11 @@ div.NewCall{
             .SettingsListLineContent{
                 width: 100%;
                 .QueueSetting{
-                  height: 24px;
+                  height: 32px;
+                  padding-top: 6px;
                   background-color: #f9f9f9;
                   display: inline-block;
                   float: left;
-                  height: 24px;
                   line-height: 24px;
                   white-space: nowrap;
                   text-overflow: clip;
@@ -1569,7 +1580,7 @@ div.NewCall{
 
                   &:first-child{
                     text-align: center;
-                    border-right: 1px solid #BBB;
+                    border-right: 1px solid #E6E8EB;
                     width: 33.2%;
                   }
                   &:nth-child(2),
@@ -1577,7 +1588,7 @@ div.NewCall{
                     padding-left: 1px;
                   }
                   &:nth-child(3){
-                    border-right: 1px solid #BBB;
+                    border-right: 1px solid #E6E8EB;
                     width: 17%;
                   }
                   &:nth-child(5){
@@ -1586,9 +1597,14 @@ div.NewCall{
                 }
             }
 
+            &:nth-child(even){
+                .SettingsListLineContent .QueueSetting{
+                    background-color: #ECEEF2;
+                }
+            }
             &:nth-child(odd){
                 .SettingsListLineContent .QueueSetting{
-                    background-color: #eee;
+                    background-color: #ffffff;
                 }
             }
           }
@@ -1604,14 +1620,25 @@ div.NewCall{
     overflow: auto;
     margin: auto;
     text-align: center;
+
+    &:nth-of-type(1) {
+       border-right: 1px solid #E6E8EB;
+       }
   }
+ 
 
   .QueueSettingHeader {
     width: 155px;
-    background-color: #ddd;
     text-align: center;
     color: #0093f0;
 
+  }
+
+  .secondRow{
+    height: 36px;
+    height: 65px !important;
+    padding-top: 15px;
+    background-color: #ECEEF2;
   }
 
   .QueueSettingCheckBox {

@@ -83,22 +83,25 @@
           </div>
           <div class="PreferencePage" ng-if="awayPreference">
               <div class="ListSectionHeaderTitle">{{::verbage.auto_away}}</div>
-            <div class="Dialog-settings-row" >
-              <div class="lblSelect">{{::verbage.auto_away_after}}:</div>
-              <select
-                ng-model="autoAwaySelected"
-                ng-options="autoAway.label for autoAway in autoAwayOptions"
-                ng-change="update_settings('hudmw_auto_away_timeout','update',autoAwaySelected)"
 
-                class="fj-hbox SelectBox SelectBoxSettings">
-              </select>
-            </div>
             <div class="Dialog-settings-row">
               <label><input
                 ng-model="enableAutoAway"
                 ng-change="update_settings('auto_away_timeout','update',enableAutoAway)"
                 name="autoaway" type="checkbox" value="true">{{::verbage.enable_auto_away}}</label>
             </div>
+            <div class="Dialog-settings-row" >
+              <div class="lblSelect">{{::verbage.auto_away_after}}:</div>
+              <select
+                ng-model="autoAwaySelected"
+                ng-disabled="!enableAutoAway"
+                ng-options="autoAway.label for autoAway in autoAwayOptions"
+                ng-change="update_settings('hudmw_auto_away_timeout','update',autoAwaySelected)"
+
+                class="fj-hbox SelectBox SelectBoxSettings">
+              </select>
+            </div>
+            
           </div>
           <div class="PreferenceSection" ng-click="dashboardPreference= !dashboardPreference">
             <div class="ListSectionHeader">
