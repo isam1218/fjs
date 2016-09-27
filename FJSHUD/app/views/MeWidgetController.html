@@ -117,7 +117,6 @@
 
           </div>
           <div class="row_buttons">
-            <button class="XButton dial CurrentCallBtn" ng-disabled="(currentCall.state != 2 && currentCall.state != 3) || call2" data-ng-click="showDialPad($event)"> <span class="CallControlButton">#</span></button>
             <div class="XButton CurrentCallBtnLong" ng-disabled="call2" ng-click="endCall(currentCall)"><span class="CallControlButton">{{currentCall.state == 0 ? verbage.decline : verbage.end}}</span></div>
           </div>
 
@@ -128,7 +127,7 @@
         <div class="WidgetSectionTitle">{{::verbage.place_a_call}}</div>
         <input class="NewCall" on-submit="makeCall(call_obj.phoneNumber)" type="tel" ng-model="call_obj.phoneNumber" ng-attr-placeholder="{{::verbage.phone_number}}">
         <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber)"><span>{{::verbage.Call}}</span></div>
-        <div class="XButton XButtonNormal" data-ng-click="showDialPad($event)"><span>#</span></div>
+        
       </div>
 
 
