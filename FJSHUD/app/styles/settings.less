@@ -848,7 +848,7 @@
       }
 
       .Dialog-check-block{
-        font-size: 12px;
+        font-size: 14px;
         position: relative;
         //margin-top: -3px;
         width: 100%;
@@ -880,6 +880,7 @@
     height: 54px;
     width: 758px;
     text-align: center;
+    margin-bottom: 5px;
     padding-top: 18px;
     box-shadow: 0px 2px 6px lightgray;
     border-top-right-radius: 10px;
@@ -904,6 +905,7 @@
 
  .PreferenceSection{
    border-top:1px solid #D9D9D9;
+   font-family: Helvetica, Arial, sans-serif;
 
    .ListSectionHeaderTitle{
    font-size:18px;
@@ -928,7 +930,7 @@
    }
 
    .material-icons.down{
-   margin-top:10px;
+   margin-top:14px;
    color:#4A4A4A;
    }
 
@@ -945,11 +947,11 @@
 
   border:none;
   border-radius:none;
-  padding-top:7px;
   padding-bottom:20px;
   padding-left:10px;
   font-size: .8em;
-  font-size: 12px;
+  font-size: 14px;
+  font-family: Helvetica, Arial, sans-serif;
   background-color: #fff; 
   -webkit-border-radius: none;
   box-shadow:none;
@@ -961,6 +963,7 @@
    font-family:Helvetica, Arial, sans-serif;
    color:#4A4A4A;
    margin-bottom: 20px;
+   margin-top:24px;
    margin-left:0;
    }
 
@@ -971,7 +974,7 @@
     .fj-hbox.SelectBox.SelectBoxSettings{
       float:right;
       height:30px;
-      margin-right: 200px;
+      margin-right: 180px;
       background:#EEEEEE;
       background-image:url(../img/doubleArrow.png);
       background-size: 13px;
@@ -984,21 +987,43 @@
 
     }
     .lblSelect{
-    margin-top:10px;
+    margin-top:12px;
     }
 
+    .left.h2{
+      font-weight:bold;
+    }
 
+    .right.h2{
+      font-weight:bold;  
+    }
+
+    .left{
+      float: left;
+      font-size:14px;
+      width: 37%;
+    }
+
+    .right{
+      float:left;
+      font-size:14px;
+      width:300px;
+    }
+    
 
     .labels{
     float:right;
       ul{
-        list-style:none;
-        margin-top:10px;
+        list-style: none;
+        margin-top: 15px;
+        margin-right: 60px;
+        padding: 0;
       }
     }
 
     .text.DialogSettingWLInput{
       width:70%;
+      height:36px;
     }
    }
 
@@ -1017,10 +1042,19 @@
     li{
       height:30px;
     }
+    li.fj-selected-item{
+    
+      .PrefTabLabel.us{
+        border-radius:5px;
+        background-color:#065976;
+        color:#ffffff;
+      }
+    }
  }
 
 
  .PrefTabLabel.us{
+    width:115px;
     color: #333333;
     margin-bottom: 10px;
     padding: 5px 10px 5px 10px;
@@ -1033,11 +1067,14 @@
     }
  }
 
+
+
  .QueueSection{
 
    border-bottom:1px solid #D9D9D9;
    border-top:1px solid #D9D9D9;
    padding-bottom:24px;
+   font-family: Helvetica, Arial, sans-serif;
 
 
    .ListSectionHeaderTitle{
@@ -1051,6 +1088,7 @@
 
  .CPSection{
 
+    font-family: Helvetica, Arial, sans-serif;
 
    .ListSectionHeaderTitle{
    font-size:18px;
@@ -1081,7 +1119,8 @@
   border-radius:none;
   padding-left:10px;
   font-size: .8em;
-  font-size: 12px;
+  font-size: 14px;
+  font-family: Helvetica, Arial, sans-serif;
   background-color: #fff; 
   -webkit-border-radius: none;
   box-shadow:none;
@@ -1121,7 +1160,7 @@
  }
 
   .AboutSection{
-
+    font-family: Helvetica, Arial, sans-serif;
 
    .ListSectionHeaderTitle{
    font-size:18px;
@@ -1213,7 +1252,17 @@ input.text.DialogFieldInput {
 }
 
 .queueBlock.Account{
-  width:9%;
+  width:22%;
+  float:left;
+
+  & + div{
+  float:left;
+  font-style:italic;
+  font-size:14px;
+  }
+}
+.queueBlock.MyAccount{
+  width:10%;
   float:left;
 
   & + div{
