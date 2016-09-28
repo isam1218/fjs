@@ -938,9 +938,13 @@
    background-color:#EEEEEE;
    }
 
-   &:last-child{
+   
+ }
+
+ .PreferenceSwitch:last-child{
+
    border-bottom:1px solid #D9D9D9;
-   }
+   
  }
 
  .PreferencePage{
@@ -949,13 +953,10 @@
   border-radius:none;
   padding-bottom:20px;
   padding-left:10px;
-  font-size: .8em;
   font-size: 14px;
   font-family: Helvetica, Arial, sans-serif;
   background-color: #fff; 
-  -webkit-border-radius: none;
   box-shadow:none;
-  -webkit-box-shadow: none;
   min-height: 60px;
 
     .ListSectionHeaderTitle{
@@ -1013,7 +1014,7 @@
 
     .labels{
     float:right;
-      ul{
+      .labelsCheckbox{
         list-style: none;
         margin-top: 15px;
         margin-right: 60px;
@@ -1038,11 +1039,13 @@
     float: left;
     margin: 0;
     padding-left: 24px;
+    list-style:none;
+    cursor:pointer;
 
-    li{
+    .TabLabels{
       height:30px;
     }
-    li.fj-selected-item{
+    .TabLabels.fj-selected-item{
     
       .PrefTabLabel.us{
         border-radius:5px;
@@ -1635,7 +1638,6 @@ div.NewCall{
   }
 
   .secondRow{
-    height: 36px;
     height: 65px !important;
     padding-top: 15px;
     background-color: #ECEEF2;

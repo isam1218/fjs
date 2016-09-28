@@ -320,7 +320,13 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 	};
 
 	$scope.callLaterEnabled = function(){
-			return true;
+			settingIsEnabled = true;
+		
+		// external callers don't have profile so run check to prevent js error
+		if ($scope.profile)
+			return (settingIsEnabled && $scope.profile.call != null);
+		else
+			return false;
 	};
 	
 	$scope.bargeCall = function(action) {

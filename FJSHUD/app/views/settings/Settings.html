@@ -1,13 +1,15 @@
-          <div class="PreferenceSection" ng-click="interfaceSettings= !interfaceSettings">
-            <div class="ListSectionHeaderTitle" ng-if="!interfaceSettings">{{::verbage.interface_word}}</div>
+          <div class="PreferenceSwitch" ng-switch="interfaceSettings">
+          <div class="PreferenceSection" ng-click="interfaceSettings= !interfaceSettings" >
+            <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.interface_word}}</div>
             
-            <div class="ListSectionBody" ng-if="!interfaceSettings">{{::verbage.application_tuning}}</div>
-            <i class="material-icons" ng-if="!interfaceSettings">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="interfaceSettings" >keyboard_arrow_down</i>
+            <div class="ListSectionBody" ng-switch-when="false">{{::verbage.application_tuning}}</div>
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
 
           </div>
+          
 
-          <div class="PreferencePage" ng-if="interfaceSettings">
+          <div class="PreferencePage" ng-switch-when="true">
             <div class="ListSectionHeaderTitle" >{{::verbage.interface_word}}</div>   
             <div class="Dialog-settings-row">
               <div class="lblSelect">{{::verbage.language}}:</div>
@@ -17,20 +19,7 @@
               ng-change="update_settings('hudw_lang','update',languageSelect)"
               ></select>
             </div>
-            <!-- <div class="Dialog-settings-row checkbox-label" style="display:inline">
-                <input
-                ng-model="searchAutoClear"
-                ng-change="update_settings('hudmw_searchautoclear','update',searchAutoClear)"
-                name="autoclear" type="checkbox" value="true" > {{::verbage.autoclear_search}}
-            </div>
-            <div class="Dialog-settings-row">
-              <div class="lblSelect"><p>{{::verbage.autoclear_after}}:</p></div>
-              <select class="fj-hbox SelectBox SelectBoxSettings" ng-model='autoClearSelected'
-              ng-options="autoClearOption.label for autoClearOption in autoClearSettingOptions"
-              ng-change="update_settings('hudmw_searchautocleardelay','update',autoClearSelected)"
-              >
-              </select>
-            </div> -->
+
             <div class="Dialog-settings-row">
               <div class="lblSelect">{{::verbage.avatar_hover_menu_delay}}: </div>
               <select class="fj-hbox SelectBox SelectBoxSettings"
@@ -41,15 +30,17 @@
               </select>
             </div>
           </div>
+          </div>
+          <div class="PreferenceSwitch" ng-switch="soundPreference">
           <div class="PreferenceSection" ng-click="soundPreference= !soundPreference">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle" ng-if="!soundPreference">{{::verbage.sounds}}</div>
+              <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.sounds}}</div>
             </div>
-            <div class="ListSectionBody" ng-if="!soundPreference">{{::verbage.sound_settings_general_desc}}</div>
-            <i class="material-icons" ng-if="!soundPreference">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="soundPreference">keyboard_arrow_down</i>
+            <div class="ListSectionBody" ng-switch-when="false">{{::verbage.sound_settings_general_desc}}</div>
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true">keyboard_arrow_down</i>
           </div>
-          <div class="PreferencePage" ng-if="soundPreference">
+          <div class="PreferencePage" ng-switch-when="true">
               <div class="ListSectionHeaderTitle">{{::verbage.sounds}}</div>
             <div class="Dialog-settings-row">
               <label><input
@@ -72,16 +63,19 @@
                 name="chat_sound_sent" type="checkbox" value="true">{{::verbage.on_sent_message}}</label>
             </div>
           </div>
+          </div>
+
+          <div class="PreferenceSwitch" ng-switch="awayPreference">
           <div class="PreferenceSection" ng-click="awayPreference= !awayPreference">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle" ng-if="!awayPreference">{{::verbage.auto_away}}</div>
+              <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.auto_away}}</div>
             </div>
-            <div class="ListSectionBody" ng-if="!awayPreference">{{::verbage.auto_away_settings_desc}}</div>
+            <div class="ListSectionBody" ng-switch-when="false">{{::verbage.auto_away_settings_desc}}</div>
 
-            <i class="material-icons" ng-if="!awayPreference">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="awayPreference">keyboard_arrow_down</i>
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true">keyboard_arrow_down</i>
           </div>
-          <div class="PreferencePage" ng-if="awayPreference">
+          <div class="PreferencePage" ng-switch-when="true">
               <div class="ListSectionHeaderTitle">{{::verbage.auto_away}}</div>
 
             <div class="Dialog-settings-row">
@@ -103,16 +97,19 @@
             </div>
             
           </div>
+          </div>
+
+          <div class="PreferenceSwitch" ng-switch="dashboardPreference">
           <div class="PreferenceSection" ng-click="dashboardPreference= !dashboardPreference">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle" ng-if="!dashboardPreference">{{::verbage.dashboard}}</div>
+              <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.dashboard}}</div>
             </div>
-            <div class="ListSectionBody" ng-if="!dashboardPreference">{{::verbage.dashboard_setting}}</div>
+            <div class="ListSectionBody" ng-switch-when="false">{{::verbage.dashboard_setting}}</div>
 
-            <i class="material-icons" ng-if="!dashboardPreference">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="dashboardPreference" >keyboard_arrow_down</i>
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
           </div>
-          <div class="PreferencePage" ng-if="dashboardPreference">
+          <div class="PreferencePage" ng-switch-when="true">
               <div class="ListSectionHeaderTitle">{{::verbage.dashboard}}</div>
             <div class="Dialog-settings-row">
               <label><input
@@ -120,4 +117,5 @@
                 ng-change="update_settings('use_column_layout','update',useColumnLayout)"
                 name="use-column-layout" type="checkbox" value="true" >{{::verbage.use_column_layout}}</label>
             </div>
+          </div>
           </div>

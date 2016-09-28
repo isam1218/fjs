@@ -25,6 +25,18 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
     $scope.call_obj.phoneNumber = "";
     $scope.calls = {};
     $scope.onCall = false;
+    $scope.interfaceSettings = false;
+    $scope.soundPreference = false;
+    $scope.awayPreference = false;
+    $scope.dashboardPreference = false;
+    $scope.wlSettings = false;
+    $scope.wlOutbound = false;
+    $scope.wlInbound = false;
+    $scope.wlVariables = false;
+    $scope.myAccount = false;
+    $scope.myInfo = false;
+    $scope.generalAlerts = false;
+    $scope.queueAlerts = false;
     /* */
     /**
     * used to determine what tab is selected in the me widget controller

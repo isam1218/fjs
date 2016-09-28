@@ -1,13 +1,14 @@
+      <div class="PreferenceSwitch" ng-switch="generalAlerts">
       <div class="PreferenceSection" ng-click="generalAlerts = !generalAlerts">
       <div class="ListSectionHeader">   
-          <div class="ListSectionHeaderTitle" ng-if="!generalAlerts">{{::verbage.general}}</div>
+          <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.general}}</div>
       </div>
 
-      <div class="ListSectionBody" ng-if="!generalAlerts">{{::verbage.configure_desktop_alerts}}</div>
-          <i class="material-icons" ng-if="!generalAlerts">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="generalAlerts" >keyboard_arrow_down</i>
+      <div class="ListSectionBody" ng-switch-when="false">{{::verbage.configure_desktop_alerts}}</div>
+          <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
       </div>
-      <div class="PreferencePage" ng-if="generalAlerts">
+      <div class="PreferencePage" ng-switch-when="true">
       <div class="ListSectionHeaderTitle">{{::verbage.general}}</div>
       	<div class="Dialog-settings-row"><input type="checkbox"
           ng-model="alertShow" ng-click="selectAllBoxes()" ng-change="update_settings('alert_show','update',alertShow)" 
@@ -20,71 +21,21 @@
         > <label>{{::verbage.show_when_app_in_focus}}</label> </div>
       	<div class="Dialog-settings-row" ng-if="::browser != 'Chrome'"><input type="button" value="{{::verbage.reset_alert_position}}" ng-click="resetAlertPosition()"></div>
       </div>
-       
-     
-<!--      <div class="PreferenceSection " ng-click="voicemailAlerts = !voicemailAlerts">
-      <div class="ListSeciontHeader">   
-          <div class="ListSectionHeaderTitle" ng-if="!voicemailAlerts">{{::verbage.voicemail_alerts}}</div>
       </div>
-      <div class="ListSectionBody" ng-if="!voicemailAlerts">{{::verbage.configure_vm_desktop_alerts}}</div>
-      <i class="material-icons" ng-if="!voicemailAlerts">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="voicemailAlerts" >keyboard_arrow_down</i>
-      </div>
-      <div class="PreferencePage" ng-if="voicemailAlerts">
-      <div class="ListSectionHeaderTitle" >{{::verbage.voicemail_alerts}}</div>
-      	<div class="Dialog-settings-row"><input type="checkbox"
-           ng-model="alertShowVM" ng-change="update_settings('alert_vm_show_new','update',alertShowVM)" ng-disabled="!alertShow"
-        > <label>{{::verbage.show_when_new_voicemail}}</label> </div>
-      </div> -->
-       
-     
-     
-  <!--    <div class="PreferenceSection " ng-click="callAlerts = !callAlerts">
-      <div class="ListSectionHeader">   
-          <div class="ListSectionHeaderTitle" ng-if="!callAlerts">{{::verbage.call_alerts}}</div>
-      </div>
-	     <div class="ListSectionBody" ng-if="!callAlerts">{{::verbage.configure_call_desktop_alerts}}</div>
 
-       <i class="material-icons" ng-if="!callAlerts">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="callAlerts" >keyboard_arrow_down</i>
-      </div>
-      <div class="PreferencePage" ng-if="callAlerts">
-      <div class="ListSectionHeaderTitle" >{{::verbage.call_alerts}}</div>
-        <div class="ListPageHeaderText">{{::verbage.type}}</div>
-        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowIncoming" ng-change="update_settings('alert_call_incoming','update',alertShowIncoming)" ng-disabled="!alertShow"> 
-
-        <label>{{::verbage.incoming_calls}}</label> </div>
-        <div class="Dialog-settings-row"><input type="checkbox" ng-model="alertShowOutgoing" ng-change="update_settings('alert_call_outgoing','update',alertShowOutgoing)" ng-disabled="!alertShow"> 
-
-        <label>{{::verbage.outbound_calls}}</label> </div>
-        
-        <div class="ListPageHeaderText">{{::verbage.display_for}}</div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="all" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" ng-disabled="!alertShow" > <label>{{::verbage.all_my_calls}}</label> </div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="known" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" ng-disabled="!alertShow" > <label>{{::verbage.only_for_known_numbers}}</label> </div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDisplayFor" value="never" ng-change="update_settings('alert_call_display_for','update',alertDisplayFor)" ng-disabled="!alertShow"> <label>{{::verbage.never_display}}</label> </div>
-        
-        <div class="ListPageHeaderText">{{::verbage.duration}}</div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="entire"
-         ng-change="update_settings('alert_call_duration','update',alertDuration)" ng-disabled="!alertShow"
-        > <label></label>{{::verbage.entire_call_recommended}} </div>
-        <div class="Dialog-settings-row"><input type="radio" ng-model="alertDuration" value="while_ringing"
-          ng-change="update_settings('alert_call_duration','update',alertDuration)" ng-disabled="!alertShow"
-        > <label>{{::verbage.while_phone_is_ringing}}</label> </div>
-      </div> -->
-       
-     
+     <div class="PreferenceSwitch" ng-switch="queueAlerts">
      <div class="PreferenceSection " ng-click="queueAlerts = !queueAlerts">
       <div class="ListSectionHeader">   
-          <div class="ListSectionHeaderTitle" ng-if="!queueAlerts">{{::verbage.queue_alerts}}</div>
+          <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.queue_alerts}}</div>
       </div>
-      <div class="ListSectionBody" ng-if="!queueAlerts">
+      <div class="ListSectionBody" ng-switch-when="false">
         {{::verbage.configure_queue_not_and_desktop_alerts}}
 
       </div>
-      <i class="material-icons" ng-if="!queueAlerts">keyboard_arrow_right</i>
-            <i class="material-icons down" ng-if="queueAlerts" >keyboard_arrow_down</i>
+      <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
       </div>
-        <div class="PreferencePage" ng-if="queueAlerts">
+      <div class="PreferencePage" ng-switch-when="true">
         <div class="ListSectionHeaderTitle" >{{::verbage.queue_alerts}}</div>
         <div class="table Queues">
           <div class="QueueHeader top">
@@ -92,13 +43,7 @@
             <div class="QueueSetting QueueSettingHeader" colspan="2"> {{::verbage.long_waiting_call}}</div>
             <div class="QueueSetting QueueSettingHeader" colspan="2"> {{::verbage.abandoned_calls}}</div>
           </div>
-        <!--   <div class="QueueHeader"> 
-            <div class="QueueSetting QueueSettingHeader QueueSettingCol1">&nbsp; &nbsp;</div>
-            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"> {{::verbage.notifications}}</div>
-            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"> {{::verbage.desktop_alerts}} </div>
-            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox">  {{::verbage.notifications}} </div>
-            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox"> {{::verbage.desktop_alerts}} </div>
-          </div> -->
+
           <div class="QueueHeader"> <!--  style="display:inline-block" -->
             <div class="QueueSetting QueueSettingHeader QueueSettingCol1 secondRow"><br>{{::verbage.select_all}}</div>
             <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox secondRow">Notifications<br><input type="checkbox"
@@ -157,6 +102,7 @@
            </div>
          </div>
         </div>       
+      </div>
       </div>
       </div>
       
