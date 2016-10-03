@@ -36,56 +36,6 @@
         border-top: none;
      }
 
-     .SettingsPanel{
-       flex: 1;
-       -webkit-flex: 1 1 0;
-       display: flex;
-       display: -webkit-flex;
-       flex-direction: column;
-       -webkit-flex-direction: column;
-       min-width: 0;
-       min-height: 0;
-       &.DialogContentMainBlock_List {
-         left: 0px;
-         top: 0px;
-         right: 0px;
-         bottom: 0px;
-         position: relative;
-         border: none 0px;
-         background-image: url("../img/XTile-Widget.png");
-         height: 95%;
-         overflow: hidden;
-         background-color: #f9f9f9;
-         bottom: 0px;
-
-         & > div {
-           overflow-y: auto;
-           height: auto;
-           width: 100%;
-           padding: 0 10px 10px 10px;
-		   -ms-flex: 1;
-		   -webkit-flex: 1;
-		   min-width: 0;
-           min-height: 0;
-           &.padding{
-            padding-bottom: 30px;
-           }
-         }
-       }
-
-       .labels{
-        float: right;
-        position: relative;
-        margin-top: -3px;
-       }
-       .lblSelect {
-         display: inline-block;
-         width:150px;
-         font-size:12px;
-         margin-top: 3px;
-         vertical-align: top;
-       }
-     }
     }
 
     .WidgetBody{
@@ -874,13 +824,28 @@
       }
  }
 
+ .SettingsPanelBlock{
+    width:600px;
+    float:right;
+    max-height: 510px;
+    overflow-y: auto;
+
+    .SettingsPanel{
+      width:570px;
+      float:right;
+      margin-right:20px;
+    }
+ }
+
 
  .PreferencesSectionTitle{
+    font-family: Helvetica, Arial, sans-serif;
     background: none;
     height: 54px;
     width: 758px;
     text-align: center;
     margin-bottom: 5px;
+    padding-left:28px;
     padding-top: 18px;
     box-shadow: 0px 2px 6px lightgray;
     border-top-right-radius: 10px;
