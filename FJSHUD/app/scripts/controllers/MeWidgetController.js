@@ -35,7 +35,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }       
 	});
 
-    $scope.phoneState = phoneService.getPhoneState();
     $scope.timeElapsed = "00:00";
 
     $scope.getCurrentLocationTitle = function() {
@@ -97,8 +96,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
 		// localstorage logic
         $scope.globalXpid = $rootScope.myPid;
-        $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
-        $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
         $scope.language = $rootScope.language || 'us';
     });
 
@@ -145,8 +142,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 		myHttpService.getFeed('weblaunchervariables');
 		myHttpService.getFeed('i18n_langs');
 	}
-
-
 
     /**
      * @type {{chat_status:{}, chat_custom_status:{}}}
@@ -243,7 +238,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
 
-
     $scope.calllogs = [];
     $scope.isAscending = false;
     $scope.$on('calllog_synced',function(event,data){
@@ -317,7 +311,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         });
         if($scope.volume.micVolume == 0){
-            phoneService.setMicSensitivity($rootScope.volume.mic);
             $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
         }
         
@@ -735,12 +728,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.muteCall = function(){
        if($scope.volume.micVolume == 0){
-            phoneService.setMicSensitivity($rootScope.volume.mic);
             $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
 
         }else{
             $rootScope.volume.mic = angular.copy($scope.volume.micVolume);
-            phoneService.setMicSensitivity(0);
             $scope.update_settings('hudmw_webphone_mic','update',0);
        }
     };
@@ -763,9 +754,19 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 myHttpService.updateSettings(type,action,model);
                 break;
 
-         }
+
+    }
 
     };
+
+     $scope.silentSpk = function(){
+        if($scope.volume.spkVolume == 0){
+             $scope.update_settings('hudmw_webphone_speaker','update',$rootScope.volume.spk);
+        }else{
+            $rootScope.volume.spk = angular.copy($scope.volume.spkVolume);
+            $scope.update_settings('hudmw_webphone_speaker','update',0);
+         }
+     };
 
     var updateTime = function() {
         if ($scope.currentCall && $scope.currentCall.startedAt) {
@@ -877,28 +878,5 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     });
 
-    //listen for key_press broadcasted from a root_controller
-    $scope.$on("key_press", function(event,data){
-            dtmf_input = dtmf_input + data;
-            $scope.call_obj.phoneNumber = $scope.call_obj.phoneNumber + data;
-            phoneService.playTone(data,true);
-            setTimeout(function(){
-                   phoneService.playTone(data,false);
-                },100);
 
-
-            if($scope.currentCall){
-
-
-                setTimeout(function(){
-                   phoneService.sendDtmf($scope.currentCall.xpid,dtmf_input);
-                    dtmf_input = "";
-                },900);           
-            }
-
-    });
-    
-    $scope.resetAlertPosition = function(){
-        phoneService.resetAlertPosition();
-    };
 }]);

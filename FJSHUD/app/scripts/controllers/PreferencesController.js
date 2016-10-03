@@ -166,15 +166,6 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
 	}
 
 
-    if(!phoneService.isPhoneActive()){
-            for (var i = 0, iLen = $scope.tabs.length; i < iLen; i++) {
-                if($scope.tabs[i].option == 'Phone'){
-                    $scope.tabs[i].isActive = false;
-                    break;
-                }
-            }
-     }
-
     $scope.lastMillis = 0;
 
     $scope.languages;
