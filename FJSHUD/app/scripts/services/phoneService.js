@@ -669,15 +669,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
-
-	//this method will find the call object within the native - mycallsfeed mapping and place a dtmf call
-	this.sendDtmf = function(xpid,entry){
-		var call = context.getCall(xpid);
-		if(call){
-
-				call.dtmf(entry);
-		}
-	};
 	this.holdCalls = function(){
 		for(var callId in callsDetails){
 			if (callsDetails[callId].state != fjs.CONFIG.CALL_STATES.CALL_HOLD){
@@ -685,11 +676,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			}
 		}
 	};
-
-
-	this.getVersion = function(){
-	return context.version ? context.version : (version ? version : 'undefined');
-	}
 
 	/*this returns the call object provided by the phone plugin which gives you control over the call such
 	holding the call resuming the call and ending the call
