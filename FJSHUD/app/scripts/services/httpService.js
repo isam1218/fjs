@@ -41,8 +41,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 					console.timeEnd('worker');
 					console.log('syncing...');
 					console.time('sync');
-					
-		        	updateSettings('instanceId','update',localStorage.instance_id); 
+					 
 
 		            worker.postMessage({
 		                "action": "sync"
