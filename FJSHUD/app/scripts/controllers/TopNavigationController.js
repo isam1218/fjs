@@ -108,6 +108,15 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		});
 	});	
 
+  $scope.openPreferences = function(){
+    $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'views/Preferences.html',
+      controller: 'PreferencesController',
+      size: 'preferences'
+    });
+  };
+
 	$scope.checkEmail = function(key,url){
 			
 		if(($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined) && (key === "Zoom" && key != "Box") && (url === '#/zoom' && url != '#/box')){

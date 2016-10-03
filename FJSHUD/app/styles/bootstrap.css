@@ -6042,10 +6042,17 @@ button.close {
   .modal-sm {
     width: 300px;
   }
+
 }
 @media (min-width: 992px) {
   .modal-lg {
     width: 900px;
+  }
+  .modal-preferences {
+    width: 760px;
+  }
+  .modal-preferences .modal-content{
+    border-radius:10px;
   }
 }
 .tooltip {

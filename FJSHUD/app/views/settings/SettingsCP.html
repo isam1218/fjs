@@ -1,71 +1,83 @@
-            <div class="ListSection cp">
+            <div class="CPSection" >
               <div class="ListSectionHeader">
-                <div class="ListSectionHeaderTitle">
+                <div class="ListSectionHeaderTitle" >
                   {{::verbage.HOME}}
                 </div>
               </div>
 
-              <div class="ListSectionBody">
+              <div class="ListSectionBody" >
                 {{::verbage.user_control_panel}}
               </div>
+  
+              </div>
 
-              <div class="ListSectionLink">
+              <div class="CpPage" >
+ 
                 <a class="Link" target="_blank" ng-href=
                 "https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=home">
                 https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=home</a>
               </div>
-            </div>
+            
 
-            <div class="ListSection cp">
+            <div class="CPSection" >
               <div class="ListSectionHeader">
-                <div class="ListSectionHeaderTitle">
+                <div class="ListSectionHeaderTitle" >
                   {{::verbage.features}}
                 </div>
               </div>
 
-              <div class="ListSectionBody">
+              <div class="ListSectionBody" >
                {{::verbage.features_desc_sum}}
               </div>
+ 
+              </div>
+              <div class="CpPage" >
 
-              <div class="ListSectionLink">
                 <a class="Link" target="_blank" ng-href=
                 "https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=features">
                 https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=features</a>
               </div>
-            </div>
+            
 
-            <div class="ListSection cp fj-visibility-true">
+            <div class="CPSection" >
               <div class="ListSectionHeader">
-                <div class="ListSectionHeaderTitle">
+                <div class="ListSectionHeaderTitle" >
                   ACD
                 </div>
               </div>
 
-              <div class="ListSectionBody">
+              <div class="ListSectionBody" >
                 {{::verbage.auto_call_distro}}
               </div>
+    
+              
+              <div class="CpPage" >
 
-              <div class="ListSectionLink">
                 <a class="Link" target="_blank" ng-href=
                 "https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=list_queues">
                 https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=list_queues</a>
               </div>
             </div>
 
-            <div class="ListSection cp fj-visibility-false">
+            <!-- <div class="PreferenceSection fj-visibility-false" ng-click="cpReporting = !cpReporting">
               <div class="ListSectionHeader">
-                <div class="ListSectionHeaderTitle">
+                <div class="ListSectionHeaderTitle" ng-if="!cpReporting">
                   {{::verbage.Reporting}}
                 </div>
               </div>
 
-              <div class="ListSectionBody">
+              <div class="ListSectionBody" ng-if="!cpReporting">
                 {{::verbage.pbxtra_systems_come}}
               </div>
-
-              <div class="ListSectionLink">
+              <i class="material-icons" ng-if="!cpReporting">keyboard_arrow_right</i>
+              <i class="material-icons down" ng-if="cpReporting" >keyboard_arrow_down</i>
+              </div>
+              <div class="PreferencePage" ng-if="cpReporting">
+              <div class="ListSectionHeaderTitle">
+                  {{::verbage.Reporting}}
+                </div>
                 <a class="Link" target="_blank" ng-href=
                 "https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=rep&amp;reporting=1">
                 https://{{::meModel.cp_location}}.fonality.com/cpu.cgi?do=rep&amp;reporting=1</a>
-              </div>
-            </div>
+              </div> -->
+            

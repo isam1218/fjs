@@ -28,10 +28,12 @@
 
 <div class="TopBarMeStatus">
     <div class="cust_status">
-        <div class="XButton Logout" ng-click="logout()">
+        <span class="Preferences" title="settings" ng-click="openPreferences()">
+            <span class="material-icons">settings</span>
+        </span>
+        <span class="Logout" title="log out" ng-click="logout()">
             <span class="material-icons">power_settings_new</span>
-            <span>{{::verbage.sign_out}}</span>
-        </div>
+        </span>
     
         <div class="Status">
             <div ng-if="queue.queues && queue.queues.length > 0">
@@ -47,4 +49,5 @@
         </div>
     </div>  	
 </div>
+
 

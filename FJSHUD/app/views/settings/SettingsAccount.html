@@ -1,81 +1,76 @@
-          <div class="ListSection">
+          <div class="PreferenceSwitch" ng-switch="myAccount">
+          <div class="PreferenceSection" ng-click="myAccount = !myAccount">
+            
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">{{::verbage.my_account}}</div>
-              <div class="ListSectionHeaderRight"></div>
+              <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.my_account}}</div>
+              <!-- <div class="ListSectionHeaderRight"></div> -->
+             
             </div>
-            <div class="ListSectionBody">{{::verbage.my_account_info}}</div>
+            <div class="ListSectionBody" ng-switch-when="false">{{::verbage.my_account_info}}</div>
+             <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
           </div>
-          <div class="ListPage">
-            <div class="ListPageHeader"></div>
+          <div class="PreferencePage" ng-switch-when="true">
+            <div class="ListSectionHeaderTitle" >{{::verbage.my_account}}</div>
               <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.login}}:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.login">
+              <label class="queueBlock MyAccount">{{::verbage.login}}:</label>
+              <div ng-model="meModel.login">{{meModel.login}}</div>
               </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.Server}}: </label>
-              <input class="text DialogSettingInput" readonly="true" ng-model="meModel.server">
+              <label class="queueBlock MyAccount">{{::verbage.Server}}: </label>
+              <div  ng-model="meModel.server">{{meModel.server}}</div>
             </div>
           </div>
-          <div class="ListSection">
+          </div>
+
+          <div class="PreferenceSwitch" ng-switch="myInfo">
+          <div class="PreferenceSection" ng-click="myInfo = !myInfo">
             <div class="ListSectionHeader">
-              <div class="ListSectionHeaderTitle">{{::verbage.my_personal_info}}</div>
+              <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.my_personal_info}}</div>
               <div class="ListSectionHeaderRight"></div>
             </div>
-          <div class="ListSectionBody"></div>
+            <div class="ListSectionBody" ng-switch-when="false"></div>
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
           </div>
-          <div class="ListPage">
-            <div class="ListPageHeader"></div>
+          <div class="PreferencePage" ng-switch-when="true">
+            <div class="ListSectionHeaderTitle" >{{::verbage.my_personal_info}}</div>
             <div class="Dialog-settings-row">
               <div class="file-input Dialog-settings-row" flow-init="{testChunks:false}" flow-files-submitted="flow_cleanup($files)" flow-name="avatar.flow" flow-file-added="change_avatar($file)">
 
-                <label class="queueBlock">{{::verbage.avatar}}:</label>
+                <label class="queueBlock Account">{{::verbage.avatar}}:</label>
                 <avatar profile="me"></avatar>
                 <div class="XButton"><span flow-btn flow-drop>{{::verbage.Upload}}</span></div>               
               </div>
             </div>  
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.first_name}}:</label>
-              <input class="text DialogSettingInput" readonly="true" ng-model="meModel.first_name">
+              <label class="queueBlock Account">{{::verbage.first_name}}:</label>
+              <div ng-model="meModel.first_name">{{meModel.first_name}}</div>
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.last_name}}:</label>
-              <input class="text DialogSettingInput" readonly="true" ng-model="meModel.last_name">
+              <label class="queueBlock Account">{{::verbage.last_name}}:</label>
+              <div ng-model="meModel.last_name">{{meModel.last_name}}</div>
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.display_name}}:</label>
-              <input class="text DialogSettingInput" readonly="true" ng-model="meModel.display_name">
+              <label class="queueBlock Account">{{::verbage.display_name}}:</label>
+              <div ng-model="meModel.display_name">{{meModel.display_name}}</div>
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.email}}:</label>
-              <input class="text DialogSettingInput" readonly="true" type="email" ng-model="meModel.email">
+              <label class="queueBlock Account">{{::verbage.email}}:</label>
+              <div ng-model="meModel.email">{{meModel.email}}</div>
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.mobile}}:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.mobile">
+              <label class="queueBlock Account">{{::verbage.mobile}}:</label>
+              <div  ng-model="meModel.mobile">{{meModel.mobile}}</div>
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.voicemail}}:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.primary_vm_box">
+              <label class="queueBlock Account">{{::verbage.business_phone}}:</label>
+              <div ng-model="meModel.business_phone">{{meModel.business_phone}}</div>
             </div>
             <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.business_phone}}:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.business_phone">
-            </div>
-            <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.extension}}:</label>
-              <input class="text DialogSettingInput" readonly="true" type="text" ng-model="meModel.primary_extension">
-            </div>
-            <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.IMS}}:</label>
-              <input class="text DialogSettingInput" type="text" readonly="true" ng-model="meModel.ims">
-            </div>
-            <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.JID}}:</label>
-              <input class="text DialogSettingInput" type="text" readonly="true" ng-model="meModel.my_jid">
-            </div>
-            <div class="Dialog-settings-row">
-              <label class="queueBlock">{{::verbage.my_department}}:</label>
-              <input class="text DialogSettingInput" type="text" readonly="true" ng-model="meModel.department">
+              <label class="queueBlock Account">{{::verbage.extension}}:</label>
+              <div ng-model="meModel.primary_extension">{{meModel.primary_extension}}</div>
             </div>
          
+        </div>
         </div>

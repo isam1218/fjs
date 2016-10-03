@@ -326,14 +326,10 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 	};
 
 	$scope.callLaterEnabled = function(){
-		var settingIsEnabled = settingsService.getSetting('busy_ring_back');
-		if (settingIsEnabled == "true")
-			settingIsEnabled = true;
-		else
-			settingIsEnabled = false;
+		
 		// external callers don't have profile so run check to prevent js error
 		if ($scope.profile)
-			return (settingIsEnabled && $scope.profile.call != null);
+			return ($scope.profile.call != null);
 		else
 			return false;
 	};

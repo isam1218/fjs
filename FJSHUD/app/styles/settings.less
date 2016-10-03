@@ -848,7 +848,7 @@
       }
 
       .Dialog-check-block{
-        font-size: 12px;
+        font-size: 14px;
         position: relative;
         //margin-top: -3px;
         width: 100%;
@@ -873,6 +873,322 @@
         }
       }
  }
+
+
+ .PreferencesSectionTitle{
+    background: none;
+    height: 54px;
+    width: 758px;
+    text-align: center;
+    margin-bottom: 5px;
+    padding-top: 18px;
+    box-shadow: 0px 2px 6px lightgray;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+
+    .material-icons{
+      float:right;
+      margin-right:15px;
+      margin-top:-5px;
+      color:#d2dbe1;
+      font-size:28px;
+      cursor:pointer;
+    }
+ }
+
+ .PreferencesContent{
+    height: 544px;
+    max-height: 544px;
+    overflow-y: auto;
+    padding-top:20px;
+ }
+
+ .PreferenceSection{
+   border-top:1px solid #D9D9D9;
+   font-family: Helvetica, Arial, sans-serif;
+
+   .ListSectionHeaderTitle{
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-top: 24px;
+   }
+
+   .ListSectionBody{
+    font-size: 16px;
+    margin-bottom: 24px;
+    margin-top: 5px;
+   }
+
+   .material-icons{
+   float: right;
+   font-size: 30px;
+   margin-top: -26px;
+   margin-right: 5px;
+   cursor:pointer;
+   color:#4A4A4A;
+   }
+
+   .material-icons.down{
+   margin-top:14px;
+   color:#4A4A4A;
+   }
+
+   &:hover{
+   background-color:#EEEEEE;
+   }
+
+   
+ }
+
+ .PreferenceSwitch:last-child{
+
+   border-bottom:1px solid #D9D9D9;
+   
+ }
+
+ .PreferencePage{
+
+  border:none;
+  border-radius:none;
+  padding-bottom:20px;
+  padding-left:10px;
+  font-size: 14px;
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: #fff; 
+  box-shadow:none;
+  min-height: 60px;
+
+    .ListSectionHeaderTitle{
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-bottom: 20px;
+   margin-top:24px;
+   margin-left:0;
+   }
+
+   .Dialog-settings-row{
+   width:100%;
+   margin-bottom:20px;
+
+    .fj-hbox.SelectBox.SelectBoxSettings{
+      float:right;
+      height:30px;
+      margin-right: 180px;
+      background:#EEEEEE;
+      background-image:url(../img/doubleArrow.png);
+      background-size: 13px;
+      background-repeat:no-repeat;
+      background-position:173px;
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+
+
+    }
+    .lblSelect{
+    margin-top:12px;
+    }
+
+    .left.h2{
+      font-weight:bold;
+    }
+
+    .right.h2{
+      font-weight:bold;  
+    }
+
+    .left{
+      float: left;
+      font-size:14px;
+      width: 37%;
+    }
+
+    .right{
+      float:left;
+      font-size:14px;
+      width:300px;
+    }
+    
+
+    .labels{
+    float:right;
+      .labelsCheckbox{
+        list-style: none;
+        margin-top: 15px;
+        margin-right: 60px;
+        padding: 0;
+      }
+    }
+
+    .text.DialogSettingWLInput{
+      width:70%;
+      height:36px;
+    }
+   }
+
+   &:last-child{
+   border-bottom:1px solid #D9D9D9;
+   }
+
+ }
+
+ .PreferencesTabBar{
+    width: 90px;
+    float: left;
+    margin: 0;
+    padding-left: 24px;
+    list-style:none;
+    cursor:pointer;
+
+    .TabLabels{
+      height:30px;
+    }
+    .TabLabels.fj-selected-item{
+    
+      .PrefTabLabel.us{
+        border-radius:5px;
+        background-color:#065976;
+        color:#ffffff;
+      }
+    }
+ }
+
+
+ .PrefTabLabel.us{
+    width:115px;
+    color: #333333;
+    margin-bottom: 10px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+
+    &:hover{
+    background-color:#065976;
+    color:#ffffff;
+    }
+ }
+
+
+
+ .QueueSection{
+
+   border-bottom:1px solid #D9D9D9;
+   border-top:1px solid #D9D9D9;
+   padding-bottom:24px;
+   font-family: Helvetica, Arial, sans-serif;
+
+
+   .ListSectionHeaderTitle{
+    font-size: 18px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #4A4A4A;
+    margin:24px 0px 24px 0px;
+   }
+  
+ }
+
+ .CPSection{
+
+    font-family: Helvetica, Arial, sans-serif;
+
+   .ListSectionHeaderTitle{
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-top: 24px;
+   }
+
+   .ListSectionBody{
+    font-size: 16px;
+    margin-top: 5px;
+    color: #4A4A4A;
+   }
+
+
+   &:last-child{
+   border-bottom:1px solid #D9D9D9;
+   padding-bottom:24px;
+   }
+
+    &:first-child{
+    border-top:1px solid #D9D9D9;
+    }
+ }
+
+ .CpPage{
+
+  border:none;
+  border-radius:none;
+  padding-left:10px;
+  font-size: .8em;
+  font-size: 14px;
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: #fff; 
+  -webkit-border-radius: none;
+  box-shadow:none;
+  -webkit-box-shadow: none;
+
+    .ListSectionHeaderTitle{
+   font-size:15px;
+   color:#686868;
+   margin-left:0;
+   margin-bottom: 20px;
+   }
+
+   .Dialog-settings-row{
+   width:370px;
+   margin-bottom:20px;
+
+    .fj-hbox.SelectBox.SelectBoxSettings{
+      float:right;
+      height:30px;
+      background:#EEEEEE;
+      background-image:url(../img/doubleArrow.png);
+      background-size: 13px;
+      background-repeat:no-repeat;
+      background-position:173px;
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+
+
+    }
+    .lblSelect{
+    margin-top:10px;
+    }
+   }
+
+
+ }
+
+  .AboutSection{
+    font-family: Helvetica, Arial, sans-serif;
+
+   .ListSectionHeaderTitle{
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-top: 24px;
+   }
+
+   .ListSectionBody{
+    font-size: 16px;
+    margin-top: 5px;
+   }
+
+
+   &:last-child{
+   border-bottom:1px solid #D9D9D9;
+   padding-bottom:24px;
+   }
+
+    &:first-child{
+    border-top:1px solid #D9D9D9;
+    }
+ }
+
  .ListSection.general,
  .ListPage.general{
     .Dialog-settings-row{
@@ -899,23 +1215,7 @@
         }
     }
  }
-.ListPage.launcher{
-    position: relative;
-   // border: solid 1px #efefef;
-    border-top: none;
-    background-color: #fff;
-    border-radius: 6px;
-    box-shadow: 0px 0px 2px #999 inset;
-    min-height: 60px;
-    padding:10px;
-    //padding-top: 0px !important;
 
-    .ListPageHeader{
-        position: relative;
-        height: 1px;
-        //padding-bottom: 10px;
-    }
-}
 .ListSection.launcher,
 .ListPage.launcher{
    .weblauncher-variables{
@@ -953,6 +1253,27 @@ input.text.DialogFieldInput {
   float:none;
   width: 25%;
   display:inline-block;
+}
+
+.queueBlock.Account{
+  width:22%;
+  float:left;
+
+  & + div{
+  float:left;
+  font-style:italic;
+  font-size:14px;
+  }
+}
+.queueBlock.MyAccount{
+  width:10%;
+  float:left;
+
+  & + div{
+  float:left;
+  font-style:italic;
+  font-size:14px;
+  }
 }
 
 span.inputBlock{
@@ -1015,6 +1336,8 @@ div.NewCall{
             margin-bottom: 1px;
             margin-left: 0px;
             vertical-align: bottom;
+            height: 15px;
+            width: 15px;
         }
   }
 
@@ -1172,9 +1495,10 @@ div.NewCall{
 .table.Queues{
       width: 99%;
       border: 1px solid #bbb;
+      border-bottom:3px solid #1E3236;
       .QueueHeader {
         width: 100%;
-        border-bottom: solid 1px #bbb;
+        border-bottom: solid 1px #E6E8EB;
         background-color: #ddd;
         clear: both;
 
@@ -1182,10 +1506,10 @@ div.NewCall{
             display: inline-block;
             test-align: center;
             color: #666;
-            font-size: 11px;
+            font-size: 12px;
             float: left;
             clear: none;
-            height: 24px;
+            height: 30px;
             line-height: 24px;
             white-space: nowrap;
             text-overflow: clip;
@@ -1196,28 +1520,37 @@ div.NewCall{
             &:first-child{
               font-weight: bold;
               font-size: 13px;
-              width: 33.333%;
+              width: 33.30%;
               text-align: center;
-              border-right: 1px solid #BBB;
             }
         }
         &:not(.top){
           .QueueSetting.QueueSettingHeader {
-            border-bottom: 1px solid #BBB;
+            border-bottom: 1px solid #E6E8EB;
 
              &:nth-child(3){
-                border-right: 1px solid #BBB;
+                border-right: 1px solid #E6E8EB;
             }
           }
         }
 
         &.top{
 
+          div:first-child{
+            background-color:#1E3236;
+            border-right:none;
+          }
+
             .QueueSetting {
-                color: #0093f0;
+                color: #ffffff;
                 width: 33.333%;
                 &:nth-child(2){
-                    border-right: 1px solid #BBB;
+                        background-color: #1E3236;
+                        padding-top: 5px;
+                }
+                &:nth-child(3){
+                        background-color: #1E3236;
+                        padding-top: 5px;
                 }
             }
         }
@@ -1234,11 +1567,11 @@ div.NewCall{
             .SettingsListLineContent{
                 width: 100%;
                 .QueueSetting{
-                  height: 24px;
+                  height: 32px;
+                  padding-top: 6px;
                   background-color: #f9f9f9;
                   display: inline-block;
                   float: left;
-                  height: 24px;
                   line-height: 24px;
                   white-space: nowrap;
                   text-overflow: clip;
@@ -1250,7 +1583,7 @@ div.NewCall{
 
                   &:first-child{
                     text-align: center;
-                    border-right: 1px solid #BBB;
+                    border-right: 1px solid #E6E8EB;
                     width: 33.2%;
                   }
                   &:nth-child(2),
@@ -1258,7 +1591,7 @@ div.NewCall{
                     padding-left: 1px;
                   }
                   &:nth-child(3){
-                    border-right: 1px solid #BBB;
+                    border-right: 1px solid #E6E8EB;
                     width: 17%;
                   }
                   &:nth-child(5){
@@ -1267,9 +1600,14 @@ div.NewCall{
                 }
             }
 
+            &:nth-child(even){
+                .SettingsListLineContent .QueueSetting{
+                    background-color: #ECEEF2;
+                }
+            }
             &:nth-child(odd){
                 .SettingsListLineContent .QueueSetting{
-                    background-color: #eee;
+                    background-color: #ffffff;
                 }
             }
           }
@@ -1285,14 +1623,24 @@ div.NewCall{
     overflow: auto;
     margin: auto;
     text-align: center;
+
+    &:nth-of-type(1) {
+       border-right: 1px solid #E6E8EB;
+       }
   }
+ 
 
   .QueueSettingHeader {
     width: 155px;
-    background-color: #ddd;
     text-align: center;
     color: #0093f0;
 
+  }
+
+  .secondRow{
+    height: 65px !important;
+    padding-top: 15px;
+    background-color: #ECEEF2;
   }
 
   .QueueSettingCheckBox {

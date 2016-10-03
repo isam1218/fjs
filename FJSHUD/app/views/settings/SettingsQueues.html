@@ -1,10 +1,10 @@
-    <div class="ListSection queues">
+    <div class="QueueSection" >
       <div class="ListSeciontHeader">   
-          <div class="ListSectionHeaderTitle">{{::verbage.queue_summary_stats}}</div>
+          <div class="ListSectionHeaderTitle" >{{::verbage.queue_summary_stats}}</div>
       </div>
-      <div class="ListSectionBody">{{::verbage.highlight_threshold}}</div>
-      <div class="ListPage">
-        
+
+
+      <div class="QueuePage" >
         <div><span class="queueBlock">{{::verbage.waiting}}</span><input type="number" min="0" style="width:50px"
         ng-model="queueSummaryStats.waiting_calls"
         ng-change="update_queue_treshold('queueWaitingThreshold',queueSummaryStats.waiting_calls)"
@@ -29,5 +29,5 @@
         >   %</div>
       
       </div>
-       
-      </div>
+     </div>
+      
