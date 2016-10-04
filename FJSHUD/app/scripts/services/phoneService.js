@@ -1301,37 +1301,6 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		httpService.sendAction('mycalls', 'transferToPark', {mycallId: call_id});
 	};
 
-	$rootScope.$on('voicemailbox_synced', function(event, data) {
-		for (var i = 0, iLen = data.length; i < iLen; i++) {
-			var match = false;
-
-			for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
-				// find and update or delete
-				if (voicemails[v].xpid == data[i].xpid) {
-					if (data[i].xef001type == 'delete') {
-						voicemails.splice(v, 1);
-						vLen--;
-					}
-					else
-					{	
-						voicemails[v].readStatus = data[i].readStatus;
-					    voicemails[v].transcription = data[i].transcription;
-					}
-					match = true;
-					break;
-				}
-			}
-
-			// don't add voicemails from myself
-			if (!match && data[i].xef001type != 'delete' && data[i].phone != $rootScope.meModel.primary_vm_box && data[i].phone != $rootScope.meModel.primary_extension && data[i].phone != $rootScope.meModel.mobile) {
-				data[i].fullProfile = contactService.getContact(data[i].contactId);
-				voicemails.push(data[i]);
-			}
-		}
-
-		deferredVM.resolve(voicemails);
-	});
-
 	this.mute = function(callId,toMute){
 		if(toMute){
 			httpService.sendAction('mycalls','mute',{mycallId: callId});
@@ -1339,79 +1308,9 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 			httpService.sendAction('mycalls','unmute',{mycallId: callId});
 		}
 	};
+
 	this.getVm = function(){
 		return deferredVM.promise;
-	};
-
-	this.getVoiceMail = function(xpid){
-		for(var i = 0, iLen = voicemails.length; i < iLen ;i++){
-			if(voicemails[i].xpid == xpid){
-				return voicemails[i];
-			}
-		}
-	};
-
-	this.getVoiceMailsFor = function(id, type){
-		switch(type){
-			case 'contact':
-				return voicemails.filter(function(data){
-					return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primary_extension;
-				});
-			break;
-			case 'group':
-				var group = groupService.getGroup(id);
-				var groupVm = [];
-				if(group){
-					for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-						groupVm.push(voicemails.filter(function(item){
-							return item.contactId == group.members[g].contactId	 && !item.readStatus
-						}));
-
-					}
-				}
-				return groupVm;
-			break;
-			default:
-				return voicemails;
-			break;
-		}
-	};
-
-	this.getVoiceMailsForToday = function(id, type){
-		switch(type){
-			case 'contact':
-				return voicemails.filter(function(data){
-					  var date = new Date(data.date);
-
-					      var today = new Date();
-					      var toReturn = false;
-					      if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
-					        if(date.getDate() == today.getDate()){
-					          if(data.receivedStatus != "away"){
-					            toReturn = true;
-					          }
-					        }
-					      }
-					return data.contactId == id && !data.readStatus && toReturn && data.phone != $rootScope.meModel.primary_extension;
-				});
-			break;
-			case 'group':
-				var group = groupService.getGroup(id);
-				var groupVm = [];
-				if(group){
-					for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-						groupVm.push(voicemails.filter(function(item){
-							return item.contactId == group.members[g].contactId	 && !item.readStatus
-						}));
-
-					}
-				}
-				return groupVm;
-			break;
-			default:
-				return voicemails;
-			break;
-		}
 	};
 
 	this.parseOutHyphens = function(phoneNumber){
