@@ -34,62 +34,58 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		worker = new Worker("scripts/workers/fdpWebWorker.js?v=" + fjs.CONFIG.BUILD_NUMBER);
 		
 		worker.addEventListener("message", function(event) {
-		    switch (event.data.action) {
-		        case "init":
+		  switch (event.data.action) {
+	      case "init":
 					workerStarted = true;
-					
+			
 					console.timeEnd('worker');
 					console.log('syncing...');
 					console.time('sync');
-					 
-
-		            worker.postMessage({
-		                "action": "sync"
-		            });
-		            break;
-		        case "sync_completed":
-		            if (event.data.data) {
-		                broadcastSyncData(event.data.data);
-						
+	          worker.postMessage({
+	              "action": "sync"
+	          });
+	          break;
+	      case "sync_completed":
+	        if (event.data.data) {
+	        	broadcastSyncData(event.data.data);
+				
 						if (!synced) {
 							console.timeEnd('sync');
 							console.log('rendering...');
 							console.time('render');
 							synced = true;
 						}
-						else {
-							// give it a short expiration date
-							document.cookie = "tab=true; path=/; expires=" + new Date(new Date().getTime() + 120000).toGMTString();
-						}
-						
+
 						if ($rootScope.networkError)
 							$rootScope.$broadcast('network_issue', null);
-		            }
-		            break;
-		        case "feed_request":
-		            $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
-		            break;
-      			case "auth_failed":
+				
+	        }
+	        break;
+	      case "feed_request":
+	        $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
+	        break;
+				case "auth_failed":
 					localStorage.removeItem("me");
 					localStorage.removeItem("nodeID");
 					localStorage.removeItem("authTicket");
 					attemptLogin();
-      				break;
-      			case "network_error":
-      				if(!synced){
-      					$rootScope.$broadcast('network_issue', 'networkError');
+					break;
+				case "network_error":
+					if(!synced){
+						$rootScope.$broadcast('network_issue', 'networkError');
 						worker.terminate();
 					}
-      				break;
+					break;
 				case "timestamp_created":
 					if (event.data.data)
 						ntpService.syncTime(event.data.data);
-					
-					break;
+
+				break;
 			}
 		}, false);
 	}
-	else {
+	else if (document.cookie && document.cookie.indexOf('expires=Thu, 01 Jan 1970') == -1) {
+		// send user to 2nd tab warning if ('tab=true' is found) && ('1970' date not found in cookie)
 		window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
 		return;
 	}
@@ -150,7 +146,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		unload = false;
 		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 		window.onbeforeunload = null;
-		location.href = authURL;
+		$timeout(function(){
+			location.href = authURL;
+		}, 500);
 	};
 	
 	// get instance_id token
