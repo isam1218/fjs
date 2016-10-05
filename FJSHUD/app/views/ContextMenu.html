@@ -315,8 +315,8 @@
     <!-- Transfer to Internal -->
     <div ng-if="type == 'Transfer' && contactObj">
     	<div ng-class="contactObj.phoneMobile ? 'iconpaddingright' : '' " class="transfercontainer">
-	    	<span ng-class="contactObj.phoneMobile ? '' : 'iconpaddingleft' " class="material-icons" ng-click="transferToInternal('extension', callId, contactObj, params)" id="extension" title="Extension">call</span>
-	    	<span  class="material-icons" ng-click="transferToInternal('vm', callId, contactObj, params)" id="vm" title="Voicemail">voicemail</span>
+    	<span ng-class="{iconpaddingleft: !contactObj.phoneMobile, onlyicon: original.queueId && !contact.phoneMobile}" class="material-icons" ng-click="transferToInternal('extension', callId, contactObj, params)" id="extension" title="Extension">call</span>
+	    	<span class="material-icons" ng-if="!original.queueId" ng-click="transferToInternal('vm', callId, contactObj, params)" id="vm" title="Voicemail">voicemail</span>
 	    	<span ng-if="contactObj.phoneMobile" class="material-icons" ng-click="transferToInternal('mobile', callId, contactObj, params)" id="mobile" title="Mobile">smartphone</span>
     	</div>
     </div>
