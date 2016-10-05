@@ -87,6 +87,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
       key:"Inphonex",
       enabled:false,
       title: "Call Analytics"
+    },
+    {
+      url:"#/fonalitydialer",
+      key:"FonalityDialer",
+      enabled:false,
+      title: "Fonality Dialer"
     }
     ];
 	
@@ -104,6 +110,8 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 					$scope.appIcons[i].enabled = data.showCallCenter;
         else if ($scope.appIcons[i].key == 'Inphonex')
           $scope.appIcons[i].enabled = data.showInphonex;
+        else if ($scope.appIcons[i].key == 'FonalityDialer')
+          $scope.appIcons[i].enabled = data.showFonalityDialer;
 			}
 		});
 	});	
