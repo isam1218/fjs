@@ -361,8 +361,35 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 							/* [TRANSFERRING TO INTERNAL CONTACT (Drag & Drop)] */
 							feed = 'calls';
 							// queue call vs my call vs other's call
-							if (obj.agentContactId)
+							if (obj.agentContactId){
+								// if queue call && no mobile # -> do not show popup options, just transfer it
 								params.fromContactId = obj.agentContactId;
+								if (scope.contact && !scope.contact.phoneMobile){
+									params.toContactId = scope.contact.xpid;
+									transferAction = 'transferToContact';
+									httpService.sendAction(feed, transferAction, params);
+									return;									
+								}
+								else if (scope.member && !scope.member.phoneMobile){
+									params.toContactId = scope.member.contactId;
+									transferAction = 'transferToContact';
+									httpService.sendAction(feed, transferAction, params);
+									return;
+								}
+								else if (scope.gadget && !scope.gadget.phoneMobile){
+									params.toContactId = scope.gadget.data.xpid;
+									transferAction = 'transferToContact';
+									httpService.sendAction(feed, transferAction, params);
+									return;
+								}
+								else if (scope.item && !scope.item.phoneMobile){
+									params.toContactId = scope.item.xpid;
+									transferAction = 'transferToContact';
+									httpService.sendAction(feed, transferAction, params);
+									return;
+								}
+								
+							}
 							else if (obj.sipId)
 								params.fromContactId = $rootScope.myPid;
 							else
@@ -498,6 +525,8 @@ hudweb.directive('droppable', ['HttpService', 'ConferenceService', 'SettingsServ
 					}
 
 					function hideOverlay(t) {
+						// reset type
+						obj.type = null;
 						timer = $timeout(function() {
 							overlay.css('display', 'none');
 							overlay.unbind();
