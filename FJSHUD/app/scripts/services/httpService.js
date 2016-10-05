@@ -30,7 +30,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	$rootScope.isFirstSync = true;
 	
 	// check for second tab before starting web worker
-	if (document.cookie.indexOf('tab=true') == -1) {		
+	if (document.cookie.indexOf('tab=true') == -1 || document.cookie.indexOf('expires=Thu, 01 Jan 1970') != -1) {		
 		worker = new Worker("scripts/workers/fdpWebWorker.js?v=" + fjs.CONFIG.BUILD_NUMBER);
 		
 		worker.addEventListener("message", function(event) {
@@ -84,8 +84,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			}
 		}, false);
 	}
-	else if (document.cookie && document.cookie.indexOf('expires=Thu, 01 Jan 1970') == -1) {
-		// send user to 2nd tab warning if ('tab=true' is found) && ('1970' date not found in cookie)
+	else {
+		// send user to 2nd tab warning if there's a cookie and the expiration date is in the future (not 1970)
 		window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
 		return;
 	}
