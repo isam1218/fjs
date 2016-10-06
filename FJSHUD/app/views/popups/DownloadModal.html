@@ -1,16 +1,61 @@
-<div id="myModal" class="Background" style="background-color: rgba(0,0,0,0.4); overflow: auto; position: absolute; left: 0; width: 100%; height: 100%; z-index: 1;">
+<div id="hudn_download_modal">
 	
-	<div id="myModalContent" class="Foreground" style="padding: 20px; border: 1px solid #888; position: absolute; width: 700px; height: 650px; left: 20%; z-index: 2; background: url('') #ffffff !important; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);">
+	<div id="hudn_download_modal_content">
 		
-		<div class="modal-header" style="padding: 2px 16px;">
-			<span ng-click="closeDownloadModal()" style="float: right; font-size: 28px; color: #aaa; font-weight: bold;" class="close">x</span>
-			<h1 style="text-align: center;">HUD NATIVE!</h1>
+		<div class="modal-header">
+			<h2 id="modal-header-title">HUD Softphone</h2>
+			<p id="modal-header-sub">The HUD Desktop Companion</p>
 		</div>
 
-		<div class="modal-body" style="padding: 2px 16px;">
-			<p style="font-size: 24px;">HUD Native is available for Download!</p>
-			<p style="font-size: 24px;">Featuring a native interface to make phone calls and handle messages from your menu bar.</p>
-			<a style="font-size: 24px;" href="http://www.google.com">Download HUD Native now!</a>
+		<div class="modal-body">
+			
+			<div class="left-side-modal">
+				
+				<div class="top-layer">
+					<div class="left-column">
+						<img id="left-column-img" src="./img/hudn_screenshot1.png"></img>
+					</div>
+
+					<div class="middle-column">
+						<div id="middle-column-div1">System Application with Presence, Alerts and Phone</div>
+						<div id="middle-column-div2">Desktop Softphone and phone controls</div>
+					</div>
+
+					<div class="right-column">
+						<img id="right-column-img" src="./img/hudn_screenshot2.png"></img>
+					</div>
+				</div>
+
+				<div class="middle-layer">
+					<ul>
+						<li class="middle-list-item">Auto login and presence on computer startup</li>
+						<li class="middle-list-item">Control your location and presence</li>
+						<li class="middle-list-item">Place and control calls outside of HUD</li>
+					</ul>
+				</div>
+
+				<div class="bottom-layer">
+					<button ng-click="downloadHudn()" id="download-btn">DOWNLOAD & INSTALL</button>
+				</div>
+
+			</div>
+
+			<div class="right-side-modal">
+
+				<div class="top-portion">
+					<div style="">
+						<p class="right-column-block">HUD Companion replaces the web-based softphone that you have enjoyed in the past, and is more secure and flexible.</p>
+						<p class="right-column-block">If you choose not to install the new application the current web-phone will cease to work.</p>
+						<p class="right-column-block">I understand that by not installing the new HUD Softphone I will lose Fonality softphone functionality</p>
+					</div>
+				</div>
+
+				<div class="bottom-portion">
+					<button ng-click="closeDownloadModal()" class="decline-btn">DECLINE</button>
+				</div>
+
+			</div>
+
 		</div>
 
 	</div>
