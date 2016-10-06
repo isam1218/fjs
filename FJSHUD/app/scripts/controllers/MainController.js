@@ -7,6 +7,25 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.currentPopup.x = 0;
 	$scope.currentPopup.y = 0;
 	$scope.pluginDownloadUrl = $scope.browser != 'Chrome' ? fjs.CONFIG.PLUGINS[$scope.platform] : fjs.CONFIG.PLUGINS[$scope.platform + "_NEW"];
+	$scope.downloadModal = false;
+	var hudnDownloadNotification = localStorage.hudnDownloadNotification ? JSON.parse(localStorage.hudnDownloadNotification) : false;
+
+	if (!hudnDownloadNotification){
+		$scope.downloadModal = true;
+	}
+
+	$scope.closeDownloadModal = function(){
+		$scope.downloadModal = false;
+		// save this user as someone who's received the hudn d/l notice already -> no future popups
+		localStorage.hudnDownloadNotification = JSON.stringify(true);
+	};
+
+	$scope.downloadHudn = function() {
+		// download link will eventually be placed in properties.js...
+		// $scope.hudnDownloadUrl = fjs.CONFIG.HUDNATIVEDOWNLOAD;
+
+		$scope.closeDownloadModal();
+	};
 
 	$scope.overlay = {
 		show: false,
