@@ -1322,6 +1322,7 @@
 
     .modal-header {
       padding: 0px 16px;
+      border-bottom: none !important;
 
       #modal-header-title {
         text-align: center;
@@ -1338,6 +1339,7 @@
       padding: 2px 16px; 
       display: flex;
       display: -webkit-flex;
+      height: inherit;
       
       .left-side-modal {
         flex: 3; 
@@ -1346,6 +1348,7 @@
         display: -webkit-flex;
         flex-direction: column;
         -webkit-flex-direction: column;
+        height: inherit;
         
         .top-layer {
           display: flex;
@@ -1399,7 +1402,8 @@
         }
 
         .middle-layer {
-          padding-top: 50px; 
+          padding-top: 50px;
+          padding-bottom: 10px; 
           flex: 1;
           -webkit-flex: 1;
 
@@ -1409,7 +1413,6 @@
         }
 
         .bottom-layer {
-          padding-top: 40px; 
           text-align: center; 
           flex: 1;
           -webkit-flex: 1;
@@ -1438,10 +1441,12 @@
         -webkit-flex-direction: column; 
         border-left: 1px solid gray; 
         padding-left: 15px;
+        height: inherit;
         
         .top-portion {
           flex: 5;
           -webkit-flex: 5;
+          height: inherit;
 
           .right-column-block {
             font-size: 14px; 
