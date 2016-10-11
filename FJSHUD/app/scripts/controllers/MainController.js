@@ -7,6 +7,31 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.currentPopup.x = 0;
 	$scope.currentPopup.y = 0;
 	$scope.pluginDownloadUrl = $scope.browser != 'Chrome' ? fjs.CONFIG.PLUGINS[$scope.platform] : fjs.CONFIG.PLUGINS[$scope.platform + "_NEW"];
+	$scope.downloadModal = false;
+	var hudnDownloadNotification = localStorage.hudnDownloadNotification ? JSON.parse(localStorage.hudnDownloadNotification) : false;
+
+	if (!hudnDownloadNotification){
+		$scope.downloadModal = true;
+	}
+
+	function isMac() {
+		return navigator.platform.indexOf('Mac') > -1;
+	}
+
+	$scope.closeDownloadModal = function(){
+		// close modal
+		$scope.downloadModal = false;
+		// save this user as someone who's received the hudn d/l notice already -> no future popups
+		localStorage.hudnDownloadNotification = JSON.stringify(true);
+	};
+
+	$scope.downloadHudn = function() {
+		$scope.downloadModal = false;
+		// d/l link url depends on platform...
+		var hudnDownloadUrl = isMac() ? fjs.CONFIG.PLUGINS.MAC_HUDN : fjs.CONFIG.PLUGINS.WINDOWS_HUDN;
+		window.open(hudnDownloadUrl);
+		$scope.closeDownloadModal();
+	};
 
 	$scope.overlay = {
 		show: false,
