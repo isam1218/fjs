@@ -7,7 +7,6 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 	var autoClearOn, autoClearTime;
 	
 	settingsService.getSettings().then(function(data) {
-		autoClearOn = data.hudmw_searchautoclear;
 		autoClearTime = data.hudmw_searchautocleardelay;
 	});
 	

@@ -186,7 +186,6 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
     {id:6,value:0.0, label:'0.0'}];
     $scope.hoverDelaySelected;
 
-    $scope.searchAutoClear;
     $scope.enableSound;
     $scope.soundOnChatMsgReceived;
     $scope.soundOnSentMsg;
@@ -229,9 +228,6 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
 					localStorage.fon_lang_code = model.code;
 					location.reload();
 				}
-                break;
-            case 'hudmw_searchautoclear':
-                myHttpService.updateSettings(type, action, model);
                 break;
             case 'hudmw_searchautocleardelay':
                 myHttpService.updateSettings(type, action, model.value);
@@ -317,7 +313,6 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
             $scope.alertDisplayFor = settings['alert_call_display_for'];
             $scope.alertDuration = settings['alert_call_duration'];
 
-            $scope.searchAutoClear = settings['hudmw_searchautoclear'] == "true";
             $scope.enableSound=settings['hudmw_chat_sounds'] == "true";
             $scope.soundOnChatMsgReceived=settings['hudmw_chat_sound_received'] == "true";
             $scope.soundOnSentMsg=settings['hudmw_chat_sound_sent'] == "true";
