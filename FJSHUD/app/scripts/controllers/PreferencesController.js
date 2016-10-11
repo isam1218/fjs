@@ -229,9 +229,6 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
 					location.reload();
 				}
                 break;
-            case 'hudmw_searchautocleardelay':
-                myHttpService.updateSettings(type, action, model.value);
-                break;
             case 'hudmw_launcher_config_id':
             	//$scope.truncateLongString();
             	$scope.currentWebLauncher = currentObject;
@@ -289,13 +286,6 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
                 $scope.enableAutoAway = false;
             }
 
-
-            if(settings.hudmw_searchautocleardelay){
-                var autoClearOption = $scope.autoClearSettingOptions.filter(function(item){
-                    return (item.value == settings['hudmw_searchautocleardelay']);
-                });
-                $scope.autoClearSelected = autoClearOption[0];
-            }
 
             if(settings['avatar_hover_delay']){
                 var hoverDelaySelected = $scope.hoverDelayOptions.filter(function(item){

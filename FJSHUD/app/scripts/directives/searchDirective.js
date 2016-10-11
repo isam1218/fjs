@@ -3,12 +3,6 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 	var browser = navigator.userAgent.match(/(chrome|safari|firefox|msie)/i);
 	browser = browser && browser[0] ? browser[0] : "MSIE";
 	
-	// auto clear settings
-	var autoClearOn, autoClearTime;
-	
-	settingsService.getSettings().then(function(data) {
-		autoClearTime = data.hudmw_searchautocleardelay;
-	});
 	
 	return {
 		restrict: 'E',
@@ -20,23 +14,11 @@ hudweb.directive('input', ['SettingsService', '$timeout', function(settingsServi
 			
 			// trigger auto clear
 			if (scope.enableChat === undefined && scope.searchEmUp === undefined) {
-				element.on('keyup', function(e) {
-					if (autoClearOn == 'true') {
-						$timeout.cancel(timeout);
-						
-						timeout = $timeout(clearSearch, autoClearTime*1000);
-					}
-				});
 
 				element.on('focus', function(e){
 				ga('send', 'event', {eventCategory:'Search', eventAction:'Access', eventLabel: "From Center Column (Calls, Voicemails, My Recordings)"});
 				});
-			
-				// pull updated settings
-				scope.$on('settings_updated', function(event, data) {
-					autoClearOn = data.hudmw_searchautoclear;
-					autoClearTime = data.hudmw_searchautocleardelay;
-				});
+
 			}
 			
 			// firefox doesn't have a clear button
