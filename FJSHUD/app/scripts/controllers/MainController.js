@@ -14,8 +14,15 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		$scope.downloadModal = true;
 	}
 
+	function isMac() {
+		return navigator.platform.indexOf('Mac') > -1;
+	}
+
 	$scope.closeDownloadModal = function(){
 		$scope.downloadModal = false;
+		var hudnDownloadUrl = isMac() ? fjs.CONFIG.PLUGINS.MAC_HUDN : fjs.CONFIG.PLUGINS.WINDOWS_HUDN;
+		// d/l url depends on platform...
+		window.open(hudnDownloadUrl);
 		// save this user as someone who's received the hudn d/l notice already -> no future popups
 		localStorage.hudnDownloadNotification = JSON.stringify(true);
 	};

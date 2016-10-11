@@ -31,8 +31,9 @@ fjs.CONFIG = {
         MAC:'webphone/FonalityPlugin-5.17.8986.dmg',
         WINDOWS:'webphone/FonalityPlugin-5.17.8986.msi',
         WINDOWS_NEW:'<%= WINDOWS_PLUGIN %>',
-        MAC_NEW:'<%= MAC_PLUGIN %>'
-
+        MAC_NEW:'<%= MAC_PLUGIN %>',
+        WINDOWS_HUDN: '<%= WINDOWS_HUDN_DL_URL %>',
+        MAC_HUDN: '<%= MAC_HUDN_DL_URL %>'
     },
     PLUGIN_VERSION:{
         MAC_OLD:'5.17.008986',
