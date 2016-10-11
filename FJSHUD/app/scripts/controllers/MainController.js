@@ -19,18 +19,17 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	}
 
 	$scope.closeDownloadModal = function(){
+		// close modal
 		$scope.downloadModal = false;
-		var hudnDownloadUrl = isMac() ? fjs.CONFIG.PLUGINS.MAC_HUDN : fjs.CONFIG.PLUGINS.WINDOWS_HUDN;
-		// d/l url depends on platform...
-		window.open(hudnDownloadUrl);
 		// save this user as someone who's received the hudn d/l notice already -> no future popups
 		localStorage.hudnDownloadNotification = JSON.stringify(true);
 	};
 
 	$scope.downloadHudn = function() {
-		// download link will eventually be placed in properties.js...
-		// $scope.hudnDownloadUrl = fjs.CONFIG.HUDNATIVEDOWNLOAD;
-
+		$scope.downloadModal = false;
+		// d/l link url depends on platform...
+		var hudnDownloadUrl = isMac() ? fjs.CONFIG.PLUGINS.MAC_HUDN : fjs.CONFIG.PLUGINS.WINDOWS_HUDN;
+		window.open(hudnDownloadUrl);
 		$scope.closeDownloadModal();
 	};
 
