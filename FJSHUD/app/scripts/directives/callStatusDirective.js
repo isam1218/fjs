@@ -32,6 +32,15 @@ hudweb.directive('callstatus', ['$parse','$compile', '$location', 'NtpService','
 			}
 
 			scope.showCallOverlay = function(contact){
+				event.stopPropagation();
+				event.preventDefault();
+				// if user doesn't have permission to view calls show overlay otherwise if user is on a conference call with permission to view calls route to conference room.
+				if(contact.call.displayName == "Private"){
+			      scope.showOverlay(true, 'CallStatusOverlay', contact);
+			    }
+			    else if(contact.call.details.conferenceId != undefined){
+			    $location.path("/conference/" + contact.call.details.conferenceId + "/currentcall");
+			    }
 				// if this service-function returns true -> it's a trap! User is trying to click on own cso so do not show
 				if (callStatusService.blockOverlay(contact)){
 					return;
