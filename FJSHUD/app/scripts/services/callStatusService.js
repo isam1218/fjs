@@ -3,7 +3,7 @@ hudweb.service('CallStatusService', ['$rootScope', 'ContactService', function($r
   // service function to determine if the call status circle belongs to me - if so -> return true to block overlay
   this.blockOverlay = function(contact){
     // if the contact is mine
-    if (contact.xpid == $rootScope.myPid){
+    if (contact.xpid == $rootScope.myPid || contact.call.type === 0){
       return true;
     }
     var myContact = contactService.getContact($rootScope.myPid);

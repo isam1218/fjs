@@ -246,6 +246,13 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();
     $event.preventDefault();
+    	//if user doesn't have permission to view call show overlay else if its a conference call route to the conference room.
+    	if(contact.call.displayName == "Private"){
+			$scope.showOverlay(true, 'CallStatusOverlay', contact);
+		}
+		else if(contact.call.details.conferenceId != undefined){
+		$location.path("/conference/" + contact.call.details.conferenceId + "/currentcall");
+		}
 		// if this service-function returns true -> User is trying to click on own cso so do not show
     if (callStatusService.blockOverlay(contact)){
       return;
