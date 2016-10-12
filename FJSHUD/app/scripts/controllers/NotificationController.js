@@ -894,14 +894,13 @@ hudweb.controller('NotificationController',
 		}
 	};
 
+  // GRAB SINGLE VM
   var deferredVm = $q.defer();
   var getVm = function(xpid){
     phoneService.getVm().then(function(vms){
-      console.log('***in get VM promise in getVm!! - ', vms);
       for(var i = 0, iLen = vms.length; i < iLen ;i++){
         if(vms[i].xpid == xpid){
           deferredVm.resolve(vms[i]);
-          // return vms[i];
         }
       }
     });
@@ -909,27 +908,24 @@ hudweb.controller('NotificationController',
 
   var getSingleVm = function(){
     return deferredVm.promise;
-  }
+  };
 
+
+  // GRAB OLD VMS
   var deferredOld = $q.defer();
   var getVMsFor = function(id, type){
     switch(type){
       case 'contact':
         var oldVms = [];
         phoneService.getVm().then(function(vms){
-          console.log('in getVMsFor promise!! - ', vms);
           for (var i = 0; i < vms.length; i++){
             if (vms[i].contactId == id && !vms[i].readStatus && vms[i].phone != $rootScope.meModel.primary_extension){
               oldVms.push(vms[i]);
             }
           }
           deferredOld.resolve(oldVms);
-          // return vms.filter(function(data){
-          //   return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primary_extension;
-          // });
         });
-
-      break;
+        break;
       case 'group':
         var group = groupService.getGroup(id);
         var groupVm = [];
@@ -937,40 +933,33 @@ hudweb.controller('NotificationController',
           for (var g = 0, gLen = group.members.length; g < gLen; g++) {
             phoneService.getVm().then(function(vms){
               groupVm.push(vms.filter(function(item){
-                return item.contactId == group.members[g].contactId  && !item.readStatus  
-              }))
-            })
-            // groupVm.push(voicemails.filter(function(item){
-            //   return item.contactId == group.members[g].contactId  && !item.readStatus
-            // }));
-
+                return ( (item.contactId == group.members[g].contactId)  && !item.readStatus); 
+              }));
+            });
           }
         }
         deferredOld.resolve(groupVm);
-        // return groupVm;
       break;
       default:
         phoneService.getVm().then(function(vms){
           deferredOld.resolve(vms);
-          // return vms;
         });
-        // return voicemails;
       break;
     }
   };
 
-  var getOld = function(){
+  var getOldVm = function(){
     return deferredOld.promise;
   };
 
 
+  // GET NEW VM
   var deferredToday = $q.defer();
   var getVMsForToday = function(id, type){
-    var todayVoicemails = [];
     switch(type){
       case 'contact':
+        var todaysVoicemails = [];
         phoneService.getVm().then(function(vms){
-          console.log('!!!1b in getVMsForToday promise!! - ', vms);
           for (var i = 0; i < vms.length; i++){
             var cur = vms[i];
             var date = new Date(cur.date);
@@ -984,28 +973,12 @@ hudweb.controller('NotificationController',
               }
             }
             if (cur.contactId == id && !cur.readStatus && toReturn && cur.phone != $rootScope.meModel.primary_extension){
-              todayVoicemails.push(cur)
+              todaysVoicemails.push(cur);
             }
           }
-          console.log('!!!1c todayvoicemails - ', todayVoicemails);
-          deferredToday.resolve(todayVoicemails);
-          // return todayVoicemails;
-          
-          // return vms.filter(function(data){
-          //   var date = new Date(data.date);
-          //   var today = new Date();
-          //   var toReturn = false;
-          //   if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
-          //     if(date.getDate() == today.getDate()){
-          //       if(data.receivedStatus != "away"){
-          //         toReturn = true;
-          //       }
-          //     }
-          //   }
-          //   return data.contactId == id && !data.readStatus && toReturn && data.phone != $rootScope.meModel.primary_extension;
-          // });
-        })
-      break;
+          deferredToday.resolve(todaysVoicemails);
+        });
+        break;
       case 'group':
         var group = groupService.getGroup(id);
         var groupVm = [];
@@ -1013,28 +986,22 @@ hudweb.controller('NotificationController',
           for (var g = 0, gLen = group.members.length; g < gLen; g++) {
             phoneService.getVm().then(function(vms){
               groupVm.push(vms.filter(function(item){
-                return item.contactId == group.members[g].contactId  && !item.readStatus  
-              }))
-            })
-            // groupVm.push(voicemails.filter(function(item){
-            //   return item.contactId == group.members[g].contactId  && !item.readStatus
-            // }));
+                return ( (item.contactId == group.members[g].contactId) && !item.readStatus);
+              }));
+            });
           }
         }
         deferredToday.resolve(groupVm);
-        // return groupVm;
-      break;
+        break;
       default:
         phoneService.getVm().then(function(vms){
           deferredToday.resolve(vms);
-          // return vms;
-        })
-        // return voicemails;
-      break;
+        });
+        break;
     }
   };
 
-  var getNew = function(){
+  var getNewVm = function(){
     return deferredToday.promise;
   };
 
@@ -1043,31 +1010,30 @@ hudweb.controller('NotificationController',
     
     switch(type){
       case 'q-alert-rotation':
-            notification.label = $scope.verbage.long_waiting_call;
-            var long_waiting_notification = angular.copy(notification);
-            long_waiting_calls[notification.xpid] = notification;
-            $timeout(function(){
-              // if user unchecks abandoned call notifications, still need to delete long wait notification
-              deleteLastLongWaitNotification();
-            }, 60000);
+        notification.label = $scope.verbage.long_waiting_call;
+        var long_waiting_notification = angular.copy(notification);
+        long_waiting_calls[notification.xpid] = notification;
+        $timeout(function(){
+          // if user unchecks abandoned call notifications, still need to delete long wait notification
+          deleteLastLongWaitNotification();
+        }, 60000);
         break;
       case 'q-alert-abandoned':
-            notification.label = '...abandoned call';
-            notification.message = "";
-            //workaround: get the queue display name from the queue service
-            var queue = queueService.getQueue(notification.queueId);
-            notification.displayName = queue.name;
-            var abandoned_notification = angular.copy(notification);            
-            // once it's an abandoned call, want long-wait-note to disappear
-            deleteLastLongWaitNotification();
-            $timeout(function(){deleteNotification(abandoned_notification);}, 60000);
+        notification.label = '...abandoned call';
+        notification.message = "";
+        //workaround: get the queue display name from the queue service
+        var queue = queueService.getQueue(notification.queueId);
+        notification.displayName = queue.name;
+        var abandoned_notification = angular.copy(notification);            
+        // once it's an abandoned call, want long-wait-note to disappear
+        deleteLastLongWaitNotification();
+        $timeout(function(){deleteNotification(abandoned_notification);}, 60000);
         break;
       case 'q-broadcast':
         notification.label = 'broadcast message';
-		
-		// add queue name
-		var queue = queueService.getQueue(notification.queueId);
-		notification.displayName = queue.name;
+    		// add queue name
+    		var queue = queueService.getQueue(notification.queueId);
+    		notification.displayName = queue.name;
         break;
       case 'gchat':
         // differentiate b/w group chat and queue chat
@@ -1078,37 +1044,26 @@ hudweb.controller('NotificationController',
         break;
       case 'vm':
          // retrieve new voicemails from phoneService (but need to make sure there's a voicemailbox sync before retrieving)...
-         // var newVms = getVMsForToday(notification.senderId,notification.audience);
          getVMsForToday(notification.senderId,notification.audience);
          // retrieve old vms from phone service...
-         // var oldVms = getVMsFor(notification.senderId,notification.audience);
          getVMsFor(notification.senderId,notification.audience);
          // retrieve current vm from phone Service...
-         // var vm = getVm(notification.vmId);
          getVm(notification.vmId);
-         // notification.vm = vm;
 
-         // console.log('3 newvms - ', newVms);
-         // console.log('oldvms - ', oldVms);
-         // console.log('vm - ', vm);
+         getNewVm().then(function(newVmsData){
+            // Today's voicemails...
+            var newVms = newVmsData;
 
-         getNew().then(function(data){
-            // these are todays!
-            var newVms = data;
-            console.log('!!------> GET NEW - ', data);
-            getOld().then(function(data2){
-              // these are old...
-              var oldVms = data2;
-              console.log('!!------> GET OLD - ', data2);
-              
-              getSingleVm().then(function(data3){
-                var vm = data3;
-                notification.vm = vm;
-                console.log('!!------> GET SINGLE - ', data3);
+            getOldVm().then(function(oldVmsData){
+              // Old vms...
+              var oldVms = oldVmsData;
 
+              getSingleVm().then(function(singleVmData){
+                 // single vm, attach to notification...
+                 notification.vm = singleVmData;
                  if(newVms.length < 1){
-                    notification.label = 'you have ' +  oldVms.length + ' unread voicemail(s)';
-                    // notification.label = 'you have ' + notification.title + ' unread voicemail(s)';
+                    // 'title' property also provides # of old vms...
+                    notification.label = 'you have ' + notification.title + ' unread voicemail(s)';
                     // remove from today
                     for (var i = 0, len = $scope.todaysNotifications.length; i < len; i++){
                       if ($scope.todaysNotifications[i].xpid == notification.xpid) {
@@ -1117,18 +1072,16 @@ hudweb.controller('NotificationController',
                       }
                     }     
                  } else{
-                  notification.label = 'you have ' +  newVms.length + ' new voicemail(s)';
+                    notification.label = 'you have ' +  newVms.length + ' new voicemail(s)';
                  }
 
                 // if displayname is a phone number -> add the hypens to make external notifications consistent...
                 if (notification.fullProfile == null && notification.displayName.split('').length == 10 && !isNaN(parseInt(notification.displayName)))
                   notification.displayName = notification.displayName.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
 
-              })
-            })
-         })
-
-
+              });
+            });
+         });
         break;
       case 'chat':
         notification.label = 'chat message';
