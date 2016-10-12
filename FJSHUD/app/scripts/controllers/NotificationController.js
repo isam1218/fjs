@@ -894,116 +894,149 @@ hudweb.controller('NotificationController',
 		}
 	};
 
-  var getVoiceMail = function(xpid){
-    for(var i = 0, iLen = voicemails.length; i < iLen ;i++){
-      if(voicemails[i].xpid == xpid){
-        return voicemails[i];
+  var deferredVm = $q.defer();
+  var getVm = function(xpid){
+    phoneService.getVm().then(function(vms){
+      console.log('***in get VM promise in getVm!! - ', vms);
+      for(var i = 0, iLen = vms.length; i < iLen ;i++){
+        if(vms[i].xpid == xpid){
+          deferredVm.resolve(vms[i]);
+          // return vms[i];
+        }
       }
-    }
+    });
   };
 
+  var getSingleVm = function(){
+    return deferredVm.promise;
+  }
 
-  var getVoiceMailsFor = function(id, type){
+  var deferredOld = $q.defer();
+  var getVMsFor = function(id, type){
     switch(type){
       case 'contact':
-        return voicemails.filter(function(data){
-          return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primary_extension;
+        var oldVms = [];
+        phoneService.getVm().then(function(vms){
+          console.log('in getVMsFor promise!! - ', vms);
+          for (var i = 0; i < vms.length; i++){
+            if (vms[i].contactId == id && !vms[i].readStatus && vms[i].phone != $rootScope.meModel.primary_extension){
+              oldVms.push(vms[i]);
+            }
+          }
+          deferredOld.resolve(oldVms);
+          // return vms.filter(function(data){
+          //   return data.contactId == id && !data.readStatus && data.phone != $rootScope.meModel.primary_extension;
+          // });
         });
+
       break;
       case 'group':
         var group = groupService.getGroup(id);
         var groupVm = [];
         if(group){
           for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-            groupVm.push(voicemails.filter(function(item){
-              return item.contactId == group.members[g].contactId  && !item.readStatus
-            }));
+            phoneService.getVm().then(function(vms){
+              groupVm.push(vms.filter(function(item){
+                return item.contactId == group.members[g].contactId  && !item.readStatus  
+              }))
+            })
+            // groupVm.push(voicemails.filter(function(item){
+            //   return item.contactId == group.members[g].contactId  && !item.readStatus
+            // }));
 
           }
         }
-        return groupVm;
+        deferredOld.resolve(groupVm);
+        // return groupVm;
       break;
       default:
-        return voicemails;
+        phoneService.getVm().then(function(vms){
+          deferredOld.resolve(vms);
+          // return vms;
+        });
+        // return voicemails;
       break;
     }
   };
 
-  var getVoiceMailsForToday = function(id, type){
+  var getOld = function(){
+    return deferredOld.promise;
+  };
+
+
+  var deferredToday = $q.defer();
+  var getVMsForToday = function(id, type){
+    var todayVoicemails = [];
     switch(type){
       case 'contact':
-        return voicemails.filter(function(data){
-            var date = new Date(data.date);
-
-                var today = new Date();
-                var toReturn = false;
-                if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
-                  if(date.getDate() == today.getDate()){
-                    if(data.receivedStatus != "away"){
-                      toReturn = true;
-                    }
-                  }
+        phoneService.getVm().then(function(vms){
+          console.log('!!!1b in getVMsForToday promise!! - ', vms);
+          for (var i = 0; i < vms.length; i++){
+            var cur = vms[i];
+            var date = new Date(cur.date);
+            var today = new Date();
+            var toReturn = false;
+            if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+              if(date.getDate() == today.getDate()){
+                if(cur.receivedStatus != "away"){
+                  toReturn = true;
                 }
-          return data.contactId == id && !data.readStatus && toReturn && data.phone != $rootScope.meModel.primary_extension;
-        });
+              }
+            }
+            if (cur.contactId == id && !cur.readStatus && toReturn && cur.phone != $rootScope.meModel.primary_extension){
+              todayVoicemails.push(cur)
+            }
+          }
+          console.log('!!!1c todayvoicemails - ', todayVoicemails);
+          deferredToday.resolve(todayVoicemails);
+          // return todayVoicemails;
+          
+          // return vms.filter(function(data){
+          //   var date = new Date(data.date);
+          //   var today = new Date();
+          //   var toReturn = false;
+          //   if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+          //     if(date.getDate() == today.getDate()){
+          //       if(data.receivedStatus != "away"){
+          //         toReturn = true;
+          //       }
+          //     }
+          //   }
+          //   return data.contactId == id && !data.readStatus && toReturn && data.phone != $rootScope.meModel.primary_extension;
+          // });
+        })
       break;
       case 'group':
         var group = groupService.getGroup(id);
         var groupVm = [];
         if(group){
           for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-            groupVm.push(voicemails.filter(function(item){
-              return item.contactId == group.members[g].contactId  && !item.readStatus
-            }));
-
+            phoneService.getVm().then(function(vms){
+              groupVm.push(vms.filter(function(item){
+                return item.contactId == group.members[g].contactId  && !item.readStatus  
+              }))
+            })
+            // groupVm.push(voicemails.filter(function(item){
+            //   return item.contactId == group.members[g].contactId  && !item.readStatus
+            // }));
           }
         }
-        return groupVm;
+        deferredToday.resolve(groupVm);
+        // return groupVm;
       break;
       default:
-        return voicemails;
+        phoneService.getVm().then(function(vms){
+          deferredToday.resolve(vms);
+          // return vms;
+        })
+        // return voicemails;
       break;
     }
   };
 
-  var voicemails = [];
-  var vmboxSynced;
-
-  $rootScope.$on('voicemailbox_synced', function(event, data) {
-    // promise deferred...
-    vmboxSynced = function() {
-      var defer = $q.defer();
-      for (var i = 0, iLen = data.length; i < iLen; i++) {
-        var match = false;
-
-        for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
-          // find and update or delete
-          if (voicemails[v].xpid == data[i].xpid) {
-            if (data[i].xef001type == 'delete') {
-              voicemails.splice(v, 1);
-              vLen--;
-            }
-            else
-            { 
-              voicemails[v].readStatus = data[i].readStatus;
-                voicemails[v].transcription = data[i].transcription;
-            }
-            match = true;
-            break;
-          }
-        }
-
-        // don't add voicemails from myself
-        if (!match && data[i].xef001type != 'delete' && data[i].phone != $rootScope.meModel.primary_vm_box && data[i].phone != $rootScope.meModel.primary_extension && data[i].phone != $rootScope.meModel.mobile) {
-          data[i].fullProfile = contactService.getContact(data[i].contactId);
-          voicemails.push(data[i]);
-        }
-      }
-
-      defer.resolve(voicemails);
-      return defer.promise;
-    }
-  });
+  var getNew = function(){
+    return deferredToday.promise;
+  };
 
   var updateNotificationLabel  = function(notification){
     var type = notification.type; 
@@ -1044,30 +1077,58 @@ hudweb.controller('NotificationController',
           notification.label = 'queue chat to';
         break;
       case 'vm':
-        // promise resolves before retrieving voicemails (to ensure voicemails have synced 1st)
-        var vmPromise = vmboxSynced()
-          .then(function(data) {
-             var newVms = getVoiceMailsForToday(notification.senderId,notification.audience);
-             var oldVms = getVoiceMailsFor(notification.senderId,notification.audience);
-             var vm = getVoiceMail(notification.vmId);
-             notification.vm = vm;
-             if(newVms.length < 1){
-    			      notification.label = 'you have ' +  oldVms.length + ' unread voicemail(s)';
-                // notification.label = 'you have ' + notification.title + ' unread voicemail(s)';
-          			// remove from today
-          			for (var i = 0, len = $scope.todaysNotifications.length; i < len; i++){
-          				if ($scope.todaysNotifications[i].xpid == notification.xpid) {
-          					$scope.todaysNotifications.splice(i,1);
-          					break;
-          				}
-          			}			
-             } else{
-        			notification.label = 'you have ' +  newVms.length + ' new voicemail(s)';
-             }
-          });
-        // if displayname is a phone number -> add the hypens to make external notifications consistent...
-        if (notification.fullProfile == null && notification.displayName.split('').length == 10 && !isNaN(parseInt(notification.displayName)))
-          notification.displayName = notification.displayName.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+         // retrieve new voicemails from phoneService (but need to make sure there's a voicemailbox sync before retrieving)...
+         // var newVms = getVMsForToday(notification.senderId,notification.audience);
+         getVMsForToday(notification.senderId,notification.audience);
+         // retrieve old vms from phone service...
+         // var oldVms = getVMsFor(notification.senderId,notification.audience);
+         getVMsFor(notification.senderId,notification.audience);
+         // retrieve current vm from phone Service...
+         // var vm = getVm(notification.vmId);
+         getVm(notification.vmId);
+         // notification.vm = vm;
+
+         // console.log('3 newvms - ', newVms);
+         // console.log('oldvms - ', oldVms);
+         // console.log('vm - ', vm);
+
+         getNew().then(function(data){
+            // these are todays!
+            var newVms = data;
+            console.log('!!------> GET NEW - ', data);
+            getOld().then(function(data2){
+              // these are old...
+              var oldVms = data2;
+              console.log('!!------> GET OLD - ', data2);
+              
+              getSingleVm().then(function(data3){
+                var vm = data3;
+                notification.vm = vm;
+                console.log('!!------> GET SINGLE - ', data3);
+
+                 if(newVms.length < 1){
+                    notification.label = 'you have ' +  oldVms.length + ' unread voicemail(s)';
+                    // notification.label = 'you have ' + notification.title + ' unread voicemail(s)';
+                    // remove from today
+                    for (var i = 0, len = $scope.todaysNotifications.length; i < len; i++){
+                      if ($scope.todaysNotifications[i].xpid == notification.xpid) {
+                        $scope.todaysNotifications.splice(i,1);
+                        break;
+                      }
+                    }     
+                 } else{
+                  notification.label = 'you have ' +  newVms.length + ' new voicemail(s)';
+                 }
+
+                // if displayname is a phone number -> add the hypens to make external notifications consistent...
+                if (notification.fullProfile == null && notification.displayName.split('').length == 10 && !isNaN(parseInt(notification.displayName)))
+                  notification.displayName = notification.displayName.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+
+              })
+            })
+         })
+
+
         break;
       case 'chat':
         notification.label = 'chat message';
