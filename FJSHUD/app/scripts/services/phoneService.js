@@ -277,7 +277,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				isAlertShown = true;
 				nservice.sendData(data,0,type);
 			}else{
-				nservice.displayWebNotification(data);
+				if(document.getElementById("AppLoading") == null)
+				 nservice.displayWebNotification(data);
 			}
 		}
 	};
