@@ -120,7 +120,6 @@ hudweb.controller('ContactsWidget', ['$scope', '$rootScope', 'HttpService', 'Con
 	$scope.showCallStatus = function($event, contact) {
 		$event.stopPropagation();
 		$event.preventDefault();
-		console.log("CONTACT",contact);
 		//if user doesn't have permission to view call show overlay else if its a conference call route to the conference room.
 		if(contact.call.displayName == "Private"){
 			$scope.showOverlay(true, 'CallStatusOverlay', contact);
