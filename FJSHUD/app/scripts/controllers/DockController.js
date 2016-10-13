@@ -161,13 +161,25 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			$rootScope.dockIndex++;
 	};
 
+
 	// initial sync
-	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues()]).then(function(data) {
+	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues(), phoneService.getLocationPromise()]).then(function(data) {
 		updateDock(data[0]);
 
 		// check for default gadgets
 		var hasQueues = false;
 		var hasParked = false;
+		var hasDownload = false;
+
+		var webphoneIsRegistered = true;
+		var locationData = data[3];
+		// loop thru locations obj and check if webphone is registered..
+		for (var key in locationData){
+			var cur = locationData[key];
+			// unregistered webphone -> set webphoneIsRegistered to false -> will show hudn d/l dock item. if registered -> we don't show dock item...
+			if (cur.name == "HUD Web Softphone" && cur.status.deviceStatus == "u")
+				webphoneIsRegistered = false;
+		}
 
 		for (var i = 0, len = $scope.gadgets.length; i < len; i++) {
 			if ($scope.gadgets[i].value.factoryId == 'GadgetUserQueues')
@@ -175,6 +187,15 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 			if ($scope.gadgets[i].value.factoryId == 'GadgetParkedCalls')
 				hasParked = true;
+
+			if ($scope.gadgets[i].value.factoryId == 'GadgetHudSoftphoneDownload')
+				hasDownload = true;
+
+			// if webphone is registered OR if user selected do NOT SHOW widget in preferences section -> remove from dock
+			if ( ($scope.gadgets[i].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && webphoneIsRegistered) || ($scope.gadgets[i].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && $rootScope.hideHudSoftphoneDockGadget)  ){
+				$scope.gadgets.splice(i, 1);
+				break;
+			}
 		}
 
 		if (!hasQueues) {
@@ -185,10 +206,15 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		if (!hasParked)
 			makeDefault('GadgetParkedCalls');
 
+		if (!hasDownload)
+			makeDefault('GadgetHudSoftphoneDownload');
+		
+
 		// normal updates
 		$scope.$on('settings_updated', function(event, data) {
 			updateDock(data);
 		});
+
 
 	});
 

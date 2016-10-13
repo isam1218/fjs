@@ -2,7 +2,7 @@
 	<div 
 		class="Gadget"
 		ng-repeat="gadget in gadgets | filter: filterQueues() | orderBy:'value.index' track by gadget.name" 
-		ng-class="::{'Parked' : gadget.value.factoryId == 'GadgetParkedCalls'}"
+		ng-class="::{'Parked' : gadget.value.factoryId == 'GadgetParkedCalls', 'TallGadget': gadget.value.factoryId == 'GadgetHudSoftphoneDownload'}"
 		droppable="{{::getDroppableType(gadget.value.factoryId)}}"
 		dragger>			 
 		<!-- my queues -->
@@ -40,6 +40,9 @@
 		</div>
 		
 		<resizer ng-if-end></resizer>
+
+
+
 
 		<!-- parked calls -->
 		<div ng-if-start="::gadget.value.factoryId == 'GadgetParkedCalls'" class="Header Single">
@@ -200,7 +203,21 @@
 				</div>
 			</div>
 		</div>
-		
+
+	<div ng-if="::gadget.value.factoryId == 'GadgetHudSoftphoneDownload'" class="Header HudSoftphoneDownloadGadget">
+			<div class="HudSoftphoneDownloadGadgetHeader" style="">
+				Download the HUD Softphone.
+			</div>
+			<ul class="HudSoftphoneDownloadGadgetListItems" style="">
+				<li class="DownloadListItem">Auto login and presence on computer startup.</li>
+				<li class="DownloadListItem">Control your location and presence.</li>
+				<li class="DownloadListItem">Place and control calls outside of HUD.</li>
+			</ul>
+			<div class="HudSoftphoneDownloadGadgetButtonSection">
+				<button class="HudSoftphoneDownloadGadgetButton" style="" ng-click="downloadHudn()">DOWNLOAD</button>
+			</div>
+	</div>
+
 	</div>
 </div>
 
