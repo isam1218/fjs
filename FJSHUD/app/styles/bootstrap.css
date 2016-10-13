@@ -6043,17 +6043,21 @@ button.close {
     width: 300px;
   }
 
+    .modal-preferences {
+    width: 760px;
+    height: 90.5%;
+  }
+  .modal-preferences .modal-content{
+    border-radius:10px;
+        height: 100%;
+  }
+
 }
 @media (min-width: 992px) {
   .modal-lg {
     width: 900px;
   }
-  .modal-preferences {
-    width: 760px;
-  }
-  .modal-preferences .modal-content{
-    border-radius:10px;
-  }
+
 }
 .tooltip {
   position: absolute;
