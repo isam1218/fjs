@@ -1,8 +1,7 @@
-hudweb.directive('styleParent', function(){ 
+hudweb.directive('styleSize', function(){ 
    return {
      restrict: 'A',
      link: function(scope, elem, attr) {
-         elem.on('load', function() {
             var w = $(this).width(),
                 h = $(this).height();
 
@@ -11,9 +10,7 @@ hudweb.directive('styleParent', function(){
             }
             else {
             	elem.addClass('AttachmentImgHeight');
-            }
-
-         });
+            }    
      }
    };
 });

@@ -30,7 +30,7 @@
                 
                 
                 <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="!attachment.dropbox && !attachment.googleDrive && !attachment.box && !attachment.oneDrive ? showDownloadAttachmentOverlay(attachment) : ''">
-                    <div class="imgContainer" ng-init="imageSize();"><img ng-src="{{::getAttachment(attachment)}}" style-parent /></div>               
+                    <div class="imgContainer"><img style-size  ng-src="{{::getAttachment(attachment)}}" /></div>               
                     <p ng-class="attachment.dropbox ? 'hideParagraph' : ''"> {{ ::attachment.fileName }}</p>
                     <div class="DropboxAttachmentContainer" ng-repeat="attachment in ::message.data.attachment">
                         <a id="dropboxFile" href="{{::attachment.dropboxLink}}" target="_blank"> {{ ::attachment.dropboxFile }}</a>
