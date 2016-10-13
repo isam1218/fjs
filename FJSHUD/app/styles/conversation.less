@@ -691,10 +691,22 @@
   display: none !important;
 }
 
-.AttachmentImg{
- width:70px;
- height:70px;
+.imgContainer{
+    width: 70px;
+    height: 70px;
+     display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.AttachmentImgWidth{
+  max-width:70px;
 } 
+.AttachmentImgHeight{
+  max-height:70px
+}
 
 .DropboxAttachmentContainer{
   display: flex;
