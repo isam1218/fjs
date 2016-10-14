@@ -732,6 +732,37 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	};
 
+	$rootScope.$on('voicemailbox_synced', function(event, data) {
+		for (var i = 0, iLen = data.length; i < iLen; i++) {
+			var match = false;
+
+			for (var v = 0, vLen = voicemails.length; v < vLen; v++) {
+				// find and update or delete
+				if (voicemails[v].xpid == data[i].xpid) {
+					if (data[i].xef001type == 'delete') {
+						voicemails.splice(v, 1);
+						vLen--;
+					}
+					else
+					{	
+						voicemails[v].readStatus = data[i].readStatus;
+					    voicemails[v].transcription = data[i].transcription;
+					}
+					match = true;
+					break;
+				}
+			}
+
+			// don't add voicemails from myself
+			if (!match && data[i].xef001type != 'delete' && data[i].phone != $rootScope.meModel.primary_vm_box && data[i].phone != $rootScope.meModel.primary_extension && data[i].phone != $rootScope.meModel.mobile) {
+				data[i].fullProfile = contactService.getContact(data[i].contactId);
+				voicemails.push(data[i]);
+			}
+		}
+
+		deferredVM.resolve(voicemails);
+	});
+
 	this.getVm = function(){
 		return deferredVM.promise;
 	};
