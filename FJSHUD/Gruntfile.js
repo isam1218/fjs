@@ -51,6 +51,31 @@ module.exports = function(grunt) {
     }
     return WebphoneOSXNumber;
   }
+/*HUDn webphones*/
+/* hudn webphone msi version */
+  function getHUDnWebphoneMSINumber() {
+    if(!HUDnWebphoneMSINumber) {
+      try {
+        HUDnWebphoneMSINumber = grunt.file.read('../hudn_msi_number');
+      }
+      catch(e) {
+        HUDnWebphoneMSINumber = -1
+      }
+    }
+    return HUDnWebphoneMSINumber;
+  }
+/* hudn webphone osx version */
+  function getHUDnWebphoneOSXNumber() {
+    if(!HUDnWebphoneOSXNumber) {
+      try {
+        HUDnWebphoneOSXNumber = grunt.file.read('../hudn_osx_number');
+      }
+      catch(e) {
+        HUDnWebphoneOSXNumber = -1
+      }
+    }
+    return HUDnWebphoneOSXNumber;
+  }
 /* server url */
   function getServerUrl() {
     if(!ServerUrl) {
@@ -90,7 +115,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    
+
     'jshint':{
       jsFiles:['app/**/*.js']
     },
@@ -163,6 +188,11 @@ module.exports = function(grunt) {
               MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
               WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
               MAC_PLUGIN_VERSION:"1.1.0" + getWebphoneOSXNumber(),
+              /*HUDN webphones*/
+              HUDN_WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getHUDnWebphoneMSINumber() + ".msi",
+              HUDN_MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getHUDnWebphoneOSXNumber() + ".pkg",
+              HUDN_WINDOWS_PLUGIN_VERSION:"1.1.0" + getHUDnWebphoneMSINumber(),
+              HUDN_MAC_PLUGIN_VERSION:"1.1.0" + getHUDnWebphoneOSXNumber(),
             }
           },
           files:{
@@ -181,6 +211,11 @@ module.exports = function(grunt) {
             MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
             WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
             MAC_PLUGIN_VERSION:"1.1.0" + getWebphoneOSXNumber(),
+            /*HUDN webphones*/
+            HUDN_WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getHUDnWebphoneMSINumber() + ".msi",
+            HUDN_MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getHUDnWebphoneOSXNumber() + ".pkg",
+            HUDN_WINDOWS_PLUGIN_VERSION:"1.1.0" + getHUDnWebphoneMSINumber(),
+            HUDN_MAC_PLUGIN_VERSION:"1.1.0" + getHUDnWebphoneOSXNumber(),
           }
         },
           files:{
@@ -193,13 +228,18 @@ module.exports = function(grunt) {
           data:{
             serverUrl: getServerUrl(),
             loginUrl: getLoginUrl(),
-            ppsServer: getPpsServer(),            
+            ppsServer: getPpsServer(),
 			version: "HUDW" + getBuildNumber(),
 			BUILD_NUMBER: getBuildNumber(),
             WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
             MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
             WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
             MAC_PLUGIN_VERSION:"1.1.0" + getWebphoneOSXNumber(),
+            /*HUDN webphones*/
+            HUDN_WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getHUDnWebphoneMSINumber() + ".msi",
+            HUDN_MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getHUDnWebphoneOSXNumber() + ".pkg",
+            HUDN_WINDOWS_PLUGIN_VERSION:"1.1.0" + getHUDnWebphoneMSINumber(),
+            HUDN_MAC_PLUGIN_VERSION:"1.1.0" + getHUDnWebphoneOSXNumber(),
           }
         },
           files:{
@@ -382,7 +422,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'dest/'},
           {expand: true, src: ['app/styles/bootstrap.css'], dest: 'dest/'},
           {expand: true, src: ['app/oneDrive.html'], dest: 'dest/'},
-          
+
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
@@ -395,7 +435,7 @@ module.exports = function(grunt) {
               'app/scripts/services/**/*.js',
               'app/scripts/factory/**/*.js'
           ], dest: 'dest/'},
-        
+
         ]
       },
       huc_dev: {
@@ -412,7 +452,7 @@ module.exports = function(grunt) {
           {expand: true, src: ['app/styles/fonts/**/*'], dest: 'huc_dev/'},
           {expand: true, src: ['app/styles/boostrap.css'], dest: 'huc_dev/'},
           {expand: true, src: ['app/oneDrive.html'], dest: 'huc_dev/'},
-          
+
           {expand: true, src: [
              'app/languageMap.js',
               'app/scripts/app.js',
@@ -425,7 +465,7 @@ module.exports = function(grunt) {
               'app/scripts/services/**/*.js',
               'app/scripts/factory/**/*.js'
           ], dest: 'huc_dev/'},
-        
+
         ]
       }
     }
@@ -445,7 +485,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-bower-concat');
 
-  
+
   grunt.registerTask('build', ['concat', 'closure-compiler', 'zip']);
   grunt.registerTask('build-dist', ['template:dist','concat','ngtemplates','bower_concat','preprocess:dist','less:dist', 'cssmin:dist', 'uglify:dist','copy:dist','zip']);
   grunt.registerTask('build-alpha', ['concat','template:dev','preprocess:dev','less:dev', 'cssmin:dev','uglify:dev','copy:dev','zip']);
