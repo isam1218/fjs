@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   var currentTime = getCurrentTime()
-    , buildNumber, WebphoneOSXNumber, WebphoneMSINumber, ServerUrl, LoginUrl, PpsServer;
+    , buildNumber, WebphoneOSXNumber, WebphoneMSINumber, HUDnWebphoneOSXNumber, HUDnWebphoneMSINumber, ServerUrl, LoginUrl, PpsServer;
   grunt.file.write('../hud-buildid/buildtimestamp.txt', currentTime);
 
   function getCurrentTime() {
