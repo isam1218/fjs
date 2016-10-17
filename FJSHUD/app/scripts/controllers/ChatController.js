@@ -262,7 +262,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	  	for(var i = 0;i<files.value.length;i++){
   	  	var fileName = files.value[i].name;
 	    fileName = fileName + "";
-	    var fileLink = files.value[i].webUrl;
+	    var fileLink = files.value[i].permissions[0].link.webUrl;
 	    fileLink = fileLink + "";
 	    var fileBytes = files.value[i].size;
 	    fileBytes = formatBytes(fileBytes);
