@@ -207,7 +207,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		for (var j = 0; j < $scope.gadgets.length; j++){
 			// if webphone is registered OR if user selected do NOT SHOW widget in preferences section -> remove from dock
 			if ( ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && webphoneIsRegistered) || ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && $rootScope.hideHudSoftphoneDockGadget)  ){
-				$scope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetHudSoftphoneDownload_');
+				deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_')
 			}
 		}
 
@@ -228,7 +228,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		return '';
 	};
 
-	$scope.$on('delete_gadget', function(event, data) {
+	var deleteGadget = function(data){
 		// remove from fdp
 		httpService.sendAction('settings', 'delete', {name: data});
 
@@ -239,6 +239,10 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				break;
 			}
 		}
+	};
+
+	$scope.$on('delete_gadget', function(event, data) {
+		deleteGadget(data);
 	});
 
 	$scope.$on('parkedcalls_synced',function(event,data){
