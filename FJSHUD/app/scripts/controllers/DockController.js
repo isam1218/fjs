@@ -207,7 +207,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		for (var j = 0; j < $scope.gadgets.length; j++){
 			// if webphone is registered OR if user selected do NOT SHOW widget in preferences section -> remove from dock
 			if ( ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && webphoneIsRegistered) || ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && $rootScope.hideHudSoftphoneDockGadget)  ){
-				deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_')
+				deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
 			}
 		}
 
