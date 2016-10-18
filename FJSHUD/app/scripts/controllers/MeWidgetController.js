@@ -804,11 +804,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                         $scope.currentCall = data[i];
                         call_exist = true;
                         $scope.onCall = true;
-                        if($scope.locations[$scope.currentCall.locationId].locationType  == "w"){
-                            if($scope.currentCall.sipCall == undefined){
-                                $scope.currentCall.state = 3;
-                            }
-                        }
+
                     }else if(data[i].xpid == $scope.currentCall.xpid){
                         $scope.currentCall = data[i];
                     }
