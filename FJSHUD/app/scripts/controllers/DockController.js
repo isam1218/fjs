@@ -1,6 +1,8 @@
 hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$rootScope', 'HttpService', 'SettingsService', 'ContactService', 'GroupService', 'ConferenceService', 'QueueService', 'CallStatusService', 'PhoneService', function($q, $timeout, $location, $scope, $rootScope, httpService, settingsService, contactService, groupService, conferenceService, queueService, callStatusService, phoneService) {
 	var column;
 	var request;
+	var hasDownload = false;
+	var webphoneIsRegistered = false;
 	$scope.gadgets = [];
 	$scope.parkedCalls = [];
 	$scope.upload_time = 0;
@@ -142,8 +144,9 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		$scope.queueThresholds.abandoned = parseInt(data.queueAbandonThreshold);
 	};
 
-	var makeDefault = function(name) {
+	var makeDefault = function(name, configArg) {
 		// add gadget manually
+		var finalConfig = configArg ? configArg : {};
 		$scope.gadgets.push({
 			name: 'GadgetConfig__empty_' + name + '_',
 			value: {
@@ -151,7 +154,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				index: 1,
 				contextId: 'empty',
 				entityId: '',
-				config: {}
+				config: finalConfig
 			},
 			data: {}
 		});
@@ -161,6 +164,17 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			$rootScope.dockIndex++;
 	};
 
+	var makeDefaultSoftphone = function(){
+		var preConfig;
+		if (localStorage.gadgetHudSoftphoneDownloadX && localStorage.gadgetHudSoftphoneDownloadY){
+			var savedX = JSON.parse(localStorage.gadgetHudSoftphoneDownloadX);
+			var savedY = JSON.parse(localStorage.gadgetHudSoftphoneDownloadY);
+			preConfig = {x: savedX, y: savedY};
+		} else {
+			preConfig = {};
+		}
+		makeDefault('GadgetHudSoftphoneDownload', preConfig);
+	};
 
 	// initial sync
 	$q.all([settingsService.getSettings(), contactService.getContacts(), queueService.getQueues(), phoneService.getLocationPromise()]).then(function(data) {
@@ -169,18 +183,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		// check for default gadgets
 		var hasQueues = false;
 		var hasParked = false;
-		var hasDownload = false;
-
-		var webphoneIsRegistered = true;
-		var locationData = data[3];
-		// loop thru locations obj and check if webphone is registered..
-		for (var key in locationData){
-			var cur = locationData[key];
-			// unregistered webphone -> set webphoneIsRegistered to false -> will show hudn d/l dock item. if registered -> we don't show dock item...
-			if (cur.name == "HUD Web Softphone" && cur.status.deviceStatus == "u"){
-				webphoneIsRegistered = false;
-			}
-		}
 
 		for (var i = 0, len = $scope.gadgets.length; i < len; i++) {
 			if ($scope.gadgets[i].value.factoryId == 'GadgetUserQueues')
@@ -201,22 +203,37 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		if (!hasParked)
 			makeDefault('GadgetParkedCalls');
 
-		if (!hasDownload)
-			makeDefault('GadgetHudSoftphoneDownload');
-		
-		for (var j = 0; j < $scope.gadgets.length; j++){
-			// if webphone is registered OR if user selected do NOT SHOW widget in preferences section -> remove from dock
-			if ( ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && webphoneIsRegistered) || ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && $rootScope.hideHudSoftphoneDockGadget)  ){
-				deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
-			}
-		}
-
 		// normal updates
 		$scope.$on('settings_updated', function(event, data) {
 			updateDock(data);
 		});
 
 
+	});
+
+	// keep watch over phone registration and then display or delete dock gadget
+	$rootScope.$on('location_status_synced', function(event, data){
+		phoneService.getLocationPromise().then(function(locationPromiseData){
+			for (var key in locationPromiseData){
+				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
+					webphoneIsRegistered = false;
+				} else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
+					webphoneIsRegistered = true;
+				}
+			}
+			hasDownload = false;
+			for (var j = 0; j < $scope.gadgets.length; j++){
+				if ($scope.gadgets[j].value.factoryId == 'GadgetHudSoftphoneDownload'){
+					hasDownload = true;
+				}
+				if ( ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && webphoneIsRegistered) || ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && $rootScope.hideHudSoftphoneDockGadget) ){
+					deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
+				}
+			}
+			if (!webphoneIsRegistered && !hasDownload){
+				makeDefaultSoftphone();
+			}
+		});
 	});
 
 	$scope.getDroppableType = function(type) {

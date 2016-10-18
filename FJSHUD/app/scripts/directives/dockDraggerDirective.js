@@ -54,6 +54,11 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 						// save new position to db as percentage
 						scope.gadget.value.config.x = left/rect.width * 100;
 						scope.gadget.value.config.y = top/rect.height * 100;
+
+						if (scope.gadget.name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_"){
+							localStorage.gadgetHudSoftphoneDownloadX = JSON.stringify(scope.gadget.value.config.x);
+							localStorage.gadgetHudSoftphoneDownloadY = JSON.stringify(scope.gadget.value.config.y);
+						}
 						
 						httpService.sendAction('settings', 'update', {
 							name: scope.gadget.name,
