@@ -222,7 +222,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 		phoneService.getLocationPromise().then(function(locationPromiseData){
 
-			 showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
 			for (var key in locationPromiseData){
 				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
 					webphoneIsRegistered = false;

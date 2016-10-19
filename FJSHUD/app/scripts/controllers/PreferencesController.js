@@ -591,9 +591,9 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
                 for (var key in locationPromiseData){
                     if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
                         $scope.softphoneRegistered = true;
-                        $scope.enableDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));;
+                        $scope.enableDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
                     }
-                    else {
+                    else if(locationPromiseData[key].status.deviceStatus == "u") {
                         $scope.softphoneRegistered = false;
                         $scope.enableDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
                     }
