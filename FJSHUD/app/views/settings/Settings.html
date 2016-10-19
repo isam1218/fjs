@@ -40,7 +40,7 @@
             <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
             <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
             </div>
-            <div class="PreferencePage" ng-switch-when="true">
+            <div class="PreferencePage DownloadNative" ng-switch-when="true">
               <div class="ListSectionHeaderTitle">HUD SOFTPHONE</div>
               <div class="Dialog-settings-row">
               <label><input
@@ -50,9 +50,9 @@
               </div>
 
               <div class="Dialog-settings-row">
-              <h4 style="margin-bottom: 5px;">Download the HUD Softphone</h4>
-              <p style="width:300px;">Auto login and presence on computer startup. Control your location and presence.Place and control calls outside of HUD.</p>
-              <button ng-click="downloadHudn()" style="float: right;position: relative;bottom: 50px;right: 50px;    background-color: #00AD33;font-family: Helvetica, Arial, Sans-serif;height: 28px;width: 128px;border-radius: 5px;font-size: 14px;color: #ffffff;border: none;cursor: pointer;">DOWNLOAD</button>
+              <h4 class="Row-title">Download the HUD Softphone</h4>
+              <p class="Row-text" >Auto login and presence on computer startup. Control your location and presence.Place and control calls outside of HUD.</p>
+              <button class="Download-button" ng-click="downloadHudn()" >DOWNLOAD</button>
               </div>
 
             </div>

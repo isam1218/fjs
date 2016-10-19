@@ -582,47 +582,48 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
 
     });
 
-        $rootScope.$on('location_status_synced', function(event, data){
-            phoneService.getLocationPromise().then(function(locationPromiseData){
-                for (var key in locationPromiseData){
-                    if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
-                        $scope.softphoneRegistered = true;
-                        $scope.enableDockDownload = false;
-                    }
-                
-                }
-            });
-        });
+    $scope.$on('location_status_synced', function(event, data){
+        getLocation();
+    });
 
+    function getLocation(){
          phoneService.getLocationPromise().then(function(locationPromiseData){
                 for (var key in locationPromiseData){
                     if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
                         $scope.softphoneRegistered = true;
                         $scope.enableDockDownload = false;
                     }
+                    else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
+                        $scope.softphoneRegistered = false;
+                        $scope.enableDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+                    }
 
 
                 }
-            });
+        });
+    };
+    getLocation();
+ 
 
-        //if softphone is registered don't show the softphone section in the preferences.
-        function isMac() {
-        return navigator.platform.indexOf('Mac') > -1;
+    function isMac() {
+
+         return navigator.platform.indexOf('Mac') > -1;
     }
-       $scope.downloadHudn = function() {
+
+   $scope.downloadHudn = function() {
+
         $scope.downloadModal = false;
         // d/l link url depends on platform...
         var hudnDownloadUrl = isMac() ? fjs.CONFIG.PLUGINS.MAC_HUDN : fjs.CONFIG.PLUGINS.WINDOWS_HUDN;
         window.open(hudnDownloadUrl);
-        $scope.closeDownloadModal();
     };
-    
-        $scope.dockDownload = function(){
 
-            $scope.enableDockDownload = !$scope.enableDockDownload;
-            localStorage.setItem("EnableDockDownload",$scope.enableDockDownload);
-            $rootScope.$broadcast("changeDockDownload");
-        };
+    $scope.dockDownload = function(){
+
+        $scope.enableDockDownload = !$scope.enableDockDownload;
+        localStorage.setItem("EnableDockDownload",$scope.enableDockDownload);
+        $rootScope.$broadcast("changeDockDownload");
+    };
 
 
     // this is for determining whether to show old transfer UI vs new transfer UI. If CP14 & cloud server --> show new transfer UI
