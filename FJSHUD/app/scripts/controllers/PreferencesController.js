@@ -589,13 +589,16 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
     function getLocation(){
          phoneService.getLocationPromise().then(function(locationPromiseData){
                 for (var key in locationPromiseData){
-                    if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
-                        $scope.softphoneRegistered = true;
-                        $scope.enableDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
-                    }
-                    else if(locationPromiseData[key].status.deviceStatus == "u") {
-                        $scope.softphoneRegistered = false;
-                        $scope.enableDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+                    if(locationPromiseData[key].name == "HUD Web Softphone"){
+                        
+                        if (locationPromiseData[key].status.deviceStatus == "r"){
+                            $scope.softphoneRegistered = true;
+                            $scope.enableDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+                        }
+                        else{
+                            $scope.softphoneRegistered = false;
+                            $scope.enableDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+                        }
                     }
 
 
