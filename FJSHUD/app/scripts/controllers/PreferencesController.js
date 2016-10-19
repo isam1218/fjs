@@ -37,6 +37,8 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
     $scope.myInfo = false;
     $scope.generalAlerts = false;
     $scope.queueAlerts = false;
+    $scope.softphoneSettings = false;
+     
     /* */
     /**
     * used to determine what tab is selected in the me widget controller
@@ -62,9 +64,11 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
 
 		// localstorage logic
         $scope.globalXpid = $rootScope.myPid;
+        $scope.enableDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
         $scope.selected = localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_tabs_of_' + $scope.globalXpid]) : $scope.tabs[0];
         $scope.toggleObject = localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid] ? JSON.parse(localStorage['MeWidgetController_toggleObject_of_' + $scope.globalXpid]) : {item: 0};
         $scope.language = $rootScope.language || 'us';
+
     });
 
     $scope.closePreferences = function(){
@@ -577,6 +581,48 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
         }
 
     });
+
+        $rootScope.$on('location_status_synced', function(event, data){
+            phoneService.getLocationPromise().then(function(locationPromiseData){
+                for (var key in locationPromiseData){
+                    if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
+                        $scope.softphoneRegistered = true;
+                        $scope.enableDockDownload = false;
+                    }
+                
+                }
+            });
+        });
+
+         phoneService.getLocationPromise().then(function(locationPromiseData){
+                for (var key in locationPromiseData){
+                    if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
+                        $scope.softphoneRegistered = true;
+                        $scope.enableDockDownload = false;
+                    }
+
+
+                }
+            });
+
+        //if softphone is registered don't show the softphone section in the preferences.
+        function isMac() {
+        return navigator.platform.indexOf('Mac') > -1;
+    }
+       $scope.downloadHudn = function() {
+        $scope.downloadModal = false;
+        // d/l link url depends on platform...
+        var hudnDownloadUrl = isMac() ? fjs.CONFIG.PLUGINS.MAC_HUDN : fjs.CONFIG.PLUGINS.WINDOWS_HUDN;
+        window.open(hudnDownloadUrl);
+        $scope.closeDownloadModal();
+    };
+    
+        $scope.dockDownload = function(){
+
+            $scope.enableDockDownload = !$scope.enableDockDownload;
+            localStorage.setItem("EnableDockDownload",$scope.enableDockDownload);
+            $rootScope.$broadcast("changeDockDownload");
+        };
 
 
     // this is for determining whether to show old transfer UI vs new transfer UI. If CP14 & cloud server --> show new transfer UI

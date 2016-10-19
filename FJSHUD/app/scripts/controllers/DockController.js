@@ -213,12 +213,17 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 	// keep watch over phone registration and then display or delete dock gadget
 	$rootScope.$on('location_status_synced', function(event, data){
+
+
+
 		phoneService.getLocationPromise().then(function(locationPromiseData){
+			var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
 			for (var key in locationPromiseData){
 				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
 					webphoneIsRegistered = false;
 				} else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
 					webphoneIsRegistered = true;
+					showDockDownload = false;
 				}
 			}
 			hasDownload = false;
@@ -226,14 +231,27 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				if ($scope.gadgets[j].value.factoryId == 'GadgetHudSoftphoneDownload'){
 					hasDownload = true;
 				}
-				if ( ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && webphoneIsRegistered) || ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && $rootScope.hideHudSoftphoneDockGadget) ){
+				if ( (($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && webphoneIsRegistered) || ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" ))&& !showDockDownload ){
 					deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
 				}
 			}
-			if (!webphoneIsRegistered && !hasDownload){
+			if (!webphoneIsRegistered && !hasDownload && showDockDownload){
 				makeDefaultSoftphone();
 			}
 		});
+	});
+
+	$scope.$on("changeDockDownload",function(){
+		if(!webphoneIsRegistered){
+		var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"))
+		if(showDockDownload){
+			makeDefaultSoftphone();
+		}
+		else{
+			deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
+		}
+	}
+
 	});
 
 	$scope.getDroppableType = function(type) {
