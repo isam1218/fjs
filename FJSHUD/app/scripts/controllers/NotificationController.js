@@ -892,117 +892,6 @@ hudweb.controller('NotificationController',
 		}
 	};
 
-  // GRAB SINGLE VM
-  var deferredVm = $q.defer();
-  var getVm = function(xpid){
-    phoneService.getVm().then(function(vms){
-      for(var i = 0, iLen = vms.length; i < iLen ;i++){
-        if(vms[i].xpid == xpid){
-          deferredVm.resolve(vms[i]);
-        }
-      }
-    });
-  };
-
-  var getSingleVm = function(){
-    return deferredVm.promise;
-  };
-
-
-  // GRAB OLD VMS
-  var deferredOld = $q.defer();
-  var getVMsFor = function(id, type){
-    switch(type){
-      case 'contact':
-        var oldVms = [];
-        phoneService.getVm().then(function(vms){
-          for (var i = 0; i < vms.length; i++){
-            if (vms[i].contactId == id && !vms[i].readStatus && vms[i].phone != $rootScope.meModel.primary_extension){
-              oldVms.push(vms[i]);
-            }
-          }
-          deferredOld.resolve(oldVms);
-        });
-        break;
-      case 'group':
-        var group = groupService.getGroup(id);
-        var groupVm = [];
-        if(group){
-          for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-            phoneService.getVm().then(function(vms){
-              groupVm.push(vms.filter(function(item){
-                return ( (item.contactId == group.members[g].contactId)  && !item.readStatus); 
-              }));
-            });
-          }
-        }
-        deferredOld.resolve(groupVm);
-      break;
-      default:
-        phoneService.getVm().then(function(vms){
-          deferredOld.resolve(vms);
-        });
-      break;
-    }
-  };
-
-  var getOldVm = function(){
-    return deferredOld.promise;
-  };
-
-
-  // GET NEW VM
-  var deferredToday = $q.defer();
-  var getVMsForToday = function(id, type){
-    switch(type){
-      case 'contact':
-        var todaysVoicemails = [];
-        phoneService.getVm().then(function(vms){
-          for (var i = 0; i < vms.length; i++){
-            var cur = vms[i];
-            var date = new Date(cur.date);
-            var today = new Date();
-            var toReturn = false;
-            if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
-              if(date.getDate() == today.getDate()){
-                if(cur.receivedStatus != "away"){
-                  toReturn = true;
-                }
-              }
-            }
-            if (cur.contactId == id && !cur.readStatus && toReturn && cur.phone != $rootScope.meModel.primary_extension){
-              todaysVoicemails.push(cur);
-            }
-          }
-          deferredToday.resolve(todaysVoicemails);
-        });
-        break;
-      case 'group':
-        var group = groupService.getGroup(id);
-        var groupVm = [];
-        if(group){
-          for (var g = 0, gLen = group.members.length; g < gLen; g++) {
-            phoneService.getVm().then(function(vms){
-              groupVm.push(vms.filter(function(item){
-                return ( (item.contactId == group.members[g].contactId) && !item.readStatus);
-              }));
-            });
-          }
-        }
-        deferredToday.resolve(groupVm);
-        break;
-      default:
-        phoneService.getVm().then(function(vms){
-          deferredToday.resolve(vms);
-        });
-        break;
-    }
-  };
-
-  var getNewVm = function(){
-    return deferredToday.promise;
-  };
-
   var updateNotificationLabel  = function(notification){
     var type = notification.type; 
     
@@ -1041,45 +930,74 @@ hudweb.controller('NotificationController',
           notification.label = 'queue chat to';
         break;
       case 'vm':
-         // retrieve new voicemails from phoneService (but need to make sure there's a voicemailbox sync before retrieving)...
-         getVMsForToday(notification.senderId,notification.audience);
-         // retrieve old vms from phone service...
-         getVMsFor(notification.senderId,notification.audience);
-         // retrieve current vm from phone Service...
-         getVm(notification.vmId);
+          // retrieve vms
+         phoneService.getVm().then(function(data){
+            var allVms = data;
+            var todaysVms = [];
+            var oldVms = [];
+            var currentVm, groupVms, totalVm;
+            var id = notification.senderId;
+            var type = notification.audience;
 
-         getNewVm().then(function(newVmsData){
-            // Today's voicemails...
-            var newVms = newVmsData;
+            switch(type){
+              case 'contact':
+                // get new
+                for (var i = 0; i < allVms.length; i++){
+                  var cur = allVms[i];
+                  var date = new Date(cur.date);
+                  var today = new Date();
+                  var toReturn = false;
+                  if(date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()){
+                    if(date.getDate() == today.getDate()){
+                      if(cur.receivedStatus != "away")
+                        toReturn = true;
+                    }
+                  }
+                  // get current
+                  if(cur.xpid == xpid)
+                    currentVm = cur;
+                  // get new
+                  if (cur.contactId == id && !cur.readStatus && toReturn && cur.phone != $rootScope.meModel.primary_extension)
+                    todaysVms.push(cur);
+                  // get old
+                  if (cur.contactId == id && !cur.readStatus && cur.phone != $rootScope.meModel.primary_extension)
+                    oldVms.push(cur);
+                }
+                break;
+              case 'group':
+                var group = groupService.getGroup(id);
+                if (group){
+                  for (var j = 0; j < group.members.length; j++){
+                    groupVms.push(allVms.filter(function(item){
+                      return ( (item.contactId == group.members[j].contactId) && !item.readStatus);
+                    }));
+                  }
+                }
+                todaysVms = oldVms = groupVms;
+                break;
+              default:
+                todaysVms = oldVms = allVms;
+                break;
+            }
 
-            getOldVm().then(function(oldVmsData){
-              // Old vms...
-              var oldVms = oldVmsData;
+             if(todaysVms.length < 1){
+              notification.label = 'you have ' + oldVms.length + ' unread voicemail(s)';
+                // remove from today
+                for (var i = 0, len = $scope.todaysNotifications.length; i < len; i++){
+                  if ($scope.todaysNotifications[i].xpid == notification.xpid) {
+                    $scope.todaysNotifications.splice(i,1);
+                    break;
+                  }
+                }     
+             } else{
+                notification.label = 'you have ' +  todaysVms.length + ' new voicemail(s)';
+             }
 
-              getSingleVm().then(function(singleVmData){
-                 // single vm, attach to notification...
-                 notification.vm = singleVmData;
-                 if(newVms.length < 1){
-                    // 'title' property also provides # of old vms...
-                    notification.label = 'you have ' + notification.title + ' unread voicemail(s)';
-                    // remove from today
-                    for (var i = 0, len = $scope.todaysNotifications.length; i < len; i++){
-                      if ($scope.todaysNotifications[i].xpid == notification.xpid) {
-                        $scope.todaysNotifications.splice(i,1);
-                        break;
-                      }
-                    }     
-                 } else{
-                    notification.label = 'you have ' +  newVms.length + ' new voicemail(s)';
-                 }
+            // if displayname is a phone number -> add the hypens to make external notifications consistent...
+            if (notification.fullProfile == null && notification.displayName.split('').length == 10 && !isNaN(parseInt(notification.displayName)))
+              notification.displayName = notification.displayName.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
 
-                // if displayname is a phone number -> add the hypens to make external notifications consistent...
-                if (notification.fullProfile == null && notification.displayName.split('').length == 10 && !isNaN(parseInt(notification.displayName)))
-                  notification.displayName = notification.displayName.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-
-              });
-            });
-         });
+         });         
         break;
       case 'chat':
         notification.label = 'chat message';
