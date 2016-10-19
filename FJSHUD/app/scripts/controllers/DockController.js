@@ -211,16 +211,22 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 	});
 
+
 	// keep watch over phone registration and then display or delete dock gadget
 	$rootScope.$on('location_status_synced', function(event, data){
 
-
+		if(localStorage.EnableDockDownload == undefined )
+			localStorage.setItem("EnableDockDownload",true);
+		else
+			var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
 
 		phoneService.getLocationPromise().then(function(locationPromiseData){
-			var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+
+			 showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
 			for (var key in locationPromiseData){
 				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
 					webphoneIsRegistered = false;
+					showDockDownload = true;
 				} else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
 					webphoneIsRegistered = true;
 					showDockDownload = false;
@@ -238,12 +244,13 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			if (!webphoneIsRegistered && !hasDownload && showDockDownload){
 				makeDefaultSoftphone();
 			}
+		
 		});
 	});
 
 	$scope.$on("changeDockDownload",function(){
 		if(!webphoneIsRegistered){
-		var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"))
+		var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
 		if(showDockDownload){
 			makeDefaultSoftphone();
 		}
