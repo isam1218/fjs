@@ -225,7 +225,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			for (var key in locationPromiseData){
 				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
 					webphoneIsRegistered = false;
-					showDockDownload = true;
 				} else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
 					webphoneIsRegistered = true;
 					showDockDownload = false;
