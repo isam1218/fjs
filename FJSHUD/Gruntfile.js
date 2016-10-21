@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   var currentTime = getCurrentTime()
-    , buildNumber, WebphoneOSXNumber, WebphoneMSINumber, HUDnWebphoneOSXNumber, HUDnWebphoneMSINumber, ServerUrl, LoginUrl, PpsServer;
+    , buildNumber, WebphoneOSXNumber, WebphoneMSINumber, ServerUrl, LoginUrl, PpsServer;
   grunt.file.write('../hud-buildid/buildtimestamp.txt', currentTime);
 
   function getCurrentTime() {
@@ -50,31 +50,6 @@ module.exports = function(grunt) {
       }
     }
     return WebphoneOSXNumber;
-  }
-/*HUDn webphones*/
-/* hudn webphone msi version */
-  function getHUDnWebphoneMSINumber() {
-    if(!HUDnWebphoneMSINumber) {
-      try {
-        HUDnWebphoneMSINumber = grunt.file.read('../hudn_msi_number');
-      }
-      catch(e) {
-        HUDnWebphoneMSINumber = -1
-      }
-    }
-    return HUDnWebphoneMSINumber;
-  }
-/* hudn webphone osx version */
-  function getHUDnWebphoneOSXNumber() {
-    if(!HUDnWebphoneOSXNumber) {
-      try {
-        HUDnWebphoneOSXNumber = grunt.file.read('../hudn_osx_number');
-      }
-      catch(e) {
-        HUDnWebphoneOSXNumber = -1
-      }
-    }
-    return HUDnWebphoneOSXNumber;
   }
 /* server url */
   function getServerUrl() {
@@ -183,7 +158,7 @@ module.exports = function(grunt) {
               loginUrl:"https://auth.fonality.com",
               ppsServer: "https://pps.fonality.com:8443/pps/",
               version: "HUDW" + getBuildNumber(),
-			  BUILD_NUMBER: getBuildNumber(),
+			        BUILD_NUMBER: getBuildNumber(),
               WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
               MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
               WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
@@ -191,8 +166,6 @@ module.exports = function(grunt) {
               /*HUDN webphones*/
               HUDN_WINDOWS_PLUGIN:"webphone/hud_plugin_installer" + ".msi",
               HUDN_MAC_PLUGIN:"webphone/hud_plugin_installer" + ".pkg",
-              HUDN_WINDOWS_PLUGIN_VERSION: getHUDnWebphoneMSINumber(),
-              HUDN_MAC_PLUGIN_VERSION: getHUDnWebphoneOSXNumber(),
             }
           },
           files:{
@@ -206,7 +179,7 @@ module.exports = function(grunt) {
             loginUrl: getLoginUrl(),
             ppsServer: getPpsServer(),
             version: "HUDW" + getBuildNumber(),
-			BUILD_NUMBER: getBuildNumber(),
+			      BUILD_NUMBER: getBuildNumber(),
             WINDOWS_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneMSINumber() + ".msi",
             MAC_PLUGIN:"webphone/WebPhone-1.1.0" + getWebphoneOSXNumber() + ".pkg",
             WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
@@ -214,8 +187,6 @@ module.exports = function(grunt) {
             /*HUDN webphones*/
             HUDN_WINDOWS_PLUGIN:"webphone/hud_plugin_installer" + ".msi",
             HUDN_MAC_PLUGIN:"webphone/hud_plugin_installer" + ".pkg",
-            HUDN_WINDOWS_PLUGIN_VERSION: getHUDnWebphoneMSINumber(),
-            HUDN_MAC_PLUGIN_VERSION: getHUDnWebphoneOSXNumber(),
           }
         },
           files:{
@@ -238,8 +209,6 @@ module.exports = function(grunt) {
             /*HUDN webphones*/
             HUDN_WINDOWS_PLUGIN:"webphone/hud_plugin_installer" + ".msi",
             HUDN_MAC_PLUGIN:"webphone/hud_plugin_installer" + ".pkg",
-            HUDN_WINDOWS_PLUGIN_VERSION: getHUDnWebphoneMSINumber(),
-            HUDN_MAC_PLUGIN_VERSION: getHUDnWebphoneOSXNumber(),
           }
         },
           files:{

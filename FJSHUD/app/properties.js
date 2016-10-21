@@ -40,8 +40,6 @@ fjs.CONFIG = {
         WINDOWS_OLD:'5.17.008986',
         WINDOWS_NEW:'<%= WINDOWS_PLUGIN_VERSION %>',
         MAC_NEW:'<%= MAC_PLUGIN_VERSION %>',
-        WINDOWS_HUDN:'<%= HUDN_WINDOWS_PLUGIN_VERSION %>',
-        MAC_HUDN:'<%= HUDN_MAC_PLUGIN_VERSION %>'
     },
 	BUILD_NUMBER: '<%= BUILD_NUMBER %>',
     DEBUG:true,
