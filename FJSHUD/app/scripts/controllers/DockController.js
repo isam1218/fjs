@@ -203,6 +203,14 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		if (!hasParked)
 			makeDefault('GadgetParkedCalls');
 
+		// console.log('$scope.showDockDownload - ', $scope.showDockDownload);
+
+		if (!hasDownload)
+			makeDefaultSoftphone()
+
+		// check location and registration
+			// hide if registered or if localstorage says hide
+
 		// normal updates
 		$scope.$on('settings_updated', function(event, data) {
 			updateDock(data);
@@ -211,12 +219,62 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 	});
 
+	$scope.showDockDownload;
 
+	$rootScope.$on('location_status_synced', function(event, data){
+		
+		if(localStorage.EnableDockDownload == undefined ){
+			localStorage.setItem("EnableDockDownload",true);
+			$scope.showDockDownload = true;
+		}
+		else
+			$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+
+
+		phoneService.getLocationPromise().then(function(locationPromiseData){
+			for (var key in locationPromiseData){
+				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
+					// not registered -> display dock gadget
+					$scope.registered = false;
+				} else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
+					// registered -> don't display
+					$scope.registered = true;
+				}		
+			}
+		})
+	});
+
+	$scope.$on('changeDockDownload', function(){
+		// var showDockDownload = JSON.parse(localStorage.EnableDockDownload) 
+		// console.log('register - ', $scope.registered);
+		$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+		// console.log('showDockDownload - ', $scope.showDockDownload);
+	});
+
+	/*
+	var bob = document.getElementById('downloadWidget');
+	console.log('bob - ',bob);
+
+	var foo = document.getElementsByClassName('TallGadget');
+	console.log('foo - ', foo);
+
+	document.getElementsByClassName('TallGadget').visibility = 'hidden';
+	// document.getElementsByClassName('TallGadget')[0].parentElement.visibility = 'hidden';
+
+	console.log('a 0 ', document.getElementsByClassName('TallGadget'));
+	document.getElementsByClassName('TallGadget');
+	*/
+
+	// console.log('dockGadget - ', dockGadget);
+
+	/*
 	// keep watch over phone registration and then display or delete dock gadget
 	$rootScope.$on('location_status_synced', function(event, data){
 
-		if(localStorage.EnableDockDownload == undefined )
+		if(localStorage.EnableDockDownload == undefined ){
 			localStorage.setItem("EnableDockDownload",true);
+			var showDockDownload = true;
+		}
 		else
 			var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
 
@@ -245,19 +303,38 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		
 		});
 	});
+	*/
 
+	
+	/*
 	$scope.$on("changeDockDownload",function(){
 		if(!webphoneIsRegistered){
-		var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
-		if(showDockDownload){
-			makeDefaultSoftphone();
+			var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+			hasDownload = false;
+			$scope.showDockDownload = showDockDownload;
+
+			for (var j = 0; j < $scope.gadgets.length; j++){
+				if ($scope.gadgets[j].value.factoryId == 'GadgetHudSoftphoneDownload'){
+					hasDownload = true;
+				}
+				if ( $scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && !showDockDownload ){
+					deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
+				}
+			}
+			if (!webphoneIsRegistered && !hasDownload && showDockDownload){
+				makeDefaultSoftphone();
+			}
+
+			// if(showDockDownload){
+			// 	makeDefaultSoftphone();
+			// }
+			// else{
+			// 	deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
+			// }
 		}
-		else{
-			deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
-		}
-	}
 
 	});
+	*/
 
 	$scope.getDroppableType = function(type) {
 		if (type == 'GadgetConferenceRoom')
