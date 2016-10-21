@@ -204,7 +204,7 @@
 			</div>
 		</div>
 
-	<div ng-if="::gadget.value.factoryId == 'GadgetHudSoftphoneDownload'" class="Header HudSoftphoneDownloadGadget">
+	<div ng-if="::gadget.value.factoryId == 'GadgetHudSoftphoneDownload'" ng-show="showDockDownload && !registered" class="Header HudSoftphoneDownloadGadget" id="downloadWidget">
 			<div class="HudSoftphoneDownloadGadgetHeader" style="">
 				Download the HUD Softphone.
 			</div>
