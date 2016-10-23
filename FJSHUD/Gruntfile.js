@@ -164,8 +164,8 @@ module.exports = function(grunt) {
               WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
               MAC_PLUGIN_VERSION:"1.1.0" + getWebphoneOSXNumber(),
               /*HUDN webphones*/
-              HUDN_WINDOWS_PLUGIN:"webphone/hud_plugin_installer" + ".msi",
-              HUDN_MAC_PLUGIN:"webphone/hud_plugin_installer" + ".pkg",
+              HUDN_WINDOWS_PLUGIN:"webphone/native/hud_plugin_installer" + ".msi",
+              HUDN_MAC_PLUGIN:"webphone/native/hud_plugin_installer" + ".pkg",
             }
           },
           files:{
@@ -185,8 +185,8 @@ module.exports = function(grunt) {
             WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
             MAC_PLUGIN_VERSION:"1.1.0" + getWebphoneOSXNumber(),
             /*HUDN webphones*/
-            HUDN_WINDOWS_PLUGIN:"webphone/hud_plugin_installer" + ".msi",
-            HUDN_MAC_PLUGIN:"webphone/hud_plugin_installer" + ".pkg",
+            HUDN_WINDOWS_PLUGIN:"webphone/native/hud_plugin_installer" + ".msi",
+            HUDN_MAC_PLUGIN:"webphone/native/hud_plugin_installer" + ".pkg",
           }
         },
           files:{
@@ -207,8 +207,8 @@ module.exports = function(grunt) {
             WINDOWS_PLUGIN_VERSION:"1.1.0" + getWebphoneMSINumber(),
             MAC_PLUGIN_VERSION:"1.1.0" + getWebphoneOSXNumber(),
             /*HUDN webphones*/
-            HUDN_WINDOWS_PLUGIN:"webphone/hud_plugin_installer" + ".msi",
-            HUDN_MAC_PLUGIN:"webphone/hud_plugin_installer" + ".pkg",
+            HUDN_WINDOWS_PLUGIN:"webphone/native/hud_plugin_installer" + ".msi",
+            HUDN_MAC_PLUGIN:"webphone/native/hud_plugin_installer" + ".pkg",
           }
         },
           files:{
