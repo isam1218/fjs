@@ -218,36 +218,42 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 	});
 
 	$scope.showDockDownload;
+	$rootScope.$broadcast('changeDockDownload');
 
 	$rootScope.$on('location_status_synced', function(event, data){
-		
-		if(localStorage.EnableDockDownload == undefined ){
-			localStorage.setItem("EnableDockDownload",true);
-			$scope.showDockDownload = true;
-			setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
-		}
-		else{
-			$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
-			if($scope.showDockDownload == true)
-			setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
-			else
-			setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},5000);
-
-		}
-
 
 		phoneService.getLocationPromise().then(function(locationPromiseData){
+		
+
+
+		
 			for (var key in locationPromiseData){
 				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
 					// not registered -> display dock gadget
 					$scope.registered = false;
+					$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+						
 
 					
 				} else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
 					// registered -> don't display
 					$scope.registered = true;
+					$scope.showDockDownload = false;
+					setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},3000);
 
-				}		
+				}
+
+				if($scope.showDockDownload == true)
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},3000);
+						else
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},3000);
+
+				if(localStorage.EnableDockDownload == undefined ){
+					localStorage.setItem("EnableDockDownload",true);
+					$scope.showDockDownload = true;
+					setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},3000);
+					}
+		
 			}
 		})
 	});
