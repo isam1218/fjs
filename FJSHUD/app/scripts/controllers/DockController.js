@@ -23,6 +23,18 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		};
 	}
 
+	$scope.filterDownloadGadget = function(){
+		return function(item){
+
+			if((item.value.factoryId == 'GadgetHudSoftphoneDownload' && $rootScope.showDockDownload && !$rootScope.registered) || item.value.factoryId != 'GadgetHudSoftphoneDownload')
+				return true;
+			else
+				return false;
+
+            return true;
+		};
+	}
+
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
 		request = data.xhr;
@@ -217,7 +229,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 	});
 
-	$scope.showDockDownload;
 	$rootScope.$broadcast('changeDockDownload');
 
 	$rootScope.$on('location_status_synced', function(event, data){
@@ -230,44 +241,35 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			for (var key in locationPromiseData){
 				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
 					// not registered -> display dock gadget
-					$scope.registered = false;
-					$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+					$rootScope.registered = false;
+					$rootScope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
 						
 
 					
 				} else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
 					// registered -> don't display
-					$scope.registered = true;
-					$scope.showDockDownload = false;
-					setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},3000);
+					$rootScope.registered = true;
+					$rootScope.showDockDownload = false;
+
 
 				}
 
-				if($scope.showDockDownload == true)
-						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},3000);
-						else
-						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},3000);
-
-				if(localStorage.EnableDockDownload == undefined ){
+				if(localStorage.EnableDockDownload == undefined){
 					localStorage.setItem("EnableDockDownload",true);
-					$scope.showDockDownload = true;
-					setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},3000);
-					}
+					$rootScope.showDockDownload = true;
+				}
+
+
+
 		
 			}
 		})
 	});
 
-	$scope.$on('changeDockDownload', function(){
+	$scope.$on('changeDockDownload', function(event,data){
 
-		$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
-		if($scope.showDockDownload == false){
-			document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden';
+		$rootScope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
 
-		}
-		else{
-			document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible';
-		}
 	});
 
 
