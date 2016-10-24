@@ -11,10 +11,10 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 	$rootScope.dockIndex = 0;
 
-	$scope.filterQueues = function()
+	$scope.filterGadget = function()
 	{
 		return function(item){
-			if((item.value.factoryId == 'GadgetUserQueues' && $rootScope.in_queue && $rootScope.showCallCenter) || (item.value.factoryId == 'GadgetQueueStat' && $rootScope.showCallCenter) || item.value.factoryId != 'GadgetUserQueues' && item.value.factoryId != 'GadgetQueueStat')
+			if(((item.value.factoryId == 'GadgetUserQueues' && $rootScope.in_queue && $rootScope.showCallCenter) || (item.value.factoryId == 'GadgetQueueStat' && $rootScope.showCallCenter) || item.value.factoryId != 'GadgetUserQueues' && item.value.factoryId != 'GadgetQueueStat') && ((item.value.factoryId == 'GadgetHudSoftphoneDownload' && $rootScope.showDockDownload && !$rootScope.registered) || item.value.factoryId != 'GadgetHudSoftphoneDownload'))
 				return true;
 			else
 				return false;
@@ -23,17 +23,6 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		};
 	}
 
-	$scope.filterDownloadGadget = function(){
-		return function(item){
-
-			if((item.value.factoryId == 'GadgetHudSoftphoneDownload' && $rootScope.showDockDownload && !$rootScope.registered) || item.value.factoryId != 'GadgetHudSoftphoneDownload')
-				return true;
-			else
-				return false;
-
-            return true;
-		};
-	}
 
 	httpService.get_upload_progress().then(function(data){
 		$scope.upload_progress = data.progress;
