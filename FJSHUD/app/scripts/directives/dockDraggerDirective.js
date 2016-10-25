@@ -1,4 +1,4 @@
-hudweb.directive('dragger', ['HttpService', function(httpService) {
+hudweb.directive('dragger', ['HttpService','SettingsService', function(httpService,settingsService) {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
@@ -64,7 +64,15 @@ hudweb.directive('dragger', ['HttpService', function(httpService) {
 							name: scope.gadget.name,
 							value: JSON.stringify(scope.gadget.value)
 						});
+
+
 					}
+					
+				}
+			});
+			settingsService.getSettings().then(function(data){
+				if(data.use_column_layout == "true"){
+					$(element).draggable('disable');
 				}
 			});
 		}
