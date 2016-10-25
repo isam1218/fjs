@@ -224,50 +224,56 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 		phoneService.getLocationPromise().then(function(locationPromiseData){
 		
-
-
-		
 			for (var key in locationPromiseData){
 				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
 					// not registered -> display dock gadget
 					$scope.registered = false;
 					$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
 						
-
-					
 				} else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
 					// registered -> don't display
 					$scope.registered = true;
 					$scope.showDockDownload = false;
-					setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},3000);
-
+					if (document.getElementsByClassName('TallGadget')[0])
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible';
+					else
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
 				}
 
-				if($scope.showDockDownload == true)
-						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},3000);
-						else
-						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},3000);
+				if($scope.showDockDownload == true){
+					if (document.getElementsByClassName('TallGadget')[0])
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible';	
+					else
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
+				}
+				else{
+					if (document.getElementsByClassName('TallGadget')[0])
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden';
+					else
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},5000);
+				}
 
 				if(localStorage.EnableDockDownload == undefined ){
 					localStorage.setItem("EnableDockDownload",true);
 					$scope.showDockDownload = true;
-					setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},3000);
+					if (document.getElementsByClassName('TallGadget')[0])
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'
+					else
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
 					}
 		
 			}
+			
 		})
+
 	});
 
 	$scope.$on('changeDockDownload', function(){
-
 		$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
-		if($scope.showDockDownload == false){
+		if($scope.showDockDownload == false)
 			document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden';
-
-		}
-		else{
+		else
 			document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible';
-		}
 	});
 
 
