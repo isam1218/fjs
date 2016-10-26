@@ -256,18 +256,23 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 				if(!$scope.registered && localStorage.EnableDockDownload == undefined ){
 					localStorage.setItem("EnableDockDownload",true);
 					$scope.showDockDownload = true;
-					if (document.getElementsByClassName('TallGadget')[0])
+					if (document.getElementsByClassName('TallGadget')[0]){
 						document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'
-					else
+					}
+					else{
 						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
 					}
+				}
 				else if($scope.registered && localStorage.EnableDockDownload == undefined ){
-					localStorage.setItem("EnableDockDownload",false);
+					// set localstorage to true because want to default the display setting to true once softphone is loaded
+					localStorage.setItem("EnableDockDownload",true);
 					$scope.showDockDownload = false;
-					if (document.getElementsByClassName('TallGadget')[0])
+					if (document.getElementsByClassName('TallGadget')[0]){
 						document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'
-					else
+					}
+					else{
 						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},5000);
+					}
 					
 				}
 		
