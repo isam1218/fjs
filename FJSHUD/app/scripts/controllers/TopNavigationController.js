@@ -102,11 +102,12 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 					$scope.appIcons[i].enabled = data.showVideoCollab;
 				else if ($scope.appIcons[i].key == 'CallCenter')
 					$scope.appIcons[i].enabled = data.showCallCenter;
-        else if ($scope.appIcons[i].key == 'Inphonex')
-          $scope.appIcons[i].enabled = data.showInphonex;
+        // else if ($scope.appIcons[i].key == 'Inphonex')
+        //   $scope.appIcons[i].enabled = data.showInphonex;
 			}
 		});
 	});	
+  // ^ HOTFIX HUDF-2153: suppressed inphonex icon by commenting out above code ^
 
 	$scope.checkEmail = function(key,url){
 			

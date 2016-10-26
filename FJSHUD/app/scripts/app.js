@@ -121,11 +121,12 @@ hudweb.config(function ($routeProvider, $compileProvider, $httpProvider,$analyti
 			templateUrl: 'views/Zipwhip.html',
 			controller: 'ZipwhipController'
 		})
-		.when('/callanalytics',
-		{
-			templateUrl: 'views/Inphonex.html',
-			controller: 'InphonexController'
-		})
+		// .when('/callanalytics',
+		// {
+		// 	templateUrl: 'views/Inphonex.html',
+		// 	controller: 'InphonexController'
+		// })
+		// ^ HOTFIX HUDF-2153: suppressed inphonex icon by commenting out above code ^
 		.otherwise({
 			redirectTo: '/settings'
 		});
