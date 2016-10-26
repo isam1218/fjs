@@ -17,6 +17,43 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.settings = {};
     $scope.currentDevices = {};
 	// listens for route param to populate current call object
+
+    settingsService.getSettings().then(function(data) {
+        // grab settings from service (prevents conflict with dock)
+        $scope.settings = settings = data;
+        update_settings();
+
+        // localstorage logic
+        $scope.globalXpid = $rootScope.myPid;
+
+    });
+
+   $scope.$on('settings_updated',function(event,data){
+        if (data){
+            $scope.settings = settings = data;
+            update_settings();
+        }
+    });
+
+       var update_settings = function(){
+        if($scope.meModel.my_jid){
+            $scope.meModel.login = $scope.meModel.my_jid.split("@")[0];
+            $scope.meModel.server = $scope.meModel.my_jid.split("@")[1];
+        }
+        if ($scope.meModel.my_department){
+            var myDept = groupService.getGroup($scope.meModel.my_department);
+            if (myDept)
+                $scope.meModel.department = myDept.name;
+        }
+
+        if(settings){
+
+            $scope.volume.micVolume = parseFloat(settings['hudmw_webphone_mic']);
+            $scope.volume.spkVolume = parseFloat(settings['hudmw_webphone_speaker']);
+
+        }
+    };
+
 	$scope.$on('$routeChangeSuccess', function() {
 		$scope.currentCall = phoneService.getCallDetail(callId);
 
@@ -311,7 +348,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
             }
         });
         if($scope.volume.micVolume == 0){
-            $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
+            $scope.update_settings('hudmw_webphone_mic','update',$scope.volume.micVolume);
         }
         
         var personBeingTransferred = $scope.currentCall.fullProfile ? $scope.currentCall.fullProfile : $scope.currentCall;
@@ -728,7 +765,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     $scope.muteCall = function(){
        if($scope.volume.micVolume == 0){
-            $scope.update_settings('hudmw_webphone_mic','update',$rootScope.volume.mic);
+            $scope.update_settings('hudmw_webphone_mic','update',$scope.volume.micVolume);
 
         }else{
             $rootScope.volume.mic = angular.copy($scope.volume.micVolume);
@@ -744,11 +781,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         switch(type){
             case 'hudmw_webphone_mic':
                 myHttpService.updateSettings(type,action,model);
-                phoneService.setMicSensitivity(model);
                 break;
             case 'hudmw_webphone_speaker':
                 myHttpService.updateSettings(type,action,model);
-                phoneService.setVolume(model);
                 break;
             default:
                 myHttpService.updateSettings(type,action,model);
@@ -761,7 +796,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
      $scope.silentSpk = function(){
         if($scope.volume.spkVolume == 0){
-             $scope.update_settings('hudmw_webphone_speaker','update',$rootScope.volume.spk);
+             $scope.update_settings('hudmw_webphone_speaker','update',$scope.volume.spkVolume);
         }else{
             $rootScope.volume.spk = angular.copy($scope.volume.spkVolume);
             $scope.update_settings('hudmw_webphone_speaker','update',0);
