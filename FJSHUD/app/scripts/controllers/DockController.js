@@ -235,9 +235,9 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					$scope.registered = true;
 					$scope.showDockDownload = false;
 					if (document.getElementsByClassName('TallGadget')[0])
-						document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible';
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden';
 					else
-						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},5000);
 				}
 
 				if($scope.showDockDownload == true){
@@ -253,7 +253,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},5000);
 				}
 
-				if(localStorage.EnableDockDownload == undefined ){
+				if(!$scope.registered && localStorage.EnableDockDownload == undefined ){
 					localStorage.setItem("EnableDockDownload",true);
 					$scope.showDockDownload = true;
 					if (document.getElementsByClassName('TallGadget')[0])
@@ -261,12 +261,22 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					else
 						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
 					}
+				else if($scope.registered && localStorage.EnableDockDownload == undefined ){
+					localStorage.setItem("EnableDockDownload",false);
+					$scope.showDockDownload = false;
+					if (document.getElementsByClassName('TallGadget')[0])
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'
+					else
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},5000);
+					
+				}
 		
 			}
 			
 		})
 
 	});
+
 
 	$scope.$on('changeDockDownload', function(){
 		$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
