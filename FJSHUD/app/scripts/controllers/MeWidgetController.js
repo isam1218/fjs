@@ -11,6 +11,9 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     var weblauncherTimeout;
     var timer;
     var text;
+    var micVol;
+    var spkVol;
+
     $scope.sortType = "Date";
     $scope.avatar ={};
     $scope.phoneType = false;
@@ -27,32 +30,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.globalXpid = $rootScope.myPid;
 
     });
-
-   $scope.$on('settings_updated',function(event,data){
-        if (data){
-            $scope.settings = settings = data;
-            update_settings();
-        }
-    });
-
-       var update_settings = function(){
-        if($scope.meModel.my_jid){
-            $scope.meModel.login = $scope.meModel.my_jid.split("@")[0];
-            $scope.meModel.server = $scope.meModel.my_jid.split("@")[1];
-        }
-        if ($scope.meModel.my_department){
-            var myDept = groupService.getGroup($scope.meModel.my_department);
-            if (myDept)
-                $scope.meModel.department = myDept.name;
-        }
-
-        if(settings){
-
-            $scope.volume.micVolume = parseFloat(settings['hudmw_webphone_mic']);
-            $scope.volume.spkVolume = parseFloat(settings['hudmw_webphone_speaker']);
-
-        }
-    };
 
 	$scope.$on('$routeChangeSuccess', function() {
 		$scope.currentCall = phoneService.getCallDetail(callId);
@@ -764,12 +741,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.canTransferFrom = settingsService.getPermission('canTransferFrom');
 
     $scope.muteCall = function(){
-       if($scope.volume.micVolume == 0){
-            $scope.update_settings('hudmw_webphone_mic','update',$scope.volume.micVolume);
+        
+       if($scope.volume.micVolume != 0){
+         micVol = $scope.volume.micVolume;
+            $scope.update_settings('hudmw_webphone_mic','update',0);
 
         }else{
-            $rootScope.volume.mic = angular.copy($scope.volume.micVolume);
-            $scope.update_settings('hudmw_webphone_mic','update',0);
+            //$rootScope.volume.mic = angular.copy($scope.volume.micVolume);
+            $scope.update_settings('hudmw_webphone_mic','update',micVol);
        }
     };
 
@@ -795,13 +774,33 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
      $scope.silentSpk = function(){
-        if($scope.volume.spkVolume == 0){
-             $scope.update_settings('hudmw_webphone_speaker','update',$scope.volume.spkVolume);
+        if($scope.volume.spkVolume != 0){
+            spkVol = $scope.volume.spkVolume;
+             $scope.update_settings('hudmw_webphone_speaker','update',0);
         }else{
-            $rootScope.volume.spk = angular.copy($scope.volume.spkVolume);
-            $scope.update_settings('hudmw_webphone_speaker','update',0);
+            $scope.update_settings('hudmw_webphone_speaker','update',spkVol);
          }
      };
+
+    var update_settings = function(){
+        if($scope.meModel.my_jid){
+            $scope.meModel.login = $scope.meModel.my_jid.split("@")[0];
+            $scope.meModel.server = $scope.meModel.my_jid.split("@")[1];
+        }
+        if ($scope.meModel.my_department){
+            var myDept = groupService.getGroup($scope.meModel.my_department);
+            if (myDept)
+                $scope.meModel.department = myDept.name;
+        }
+
+        if(settings){
+
+            $scope.volume.micVolume = parseFloat(settings['hudmw_webphone_mic']);
+            
+            $scope.volume.spkVolume = parseFloat(settings['hudmw_webphone_speaker']);
+            
+        }
+    };
 
     var updateTime = function() {
         if ($scope.currentCall && $scope.currentCall.startedAt) {
@@ -817,6 +816,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
         }
     };
+
+
+    $scope.$on('settings_updated',function(event,data){
+        if (data){
+            $scope.settings = settings = data;
+            update_settings();
+        }
+    });
 
     $scope.$on('make_phone_call',function(event,data){
         $scope.callKeyPress(data);        
