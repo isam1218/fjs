@@ -203,6 +203,12 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 		if (!hasParked)
 			makeDefault('GadgetParkedCalls');
 
+
+		if (!hasDownload){
+			makeDefaultSoftphone()
+		}
+
+
 		// normal updates
 		$scope.$on('settings_updated', function(event, data) {
 			updateDock(data);
@@ -211,53 +217,80 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 
 	});
 
+	$scope.showDockDownload;
+	$rootScope.$broadcast('changeDockDownload');
 
-	// keep watch over phone registration and then display or delete dock gadget
 	$rootScope.$on('location_status_synced', function(event, data){
 
-		if(localStorage.EnableDockDownload == undefined )
-			localStorage.setItem("EnableDockDownload",true);
-		else
-			var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
-
 		phoneService.getLocationPromise().then(function(locationPromiseData){
-
+		
 			for (var key in locationPromiseData){
 				if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "u"){
-					webphoneIsRegistered = false;
+					// not registered -> display dock gadget
+					$scope.registered = false;
+					$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+						
 				} else if (locationPromiseData[key].name == "HUD Web Softphone" && locationPromiseData[key].status.deviceStatus == "r"){
-					webphoneIsRegistered = true;
-					showDockDownload = false;
+					// registered -> don't display
+					$scope.registered = true;
+					$scope.showDockDownload = false;
+					if (document.getElementsByClassName('TallGadget')[0])
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden';
+					else
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},5000);
 				}
-			}
-			hasDownload = false;
-			for (var j = 0; j < $scope.gadgets.length; j++){
-				if ($scope.gadgets[j].value.factoryId == 'GadgetHudSoftphoneDownload'){
-					hasDownload = true;
+
+				if($scope.showDockDownload == true){
+					if (document.getElementsByClassName('TallGadget')[0])
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible';	
+					else
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
 				}
-				if ( (($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" && webphoneIsRegistered) || ($scope.gadgets[j].name == "GadgetConfig__empty_GadgetHudSoftphoneDownload_" ))&& !showDockDownload ){
-					deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
+				else{
+					if (document.getElementsByClassName('TallGadget')[0])
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden';
+					else
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},5000);
 				}
-			}
-			if (!webphoneIsRegistered && !hasDownload && showDockDownload){
-				makeDefaultSoftphone();
-			}
+
+				if(!$scope.registered && localStorage.EnableDockDownload == undefined ){
+					localStorage.setItem("EnableDockDownload",true);
+					$scope.showDockDownload = true;
+					if (document.getElementsByClassName('TallGadget')[0]){
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'
+					}
+					else{
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible'},5000);
+					}
+				}
+				else if($scope.registered && localStorage.EnableDockDownload == undefined ){
+					// set localstorage to true because want to default the display setting to true once softphone is loaded
+					localStorage.setItem("EnableDockDownload",true);
+					$scope.showDockDownload = false;
+					if (document.getElementsByClassName('TallGadget')[0]){
+						document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'
+					}
+					else{
+						setTimeout(function(){document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden'},5000);
+					}
+					
+				}
 		
-		});
-	});
-
-	$scope.$on("changeDockDownload",function(){
-		if(!webphoneIsRegistered){
-		var showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
-		if(showDockDownload){
-			makeDefaultSoftphone();
-		}
-		else{
-			deleteGadget('GadgetConfig__empty_GadgetHudSoftphoneDownload_');
-		}
-	}
+			}
+			
+		})
 
 	});
+
+
+	$scope.$on('changeDockDownload', function(){
+		$scope.showDockDownload = JSON.parse(localStorage.getItem("EnableDockDownload"));
+		if($scope.showDockDownload == false)
+			document.getElementsByClassName('TallGadget')[0].style.visibility = 'hidden';
+		else
+			document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible';
+	});
+
 
 	$scope.getDroppableType = function(type) {
 		if (type == 'GadgetConferenceRoom')
