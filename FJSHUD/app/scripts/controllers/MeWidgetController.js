@@ -741,13 +741,16 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     $scope.canTransferFrom = settingsService.getPermission('canTransferFrom');
 
     $scope.muteCall = function(){
-        
+
        if($scope.volume.micVolume != 0){
          micVol = $scope.volume.micVolume;
             $scope.update_settings('hudmw_webphone_mic','update',0);
 
-        }else{
-            //$rootScope.volume.mic = angular.copy($scope.volume.micVolume);
+        }
+        else if(micVol == undefined && $scope.volume.micVolume == 0){
+            $scope.update_settings('hudmw_webphone_mic','update',0.5);
+        }
+        else{
             $scope.update_settings('hudmw_webphone_mic','update',micVol);
        }
     };
@@ -774,24 +777,21 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     };
 
      $scope.silentSpk = function(){
+
         if($scope.volume.spkVolume != 0){
             spkVol = $scope.volume.spkVolume;
              $scope.update_settings('hudmw_webphone_speaker','update',0);
-        }else{
+        }
+        else if(spkVol == undefined && $scope.volume.spkVolume == 0){
+
+            $scope.update_settings('hudmw_webphone_speaker','update',0.5);
+        }
+        else {
             $scope.update_settings('hudmw_webphone_speaker','update',spkVol);
          }
      };
 
     var update_settings = function(){
-        if($scope.meModel.my_jid){
-            $scope.meModel.login = $scope.meModel.my_jid.split("@")[0];
-            $scope.meModel.server = $scope.meModel.my_jid.split("@")[1];
-        }
-        if ($scope.meModel.my_department){
-            var myDept = groupService.getGroup($scope.meModel.my_department);
-            if (myDept)
-                $scope.meModel.department = myDept.name;
-        }
 
         if(settings){
 
