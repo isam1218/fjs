@@ -137,11 +137,11 @@ hudweb.directive('avatar', ['$rootScope', '$parse', '$timeout', 'SettingsService
 			
 			// set up watchers for avatars that may change
 			if (widget == 'callstatus') {
-				scope.$watch(attrs.profile, function (newObj, oldObj) {
+				scope.$watchCollection(attrs.profile, function (newObj, oldObj) {
 					if (newObj && newObj != oldObj) {
 						element.html(getAvatar(newObj.fullProfile ? newObj.fullProfile : newObj));
 						
-						if (newObj.type && newObj.type != oldObj.type) {
+						if (newObj.type && (!oldObj || newObj.type != oldObj.type)) {
 							var classy = 'Call_';
 							
 							switch(parseInt(newObj.type)) {
