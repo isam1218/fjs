@@ -642,6 +642,9 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		httpService.sendAction('mycalls', 'transferTo', {mycallId: xpid, toNumber: number});
 	};
 
+	var receivedChatSound = new Audio('res/audio/received.mp3');
+	var sentChatSound = new Audio('res/audio/sent.mp3');
+
 	//look for audio tag and play sound based on key
 	this.playSound = function(sound_key){
 		if (settingsService.getSetting('hudmw_chat_sounds') == "true"){
@@ -651,16 +654,14 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				case 'received':
 					if($rootScope.meModel.chat_status != "dnd"){
 						if(settingsService.getSetting('hudmw_chat_sound_received') ==  "true"){
-							audio = new Audio('res/audio/received.mp3');
-							audio.play();
+							receivedChatSound.play();
 						}
 					}
 					
 					break;
 				case 'sent':
 					if(settingsService.getSetting('hudmw_chat_sound_sent') ==  "true"){
-						audio = new Audio('res/audio/sent.mp3');
-						audio.play();
+						sentChatSound.play();
 					}
 					
 					break;
