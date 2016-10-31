@@ -118,7 +118,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 
   $scope.openPreferences = function(){
     $modal.open({
-      animation: $scope.animationsEnabled,
+      animation: true,
       templateUrl: 'views/Preferences.html',
       controller: 'PreferencesController',
       size: 'preferences'
@@ -130,7 +130,7 @@ hudweb.controller('TopNavigationController', ['$rootScope', '$scope', 'windowDim
 		if(($rootScope.meModel.email == "" || $rootScope.meModel.email == undefined) && (key === "Zoom" && key != "Box") && (url === '#/zoom' && url != '#/box')){
 		
 		$modal.open({
-      animation: $scope.animationsEnabled,
+      animation: true,
       templateUrl: 'emailCheck.html',
       controller: 'emailCheckController',
       size: 'lg',
