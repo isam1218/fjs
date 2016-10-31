@@ -162,6 +162,16 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 			return txt.substring(0, 130) + '...';
 	};
 	
+	$scope.getNumber = function(vm) {
+		// display nice-looking number
+		if (vm.fullProfile && vm.fullProfile.primaryExtension)
+			return vm.fullProfile.primaryExtension;
+		else if (vm.displayName != vm.phone.replace(/\D/g, ''))
+			return vm.phone;
+		else
+			return '';
+	};
+	
 	// button actions //
     $scope.callExtension = function(contact) {
         ga('send', 'event', {eventCategory:'Calls', eventAction:'Place', eventLabel: "Calls/Recordings - Voicemail - Call"});
