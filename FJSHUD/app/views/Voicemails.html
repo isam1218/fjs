@@ -27,9 +27,9 @@
 		
 		<div class="body">
 			<div class="info">
-				<div class="name">
-					{{::verbage.from}}
-					<span ng-bind-html="::voicemail.displayName"></span>
+				<div class="data">
+					<div class="name" ng-bind-html="::voicemail.displayName"></div>
+					<div class="number" ng-bind-html="::getNumber(voicemail)"></div>
 				</div>
 				<div class="time">
 					<div class="date">{{ ::voicemail.date | fondate: 'full' }}</div>

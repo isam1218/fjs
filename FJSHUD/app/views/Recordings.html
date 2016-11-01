@@ -15,9 +15,8 @@
 			
 			<div class="body recording">
 				<div class="info">
-					<div class="name">
-						{{::verbage.from}}
-						<span ng-bind-html="::recording.fullProfile.displayName || recording.fullProfile.name || recording.calleePhone"></span>
+					<div class="data">
+						<div class="name" ng-bind-html="::recording.fullProfile.displayName || recording.fullProfile.name || recording.calleePhone"></div>
 					</div>
 					<div class="time">
 						<div class="date">{{ ::recording.created | fondate: 'full' }}</div>
