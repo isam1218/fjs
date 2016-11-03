@@ -501,9 +501,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         });
         $scope.changeWarmButton = true;
         $scope.transferComponent = true;
-        // add 3rd party (last leg of warm transfer) to warm-transfer-initiater's (User A's) recent's tab
-        if ($scope.transferToDisplayName.xpid)
-            storageService.saveRecent('contact', $scope.transferToDisplayName.xpid);
     };
 
     // finalizes warm transfer by calling new API (this would be the last action by the user to complete wt)
@@ -586,6 +583,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                     }
                 }
             }
+
         }
     });
 

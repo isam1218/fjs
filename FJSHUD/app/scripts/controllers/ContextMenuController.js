@@ -321,7 +321,6 @@ hudweb.controller('ContextMenuController', ['$rootScope', '$scope', '$sce', '$ti
 			if(action != 'callLater')
 			phoneService.holdCalls();
 			httpService.sendAction('contacts', action, {toContactId: $scope.profile.xpid});
-			storageService.saveRecent('contact', $scope.profile.xpid);
 		}
 	};
 

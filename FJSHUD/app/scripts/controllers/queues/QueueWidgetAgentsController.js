@@ -55,8 +55,6 @@ hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'Queue
     $event.preventDefault();
     phoneService.holdCalls();
     httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
-
-    storageService.saveRecent('contact', contact.xpid);
   };
 
   $scope.showCallStatus = function($event, contact) {

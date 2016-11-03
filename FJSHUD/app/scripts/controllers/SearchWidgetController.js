@@ -139,7 +139,6 @@ hudweb.controller('SearchWidgetController', ['$scope', '$rootScope', '$timeout',
 			$event.preventDefault();
 			phoneService.holdCalls();	  
 	    httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
-	    storageService.saveRecent('contact', contact.xpid);
     };
 	
 	$scope.getOwner = function(group) {

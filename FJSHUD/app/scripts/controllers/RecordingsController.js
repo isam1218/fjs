@@ -148,7 +148,6 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 			else if (rec.calleeUserId && rec.calleeUserId != $rootScope.myPid)
 				phoneService.makeCall(rec.calleePhone)
 		}
-		storageService.saveRecent('contact', rec.fullProfile.xpid);
 	};
 	
 	$scope.deleteFile = function(rec) {

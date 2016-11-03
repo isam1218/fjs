@@ -27,7 +27,6 @@ hudweb.controller('GroupSingleMembersController', ['$scope', '$rootScope', '$rou
      $event.preventDefault();
      phoneService.holdCalls();
 	   httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
-	   storageService.saveRecent('contact', contact.xpid);
   };
 
   $scope.showCallStatus = function($event, contact) {

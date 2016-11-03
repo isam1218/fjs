@@ -783,6 +783,8 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 		}
 	});
 
+	var recentCalls = {};
+
 	$rootScope.$on("mycalls_synced",function(event,data){
 		if(data){
 			var i = 0;
@@ -797,8 +799,18 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 
 					if(call){
 						//delete sipCalls[callsDetails[data[i].xpid].sipId];
+
+						// delete call from recents obj when call ends so that no repeat additions
+						if (callsDetails[data[i].xpid].contactId){
+							delete recentCalls[callsDetails[data[i].xpid].contactId];
+						}
+						else if (callsDetails[data[i].xpid].details && callsDetails[data[i].xpid].details.conferenceId){
+							delete recentCalls[callsDetails[data[i].xpid].details.conferenceId];
+						}
+
 						sip_calls_to_delete.push(callsDetails[data[i].xpid].sipId);
 						delete callsDetails[data[i].xpid];
+
 					}
 
 				}else{
@@ -818,7 +830,15 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 					if(data[i].contactId){
 						callsDetails[data[i].xpid].fullProfile =  contactService.getContact(data[i].contactId);
 					}	
+
+					// add call to recents
+					if (callsDetails[data[i].xpid].contactId)
+						var tempId = callsDetails[data[i].xpid].contactId;
+					else if (callsDetails[data[i].xpid].details && callsDetails[data[i].xpid].details.conferenceId)
+						var tempId = 	callsDetails[data[i].xpid].details.conferenceId;
 					
+					recentCalls[tempId] = callsDetails[data[i].xpid];
+
 					// launch web task on final answer?
 					if (data[i].state == fjs.CONFIG.CALL_STATES.CALL_ACCEPTED && weblauncher[data[i].htCallId]) {
 						launchWebTask(weblauncher[data[i].htCallId]);
@@ -843,12 +863,14 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
 				}
 			}
 		}
-		// checking for just data[0].incoming doesn't take into account delete flags...
-		for (var j = 0; j < data.length; j++){
-			// need to loop thru mycalls (storageService takes care of duplicates for us)
-			if (data[j].incoming){
-				// if an incoming call -> save to recents
-				storageService.saveRecent('contact', data[j].contactId);
+		for (var key in recentCalls){
+			// loop thru recentCalls object and save to recent...
+			if (recentCalls[key].contactId){
+				storageService.saveRecent('contact', recentCalls[key].contactId);
+			}
+			else if (recentCalls[key].displayName.indexOf('Conference') != -1){
+				if (recentCalls[key].details)
+					storageService.saveRecent('conference', recentCalls[key].details.conferenceId);
 			}
 		}
 
