@@ -669,11 +669,18 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
         }
     });
 
+
     $scope.$on('i18n_langs_synced',function(event,data){
 		if(data){
 			var language_id;
 			var default_language;
-			$scope.languages = data;
+            $scope.languages = [];
+            // filter language-options down to only English and Japanese (HUDF-2183)...
+            $scope.languages = data.filter(function(item){
+                if (item.code == "lang.us" || item.code == "lang.jp"){
+                    return item;
+                }
+            });
 		     if(localStorage.fon_lang_code){
 				for (var i = 0, len = $scope.languages.length; i < len; i++) {
 
