@@ -196,24 +196,6 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 				
 				focusBrowser();
 			};
-			  
-			notification.onclose = function () {
-				var nd = notification_data;
-				
-				// remove notification
-				if (nd.type == 'error') {
-					for (var i = 0, len = context.errors.length; i < len; i++) {
-						if (context.errors[i].xpid == nd.xpid) {
-							context.errors.splice(i, 1);
-							break;
-						}
-					}
-				}
-				else {
-					httpService.sendAction('quickinbox','remove',{'pid': nd.xpid});
-					httpService.deleteFromWorker('quickinbox', nd.xpid);
-				}
-			};
 
 			notification.onerror = function () {
 				var nt = notification;
