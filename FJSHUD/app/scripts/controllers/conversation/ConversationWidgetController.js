@@ -36,10 +36,6 @@ hudweb.controller('ConversationWidgetController', ['$scope', '$rootScope', '$rou
         }
         localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid] = JSON.stringify($scope.selected);
         localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $rootScope.myPid] = JSON.stringify($scope.toggleObject);
-    } else{
-        // otherwise when route isn't defined --> used LS-saved or default
-        $scope.selected = localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_tabs_of_' + $rootScope.myPid]) : 'chat';
-        $scope.toggleObject = localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $rootScope.myPid] ? JSON.parse(localStorage['ConversationWidget_' + $routeParams.contactId + '_toggleObject_of_' + $rootScope.myPid]) : 0;
     }
 
     $scope.saveCTab = function(tab, index){

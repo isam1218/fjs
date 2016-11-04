@@ -504,52 +504,55 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	
 	var conversationType = chat.type == 'f.conversation.chat' ? 'f.conversation' : chat.type;
 
-	httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
-		version = data.h_ver;
-		scrollbox = document.getElementById('ListViewContent');
+	var chatDelay = $timeout(function() {
+		httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
+			// make sure we're still on the same page
+			if ($location.path().indexOf(chat.targetId + '/chat') == -1)
+				return;
 			
-		scrollbox.onscroll = function() {
-			// check scroll position
-			if (scrollbox.scrollTop == 0 && !$scope.loading && $scope.messages.length > 0) {
-				$scope.loading = true;
+			version = data.h_ver;
+			scrollbox = document.getElementById('ListViewContent');
 				
-				// ping server
-				httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
-					version = data.h_ver;
-				
-					$scope.loading = false;			
-					addMessages(data.items);
-
-					// bump scroll down
-					if (scrollbox.scrollTop == 0)
-						scrollbox.scrollTop = 100;
+			scrollbox.onscroll = function() {
+				// check scroll position
+				if (scrollbox.scrollTop == 0 && !$scope.loading && $scope.messages.length > 0) {
+					$scope.loading = true;
 					
-					// end of history
-					if (version < 0)
-						scrollbox.onscroll = null;
-				});
-			}
-		};
-		
-		$scope.loading = false;
-		addMessages(data.items);
-		
-		// kill watcher
-		$timeout(function() {
-			scrollWatch();
-		}, 100, false);
-		
-		// no more chats
-		if (version < 0)
-			scrollbox.onscroll = null;
-		
-		// sync with web worker in case history is delayed
-		httpService.getFeed('streamevent');
-		
-		soundDelay = setTimeout(function() {
-			soundDelay = false;
-		}, 1000);
-	});
+					// ping server
+					httpService.getChat(chat.audience+'s', chat.type, chat.targetId, version).then(function(data) {
+						version = data.h_ver;
+					
+						$scope.loading = false;			
+						addMessages(data.items);
+
+						// bump scroll down
+						if (scrollbox.scrollTop == 0)
+							scrollbox.scrollTop = 100;
+						
+						// end of history
+						if (version < 0)
+							scrollbox.onscroll = null;
+					});
+				}
+			};
+			
+			$scope.loading = false;
+			addMessages(data.items);
+			
+			// kill watcher
+			$timeout(function() {
+				scrollWatch();
+			}, 100, false);
+			
+			// no more chats
+			if (version < 0)
+				scrollbox.onscroll = null;
+			
+			soundDelay = setTimeout(function() {
+				soundDelay = false;
+			}, 1000);
+		});
+	}, 500, false);
 
    	// get additional messages from sync
 	$scope.$on('streamevent_synced', function(event, data) {
@@ -758,6 +761,8 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	};
 
 	$scope.$on("$destroy", function() {
+		$timeout.cancel(chatDelay);
+		
 		scrollbox.onscroll = null;
 		scrollbox = null;
 		
