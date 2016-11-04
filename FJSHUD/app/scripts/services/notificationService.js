@@ -124,6 +124,8 @@ hudweb.service('NotificationService', ['$q', '$rootScope', 'HttpService','$compi
 
 			switch(data.type){
 		        case 'vm':
+		        message = "you have "+data.title+" new voicemail(s)";
+		        	break;
 		        case 'q-alert-abandoned':
 		          message = data.label;
 		          break;
