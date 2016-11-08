@@ -677,15 +677,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.call_obj.phoneNumber = "";
         $scope.onCall = false;
     };
-
-
-    $scope.$on('locations_synced', function(event,data){
-        if(data){
-            for (var i = 0, len = data.length; i < len; i++) {
-                $scope.locations[data[i].xpid] = data[i];
-            }
-        }
-    });
+	
+	// get locations
+	phoneService.getLocationPromise().then(function(data) {
+		$scope.locations = data;
+	});
 
     settingsService.getPermissions().then(function(data){
         $scope.canRecord = data.recordingEnabled;

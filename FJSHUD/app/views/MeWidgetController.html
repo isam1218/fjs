@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </div>
-            <div class="MeInfoBlock-column">
+            <div class="MeInfoBlock-column" ng-class="{'Unregistered': locations[meModel.current_location].status.deviceStatus != 'r'}">
                 <div class="MeInfoTitle">{{::verbage.custom_status}}</div>
                 <div class="LeftBarMeCustomStatusSection">
                   <textarea
@@ -36,6 +36,7 @@
                         <div class="SelectBoxArrow"></div>
                     </div>
                 </div>
+				<div class="asterisk">* Device Unregistered</div>
             </div>
         </div>
     </div>
