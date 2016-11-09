@@ -823,12 +823,11 @@
         }
       }
  }
-@media screen and (max-height: 1000px) {
  .SettingsPanelBlock{
     position:relative;
     left:60px;
     width:80%;
-    height:90%;
+    height:96.5%;
     overflow-y: auto;
 
     .SettingsPanel{
@@ -836,16 +835,7 @@
       float:right;
       margin-right:20px;
     }
- }
- }
-
- @media screen and (max-height: 600px) {
- .SettingsPanelBlock{
-    height:70%;
-    overflow-y: auto;
-
- }
- }
+    }
 
 
 
@@ -873,10 +863,11 @@
  }
 
  .PreferencesContent{
-    height: 544px;
-    max-height: 544px;
+    height: 90%;
     overflow-y: auto;
-    padding-top:20px;
+    overflow-x: hidden;
+    padding-top:10px;
+    padding-bottom:20px;
  }
 
  .PreferenceSection{
@@ -1338,6 +1329,7 @@ div.NewCall{
 /* TODO: rewrite this css */
 
 .Preferences-Holder {
+  height:100%;
   p{ font-size: 12px; margin-top: 3px; padding: 0px; vertical-align: top;}
 
   .Dialog-settings-row{
