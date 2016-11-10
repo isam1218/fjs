@@ -262,8 +262,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		{	
 			var cookieInterval = setInterval(function(){
 				// give it a short expiration date
-				document.cookie = "tab=true; path=/; expires=" + new Date(new Date().getTime() + 5000).toGMTString();
-			}, 5000);
+				document.cookie = "tab=true; path=/; expires=" + new Date(new Date().getTime() + 1000).toGMTString();
+			}, 1000);
 		}
 		// stupid warning
 		window.onbeforeunload = function() {	
