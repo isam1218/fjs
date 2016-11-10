@@ -70,7 +70,7 @@ httpRequest.prototype.makeRequest = function(url,method,data,headers,callback){
 				xmlhttp.abort();
 		};
 
-        xmlhttp.open(method,url);
+        xmlhttp.open(method,url,true);
 
 		xmlhttp.timeout = 60000; // 1-minue timeout
         xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
