@@ -507,7 +507,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	var chatDelay = $timeout(function() {
 		httpService.getChat(chat.audience+'s', conversationType, chat.targetId).then(function(data) {
 			// make sure we're still on the same page
-			if ($location.path().indexOf(chat.targetId + '/chat') == -1)
+			if ($location.path().indexOf(chat.targetId) == -1)
 				return;
 			
 			version = data.h_ver;
