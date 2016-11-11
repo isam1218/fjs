@@ -136,9 +136,23 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     	}
     };
 
-    $scope.recentCallToFunction = function(calllog){
-        if (calllog.incoming)
+    $scope.recentCallToFunctionA = function(calllog){
+        if (!calllog.incoming){
+            return !calllog.incoming;
+        } else if (calllog.departmentId){
+            return;
+        }
+        else {
+            $scope.makeCall(calllog.phone);
+        }
+    };
+
+    $scope.recentCallToFunctionB = function(calllog){
+        if (calllog.incoming){
             return calllog.incoming;
+        } else if (calllog.departmentId){
+            return;
+        }
         else {
             $scope.makeCall(calllog.phone);
         }
@@ -268,6 +282,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 return b.startedAt - a.startedAt;
             });
         }
+        console.log('calllog - ', $scope.calllogs);
     });
 
     $scope.sortRecentCalls = function(field){
