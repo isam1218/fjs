@@ -336,10 +336,9 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						toAdd = false;
 					}
 				}
-				if(toAdd){
+				if(toAdd && data[i].callerContactId){
 					// add profile
-					if (data[i].callerContactId)
-						data[i].fullProfile = contactService.getContact(data[i].callerContactId);
+					data[i].fullProfile = contactService.getContact(data[i].callerContactId);
 
 					$scope.parkedCalls.push(data[i]);
 				}
