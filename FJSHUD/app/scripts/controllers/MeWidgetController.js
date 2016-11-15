@@ -270,7 +270,7 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         }
     });
 
-    $scope.sortRecentCalls = function(field){
+    $scope.sortRecentCalls = function(field,property){
         $scope.isAscending = !$scope.isAscending;
         localStorage['MeWidget_RecentCalls_recentSelectSort_of_' + $rootScope.myPid] = JSON.stringify(field);
         localStorage['MeWidget_RecentCalls_isAscending_of_' + $rootScope.myPid] = JSON.stringify($scope.isAscending);
@@ -288,7 +288,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 $scope.recentSelectSort = 'Duration';
                 break;
         }
+
+        $scope.sortCallLog = property;
     };
+
+
 
     $scope.transferComponent;
     $scope.transferIconEnabled = false;
