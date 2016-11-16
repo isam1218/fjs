@@ -1,8 +1,6 @@
       <div class="PreferenceSwitch" ng-switch="generalAlerts">
       <div class="PreferenceSection" ng-click="generalAlerts = !generalAlerts">
-      <div class="ListSectionHeader">   
           <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.general}}</div>
-      </div>
 
       <div class="ListSectionBody" ng-switch-when="false">{{::verbage.configure_desktop_alerts}}</div>
           <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
@@ -25,9 +23,7 @@
 
      <div class="PreferenceSwitch" ng-switch="queueAlerts">
      <div class="PreferenceSection " ng-click="queueAlerts = !queueAlerts">
-      <div class="ListSectionHeader">   
           <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.queue_alerts}}</div>
-      </div>
       <div class="ListSectionBody" ng-switch-when="false">
         {{::verbage.configure_queue_not_and_desktop_alerts}}
 

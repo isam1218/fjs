@@ -63,9 +63,7 @@
           </div>
           <div class="PreferenceSwitch" ng-switch="soundPreference">
           <div class="PreferenceSection" ng-click="soundPreference= !soundPreference">
-            <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.sounds}}</div>
-            </div>
             <div class="ListSectionBody" ng-switch-when="false">{{::verbage.sound_settings_general_desc}}</div>
             <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
             <i class="material-icons down" ng-switch-when="true">keyboard_arrow_down</i>
@@ -97,9 +95,7 @@
 
           <div class="PreferenceSwitch" ng-switch="awayPreference">
           <div class="PreferenceSection" ng-click="awayPreference= !awayPreference">
-            <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.auto_away}}</div>
-            </div>
             <div class="ListSectionBody" ng-switch-when="false">{{::verbage.auto_away_settings_desc}}</div>
 
             <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
@@ -131,9 +127,7 @@
 
           <div class="PreferenceSwitch" ng-switch="dashboardPreference">
           <div class="PreferenceSection" ng-click="dashboardPreference= !dashboardPreference">
-            <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.dashboard}}</div>
-            </div>
             <div class="ListSectionBody" ng-switch-when="false">{{::verbage.dashboard_setting}}</div>
 
             <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>

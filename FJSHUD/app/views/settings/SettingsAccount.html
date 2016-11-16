@@ -1,11 +1,9 @@
           <div class="PreferenceSwitch" ng-switch="myAccount">
           <div class="PreferenceSection" ng-click="myAccount = !myAccount">
             
-            <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.my_account}}</div>
               <!-- <div class="ListSectionHeaderRight"></div> -->
              
-            </div>
             <div class="ListSectionBody" ng-switch-when="false">{{::verbage.my_account_info}}</div>
              <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
             <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
@@ -25,10 +23,8 @@
 
           <div class="PreferenceSwitch" ng-switch="myInfo">
           <div class="PreferenceSection" ng-click="myInfo = !myInfo">
-            <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.my_personal_info}}</div>
-              <div class="ListSectionHeaderRight"></div>
-            </div>
+              
             <div class="ListSectionBody" ng-switch-when="false"></div>
             <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
             <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
