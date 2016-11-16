@@ -548,6 +548,9 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 			if (version < 0)
 				scrollbox.onscroll = null;
 			
+			// sync with web worker in case history is delayed
+			httpService.getFeed('streamevent');
+			
 			soundDelay = setTimeout(function() {
 				soundDelay = false;
 			}, 1000);
