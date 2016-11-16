@@ -37,11 +37,10 @@ self.addEventListener('message',function(event){
 					"node": node
 				};
 				
-				self.postMessage({"action":"init"});
-				
-				break;	
-			case 'sync':
+				// start syncing process with ui
 				do_version_check();
+				self.postMessage({"action":"ready"});
+				
 				break;	
 			case 'feed_request':
 				get_feed_data(event.data.feed);

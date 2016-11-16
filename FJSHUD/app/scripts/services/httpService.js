@@ -35,15 +35,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		
 		worker.addEventListener("message", function(event) {
 		  switch (event.data.action) {
-	      case "init":
+	      case "ready":
 					workerStarted = true;
 			
 					console.timeEnd('worker');
 					console.log('syncing...');
 					console.time('sync');
-	          worker.postMessage({
-	              "action": "sync"
-	          });
 	          break;
 	      case "sync_completed":
 	        if (event.data.data) {
@@ -123,7 +120,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			localStorage.removeItem("nodeID");
 			attemptLogin();
 		}
-	}, 120000, false);
+	}, 30000, false);
 	
 	/**
 		AUTHORIZATION
