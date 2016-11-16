@@ -35,15 +35,12 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		
 		worker.addEventListener("message", function(event) {
 		  switch (event.data.action) {
-	      case "init":
+	      case "ready":
 					workerStarted = true;
 			
 					console.timeEnd('worker');
 					console.log('syncing...');
 					console.time('sync');
-	          worker.postMessage({
-	              "action": "sync"
-	          });
 	          break;
 	      case "sync_completed":
 	        if (event.data.data) {
@@ -123,7 +120,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			localStorage.removeItem("nodeID");
 			attemptLogin();
 		}
-	}, 120000, false);
+	}, 30000, false);
 	
 	/**
 		AUTHORIZATION
@@ -262,8 +259,8 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 		{	
 			var cookieInterval = setInterval(function(){
 				// give it a short expiration date
-				document.cookie = "tab=true; path=/; expires=" + new Date(new Date().getTime() + 5000).toGMTString();
-			}, 5000);
+				document.cookie = "tab=true; path=/; expires=" + new Date(new Date().getTime() + 1000).toGMTString();
+			}, 1000);
 		}
 		// stupid warning
 		window.onbeforeunload = function() {	

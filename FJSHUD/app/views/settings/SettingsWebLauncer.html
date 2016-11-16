@@ -1,9 +1,7 @@
           <div class="PreferenceSwitch" ng-switch="wlSettings">
           <div class="PreferenceSection" ng-click="wlSettings= !wlSettings">
-            <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.web_launcher}}</div>
               <div class="ListSectionHeaderRight"></div>
-            </div>
             <div class="ListSectionBody" ng-switch-when="false">{{::verbage.general_settings}}</div>
             <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
             <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
@@ -27,10 +25,8 @@
 
           <div class="PreferenceSwitch" ng-switch="wlOutbound">
           <div class="PreferenceSection" ng-click="wlOutbound= !wlOutbound">
-            <div class="ListSectionHeader">
               <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.outbound_calls}}</div>
               <div class="ListSectionHeaderRight"></div>
-            </div>
             <div class="ListSectionBody" ng-switch-when="false">{{::verbage.outbound_calls_settings}}</div>
             <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
             <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
@@ -90,10 +86,8 @@
 
         <div class="PreferenceSwitch" ng-switch="wlInbound">
         <div class="PreferenceSection" ng-click="wlInbound= !wlInbound">
-          <div class="ListSectionHeader">
             <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.inbound_calls}}</div>
             <div class="ListSectionHeaderRight"></div>
-          </div>
           <div class="ListSectionBody" ng-switch-when="false">{{::verbage.inbound_call_settings}}</div>
           <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
             <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
@@ -149,10 +143,8 @@
 
         <div class="PreferenceSwitch" ng-switch="wlVariables">
         <div class="PreferenceSection" ng-click="wlVariables= !wlVariables">
-          <div class="ListSectionHeader">
             <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.web_launcher_variables}}</div>
             <div class="ListSectionHeaderRight"></div>
-          </div>
           <div class="ListSectionBody" ng-switch-when="false">{{::verbage.web_launcher_var_desc}}</div>
           <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
             <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
@@ -174,4 +166,5 @@
               </div>
             </div>
           </div>
+        </div>
         </div>

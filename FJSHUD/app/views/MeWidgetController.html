@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </div>
-            <div class="MeInfoBlock-column">
+            <div class="MeInfoBlock-column" ng-class="{'Unregistered': locations[meModel.current_location].status.deviceStatus != 'r'}">
                 <div class="MeInfoTitle">{{::verbage.custom_status}}</div>
                 <div class="LeftBarMeCustomStatusSection">
                   <textarea
@@ -36,6 +36,7 @@
                         <div class="SelectBoxArrow"></div>
                     </div>
                 </div>
+				<div class="asterisk">* Device Unregistered</div>
             </div>
         </div>
     </div>
@@ -228,24 +229,24 @@
           <div class="WidgetSectionTitle meTitle">{{::verbage.recent_calls}}</div>
 
           <div class="RecentCallColumnHeaders">
-            <div class="RecentCallsHeader RecentDate" ng-class="recentSelectSort == 'Date' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('Date')">
+            <div class="RecentCallsHeader RecentDate" ng-class="recentSelectSort == 'Date' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('Date','startedAt')">
               <div class="RecentPointer">
                 <span class="upper">{{::verbage.date + '/' + verbage.time}}</span>
                 <div ng-class="recentSelectSort == 'Date' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
               </div>
             </div>
 
-            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('From')">
+            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('From','fromDisplayValue')">
                 <div class="RecentPointer"><span class="upper">{{::verbage.from}}</span></div>
                 <div ng-class="recentSelectSort == 'From' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
             </div>
 
-            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('To')">
+            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('To','toDisplayValue')">
                 <div class="RecentPointer"><span class="upper">{{::verbage.to}}</span></div>
                 <div ng-class="recentSelectSort == 'To' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
             </div>
 
-            <div class="RecentCallsHeader RecentDur" ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('Duration')">
+            <div class="RecentCallsHeader RecentDur" ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('Duration','duration')">
              <div class="RecentPointer"><span class="upper">{{::verbage.duration}}</span></div>
              <div ng-class="recentSelectSort == 'Duration' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
             </div>
@@ -256,8 +257,8 @@
             <div ng-repeat="calllog in calllogs | limitTo:70 | orderBy:sortCallLog:!isAscending track by calllog.xpid" class="RecentCallRow">
 
               <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'full'}} </div>
-              <div class="RecentCallsHeader RecentFromTo " ng-click="!calllog.incoming || makeCall(calllog.phone)" ng-class="::calllog.incoming && calllog.phone? 'call' : ''">{{ ::calllog.fromDisplayValue  | formatPhoneNumber}}</div>
-              <div class="RecentCallsHeader RecentFromTo" ng-class=":: !calllog.incoming && calllog.phone ? 'call': ''"  ng-click="recentCallToFunction(calllog)">{{ ::calllog.toDisplayValue  | formatPhoneNumber}}</div>
+              <div class="RecentCallsHeader RecentFromTo " ng-class="::calllog.incoming && calllog.phone && !calllog.departmentId ? 'call' : ''" ng-click="recentCallToFunctionA(calllog)">{{ ::calllog.fromDisplayValue  | formatPhoneNumber}}</div>
+              <div class="RecentCallsHeader RecentFromTo" ng-class="::!calllog.incoming && calllog.phone && !calllog.departmentId ? 'call' : ''" ng-click="recentCallToFunctionB(calllog)">{{ ::calllog.toDisplayValue  | formatPhoneNumber}}</div>
               <div class="RecentCallsHeader RecentDur">{{ ::calllog.duration | duration }} </div>
 
             </div>

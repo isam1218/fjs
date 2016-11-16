@@ -136,9 +136,23 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
     	}
     };
 
-    $scope.recentCallToFunction = function(calllog){
-        if (calllog.incoming)
+    $scope.recentCallToFunctionA = function(calllog){
+        if (!calllog.incoming){
+            return !calllog.incoming;
+        } else if (calllog.departmentId){
+            return;
+        }
+        else {
+            $scope.makeCall(calllog.phone);
+        }
+    };
+
+    $scope.recentCallToFunctionB = function(calllog){
+        if (calllog.incoming){
             return calllog.incoming;
+        } else if (calllog.departmentId){
+            return;
+        }
         else {
             $scope.makeCall(calllog.phone);
         }
@@ -268,9 +282,10 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 return b.startedAt - a.startedAt;
             });
         }
+        console.log('calllog - ', $scope.calllogs);
     });
 
-    $scope.sortRecentCalls = function(field){
+    $scope.sortRecentCalls = function(field,property){
         $scope.isAscending = !$scope.isAscending;
         localStorage['MeWidget_RecentCalls_recentSelectSort_of_' + $rootScope.myPid] = JSON.stringify(field);
         localStorage['MeWidget_RecentCalls_isAscending_of_' + $rootScope.myPid] = JSON.stringify($scope.isAscending);
@@ -288,7 +303,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 $scope.recentSelectSort = 'Duration';
                 break;
         }
+
+        $scope.sortCallLog = property;
     };
+
+
 
     $scope.transferComponent;
     $scope.transferIconEnabled = false;
@@ -402,8 +421,14 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
 
     // used to determine whether to enable cold transfer button
     $scope.enableColdTransfer = function(){
+        // 2nd part of if-else branch below allows user to transfer another caller to the sytem menu (allows user to transfer to destination "0")
+        // 3rd branch allows a transfer to emergency 911 call
         var nonHypenNumber = phoneService.parseOutHyphens($scope.transfer.search);
         if ($scope.coldTransferButtonEnabled)
+            return true;
+        else if ( (!isNaN($scope.transfer.search)) && ($scope.transfer.search.length == 1) && ($scope.transfer.search == 0) )
+            return true;
+        else if ( (!isNaN($scope.transfer.search)) && ($scope.transfer.search.length == 3) && ($scope.transfer.search == 911) )
             return true;
         else if ( (!isNaN(nonHypenNumber)) && nonHypenNumber.length >= 10)
             return true;
@@ -425,13 +450,17 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         // receiver can be external, inputted extension, inputted phone number, etc.
         if ($scope.transferType == 'external')
             params.toNumber = $scope.transferTo.contactNumber ? $scope.transferTo.contactNumber : $scope.transferTo.phoneMobile ? $scope.transferTo.phoneMobile : $scope.transferTo.phoneBusiness;
+        else if ( (!isNaN($scope.transfer.search)) && ($scope.transfer.search.length == 1) && ($scope.transfer.search == 0) )
+            params.toNumber = $scope.transfer.search;
+        else if ( (!isNaN($scope.transfer.search)) && ($scope.transfer.search.length == 3) && ($scope.transfer.search == 911) )
+            params.toNumber = $scope.transfer.search;
         else if ((!isNaN(nonHypenNumber) && $scope.transfer.search.length >= 10))
             params.toNumber = nonHypenNumber;
         else
             params.toContactId = $scope.selectedTransferToContact.xpid;
 
         // feed action
-        if ($scope.transferType == 'external' || (!isNaN(nonHypenNumber) && $scope.transfer.search.length > 4))
+        if ($scope.transferType == 'external' || (!isNaN(nonHypenNumber) && $scope.transfer.search.length > 4) || (!isNaN($scope.transfer.search)) && ($scope.transfer.search.length == 1) && ($scope.transfer.search == 0) || ((!isNaN($scope.transfer.search)) && ($scope.transfer.search.length == 3) && ($scope.transfer.search == 911)) )
             action = 'transferTo';
         else if ($scope.selectedTransferToContact.primaryExtension == '')
             action = 'transferToMobile';
@@ -677,15 +706,11 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
         $scope.call_obj.phoneNumber = "";
         $scope.onCall = false;
     };
-
-
-    $scope.$on('locations_synced', function(event,data){
-        if(data){
-            for (var i = 0, len = data.length; i < len; i++) {
-                $scope.locations[data[i].xpid] = data[i];
-            }
-        }
-    });
+	
+	// get locations
+	phoneService.getLocationPromise().then(function(data) {
+		$scope.locations = data;
+	});
 
     settingsService.getPermissions().then(function(data){
         $scope.canRecord = data.recordingEnabled;

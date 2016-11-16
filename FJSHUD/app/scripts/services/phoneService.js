@@ -1000,7 +1000,10 @@ hudweb.service('PhoneService', ['$q', '$timeout', '$rootScope', 'HttpService','$
             for (var i = 0, iLen = data.length; i < iLen; i++) {
                 if (locations[data[i].xpid]){
                     locations[data[i].xpid].status = data[i];
-					
+			
+					// hard-code mobile devices to registered
+					if (locations[data[i].xpid].locationType == 'm')
+						locations[data[i].xpid].status.deviceStatus = 'r';
                 }
             }
         }
