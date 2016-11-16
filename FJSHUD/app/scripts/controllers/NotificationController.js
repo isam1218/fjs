@@ -327,21 +327,25 @@ hudweb.controller('NotificationController',
         break;
       case 'missed-call':
         // external contact --> go to voicemails tab
-        if (message.fullProfile && message.fullProfile.primaryExtension == "")
-          endPath = "/" + message.audience + "/" + xpid + '/voicemails'
+        if (message.fullProfile && message.fullProfile.primaryExtension == ""){
+          // $scope.remove_notification(message.xpid);
+          // ^ commentted out -> user can only dismiss notification by clicking on "x" 
+          $scope.showOverlay(false);
+          return;
+        }
         else if (message.senderId || message.fullProfile)
           endPath = "/" + message.audience + "/" + xpid + '/chat';
         else
           endPath = calllogPath;
         break;
       case 'vm':
-          endPath = "/calllog/voicemails";
+        endPath = "/calllog/voicemails";
 	  
-		// if already on tab, broadcast id
-		if ($location.path() == endPath)
-			$rootScope.$broadcast('vmToOpen', message.vmId);
-		else
-			$rootScope.vmToOpen = message.vmId;
+    		// if already on tab, broadcast id
+    		if ($location.path() == endPath)
+    			$rootScope.$broadcast('vmToOpen', message.vmId);
+    		else
+    			$rootScope.vmToOpen = message.vmId;
 	  
         break;
       case 'q-broadcast':
