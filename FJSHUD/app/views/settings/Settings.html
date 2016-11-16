@@ -32,7 +32,7 @@
           </div>
           </div>
 
-          <div class="PreferenceSwitch" ng-switch="softphoneSettings" ng-if="!softphoneRegistered">
+          <div class="PreferenceSwitch" ng-switch="softphoneSettings" >
           <div class="PreferenceSection" ng-click="softphoneSettings= !softphoneSettings" >
             <div class="ListSectionHeaderTitle" ng-switch-when="false">SOFTPHONE</div>
             
@@ -42,8 +42,8 @@
             </div>
             <div class="PreferencePage DownloadNative" ng-switch-when="true">
               <div class="ListSectionHeaderTitle">HUD SOFTPHONE</div>
-              <div class="Dialog-settings-row">
-              <label><input
+              <div class="Dialog-settings-row" ng-if="!softphoneRegistered">
+              <label ><input
                 ng-model="enableDockDownload"
                 ng-click="dockDownload()"
                 type="checkbox"  >Display the HUD Softphone Download Dock Widget</label>
