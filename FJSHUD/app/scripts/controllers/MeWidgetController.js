@@ -282,7 +282,6 @@ hudweb.controller('MeWidgetController', ['$scope', '$rootScope', '$http', 'HttpS
                 return b.startedAt - a.startedAt;
             });
         }
-        console.log('calllog - ', $scope.calllogs);
     });
 
     $scope.sortRecentCalls = function(field,property){
