@@ -327,7 +327,7 @@ hudweb.controller('NotificationController',
         break;
       case 'missed-call':
         // external contact --> go to voicemails tab
-        if (message.fullProfile && message.fullProfile.primaryExtension == ""){
+        if ( (message.fullProfile && message.fullProfile.primaryExtension == "") || (!message.fullProfile && message.phone)){
           // $scope.remove_notification(message.xpid);
           // ^ commentted out -> user can only dismiss notification by clicking on "x" 
           $scope.showOverlay(false);
