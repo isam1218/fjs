@@ -331,7 +331,8 @@ hudweb.controller('CallStatusOverlayController', ['$scope', '$rootScope', '$filt
 		if (display == 'selectionBox'){
 			// if selected box is an external phone #
 			var nonHypenNumber = phoneService.parseOutHyphens(selectionInput);
-			if (!isNaN(nonHypenNumber) && selectionInput.length > 4){
+			// 2nd part of if branch below allows user to transfer another caller to the sytem menu (allows user to transfer to destination "0")
+			if ( (!isNaN(nonHypenNumber) && selectionInput.length > 4) || ((!isNaN(selectionInput)) && (selectionInput.length == 1) && (selectionInput == 0)) || ((!isNaN(selectionInput)) && (selectionInput.length == 3) && (selectionInput == 911)) ){
 				$scope.transferType = 'external';
 				selectionInput = nonHypenNumber;
 				$scope.transferTo = createTmpExternalContact(selectionInput);
