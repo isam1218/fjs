@@ -254,7 +254,7 @@
           <div ng-show="calllogs.length == 0" class="NoRecentCalls">{{::verbage.no_recent_calls}}</div>
 
           <div  class="RecentCallLogs">
-            <div ng-repeat="calllog in calllogs | limitTo:70 | orderBy:sortCallLog:!isAscending track by calllog.xpid" class="RecentCallRow">
+            <div ng-repeat="calllog in calllogs | limitTo:70 | orderBy:sortCallLog:isAscending track by calllog.xpid" class="RecentCallRow">
 
               <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'full'}} </div>
               <div class="RecentCallsHeader RecentFromTo " ng-class="::calllog.incoming && calllog.phone && !calllog.departmentId ? 'call' : ''" ng-click="recentCallToFunctionA(calllog)">{{ ::calllog.fromDisplayValue  | formatPhoneNumber}}</div>
