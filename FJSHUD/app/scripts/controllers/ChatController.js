@@ -12,7 +12,7 @@ hudweb.controller('ChatController', ['$scope', '$rootScope', 'HttpService', '$ro
 	var version = 0;
 	var soundDelay = true;
 	var playChatSound = false;
-	var cutoff = ntpService.calibrateTime(new Date().getTime());
+	var cutoff = ntpService.getServerTime();
 	var scrollbox = {};
 	var chat = {}; // internal controller data
 	var gaAudience;

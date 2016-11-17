@@ -2,10 +2,11 @@ hudweb.service('NtpService', function () {
   var timeSyncFirstPlace;
   var timeSyncDelta;
   var clientFirstTime;
+  var serverFirstTime;
   
   this.syncTime = function(data) {
-	var clientFirstTime = new Date().getTime();
-	var serverFirstTime = data;
+	clientFirstTime = new Date().getTime();
+	serverFirstTime = data;
 	
 	if (serverFirstTime > clientFirstTime){
 	  // client time is ahead, server time behind
@@ -49,4 +50,7 @@ hudweb.service('NtpService', function () {
       return dateToAdjust;
   };
 
+  this.getServerTime = function() {
+	return serverFirstTime;  
+  };
 });
