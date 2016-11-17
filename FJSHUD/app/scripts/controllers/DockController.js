@@ -336,12 +336,20 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 						toAdd = false;
 					}
 				}
-				if(toAdd && data[i].callerContactId){
-					// add profile
-					data[i].fullProfile = contactService.getContact(data[i].callerContactId);
 
+				if(toAdd){
+					// add profile
+					if (data[i].callerContactId){
+						data[i].fullProfile = contactService.getContact(data[i].callerContactId);
+					}
+					else{
+						if (data[i].displayName == "" || !data[i].displayName){
+							data[i].displayName = data[i].phone;
+						}
+					}
 					$scope.parkedCalls.push(data[i]);
 				}
+				
 			}
 		}
 	});
