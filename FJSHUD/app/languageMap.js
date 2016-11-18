@@ -559,6 +559,7 @@
     clear_selection:'選択解除',
     clear:'Clear',
     hide:'Hide',
+    show:'Show',
 
 		/****************ME LABELS******************/
 		avatar_hover_menu: '写真ホバーメニュー遅延',
