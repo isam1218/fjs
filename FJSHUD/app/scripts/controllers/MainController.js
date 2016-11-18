@@ -25,6 +25,10 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 		localStorage.hudnDownloadNotification = JSON.stringify(true);
 	};
 
+	$scope.openDownloadHudModal = function(){
+		$scope.downloadModal = true;
+	}
+
 	$scope.downloadHudn = function() {
 		$scope.downloadModal = false;
 		// d/l link url depends on platform...
