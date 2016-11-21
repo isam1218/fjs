@@ -8,6 +8,7 @@ hudweb.controller('MainController', ['$rootScope', '$scope', '$timeout', '$q', '
 	$scope.currentPopup.y = 0;
 	$scope.pluginDownloadUrl = $scope.browser != 'Chrome' ? fjs.CONFIG.PLUGINS[$scope.platform] : fjs.CONFIG.PLUGINS[$scope.platform + "_NEW"];
 	$scope.downloadModal = false;
+
 	var hudnDownloadNotification = localStorage.hudnDownloadNotification ? JSON.parse(localStorage.hudnDownloadNotification) : false;
 
 	if (!hudnDownloadNotification){
