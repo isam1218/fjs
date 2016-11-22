@@ -30,7 +30,17 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	$rootScope.isFirstSync = true;
 	
 	// check for second tab before starting web worker
-	if (document.cookie.indexOf('tab=true') == -1 || document.cookie.indexOf('expires=Thu, 01 Jan 1970') != -1) {		
+	if (localStorage.tabTime !== undefined && parseInt(localStorage.tabTime) > new Date().getTime() - 1000 && parseInt(localStorage.tabTime) < new Date().getTime()) {
+		window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
+		return;
+	}
+	else {
+		localStorage.tabTime = new Date().getTime();
+		
+		setInterval(function() {
+			localStorage.tabTime = new Date().getTime();
+		}, 500);
+	
 		worker = new Worker("scripts/workers/fdpWebWorker.js?v=" + fjs.CONFIG.BUILD_NUMBER);
 		
 		worker.addEventListener("message", function(event) {
@@ -80,11 +90,6 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 				break;
 			}
 		}, false);
-	}
-	else {
-		// send user to 2nd tab warning if there's a cookie and the expiration date is in the future (not 1970)
-		window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
-		return;
 	}
 
 	var broadcastSyncData = function(data) {
@@ -141,7 +146,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			
 		worker.terminate();
 		unload = false;
-		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		localStorage.removeItem("me");
 		window.onbeforeunload = null;
 		$timeout(function(){
 			location.href = authURL;
@@ -242,8 +247,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
     	localStorage.removeItem("data_obj");
     	localStorage.removeItem("instance_id");
     	localStorage.removeItem("serverHost");
-		
-		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		localStorage.removeItem("tabTime");
     	
 		// shut off web worker
 		worker.terminate();
@@ -255,17 +259,9 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 	this.setUnload = function() {	
 		unload = true;
 		
-		if(!cookieInterval)
-		{	
-			var cookieInterval = setInterval(function(){
-				// give it a short expiration date
-				document.cookie = "tab=true; path=/; expires=" + new Date(new Date().getTime() + 1000).toGMTString();
-			}, 1000);
-		}
 		// stupid warning
 		window.onbeforeunload = function() {	
-			window.clearInterval(cookieInterval);
-			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";			
+			localStorage.removeItem("tabTime");
 			return "Are you sure you want to navigate away from this page?";
 		};
 	};
