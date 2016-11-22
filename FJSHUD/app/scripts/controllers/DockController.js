@@ -291,6 +291,14 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 			document.getElementsByClassName('TallGadget')[0].style.visibility = 'visible';
 	});
 
+	$rootScope.downloadWidgetCheckbox = {};
+	$rootScope.downloadWidgetCheckbox.remove;
+
+	$scope.toggleDownloadWidget = function(){
+    $rootScope.enableDockDownload = false;
+    localStorage.setItem("EnableDockDownload",$scope.enableDockDownload);
+    $rootScope.$broadcast("changeDockDownload");
+	};
 
 	$scope.getDroppableType = function(type) {
 		if (type == 'GadgetConferenceRoom')
