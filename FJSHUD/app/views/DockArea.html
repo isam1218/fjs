@@ -206,15 +206,16 @@
 
 	<div ng-if="::gadget.value.factoryId == 'GadgetHudSoftphoneDownload'" ng-show="showDockDownload && !registered" class="Header HudSoftphoneDownloadGadget" id="downloadWidget">
 			<div class="HudSoftphoneDownloadGadgetHeader" style="">
-				Download the HUD Softphone.
+				HUD Softphone: Reminder
 			</div>
-			<ul class="HudSoftphoneDownloadGadgetListItems" style="">
-				<li class="DownloadListItem">Auto login and presence on computer startup.</li>
-				<li class="DownloadListItem">Control your location and presence.</li>
-				<li class="DownloadListItem">Place and control calls outside of HUD.</li>
-			</ul>
+			<div class="DownloadText">
+				Make, receive and control calls from you computer.
+			</div>
 			<div class="HudSoftphoneDownloadGadgetButtonSection">
-				<button class="HudSoftphoneDownloadGadgetButton" style="" ng-click="downloadHudn()">DOWNLOAD</button>
+				<button class="HudSoftphoneDownloadGadgetButton" style="" ng-click="openDownloadHudModal()">LEARN MORE</button>
+			</div>
+			<div class="RemoveReminder">
+				<input type="checkbox" ng-model="downloadWidgetCheckbox.remove" ng-change="toggleDownloadWidget()"> Remove this reminder.<br>
 			</div>
 	</div>
 
