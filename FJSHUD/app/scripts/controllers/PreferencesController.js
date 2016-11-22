@@ -230,6 +230,7 @@ hudweb.controller('PreferencesController', ['$scope', '$rootScope', '$http', 'Ht
 				if (model) {
 					myHttpService.updateSettings(type,action,model.xpid);
 					localStorage.fon_lang_code = model.code;
+					localStorage.removeItem("tabTime");
 					location.reload();
 				}
                 break;
