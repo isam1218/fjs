@@ -337,7 +337,7 @@ hudweb.controller('DockController', ['$q', '$timeout', '$location', '$scope', '$
 					}
 				}
 
-				if(toAdd){
+				if(toAdd && data[i].phone){
 					// add profile
 					if (data[i].callerContactId){
 						data[i].fullProfile = contactService.getContact(data[i].callerContactId);
