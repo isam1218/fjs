@@ -104,7 +104,7 @@
           </div>
 
           <div class="row_buttons">
-            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || call2" ng-if="currentCall.state == 2 || currentCall.state == 0" ng-click="holdCall(currentCall)"><span class="CallControlButton"> {{::verbage.Hold}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || call2 || currentCall.state != 2" ng-if="currentCall.state == 2 || currentCall.state == 0" ng-click="holdCall(currentCall)"><span class="CallControlButton"> {{::verbage.Hold}}</span></button>
             <button class="XButton talk" ng-disabled="call2" ng-if="currentCall.state == 3" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</button>
 			<button class="XButton record ng-class:{'XButtonRecordOn': currentCall.record}" ng-disabled="!canRecord || (currentCall.state != 2 && currentCall.state != 3) || call2" ng-click="recordCall(currentCall)">
 				<span class="CallControlButton">{{::verbage.REC}}  </span>
