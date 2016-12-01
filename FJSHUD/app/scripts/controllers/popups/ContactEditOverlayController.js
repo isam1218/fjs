@@ -1,4 +1,4 @@
-hudweb.controller('ContactEditOverlayController', ['$scope', 'HttpService', function($scope, httpService) {
+hudweb.controller('ContactEditOverlayController', ['$scope', 'HttpService', 'StorageService', function($scope, httpService, storageService) {
 	$scope.add = {};
 	
 	if ($scope.$parent.overlay.data) {
@@ -35,7 +35,8 @@ hudweb.controller('ContactEditOverlayController', ['$scope', 'HttpService', func
 	
 	$scope.delContact = function() {
 		httpService.sendAction('contacts', 'delete', {contactId: $scope.add.pid});
-		
+		// immediately remove external contact from recents
+		storageService.removeRecent('contact', $scope.add.pid);
 		$scope.showOverlay(false);
 	};
 

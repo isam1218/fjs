@@ -1,5 +1,5 @@
-hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$routeParams', '$location', 'ContactService', 'HttpService', 'GroupService','$sce', 
-	function($scope, $rootScope, $routeParams, $location, contactService, httpService, groupService,$sce) {
+hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$routeParams', '$location', 'ContactService', 'HttpService', 'GroupService','$sce', 'StorageService',
+	function($scope, $rootScope, $routeParams, $location, contactService, httpService, groupService,$sce, storageService) {
 	$scope.add = {type: 2, contacts: []};
 	$scope.editing = false;
 	$scope.changeToModelMade = false;
@@ -82,6 +82,8 @@ hudweb.controller('GroupEditOverlayController', ['$scope', '$rootScope', '$route
 		
 		if ($scope.closing) {
 			groupService.removeGroup($scope.add.groupId);
+			// immediately remove group from recents...
+			storageService.removeRecent('group', $scope.add.groupId);
 			
 			// delete gadget
 			$rootScope.$broadcast('delete_gadget', 'GadgetConfig__empty_GadgetGroup_' + $scope.add.groupId);

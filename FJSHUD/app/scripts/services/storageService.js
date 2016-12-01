@@ -36,6 +36,11 @@ hudweb.service('StorageService', ['$rootScope', 'ContactService', 'SettingsServi
 		
 		localStorage['recents_of_' + $rootScope.myPid] = JSON.stringify(recents);
 	};
+
+	service.removeRecent = function(type, xpid) {
+		if (recents[xpid] && recents[xpid].type == type)
+			delete recents[xpid];
+	};
 	
 	service.saveRecentByPhone = function(number) {
 		// search if phone # dialed belongs to a contact then add to recents if it does
