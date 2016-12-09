@@ -124,7 +124,7 @@ function($q, $rootScope, $location, $routeParams, contactService, httpService, n
 					
 					// update or add
 					for (var m = 0, mLen = conference.members.length; m < mLen; m++) {
-						if (conference.members[m].xpid == data[i].xpid || conference.members[m].contactId == data[i].contactId) {
+						if (conference.members[m].xpid == data[i].xpid || (data[i].contactId && conference.members[m].contactId == data[i].contactId)) {
 							conference.members[m] = angular.extend(conference.members[m], data[i]);
 							
 							match = true;
