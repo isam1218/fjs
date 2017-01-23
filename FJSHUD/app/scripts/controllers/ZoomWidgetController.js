@@ -448,12 +448,12 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
         for(var i = 0; i<=$scope.meetingList.length-1;i++){
 
-          
+          var guessedZone = $scope.meetingList[i].timezone;
           
 
           var jun = moment($scope.meetingList[i].start_time).lang('en');
-          $scope.meetingList[i].timeDate = jun.tz('Etc/GMT+12').format("dddd , MMM DD, YYYY");
-          $scope.meetingList[i].startHour = jun.tz('Etc/GMT+12').format('hh:mmA');
+          $scope.meetingList[i].timeDate = jun.tz(guessedZone).format("dddd , MMM DD, YYYY");
+          $scope.meetingList[i].startHour = jun.tz(guessedZone).format('hh:mmA');
           
            var duration = $scope.meetingList[i].duration.toString();
            if($scope.meetingList[i].duration == 0){
@@ -523,7 +523,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 
               var end = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = end.tz('Etc/GMT+12').format('hh:mmA');
+          $scope.meetingList[i].endHour = end.tz(guessedZone).format('hh:mmA');
           
                }
 
@@ -557,7 +557,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
               
               var newEnd = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = newEnd.tz('Etc/GMT+12').format('hh:mmA');
+          $scope.meetingList[i].endHour = newEnd.tz(guessedZone).format('hh:mmA');
           
                }
               
@@ -590,13 +590,13 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
         for(var i = 0; i<=$scope.meetingList.length-1;i++){
            
-
+          var guessedZone = $scope.meetingList[i].timezone;
 
            
            var strt = moment($scope.meetingList[i].start_time).lang('en');
-                    $scope.meetingList[i].timeDate = strt.tz('Etc/GMT+12').format("dddd , MMM DD, YYYY");
+                    $scope.meetingList[i].timeDate = strt.tz(guessedZone).format("dddd , MMM DD, YYYY");
 
-          $scope.meetingList[i].startHour = strt.tz('Etc/GMT+12').format('hh:mmA');
+          $scope.meetingList[i].startHour = strt.tz(guessedZone).format('hh:mmA');
 
            var duration = $scope.meetingList[i].duration.toString();
            if($scope.meetingList[i].duration == 0){
@@ -659,7 +659,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
              
               var end = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = end.tz('Etc/GMT+12').format('hh:mmA');
+          $scope.meetingList[i].endHour = end.tz(guessedZone).format('hh:mmA');
           
                }
 
@@ -691,7 +691,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
               
               
               var newEnd = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = newEnd.tz('Etc/GMT+12').format('hh:mmA');
+          $scope.meetingList[i].endHour = newEnd.tz(guessedZone).format('hh:mmA');
           
                }
                
@@ -721,12 +721,12 @@ $scope.loading.meetingLoaded = true;
         if($scope.meetingList){
         for(var i = 0; i<=$scope.meetingList.length-1;i++){
           
-
+           var guessedZone = $scope.meetingList[i].timezone;
 
            var jun = moment($scope.meetingList[i].start_time).lang('en');
-          $scope.meetingList[i].timeDate = jun.tz('Etc/GMT+12').format("dddd , MMM DD, YYYY");
+          $scope.meetingList[i].timeDate = jun.tz(guessedZone).format("dddd , MMM DD, YYYY");
 
-          $scope.meetingList[i].startHour = jun.tz('Etc/GMT+12').format('hh:mmA');
+          $scope.meetingList[i].startHour = jun.tz(guessedZone).format('hh:mmA');
           
 
            var duration = $scope.meetingList[i].duration.toString();
@@ -789,7 +789,7 @@ $scope.loading.meetingLoaded = true;
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
               
               var end = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = end.tz('Etc/GMT+12').format('hh:mmA');
+          $scope.meetingList[i].endHour = end.tz(guessedZone).format('hh:mmA');
           
                }
 
@@ -821,7 +821,7 @@ $scope.loading.meetingLoaded = true;
               
               
               var newEnd = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = newEnd.tz('Etc/GMT+12').format('hh:mmA');
+          $scope.meetingList[i].endHour = newEnd.tz(guessedZone).format('hh:mmA');
           
                }
 
@@ -1004,9 +1004,554 @@ for(var tHour = 0; tHour <= $scope.times.length; tHour++){
  $scope.meridian= ["AM","PM"];
   $scope.month = ['Jan','Feb', 'Mar','Apr', 'May', 'Jun', 'Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   $scope.day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+$scope.timeZone = [];
 
+var timezoneList = [
+  {
+    "id": "Pacific/Midway",
+    "name": "Midway Island, Samoa"
+  },
+  {
+    "id": "Pacific/Pago_Pago",
+    "name": "Pago Pago"
+  },
+  {
+    "id": "Pacific/Honolulu",
+    "name": "Hawaii"
+  },
+  {
+    "id": "America/Anchorage",
+    "name": "Alaska"
+  },
+  {
+    "id": "America/Vancouver",
+    "name": "Vancouver"
+  },
+  {
+    "id": "America/Los_Angeles",
+    "name": "Pacific Time (US and Canada)"
+  },
+  {
+    "id": "America/Tijuana",
+    "name": "Tijuana"
+  },
+  {
+    "id": "America/Edmonton",
+    "name": "Edmonton"
+  },
+  {
+    "id": "America/Denver",
+    "name": "Mountain Time (US and Canada)"
+  },
+  {
+    "id": "America/Phoenix",
+    "name": "Arizona"
+  },
+  {
+    "id": "America/Mazatlan",
+    "name": "Mazatlan"
+  },
+  {
+    "id": "America/Winnipeg",
+    "name": "Winnipeg"
+  },
+  {
+    "id": "America/Regina",
+    "name": "Saskatchewan"
+  },
+  {
+    "id": "America/Chicago",
+    "name": "Central Time (US and Canada)"
+  },
+  {
+    "id": "America/Mexico_City",
+    "name": "Mexico City"
+  },
+  {
+    "id": "America/Guatemala",
+    "name": "Guatemala"
+  },
+  {
+    "id": "America/El_Salvador",
+    "name": "El Salvador"
+  },
+  {
+    "id": "America/Managua",
+    "name": "Managua"
+  },
+  {
+    "id": "America/Costa_Rica",
+    "name": "Costa Rica"
+  },
+  {
+    "id": "America/Montreal",
+    "name": "Montreal"
+  },
+  {
+    "id": "America/New_York",
+    "name": "Eastern Time (US and Canada)"
+  },
+  {
+    "id": "America/Indianapolis",
+    "name": "Indiana (East)"
+  },
+  {
+    "id": "America/Panama",
+    "name": "Panama"
+  },
+  {
+    "id": "America/Bogota",
+    "name": "Bogota"
+  },
+  {
+    "id": "America/Lima",
+    "name": "Lima"
+  },
+  {
+    "id": "America/Halifax",
+    "name": "Halifax"
+  },
+  {
+    "id": "America/Puerto_Rico",
+    "name": "Puerto Rico"
+  },
+  {
+    "id": "America/Caracas",
+    "name": "Caracas"
+  },
+  {
+    "id": "America/Santiago",
+    "name": "Santiago"
+  },
+  {
+    "id": "America/St_Johns",
+    "name": "Newfoundland and Labrador"
+  },
+  {
+    "id": "America/Montevideo",
+    "name": "Montevideo"
+  },
+  {
+    "id": "America/Araguaina",
+    "name": "Brasilia"
+  },
+  {
+    "id": "America/Argentina/Buenos_Aires",
+    "name": "Buenos Aires, Georgetown"
+  },
+  {
+    "id": "America/Godthab",
+    "name": "Greenland"
+  },
+  {
+    "id": "America/Sao_Paulo",
+    "name": "Sao Paulo"
+  },
+  {
+    "id": "Atlantic/Azores",
+    "name": "Azores"
+  },
+  {
+    "id": "Canada/Atlantic",
+    "name": "Atlantic Time (Canada)"
+  },
+  {
+    "id": "Atlantic/Cape_Verde",
+    "name": "Cape Verde Islands"
+  },
+  {
+    "id": "UTC",
+    "name": "Universal Time UTC"
+  },
+  {
+    "id": "Etc/Greenwich",
+    "name": "Greenwich Mean Time"
+  },
+  {
+    "id": "Europe/Belgrade",
+    "name": "Belgrade, Bratislava, Ljubljana"
+  },
+  {
+    "id": "CET",
+    "name": "Sarajevo, Skopje, Zagreb"
+  },
+  {
+    "id": "Atlantic/Reykjavik",
+    "name": "Reykjavik"
+  },
+  {
+    "id": "Europe/Dublin",
+    "name": "Dublin"
+  },
+  {
+    "id": "Europe/London",
+    "name": "London"
+  },
+  {
+    "id": "Europe/Lisbon",
+    "name": "Lisbon"
+  },
+  {
+    "id": "Africa/Casablanca",
+    "name": "Casablanca"
+  },
+  {
+    "id": "Africa/Nouakchott",
+    "name": "Nouakchott"
+  },
+  {
+    "id": "Europe/Oslo",
+    "name": "Oslo"
+  },
+  {
+    "id": "Europe/Copenhagen",
+    "name": "Copenhagen"
+  },
+  {
+    "id": "Europe/Brussels",
+    "name": "Brussels"
+  },
+  {
+    "id": "Europe/Berlin",
+    "name": "Amsterdam, Berlin, Rome, Stockholm, Vienna"
+  },
+  {
+    "id": "Europe/Helsinki",
+    "name": "Helsinki"
+  },
+  {
+    "id": "Europe/Amsterdam",
+    "name": "Amsterdam"
+  },
+  {
+    "id": "Europe/Rome",
+    "name": "Rome"
+  },
+  {
+    "id": "Europe/Stockholm",
+    "name": "Stockholm"
+  },
+  {
+    "id": "Europe/Vienna",
+    "name": "Vienna"
+  },
+  {
+    "id": "Europe/Luxembourg",
+    "name": "Luxembourg"
+  },
+  {
+    "id": "Europe/Paris",
+    "name": "Paris"
+  },
+  {
+    "id": "Europe/Zurich",
+    "name": "Zurich"
+  },
+  {
+    "id": "Europe/Madrid",
+    "name": "Madrid"
+  },
+  {
+    "id": "Africa/Bangui",
+    "name": "West Central Africa"
+  },
+  {
+    "id": "Africa/Algiers",
+    "name": "Algiers"
+  },
+  {
+    "id": "Africa/Tunis",
+    "name": "Tunis"
+  },
+  {
+    "id": "Africa/Harare",
+    "name": "Harare, Pretoria"
+  },
+  {
+    "id": "Africa/Nairobi",
+    "name": "Nairobi"
+  },
+  {
+    "id": "Europe/Warsaw",
+    "name": "Warsaw"
+  },
+  {
+    "id": "Europe/Prague",
+    "name": "Prague Bratislava"
+  },
+  {
+    "id": "Europe/Budapest",
+    "name": "Budapest"
+  },
+  {
+    "id": "Europe/Sofia",
+    "name": "Sofia"
+  },
+  {
+    "id": "Europe/Istanbul",
+    "name": "Istanbul"
+  },
+  {
+    "id": "Europe/Athens",
+    "name": "Athens"
+  },
+  {
+    "id": "Europe/Bucharest",
+    "name": "Bucharest"
+  },
+  {
+    "id": "Asia/Nicosia",
+    "name": "Nicosia"
+  },
+  {
+    "id": "Asia/Beirut",
+    "name": "Beirut"
+  },
+  {
+    "id": "Asia/Damascus",
+    "name": "Damascus"
+  },
+  {
+    "id": "Asia/Jerusalem",
+    "name": "Jerusalem"
+  },
+  {
+    "id": "Asia/Amman",
+    "name": "Amman"
+  },
+  {
+    "id": "Africa/Tripoli",
+    "name": "Tripoli"
+  },
+  {
+    "id": "Africa/Cairo",
+    "name": "Cairo"
+  },
+  {
+    "id": "Africa/Johannesburg",
+    "name": "Johannesburg"
+  },
+  {
+    "id": "Europe/Moscow",
+    "name": "Moscow"
+  },
+  {
+    "id": "Asia/Baghdad",
+    "name": "Baghdad"
+  },
+  {
+    "id": "Asia/Kuwait",
+    "name": "Kuwait"
+  },
+  {
+    "id": "Asia/Riyadh",
+    "name": "Riyadh"
+  },
+  {
+    "id": "Asia/Bahrain",
+    "name": "Bahrain"
+  },
+  {
+    "id": "Asia/Qatar",
+    "name": "Qatar"
+  },
+  {
+    "id": "Asia/Aden",
+    "name": "Aden"
+  },
+  {
+    "id": "Asia/Tehran",
+    "name": "Tehran"
+  },
+  {
+    "id": "Africa/Khartoum",
+    "name": "Khartoum"
+  },
+  {
+    "id": "Africa/Djibouti",
+    "name": "Djibouti"
+  },
+  {
+    "id": "Africa/Mogadishu",
+    "name": "Mogadishu"
+  },
+  {
+    "id": "Asia/Dubai",
+    "name": "Dubai"
+  },
+  {
+    "id": "Asia/Muscat",
+    "name": "Muscat"
+  },
+  {
+    "id": "Asia/Baku",
+    "name": "Baku, Tbilisi, Yerevan"
+  },
+  {
+    "id": "Asia/Kabul",
+    "name": "Kabul"
+  },
+  {
+    "id": "Asia/Yekaterinburg",
+    "name": "Yekaterinburg"
+  },
+  {
+    "id": "Asia/Tashkent",
+    "name": "Islamabad, Karachi, Tashkent"
+  },
+  {
+    "id": "Asia/Calcutta",
+    "name": "India"
+  },
+  {
+    "id": "Asia/Kathmandu",
+    "name": "Kathmandu"
+  },
+  {
+    "id": "Asia/Novosibirsk",
+    "name": "Novosibirsk"
+  },
+  {
+    "id": "Asia/Almaty",
+    "name": "Almaty"
+  },
+  {
+    "id": "Asia/Dacca",
+    "name": "Dacca"
+  },
+  {
+    "id": "Asia/Krasnoyarsk",
+    "name": "Krasnoyarsk"
+  },
+  {
+    "id": "Asia/Dhaka",
+    "name": "Astana, Dhaka"
+  },
+  {
+    "id": "Asia/Bangkok",
+    "name": "Bangkok"
+  },
+  {
+    "id": "Asia/Saigon",
+    "name": "Vietnam"
+  },
+  {
+    "id": "Asia/Jakarta",
+    "name": "Jakarta"
+  },
+  {
+    "id": "Asia/Irkutsk",
+    "name": "Irkutsk, Ulaanbaatar"
+  },
+  {
+    "id": "Asia/Shanghai",
+    "name": "Beijing, Shanghai"
+  },
+  {
+    "id": "Asia/Hong_Kong",
+    "name": "Hong Kong"
+  },
+  {
+    "id": "Asia/Taipei",
+    "name": "Taipei"
+  },
+  {
+    "id": "Asia/Kuala_Lumpur",
+    "name": "Kuala Lumpur"
+  },
+  {
+    "id": "Asia/Singapore",
+    "name": "Singapore"
+  },
+  {
+    "id": "Australia/Perth",
+    "name": "Perth"
+  },
+  {
+    "id": "Asia/Yakutsk",
+    "name": "Yakutsk"
+  },
+  {
+    "id": "Asia/Seoul",
+    "name": "Seoul"
+  },
+  {
+    "id": "Asia/Tokyo",
+    "name": "Osaka, Sapporo, Tokyo"
+  },
+  {
+    "id": "Australia/Darwin",
+    "name": "Darwin"
+  },
+  {
+    "id": "Australia/Adelaide",
+    "name": "Adelaide"
+  },
+  {
+    "id": "Asia/Vladivostok",
+    "name": "Vladivostok"
+  },
+  {
+    "id": "Pacific/Port_Moresby",
+    "name": "Guam, Port Moresby"
+  },
+  {
+    "id": "Australia/Brisbane",
+    "name": "Brisbane"
+  },
+  {
+    "id": "Australia/Sydney",
+    "name": "Canberra, Melbourne, Sydney"
+  },
+  {
+    "id": "Australia/Hobart",
+    "name": "Hobart"
+  },
+  {
+    "id": "Asia/Magadan",
+    "name": "Magadan"
+  },
+  {
+    "id": "SST",
+    "name": "Solomon Islands"
+  },
+  {
+    "id": "Pacific/Noumea",
+    "name": "New Caledonia"
+  },
+  {
+    "id": "Asia/Kamchatka",
+    "name": "Kamchatka"
+  },
+  {
+    "id": "Pacific/Fiji",
+    "name": "Fiji Islands, Marshall Islands"
+  },
+  {
+    "id": "Pacific/Auckland",
+    "name": "Auckland, Wellington"
+  },
+  {
+    "id": "Asia/Kolkata",
+    "name": "Mumbai, Kolkata, New Delhi"
+  },
+  {
+    "id": "Europe/Kiev",
+    "name": "Kiev"
+  },
+  {
+    "id": "America/Tegucigalpa",
+    "name": "Tegucigalpa"
+  },
+  {
+    "id": "Pacific/Apia",
+    "name": "Independent State of Samoa"
+  }
+];
+for (var t = 0; t < timezoneList.length;t++){
+  $scope.timeZone.push(timezoneList[t].id);
+}
 
-$scope.timeZone = moment.tz.names();
 moment.locale('en');
 var tzName = jstz.determine().name(); // America/Los_Angeles
 
@@ -1162,7 +1707,7 @@ $scope.meeting.dt = $scope.meeting.times;
 
 var dates = $filter('date')($scope.startTime,'Z');
 
- if($scope.meeting.AmPm =="AM" ){
+ if($scope.meeting.AmPm =="PM" ){
   
   $scope.startHourUTC = parseInt($scope.startHourUTC);
   $scope.hourUTC =parseInt($scope.startHourUTC) + 12;
@@ -1170,20 +1715,20 @@ var dates = $filter('date')($scope.startTime,'Z');
     
  
  }
-  if($scope.meeting.AmPm =="PM"){
+  if($scope.meeting.AmPm =="AM"){
   
   $scope.hourUTC =$scope.startHourUTC;
-  $scope.startDay = $scope.startTime.getDate()+1;
+  $scope.startDay = $scope.startTime.getDate();
     
  
  }
 
- if($scope.meeting.AmPm == "PM" && $scope.startHourUTC == 12){
+ if($scope.meeting.AmPm == "AM" && $scope.startHourUTC == 12){
   $scope.hourUTC =parseInt($scope.startHourUTC) - 12;
   
-  $scope.startDay = $scope.startTime.getDate()+1;
+  $scope.startDay = $scope.startTime.getDate();
  }
-  if($scope.meeting.AmPm == "AM" && $scope.startHourUTC == 12){
+  if($scope.meeting.AmPm == "PM" && $scope.startHourUTC == 12){
   $scope.hourUTC =$scope.startHourUTC;
   $scope.startDay = $scope.startTime.getDate();
  }
@@ -1239,7 +1784,7 @@ var dates = $filter('date')($scope.startTime,'Z');
 
 var dates = $filter('date')($scope.startTime,'Z');
 
-if($scope.meeting.AmPm =="AM"){
+if($scope.meeting.AmPm =="PM"){
   
   $scope.startHourUTC = parseInt($scope.startHourUTC);
   $scope.hourUTC =parseInt($scope.startHourUTC) + 12;
@@ -1247,18 +1792,18 @@ if($scope.meeting.AmPm =="AM"){
     
  
  }
-  if($scope.meeting.AmPm =="PM"){
+  if($scope.meeting.AmPm =="AM"){
   
   $scope.hourUTC =$scope.startHourUTC;
-    $scope.startDay = $scope.startTime.getDate()+1;
+    $scope.startDay = $scope.startTime.getDate();
     
 
  }
- if($scope.meeting.AmPm == "PM" && $scope.startHourUTC == 12){
+ if($scope.meeting.AmPm == "AM" && $scope.startHourUTC == 12){
   $scope.hourUTC =parseInt($scope.startHourUTC) - 12;
-  $scope.startDay = $scope.startTime.getDate()+1;
+  $scope.startDay = $scope.startTime.getDate();
  }
-  if($scope.meeting.AmPm == "AM" && $scope.startHourUTC == 12){
+  if($scope.meeting.AmPm == "PM" && $scope.startHourUTC == 12){
   $scope.hourUTC =$scope.startHourUTC;
   $scope.startDay = $scope.startTime.getDate();
  }
