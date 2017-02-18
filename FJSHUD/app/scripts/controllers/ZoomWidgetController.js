@@ -452,8 +452,8 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
           
 
           var jun = moment($scope.meetingList[i].start_time).lang('en');
-          $scope.meetingList[i].timeDate = jun.tz(guessedZone).format("dddd , MMM DD, YYYY");
-          $scope.meetingList[i].startHour = jun.tz(guessedZone).format('hh:mmA');
+          $scope.meetingList[i].timeDate = jun.tz("UTC").format("dddd , MMM DD, YYYY");
+          $scope.meetingList[i].startHour = jun.tz("UTC").format('hh:mmA');
           
            var duration = $scope.meetingList[i].duration.toString();
            if($scope.meetingList[i].duration == 0){
@@ -523,7 +523,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
 
               var end = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = end.tz(guessedZone).format('hh:mmA');
+          $scope.meetingList[i].endHour = end.tz("UTC").format('hh:mmA');
           
                }
 
@@ -557,7 +557,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
               
               var newEnd = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = newEnd.tz(guessedZone).format('hh:mmA');
+          $scope.meetingList[i].endHour = newEnd.tz("UTC").format('hh:mmA');
           
                }
               
@@ -594,9 +594,9 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
 
            
            var strt = moment($scope.meetingList[i].start_time).lang('en');
-                    $scope.meetingList[i].timeDate = strt.tz(guessedZone).format("dddd , MMM DD, YYYY");
+                    $scope.meetingList[i].timeDate = strt.tz("UTC").format("dddd , MMM DD, YYYY");
 
-          $scope.meetingList[i].startHour = strt.tz(guessedZone).format('hh:mmA');
+          $scope.meetingList[i].startHour = strt.tz("UTC").format('hh:mmA');
 
            var duration = $scope.meetingList[i].duration.toString();
            if($scope.meetingList[i].duration == 0){
@@ -659,7 +659,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
              
               var end = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = end.tz(guessedZone).format('hh:mmA');
+          $scope.meetingList[i].endHour = end.tz("UTC").format('hh:mmA');
           
                }
 
@@ -691,7 +691,7 @@ $scope.setScheduleTab = sharedData.setScheduleTab;
               
               
               var newEnd = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = newEnd.tz(guessedZone).format('hh:mmA');
+          $scope.meetingList[i].endHour = newEnd.tz("UTC").format('hh:mmA');
           
                }
                
@@ -724,9 +724,9 @@ $scope.loading.meetingLoaded = true;
            var guessedZone = $scope.meetingList[i].timezone;
 
            var jun = moment($scope.meetingList[i].start_time).lang('en');
-          $scope.meetingList[i].timeDate = jun.tz(guessedZone).format("dddd , MMM DD, YYYY");
+          $scope.meetingList[i].timeDate = jun.tz("UTC").format("dddd , MMM DD, YYYY");
 
-          $scope.meetingList[i].startHour = jun.tz(guessedZone).format('hh:mmA');
+          $scope.meetingList[i].startHour = jun.tz("UTC").format('hh:mmA');
           
 
            var duration = $scope.meetingList[i].duration.toString();
@@ -789,7 +789,7 @@ $scope.loading.meetingLoaded = true;
               $scope.meetingList[i].end_time = $scope.meetingList[i].start_time.slice(0,10) +"T"+ strHourString +":"+strMin+":"+ $scope.meetingList[i].start_time.slice(17,20);
               
               var end = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = end.tz(guessedZone).format('hh:mmA');
+          $scope.meetingList[i].endHour = end.tz("UTC").format('hh:mmA');
           
                }
 
@@ -821,7 +821,7 @@ $scope.loading.meetingLoaded = true;
               
               
               var newEnd = moment($scope.meetingList[i].end_time).lang('en');
-          $scope.meetingList[i].endHour = newEnd.tz(guessedZone).format('hh:mmA');
+          $scope.meetingList[i].endHour = newEnd.tz("UTC").format('hh:mmA');
           
                }
 
