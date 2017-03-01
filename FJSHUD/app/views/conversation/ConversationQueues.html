@@ -1,0 +1,34 @@
+  <div class="ToolBar fj-stream">       
+        <input class="SearchBox"  data-ng-model="search.query" type="search" ng-model-options="{debounce: 200}" x-webkit-speech="" ng-attr-placeholder="{{::verbage.search}}" />
+        <div class="SelectBox selectWrapper convQueue">
+	        <select  ng-model="selectedConversationQueueOption" ng-options="sort_option.name for sort_option in sort_options | filter: truncateLongString() track by sort_option.name" ng-change="sortConversationQueue(selectedConversationQueueOption)">
+	        </select>
+        </div>
+        <div class="SelectBox selectWrapper convQueue">
+	        <select class="fj-hbox SelectBox SelectBoxSettings LogoutSelect" ng-model="actionObj.selectedAction" ng-options="log_out_reason.name for log_out_reason in log_out_reasons | filter: truncateLongAction()" ng-change="queueLogoutAll(actionObj.selectedAction.xpid)">
+	            <option value="">{{::verbage.logout_all}}</option>
+	        </select>
+        </div>
+        <div class="XButton XButtonNormal convQueueInput" ng-click="queueLoginAll()" ><span>{{::verbage.login_all}}</span></div>
+    </div>
+
+
+    <div class="ContactList">
+	
+    <a href="#/queue/{{::queue.xpid}}" data-ng-repeat="queue in queues | filter: {name: search.query}" class="GroupRow ListRow ListRow-Contact">
+        <avatar profile="queue" context="conversation:contact"></avatar>
+        <div class="ListRowContent">
+            <div class="ListRowTitle">
+                <div class="name">
+                    <b>{{ ::queue.name }}</b>
+                </div>
+                <div > 
+                    <div class="XIcon-ChatStatus-{{ queue.you.fullProfile.hud_status || 'offline' }}" ></div>
+                    <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{queue.you.status.status}}"></div>
+                    {{queue.you.status.status == 'logout' ? verbage.logged_out : queue.you.status.status == 'login' ? verbage.logged_in : verbage.logged_in_perm }}
+                </div>
+            </div>
+        </div>
+    </a>
+    
+    </div>

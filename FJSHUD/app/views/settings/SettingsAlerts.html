@@ -1,0 +1,104 @@
+      <div class="PreferenceSwitch" ng-switch="generalAlerts">
+      <div class="PreferenceSection" ng-click="generalAlerts = !generalAlerts">
+          <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.general}}</div>
+
+      <div class="ListSectionBody" ng-switch-when="false">{{::verbage.configure_desktop_alerts}}</div>
+          <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
+      </div>
+      <div class="PreferencePage" ng-switch-when="true">
+      <div class="ListSectionHeaderTitle">{{::verbage.general}}</div>
+      	<div class="Dialog-settings-row"><input type="checkbox"
+          ng-model="alertShow" ng-click="selectAllBoxes()" ng-change="update_settings('alert_show','update',alertShow)" 
+        > <label>{{::verbage.show_alerts}}</label> </div>
+      	<div class="Dialog-settings-row"><input type="checkbox"
+          ng-model="settings.alertOnBusy" ng-change="update_settings('hudmw_show_alerts_in_busy_mode','update',settings.alertOnBusy)" ng-disabled="!alertShow"
+        > <label>{{::verbage.show_status_when_busy}}</label> </div>
+      	<div class="Dialog-settings-row"><input type="checkbox"
+          ng-model="alertOnAlways" ng-change="update_settings('hudmw_show_alerts_always','update',alertOnAlways)" ng-disabled="!alertShow" 
+        > <label>{{::verbage.show_when_app_in_focus}}</label> </div>
+      	
+      </div>
+      </div>
+
+     <div class="PreferenceSwitch" ng-switch="queueAlerts">
+     <div class="PreferenceSection " ng-click="queueAlerts = !queueAlerts">
+          <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.queue_alerts}}</div>
+      <div class="ListSectionBody" ng-switch-when="false">
+        {{::verbage.configure_queue_not_and_desktop_alerts}}
+
+      </div>
+      <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
+      </div>
+      <div class="PreferencePage" ng-switch-when="true">
+        <div class="ListSectionHeaderTitle" >{{::verbage.queue_alerts}}</div>
+        <div class="table Queues">
+          <div class="QueueHeader top">
+            <div class="QueueSetting QueueSettingHeader QueueSettingCol1" >&nbsp; &nbsp;</div>
+            <div class="QueueSetting QueueSettingHeader" colspan="2"> {{::verbage.long_waiting_call}}</div>
+            <div class="QueueSetting QueueSettingHeader" colspan="2"> {{::verbage.abandoned_calls}}</div>
+          </div>
+
+          <div class="QueueHeader"> <!--  style="display:inline-block" -->
+            <div class="QueueSetting QueueSettingHeader QueueSettingCol1 secondRow"><br>{{::verbage.select_all}}</div>
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox secondRow">Notifications<br><input type="checkbox"
+                ng-model="allQueueNotificationsLW"
+                ng-change="update_queue_settings('HUDw_QueueNotificationsLW_', allQueueNotificationsLW)"
+            ></div>
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox secondRow">
+            Desktop Alerts<br><input type="checkbox"
+                ng-model="allQueueAlertsLW"
+                ng-change="update_queue_settings('HUDw_QueueAlertsLW_', allQueueAlertsLW)"
+                ng-disabled="!allQueueNotificationsLW"
+           ></div>
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox secondRow">
+            Notifications<br><input type="checkbox"
+                ng-model="allQueueNotificationsAB"
+                ng-change="update_queue_settings('HUDw_QueueNotificationsAb_', allQueueNotificationsAB)"
+                
+            ></div>
+            <div class="QueueSetting QueueSettingHeader QueueSettingCheckBox secondRow">
+            Desktop Alerts<br><input type="checkbox"
+                ng-model="allQueueAlertsAB"
+                ng-change="update_queue_settings('HUDw_QueueAlertsAb_', allQueueAlertsAB)"
+                ng-disabled="!allQueueNotificationsAB"
+           
+            ></div>
+          </div>
+          <div class="queueList">          
+          <div ng-repeat="queue in queues track by queue.xpid" class="ListRow">       
+            <div class="SettingsListLineContent">
+            <div class="QueueSetting QueueSettingCol1"> {{::queue.name}} </div>
+            
+            <div class="QueueSetting QueueSettingCheckBox">
+              <input type="checkbox"
+                ng-model="settings['HUDw_QueueNotificationsLW_'+queue.xpid]"                
+                ng-change="update_settings('HUDw_QueueNotificationsLW_' + queue.xpid,'update', settings['HUDw_QueueNotificationsLW_'+queue.xpid] ? 'true' : 'false')"
+              >
+            </div>
+            
+            <div class="QueueSetting QueueSettingCheckBox">
+              <input type="checkbox" 
+              ng-model = "settings['HUDw_QueueAlertsLW_'+queue.xpid]"                            
+              ng-change ="update_settings('HUDw_QueueAlertsLW_' + queue.xpid,'update', settings['HUDw_QueueAlertsLW_'+queue.xpid] ? 'true' : 'false')"
+              ng-disabled = "!settings['HUDw_QueueAlertsLW_'+queue.xpid]; !alertShow"
+              >
+            </div>
+            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+              ng-model = "settings['HUDw_QueueNotificationsAb_'+queue.xpid]"              
+              ng-change="update_settings('HUDw_QueueNotificationsAb_' + queue.xpid,'update', settings['HUDw_QueueNotificationsAb_'+queue.xpid] ? 'true' : 'false')"
+              
+            ></div>
+            <div class="QueueSetting QueueSettingCheckBox"><input type="checkbox"
+              ng-model = "settings['HUDw_QueueAlertsAb_'+queue.xpid]"              
+              ng-change ="update_settings('HUDw_QueueAlertsAb_' + queue.xpid,'update', settings['HUDw_QueueAlertsAb_'+queue.xpid] ? 'true' : 'false')"
+              ng-disabled = "!settings['HUDw_QueueAlertsAb_'+queue.xpid]; !alertShow"
+           ></div>
+           </div>
+         </div>
+        </div>       
+      </div>
+      </div>
+      </div>
+      

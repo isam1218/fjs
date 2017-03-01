@@ -1,0 +1,33 @@
+<div class="ToolBar">        
+        <div class="SelectBox selectWrapper members">
+            <select class="HideFirst" ng-model="selectedAction" ng-options="option.text for option in callOptions" ng-change="makeCall(selectedAction.type)"></select>
+        </div>
+</div>
+
+<div class="ListView fj-scrollable page">   
+    <p style="font-size:12px;margin:10px" ng-if="group.originator == ''"> {{::verbage.tab_shows_group_call_members}} </p>
+
+    <div ng-if="group.originator != ''">
+        <div id="" style="margin:10px;padding:5px;width:97%;background-color:#EDEDED"> 
+            <div style="color:#009cff;font-weight:bold;font-size:.7em">{{::group.name}} {{ ::verbage.group_page}}</div>
+            <i style="margin-top:0px;font-size:.7em">{{::verbage.created_by }} {{group.originator}}</i>
+        </div>
+
+        <div class=" GroupRow ListRow ListRow-Contact vmsection group_members ng-class:{'last': $last}" ng-class-odd="'ListRowOdd'" ng-class="{'ListRowLast':$last}" data-ng-repeat="member in members | filter: memberFilter() track by member.xpid" droppable="Call">        
+                <avatar profile="member.fullProfile"></avatar>
+                <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null"> 
+                    <a class="ListRowTitle GroupListRowTitle GroupPageListRowTitle" ng-href="#/contact/{{::member.contactId}}">
+                        <span class="GroupPageDisplayName"> {{ ::member.fullProfile.displayName }} </span>
+                        <br/>
+                        <div class="GroupPageStatus">
+                            <div class="ListRowStatusIcon ListRowStatusIconGroupPage XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}" ></div>
+                            <span>{{( member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '') }}</span>
+                        </div>
+                    </a>
+                    <div class="ListRowStatus extension GroupPageListRowStatus">#{{ ::member.fullProfile.primaryExtension }}</div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>

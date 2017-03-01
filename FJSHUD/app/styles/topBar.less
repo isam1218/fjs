@@ -1,34 +1,42 @@
 .TopBar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 96px;
-  border-radius: 0 0 10px 10px;
+  position: relative;
+  width: 100%;
+  height: 100px;
+  min-width: 1000px;
+  border-bottom: 1px solid white;
+  box-shadow: 0 -1px 1px #ccc inset;
 }
 
 .TopBar:hover {
-  z-index:2;
+  z-index: 1000;
   background-color: #f3f3f3;
+  border-radius: 0 0 10px 10px;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.85);
 }
 
 .TopBarLogo {
-  position: absolute;
-  background-image: url("../img/FonalityLogo.png");
-  width: 150px;
-  height: 45px;
-  top: 24px;
-  left: 20px;
+  background: url("../img/FonalityLogo.png") no-repeat;
+  margin: 5px 0 0 10px;  
+  width: 300px;
+  float: left;
+  display: block;
+  height: 90px;
 }
 
-.TopBarIcons {
-  position: absolute;
-  top: 4px;
-  left: 320px;
-  width:500px;
-  bottom: 0;
-  text-align: center;
+.TopBarIcons {  
+  margin-left: 0px;
+  float: left;
+  clear: none;
+  display: block;
+  height: 90px;
+  
+  .Avatar {
+    margin: 15px 0 0 10px;
+	
+	& > div {
+		border: 2px solid #ffffff;
+	}
+  }
 }
 
 .TopBarItemApp {
@@ -37,57 +45,173 @@
   height: 96px;
   width: 50px;
   cursor: pointer;
-  vertical-align: top;
+  vertical-align: top;  
 }
 
 .TopBarItemAppIcon {
   position: absolute;
   top: 10px;
   left: 5px;
+  width: 40px !important;
+  height: 40px !important;
+  
+  &:not(.Avatar) {
+	background: url("../img/XApp-Icons.png") no-repeat 0 0;
+  }
+}
+
+/* /// icons dropdown /// */
+
+.TopBar2ItemAppIcon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
   width: 40px;
   height: 40px;
-  background: url("../img/XApp-Icons.png") no-repeat 0 0;
+  background: url("../img/XApp-Icons.png") no-repeat 0px 0px;
 }
+.DropDownMoreList {
+  position: absolute;
+  top: 91px;
+  right: -20px;
+  max-height: 300px;
+  min-height: 50px;
+  width: 300px;
+  background-color: #f3f3f3;
+  box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+  text-align: center;
+  z-index: 1000; 
+  display: none;
+
+  .DropDownMoreListScrollable {
+      position: relative;
+      top: 0px;
+      max-height: 300px;
+      
+      .dropdownView{
+          position: relative;
+          max-height: 300px;
+          top: 0px;
+          bottom: 0px;
+          left: 0px;
+          right: 0px;
+          overflow-x: hidden;
+          overflow-y: auto;
+          
+          #apps{              
+                        
+              .TopBar2MenuItemApp {
+                  position: relative;
+                  height: 60px;
+                  width: 100%;
+                  cursor: pointer;
+                  pointer-events: auto;
+                  display: inline-block;
+                  
+                  .TopBar2MenuItemName {
+                      position: absolute;
+                      top: 15px;
+                      left: 60px;
+                      right: 0px;
+                      height: 30px;
+                      line-height: 30px;
+                      font-family: "Arial";
+                      text-align: left;
+                      font-size: 12px;
+                      color: #999;
+                      transition: All 0.3s ease;
+                      -webkit-transition: All 0.3s ease;
+                      overflow: hidden;
+                      pointer-events: none;                     
+                      
+                  }
+                  
+              }
+         }
+      }
+  }
+}
+/* /// END - icons dropdown /// */
 
 .TopBarItemAppIcon.Home {
   background-position : 0 0;
 }
-.TopBarItemAppIcon.Contacts {
-  background-position : -40px 0;
+.TopBarItemAppIcon.Contacts,
+.TopBar2ItemAppIcon.Contacts {
+  background-position : 5.25% 0;
   top:13px;
 }
-.TopBarItemAppIcon.Workgroups {
+.TopBarItemAppIcon.Workgroups,
+.TopBar2ItemAppIcon.Workgroups {
   background-position : -80px 0;
 }
-.TopBarItemAppIcon.Departments {
+.TopBarItemAppIcon.Departments,
+.TopBar2ItemAppIcon.Departments {
   background-position : -120px 0;
 }
-.TopBarItemAppIcon.Favorites {
+.TopBarItemAppIcon.Favorites,
+.TopBar2ItemAppIcon.Favorites {
   background-position : -160px 0;
 }
-.TopBarItemAppIcon.CallLog {
-  background-position : -200px 0;
+.TopBarItemAppIcon.CallLog,
+.TopBar2ItemAppIcon.CallLog {
+  background-position : 26.5% 0;
 }
-.TopBarItemAppIcon.Share {
+.TopBarItemAppIcon.Share,
+.TopBar2ItemAppIcon.Share {
   background-position : -640px 0;
 }
-.TopBarItemAppIcon.CallCenter {
-  background-position : -280px 0;
+.TopBarItemAppIcon.CallCenter,
+.TopBar2ItemAppIcon.CallCenter {
+  background-position : 37% 0;
 }
-.TopBarItemAppIcon.CallRecords {
+.TopBarItemAppIcon.CallRecords,
+.TopBar2ItemAppIcon.CallRecords {
   background-position : -320px 0;
 }
-.TopBarItemAppIcon.Voicemails {
+.TopBarItemAppIcon.Voicemails,
+.TopBar2ItemAppIcon.Voicemails {
   background-position : -360px 0;
 }
-.TopBarItemAppIcon.Conferences {
-  background-position : -400px 0;
+.TopBarItemAppIcon.Conferences,
+.TopBar2ItemAppIcon.Conferences {
+  background-position : 52.75% 0;
 }
-.TopBarItemAppIcon.Box {
-  background-position : -440px -1px;
+.TopBarItemAppIcon.Box,
+.TopBar2ItemAppIcon.Box {
+  background-position : 57.9% -1px;
 }
-.TopBarItemAppIcon.Zoom {
-  background-position : -480px 0;
+.TopBarItemAppIcon.Zoom,
+.TopBar2ItemAppIcon.Zoom {
+  background-position : 63.1% 0;
+}
+.TopBarItemAppIcon.Search,
+.TopBar2ItemAppIcon.Search {
+  background-position : 73.5% 0;
+}
+.TopBarItemAppIcon.Intellinote,
+.TopBar2ItemAppIcon.Intellinote {
+  background: url("../img/Intellinote-Icon.png") no-repeat 1px 6px;
+}
+.TopBarItemAppIcon.Zipwhip,
+.TopBar2ItemAppIcon.Zipwhip {
+  background: url("../img/zipwhipIcon.png") no-repeat 1px 6px;
+}
+.TopBarItemAppIcon.Inphonex,
+.TopBar2ItemAppIcon.Inphonex {
+  background: url("../img/inphonex_icon.png") no-repeat 1px 6px;
+}
+.TopBarItemAppIcon.FonalityDialer,
+.TopBar2ItemAppIcon.FonalityDialer {
+  background: url("../img/Fonality-Dialer-Icon.png") no-repeat 1px 6px;
+}
+.TopBarItemAppIcon.more{
+  background-position: -280px -40px;
+  position: relative;
+  display: inline-block;
+  height: 96px;
+  width: 50px;
+  vertical-align: top;
 }
 
 .TopBarItemMe .TopBarItemAppIcon{
@@ -119,41 +243,61 @@
 }
 
 .TopBarMeStatus {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  bottom: 0px;
-}
-.TopBarMeStatus-row {
-  margin:5px;
-  height: 50px;
-  vertical-align: top;
-  display:inline-block;
-  position:relative;
-  .SelectBox {
-    width:80px;
-    margin-bottom:5px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 0;
+  flex: 1;
+  -webkit-flex: 1;
+  padding: 5px 10px 0 0;
+  text-align: right;  
+  white-space: nowrap;
+  width: 110px;
+  float: right;
+  min-width: 0;     
+  min-height: 0;
+  
+  .Logout { 	
+  	.material-icons {
+      padding:4px;
+  	  color: #4a4a4a;
+  	  font-size: 24px;
+  	}	
   }
-  .AvatarNormal, .AvatarNormal img {
-    width:59px;
-    height:59px;
+  .Logout .material-icons:hover{
+    cursor:pointer;     
+    background-color:#d2dbe1;
+    padding: 4px;
+    border-radius: 20px;
   }
-  .XButtonToggle {
-    height:26px;
-    margin-bottom:5px;
-    padding:0 3px;
+    .Preferences {   
+    .material-icons {
+      padding:4px;
+      color: #4a4a4a;
+      font-size: 24px;
+    } 
+  }
+  .Preferences .material-icons:hover{
+    cursor:pointer;     
+    background-color:#d2dbe1;
+    padding: 4px;
+    border-radius: 20px;
+  }
+  
+  .Status {   
+    margin-top: 5px;
+    font-size: 12px;
+      	
+	* {
+	  vertical-align: middle;
+	}
+	
+	.hud_status {
+	  text-transform: capitalize;
+	}
   }
 }
 
-.TopBarBottomLine {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  height: 0;
-  border-top: solid 1px #bbb;
-  border-bottom: solid 1px #fff;
-}
-.TopBar:hover .TopBarBottomLine {
-  display:none;
+.cust_status{
+  float: right;
 }

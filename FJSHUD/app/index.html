@@ -1,321 +1,360 @@
 <!doctype html>
-<html class="no-js" ng-app="fjshudApp">
+<html class="no-js" ng-app="fjshudApp" watch-window-resize>
   <head>
     <meta charset="utf-8">
     <title>Fonality HUDWeb</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-      <link type="image/x-icon" rel="icon" href="img/XFavicon.ico">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
+    <meta name="description" content="Fonality HUDWeb">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="image/x-icon" rel="icon" id="favicon" href="img/Favicon.gif" />
+    
+    <!-- @if NODE_ENV='development' --> 
+    <link rel="stylesheet" href="styles/main.css?v=<%- version %>"> 
+		<!-- @endif -->
+
+    <!-- @if NODE_ENV='production' -->
+    <link rel="stylesheet" href="styles/main.min.css?v=<%- version %>"> 
+    <!-- @endif --> 
+
+    <!--[if lt IE ]> 
+        <link rel="stylesheet" href="styles/ie.css">  
+    <![endif]-->
+  	<script type="text/javascript">
+		console.time('worker');
+		
+		  	function isBrowserIE()
+		  	{
+			    if (navigator.userAgent.indexOf('MSIE') != -1)
+				 var detectIEregexp = /MSIE (\d+\.\d+)/; //test for MSIE x.x
+				else // if no "MSIE" string in userAgent
+				 var detectIEregexp = /Trident.*rv[ :]*(\d+\.\d+)/; //test for rv:x.x or rv x.x where Trident string exists
+			
+				if (detectIEregexp.test(navigator.userAgent)) //if some form of IE
+					return true;
+				else
+					return false;	            	 
+			};
+		
+			(function(){				
+				var uv=document.createElement('script');
+				uv.type='text/javascript';
+				uv.async=true;
+				uv.src='//widget.uservoice.com/Tn3xl4wYXZ7m5rjTNJnOQ.js';
+				var s=document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(uv,s);
+				            	           
+				var agent = navigator.userAgent.toLowerCase();
+	            var links = document.getElementsByTagName('link');            	            				
+			    var isInternetExplorer = isBrowserIE();
+			    
+	             if(isInternetExplorer) {	            	 
+	              var ie_css = document.createElement('link');
+	              ie_css.setAttribute('rel','stylesheet');
+	              ie_css.setAttribute('href','styles/ie.css');	              
+	              var l = links[links.length-1];
+	              l.parentNode.appendChild(ie_css,l);	                    	
+	             }
+	             else if(agent.indexOf('firefox') != -1){
+	            	var FF_css = document.createElement('link');
+	            	FF_css.setAttribute('rel','stylesheet');
+	            	FF_css.setAttribute('href','styles/firefox.css');
+	                var li = links[links.length-1];
+	                li.parentNode.appendChild(FF_css,li);  
+	             }
+	             else if(agent.indexOf('safari') != -1 && agent.indexOf('chrome') == -1){
+                    var safari_css = document.createElement('link');
+                    safari_css.setAttribute('rel','stylesheet');
+                    safari_css.setAttribute('href','styles/safari.css');
+                    var sli=document.getElementsByTagName('link')[0];
+                    sli.parentNode.appendChild(safari_css,sli);  
+                 }
+			})();
+		</script>
+		
+		<!--
+		Commented out Feedback Button...
+		<script type="text/javascript">
+			UserVoice = window.UserVoice || [];
+			var ja = localStorage.fon_lang_code == 'lang.jp';
+
+			///hudmw_lang=lang.jp/.test(document.cookie);
+			var _label=ja?"フィードバック":'Feedback';
+			var _name= ja?'私達にあなたのフィードバックを与える':'Give us your feedback';
+			UserVoice.push(['showTab', 'classic_widget', {
+			  mode: 'feedback',
+			  primary_color: '#a3a3a3',
+			  link_color: '#368c00',
+			  forum_id: 209993,
+			  feedback_tab_name: _name,
+			  tab_label: _label,
+			  tab_color: '#368c00',
+			  tab_position: 'middle-right',
+			  tab_inverted: false
+			}]);
+		</script> 
+		-->
+
+		<script>
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			
+			ga('create', 'UA-68784809-1', 'auto');
+
+		</script>
+
+
   </head>
-  <body  data-ng-controller="MainController" data-ng-click="onBodyClick()">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
-    <!-- Add your site or application content here -->
-
-    <div class="TopBar">
-        <div class="TopBarLogo">
-        </div>
-
-        <div class="TopBarIcons" data-ng-controller="TopNavigationController">
-            <a href="{{icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons">
-                <div class="TopBarItemAppIcon {{ icon.key }}"></div>
-                <div class="TopBarItemAppName">{{ icon.title }}</div>
-            </a>
-        </div>
-
-
-
-        <div class="TopBarMeStatus" data-ng-controller="TopBarMeStatusController">
-
-            <div class="TopBarMeStatus-row">
-                <div class="SelectBox" data-ng-click="showLocationsPopup($event)">
-                    <div class="SelectBoxText">
-                        <span class="InnerIco">@</span>&nbsp;<span>{{getCurrentLocationTitle()}}</span>
-                    </div>
-                    <div class="SelectBoxArrow"></div>
-                </div><br/>
-                <div class="SelectBox" data-ng-click="showChatStatusPopup($event)">
-                    <div class="SelectBoxText">
-                        <div class="MenuItemIcon" data-ng-class="'XIcon-ChatStatus-'+getCurrentChatStatus()"></div>&nbsp;<span style="vertical-align: top;">{{getCurrentChatStatus()}}</span>
-                    </div>
-                    <div class="SelectBoxArrow"></div>
-                </div>
-            </div>
-
-            <div class="TopBarMeStatus-row">
-                <div class="XButton XButtonToggle Off">
-                    <span></span>
-                    <div class="XButtonToggleIcon XIcon24-MuteOff"></div>
-                    <div class="PopupSlider">
-                        <div class="PopupSliderFadeLine">
-
-                        </div>
-                        <div class="PopupSliderFader">
-
-                        </div>
-                    </div>
-                </div>
-                <br/>
-                <div class="XButton XButtonToggle Off">
-                    <span></span>
-                    <div class="XButtonToggleIcon XIcon24-Speaker-On"></div>
-                    <div class="PopupSlider">
-                        <div class="PopupSliderFadeLine">
-
-                        </div>
-                        <div class="PopupSliderFader">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="TopBarMeStatus-row">
-                <div class="Avatar AvatarNormal" ng-click="toogleMenu()">
-                    <img class="AvatarImgPH" ng-src="{{getMeAvatarUrl()}}" />
-                </div>
-                <div class="PopupMenu" style="right:0;top:60px;" ng-show="menuIsOpen" ng-click="toogleMenu()">
-                    <a href="#/settings" class="PopupMenuRow">
-                        <div class="MenuItemText">Settings</div>
-                    </a>
-                    <a href="#" data-ng-click="logout($event)" class="PopupMenuRow">
-                        <div class="MenuItemText">Logout</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-
-
-
-        <div class="TopBarBottomLine"></div>
+  <body data-ng-controller="MainController" flow-prevent-drop>
+  	<div ng-if="downloadModal" include-once="views/popups/DownloadModal.html"></div>
+  	<div id="phonehtml"> </div>
+    <div id="AppLoading">
+		<div ng-cloak>
+			<div ng-bind="::verbage.loading"></div>
+			<img src="img/ajax-loader.gif" />
+		</div>
     </div>
-    <div class="LeftSideBar">
-        <div class="LeftSideBarHead"></div>
-        <div class="ToolBar">
-            <div class="SearchPanel" data-ng-class="{'InSearch':!!searchValue}" data-ng-controller="SearchInputController">
-                <div class="SearchInputBox" >
-                    <div class="SearchInputBoxInputHolder">
-                        <input class="SearchInputBoxInput"
-                               type="text" x-webkit-speech=""
-                               ng-keydown="onKeyDown($event)"
-                               data-ng-model="searchValue"
-                               placeholder="Search or Start call"
-                               autofocus="true" />
-                    </div>
-                    <div class="SearchInputBoxStateButton" data-ng-click="searchValue = ''">
-                        <div class="SearchInputBoxStateButtonIcon">
+	
+	<div id="App">
+		<div class="TopBar" include-once="views/TopNavigationBar.html" ng-controller="TopNavigationController" top-nav-behavior></div> <!--  -->
 
-                        </div>
-                    </div>
-                </div>
-                <div class="SearchResults" >
-                   <a href="#/contact/{{contact.xpid}}" class="ListRow Small Table AvatarHoverArea" ng-keydown="onKeyDownElement($event, contact)" data-ng-repeat="contact in filtredContacts = (contacts | ContactsWithoutMe | filter:filterContactFn(searchValue))">
-                        <div class="Avatar AvatarSmall">
-                            <img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(28,28)}}" />
-                        </div>
-                        <div class="ListRowButtons">
-                            <div class="ListRowActionButton {{action.className}}" title="{{action.title}}" data-ng-click="action.makeAction(contact)"  data-ng-repeat="action in _actions = contact.getActions(5)">
-                            </div>
-                        </div>
-                        <div class="ListRowContent WithActions-{{_actions.length}}">
-                            <div class="ListRowLeftArea">
-                                <div class="ListRowTitle" ng-bind-html="contact.getFoundDisplayName(searchValue)"></div>
-                                <div class="link ListRowDesc">
-                                    <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{contact.contactstatus_xmpp || 'offline'}}"></div>
-                                    <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}"></div>
-                                    <span ng-bind-html="contact.getFoundExtension(searchValue)"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div ng-if="contact.getPhones().length>1 && contact.xpid == openedContact" class="SearchPhoneNumbers">
-                            <button data-ng-repeat="phone in contact.getPhones()" ng-keydown="onKeyDownButton($event, phone.number)">
-                                <label>{{phone.title}}:</label>{{phone.number}}
-                            </button>
-                        </div>
-                    </a>
-                </div>
-                <div class="NoSearchResults" ng-if="searchValue && filtredContacts.length == 0">
-                    <div data-ng-click="callToNumber()" class="XButton XButtonGreen" >
-                        <span>Call to the number</span>
-                    </div>
-                    <div data-ng-click="createContact($event)" class="XButton XButtonNormal">
-                        <span>Create new contact</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="LeftSideBarSection">
-                <div class="LeftBarPhoneCalls" data-ng-controller="LeftBarCallsController">
-                    <div class="PhoneCallsPanel">
-                        <div class="fj-phone-section-content">
-                            <div data-ng-controller="MyCallController" class="MyCallBlock AvatarHoverArea {{ call.getCallType() }} " data-ng-class="{'IsHold-true': call.state == 3}" data-ng-repeat="call in calls">
-                                <div class="MyCallHolder" ng-click="toogleCall(call.xpid)">
-                                    <div class="MyCallBlockCallIconHolder">
-                                        <div class="MyCallBlock_CallIcon Category-{{ call.getCallType() }}">
-                                            <div class="MyCallBlock_CallIconInner" data-ng-class="{'IsMute-true': call.mute}"></div>
-                                        </div>
-                                    </div>
-                                    <div class="fj-hbox-space MyCallBlockCallLineHolder">
-                                        <div class="fj-hbox MyCallBlock_CallLineTop">
-                                            <div class="fj-hbox-space MyCallBlock_CallerName">{{ call.displayName }}</div>
-                                            <div class="fj-hbox-cell MyCallBlock_Rec {{call.record}}"></div>
-                                        </div>
-                                        <div class="fj-hbox MyCallBlock_CallLineBottom">
-                                            <div class="fj-hbox-space MyCallBlock_CallInfo"><span>{{call.incoming && "Inbound" || "Outbound"}}</span>
-                                                <span ng-if="call.state == 3" >&nbsp; on hold &nbsp;</span>
-                                                <span ng-if="call.state == 2">&nbsp; on call &nbsp;</span><span
-                                                    class="MyCallBlock_Duration" >{{duration}}</span>
-                                                <span
-                                                    class="MyCallBlock_HoldInfo_Timer" ng-if="call.state == 3">&nbsp;/&nbsp;{{holdDuration}}</span></div>
-                                            <div ng-if="call.mute" class="fj-hbox-cell MyCallBlock_MutedText">
-                                                Muted
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="fj-hbox-cell MyCallBlockButtonsHolder">
-                                        <div class="fj-hbox MyCallBlock_Buttons" ng-if="call.state!=0 || call.incoming">
-                                                <div data-ng-click="hangup($event)" class="XButton XButtonNormal"  ng-if="call.state==0">
-                                                    <span>Decline</span></div>
-                                                <div data-ng-click="hangup($event)" data-event="click" class="XButton XButtonNormal" ng-if="call.state!=0">
-                                                    <span>End</span></div>
+		<div class="PanelWrapper">
+			<div class="LeftBar" ng-controller="LeftBarController">
+				<div class="RoundedTop"></div>
 
-                                                <div data-ng-click="_accept($event)" ng-if="call.state==0" class="XButton XButtonNormal">
-                                                    <span>Accept</span></div>
-                                                <div data-ng-click="hold($event)" ng-if="call.state==2" class="XButton XButtonNormal disabled-{{!!call.mycalldetails_conferenceId}}">
-                                                    <span>Hold</span></div>
-                                                <div data-ng-click="unhold($event)" ng-if="call.state==3" class="XButton XButtonNormal">
-                                                    <span>Talk</span></div>
-                                        </div>
-                                        <div class="fj-hbox MyCallBlock_Buttons" ng-if="(call.state==0 && !call.incoming)">
-                                            <div class="fj-hbox-space">
-                                                <div class="XButton XButtonNormal" data-ng-click="hangup($event)">
-                                                    <span>Cancel</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="CurentCall-ButtonsBlock" ng-if="openedCallId == call.xpid">
-                                    <div class="XButton XButtonNormal">
-                                        <span>Transfer</span>
-                                    </div>
-                                    <div class="XButton XButtonNormal" data-ng-click="park($event)">
-                                        <span>Park</span></div>
-                                    <div class="XButton XButtonNormal Mute" data-ng-click="mute($event)">
-                                        <span>Mute</span>
-                                    </div>
-                                    <!--<div class="SelectBox" >
-                                        <div class="SelectBoxText">
-                                            Barge
-                                        </div>
-                                        <div class="SelectBoxArrow"></div>
-                                    </div>-->
+				<div class="LeftBarWrapper" ng-switch="tab">
+					<div class="LeftBarTop">
+						<div class="ContactSearch">
+							<div ng-show=" tab != 'favorites' && tab != 'recent'">
+								<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" ng-model="query" />
+								
+								<input type="button" value="{{::verbage.new_word}}" class="New XButton" ng-click="tab == 'groups' ? showOverlay(true, 'GroupEditOverlay') : showOverlay(true, 'ContactEditOverlay')" />
+							</div>
+							
+							<div ng-show="tab == 'favorites'">
+								<input type="search" ng-model-options="{debounce: 200}" class="SearchBox Add" ng-attr-placeholder="{{::verbage.add_someone}}" contact-search="all|favorites" ng-controller="ContactsWidget" />
+							</div>
+						</div>
+						<div class="WidgetTabBar">
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('all')" ng-class="tab == 'all' ? 'fj-selected-item' : ''">
+								<div class="inner {{language}}">{{::verbage.all}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('favorites')" ng-class="tab == 'favorites' ? 'fj-selected-item' : ''">
+								<div class="inner {{language}}">{{::verbage.favorites}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('recent')" ng-class="tab == 'recent' ? 'fj-selected-item' : ''">
+								<div class="inner {{language}}">{{::verbage.recent}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('external')" ng-class="tab == 'external' ? 'fj-selected-item' : ''">								
+								<div class="inner {{language}}">{{::verbage.external}}</div>
+								<div class="arrow"></div>
+							</a>
+							<a href="" class="WidgetTabBarButton Ready" ng-click="setTab('groups')" ng-class="tab == 'groups' ? 'fj-selected-item' : ''">
+								<div class="inner {{language}}">{{::verbage.Groups}}</div>
+								<div class="arrow"></div>
+							</a>
+						</div>
+					</div>
 
-                                    <div class="XButton XButtonNormal RecordButton Off" data-ng-click="record($event)">
-                                        <span>REC </span>
-                                        <div class="XIcon24-Record"></div>
-                                    </div>
-                                    <div class="XButton XButtonNormal">
-                                        <span>Move</span>
-                                    </div>
-                                    <div class="XButton XButtonNormal">
-                                        <span>#</span>
-                                    </div>
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <div class="LeftSideBarResentsSection" data-ng-controller="ResentsListController">
-                <a href="#/{{resent.key}}" context-menu="resent.getAssociatedEntry()" class="ListRow Small Table AvatarHoverArea" data-ng-repeat="resent in resents | ResentsSortFilter">
-                    <div class="Avatar AvatarSmall" avatar-menu="resent.getAssociatedEntry()">
-                        <img class="AvatarImgPH" data-ng-src="{{resent.getAssociatedEntry().getAvatarUrl(28,28)}}">
-                        <div class="AvatarInteractable"></div>
-                        <div ng-if="resent.events" class="EventsBaloon">{{resent.getEventsCount()}}</div>
-                    </div>
-                    <div class="ListRowContent">
-                        <div data-ng-if="contact.hasCall" class="ListRowCallArea">
-                            <div class="Avatar AvatarSmall CallAvatar CallAvatar_{{resent.getAssociatedEntry().getCallType()}}">
-                                <img class="AvatarImgPH" data-ng-src="{{resent.getAssociatedEntry().getCallAvatarUrl(28, 28)}}">
-                                <div class="AvatarInteractable"></div>
-                            </div>
-                        </div>
-                        <div class="ListRowLeftArea">
-                            <div class="ListRowTitle"> {{ resent.getAssociatedEntry().getDisplayName()}}</div>
-                            <div class="link ListRowDesc">#{{ resent.getAssociatedEntry().primaryExtension }}</div>
-                        </div>
-                        <div class="ListRowStatus">
-                            <div class="ListRowStatusIcon Small XIcon-ChatStatus-{{resent.getAssociatedEntry().getChatStatus()}}"></div>
-                            <div class="ListRowStatusIcon Small XIcon-QueueStatus XIcon-QueueStatus-{{resent.getAssociatedEntry().contactstatus_queueStatus}}"></div>
-                            <div class="ListRowStatusText">{{resent.getAssociatedEntry().contactstatus_xmppCustom || resent.getAssociatedEntry().contactstatus_xmpp || 'offline'}}</div>
-                        </div>
-                        <div class="marquee">{{resent.message}}</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
+					<div class="Contacts"
+						contact-filters
+						include-once="views/ContactsWidget.html"
+						ng-controller="ContactsWidget">
+					</div>
+					<div class="Groups"
+						ng-switch-when="groups"
+						include-once="views/GroupsWidget.html"
+						ng-controller="GroupsController">
+					</div>
+					<div class="Recent"
+						ng-switch-when="recent"
+						include-once="views/RecentWidget.html"
+						ng-controller="RecentController">
+					</div>
+				</div>
 
-    <ng-view></ng-view>
+				<div class="Notifications" include-once="views/Notifications.html" ng-controller="NotificationController"></div>
+                
+				<div class="Phone">
+					<input type="text" class="Number" ng-attr-placeholder="{{::verbage.phone_number}}" ng-model="number" 
+						on-submit="makeCall(number)"
+					/>
+					<input type="button" value="{{::verbage.new_call}}" class="XButton XButtonGreen" ng-click="makeCall(number)"/>
+				</div>
+			</div>
 
-    <div ng-include="currentPopup.url">
-    </div>
-    <div id="_contextMenuWrap"></div>
+		<div ng-view class="WidgetPanel"></div>
 
-    <div  id="fj-loading" class="fj-loading">
-        <div class="fji-box">
-            <div class="fji-label">Loading...</div>
-            <div class="loading-amination">
-                <img src="img/ajax-loader.gif">
-            </div>
-        </div>
-    </div>
+			<div id="DockPanel" class="DockPanel" include-once="views/DockArea.html" ng-controller="DockController"></div>
+		</div>
+	</div>
 
-    <!-- build:js(.) scripts/oldieshim.js -->
-    <!--[if lt IE 9]>
-    <script src="../bower_components/es5-shim/es5-shim.js"></script>
-    <script src="../bower_components/json3/lib/json3.min.js"></script>
-    <![endif]-->
-    <!-- endbuild -->
+	<div ng-include="currentPopup.url"></div>
+	<div ng-include="overlay.url" ng-if="overlay.show"></div>
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/json3/lib/json3.js"></script>
-    <script src="../bower_components/angular-resource/angular-resource.js"></script>
-    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="../bower_components/angular-animate/angular-animate.js"></script>
-    <script src="../bower_components/angular-touch/angular-touch.js"></script>
-    <script src="../bower_components/angular-route/angular-route.js"></script>
-    <script src="../bower_components/react/react.min.js"></script>
-
-    <script src="../bower_components/FJSCore/dist/fjs.core.debug.js"></script>
-    <script src="scripts/dom.js"></script>
-    <script src="../bower_components/FJSModel/dist/fjs.model.debug.js"></script>
-    <script src="../bower_components/FJSDB/dist/fjs.db.debug.js"></script>
-    <script src="../bower_components/FJSTabs/dist/fjs.tabs.debug.js"></script>
-    <script src="../bower_components/FJSFDP/dist/fjs.fdp.debug.js"></script>
-    <script src="../bower_components/FJSAPI/dist/fjs.api.debug.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-    <script src="scripts/fjs.hud.debug.js"></script>
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-
+	<div ng-class="type == 'Transfer' ? 'transferbg' : ''" id="ContextMenu"
+		include-once="views/ContextMenu.html"
+		ng-controller="ContextMenuController">
+	</div>
+	
+	<iframe id="download_file"></iframe>
+    <img id="originalFavicon" src="img/Favicon.gif" style="display: none;"/>
+	
+    <!--bower components-->
     <script src="properties.js"></script>
+	<link rel="stylesheet" href="styles/bootstrap.css">
+	
+	<!-- @if NODE_ENV='development' --> 
+	<!--bower components-->
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="bower_components/jquery-hoverintent/jquery.hoverIntent.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/ng-flow/dist/ng-flow-standalone.min.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angulartics/dist/angulartics.min.js"></script>
+	<script src="bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js"></script>
+	
+	<script src="bower_components/moment/min/moment.min.js"></script>
+	
+	<script src="bower_components/moment/min/moment-with-locales.min.js"></script>
+
+	<script src="bower_components/moment/locale/ja.js"></script>
+	<script src="bower_components/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
+	<!--config-->
+    <script src="properties.js"></script>
+    <script src="languageMap.js"></script>
+    <script src="jstz.min.js"></script>
+    <script src="favico.js"></script>
     <script src="scripts/app.js"></script>
 
-        <!-- endbuild -->
+	<!--filters-->
+    <script src="scripts/filters/highlightTextFilter.js"></script>
+    <script src="scripts/filters/durationFilter.js"></script>
+    <script src="scripts/filters/dateFilter.js"></script>
+    <script src="scripts/filters/chatTextFilter.js"></script>
+	<script src="scripts/filters/sortVoiceMailFilter.js"></script>
+	<script src="scripts/filters/sortItemsFilter.js"></script>
+	<script src="scripts/filters/phoneNumberFilter.js"></script>
+	<script src="scripts/ui-bootstrap-tpls.js"></script>
+		
+	<!--directives-->
+	<script src="scripts/directives/windowResizeDirective.js"></script>
+	<script src="scripts/directives/searchDirective.js"></script>
+    <script src="scripts/directives/dockableDirective.js"></script>
+    <script src="scripts/directives/droppableDirective.js"></script>
+    <script src="scripts/directives/dockDraggerDirective.js"></script>
+    <script src="scripts/directives/dockResizerDirective.js"></script>
+    <script src="scripts/directives/searchContactsDirective.js"></script>
+    <script src="scripts/directives/avatarDirective.js"></script>
+    <script src="scripts/directives/timeElapsedDirective.js"></script>
+    <script src="scripts/directives/styleSize.js"></script>
+    <script src="scripts/directives/includeDirective.js"></script>
+    <script src="scripts/directives/expandContractNotificationsDirective.js"></script>
+    <script src="scripts/directives/topNavBehaviorDirective.js"></script>
+    <script src="scripts/directives/heightChangeDirective.js"></script>
+	<script src="scripts/directives/callStatusDirective.js"></script>
+    <script src="scripts/directives/onSubmitDirective.js"></script>
+    <script src="scripts/directives/contactFiltersDirective.js"></script>
+    <script src="scripts/directives/messageScrollDirective.js"></script>
+    <script src="scripts/directives/autofocusDirective.js"></script>
+    <script src="scripts/directives/clickAnywhereDirective.js"></script>
+    <script src="scripts/directives/dropboxClickDirective.js"></script>
+    <script src="scripts/directives/audioPlayerDirective.js"></script>
+
+    <!--controllers-->
+    <script src="scripts/controllers/MainController.js"></script>
+    <script src="scripts/controllers/TopNavigationController.js"></script>
+    <script src="scripts/controllers/LeftBarController.js"></script>
+    <script src="scripts/controllers/NotificationController.js"></script>
+    <script src="scripts/controllers/ContactsWidget.js"></script>
+    <script src="scripts/controllers/LocationsController.js"></script>
+    <script src="scripts/controllers/ContextMenuController.js"></script>
+    <script src="scripts/controllers/CallsRecordingsController.js"></script>
+
+    <script src="scripts/controllers/conversation/ConversationWidgetController.js"></script>
+    <script src="scripts/controllers/conversation/ConversationWidgetGroupsController.js"></script>
+    <script src="scripts/controllers/conversation/ConversationWidgetQueuesController.js"></script>
+
+    <script src="scripts/controllers/group/GroupsController.js"></script>
+    <script src="scripts/controllers/group/GroupSingleController.js"></script>
+    <script src="scripts/controllers/group/GroupSingleMembersController.js"></script>
+    <script src="scripts/controllers/group/GroupSinglePageController.js"></script>
+    <script src="scripts/controllers/group/GroupInfoController.js"></script>
+
+    <script src="scripts/controllers/conference/ConferencesWidgetController.js"></script>
+    <script src="scripts/controllers/conference/ConferenceSingleController.js"></script>
+
+    <script src="scripts/controllers/queues/QueueWidgetController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetAgentsController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetStatsController.js"></script>
+    <script src="scripts/controllers/queues/QueueWidgetCallsController.js"></script>
+
+    <script src="scripts/controllers/callcenter/CallCenterController.js"></script>
+    <script src="scripts/controllers/callcenter/CallCenterQueueController.js"></script>
+    <script src="scripts/controllers/callcenter/CallCenterMyStatusController.js"></script>
+	
+	<script src="scripts/controllers/popups/CallStatusOverlayController.js"></script>
+	<script src="scripts/controllers/popups/ContactEditOverlayController.js"></script>
+	<script src="scripts/controllers/popups/GroupEditOverlayController.js"></script>
+	<script src="scripts/controllers/popups/FileShareOverlayController.js"></script>
+
+    <script src="scripts/controllers/MeWidgetController.js"></script>
+    <script src="scripts/controllers/VoicemailsController.js"></script>
+    <script src="scripts/controllers/RecordingsController.js"></script>
+    <script src="scripts/controllers/SearchWidgetController.js"></script>
+    <script src="scripts/controllers/ZoomWidgetController.js"></script>
+    <script src="scripts/controllers/IntellinoteController.js"></script>
+    <script src="scripts/controllers/ZipwhipController.js"></script>
+    <script src="scripts/controllers/InphonexController.js"></script>
+    <script src="scripts/controllers/PreferencesController.js"></script>
+    <script src="scripts/controllers/FonalityDialerController.js"></script>
+    <script src="scripts/controllers/ChatController.js"></script>
+    <script src="scripts/controllers/DockController.js"></script>
+    <script src="scripts/controllers/RecentController.js"></script>
+
+
+
+	<!--services-->
+    <script src="scripts/services/settingsService.js"></script>
+    <script src="scripts/services/httpService.js"></script>
+    <script src="scripts/services/groupService.js"></script>
+    <script src="scripts/services/contactService.js"></script>
+    <script src="scripts/services/storageService.js"></script>
+    <script src="scripts/services/queueService.js"></script>
+    <script src="scripts/services/conferenceService.js"></script>
+    <script src="scripts/services/phoneService.js"></script>
+   	<script src="scripts/services/notificationService.js"></script>
+    <script src="scripts/services/ntpService.js"></script>
+    <script src="scripts/services/detectBrowserService.js"></script>
+    <script src="scripts/services/callStatusService.js"></script>
+    
+    <!-- factory -->
+    <script src="scripts/factory/windowDimensionsFactory.js"></script>   
+   	<script src="scripts/services/notificationService.js"></script>
+    <!-- @endif -->   
+
+    <!-- @if NODE_ENV='production' -->
+	<script src="scripts/bower.min.js?v=<%- version %>"></script>
+	<script src="scripts/fjs.min.js?v=<%- version %>"> </script>
+	<script src="scripts/templates.js?v=<%- version %>"></script>
+
+
+	<!-- @endif --> 
+    
+    <script src="bower_components/angular-google-picker/src/google-picker.js"></script>
+    <script type="text/javascript" src="https://app.box.com/js/static/select.js"></script>
+    <script src="https://apis.google.com/js/client.js"></script>
+	<script src="https://apis.google.com/js/api.js"></script>
+	<script type="text/javascript" src="https://js.live.net/v7.0/OneDrive.js"></script>
 </body>
 </html>
+
+

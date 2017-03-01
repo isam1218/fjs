@@ -1,0 +1,600 @@
+hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeout', 'NtpService', function($http, $rootScope, $location, $q, $timeout, ntpService){
+	/**
+		Detect Current Browser
+	*/
+	var ua = navigator.userAgent;
+	var browser = ua.match(/(edge|chrome|safari|firefox|msie)/i);
+	// if not found, default to IE mode
+	browser = browser && browser[0] ? browser[0] : "MSIE";
+	var isSWSupport = browser == "Chrome" || browser == "Firefox";
+	var isIE = browser == "MSIE";
+	var synced = false;
+	var workerStarted = false;
+	var appVersion = navigator.appVersion;
+	var upload_progress = 0;
+	var upload_taskId = 0;
+	var feeds = fjs.CONFIG.FEEDS;
+	var deferred_progress = $q.defer();
+    var VERSIONS_PATH = "/v1/versions";
+    var VERSIONSCACHE_PATH = "/v1/versionscache";
+	var worker = undefined;
+	var unload = false; 
+	
+	if(localStorage.serverHost != undefined){
+		fjs.CONFIG.SERVER.serverURL = localStorage.serverHost;
+	}
+	
+	$rootScope.platform = appVersion.indexOf("Win") != -1 ? "WINDOWS" : (appVersion.indexOf("Mac") != -1 ? 'MAC' : 'UNKNOWN');
+	$rootScope.browser = browser;
+	$rootScope.isIE = isIE;
+	$rootScope.isFirstSync = true;
+	
+	// check for second tab before starting web worker
+	if (document.cookie.indexOf('tab=true') == -1 || document.cookie.indexOf('expires=Thu, 01 Jan 1970') != -1) {		
+		worker = new Worker("scripts/workers/fdpWebWorker.js?v=" + fjs.CONFIG.BUILD_NUMBER);
+		
+		worker.addEventListener("message", function(event) {
+		  switch (event.data.action) {
+	      case "ready":
+					workerStarted = true;
+			
+					console.timeEnd('worker');
+					console.log('syncing...');
+					console.time('sync');
+	          break;
+	      case "sync_completed":
+	        if (event.data.data) {
+	        	broadcastSyncData(event.data.data);
+				
+						if (!synced) {
+							console.timeEnd('sync');
+							console.log('rendering...');
+							console.time('render');
+							synced = true;
+						}
+
+						if ($rootScope.networkError)
+							$rootScope.$broadcast('network_issue', null);
+				
+	        }
+	        break;
+	      case "feed_request":
+	        $rootScope.$evalAsync($rootScope.$broadcast(event.data.feed + '_synced', event.data.data));
+	        break;
+				case "auth_failed":
+					localStorage.removeItem("me");
+					localStorage.removeItem("nodeID");
+					localStorage.removeItem("authTicket");
+					attemptLogin();
+					break;
+				case "network_error":
+					if(!synced){
+						$rootScope.$broadcast('network_issue', 'networkError');
+						worker.terminate();
+					}
+					break;
+				case "timestamp_created":
+					if (event.data.data)
+						ntpService.syncTime(event.data.data);
+
+				break;
+			}
+		}, false);
+	}
+	else {
+		// send user to 2nd tab warning if there's a cookie and the expiration date is in the future (not 1970)
+		window.location.href = $location.absUrl().split("#")[0] + "views/second-tab.html";
+		return;
+	}
+
+	var broadcastSyncData = function(data) {
+		if (data) {
+			// send data to other controllers
+			$rootScope.$evalAsync(function() {
+				// loop through feeds in order, according to properties.js
+				for (var i = 0, ilen = feeds.length; i < ilen; i++){
+					if (data[feeds[i]] && data[feeds[i]].length > 0){
+						$rootScope.$broadcast(feeds[i] + '_synced', data[feeds[i]]);
+					}
+				}
+				$rootScope.isFirstSync = false;
+			});
+		}
+	};
+	
+	// send first message to shared worker
+	var authorizeWorker = function() {
+	    var events = {
+	        "action": "authorized",
+	        "node": nodeID,
+	        "auth": authTicket,
+	        "serverURL": fjs.CONFIG.SERVER.serverURL
+	    };
+
+	    worker.postMessage(events);
+	};
+	
+	// fail catch if app hasn't loaded
+	$timeout(function() {
+		if (!workerStarted) {
+			localStorage.removeItem("nodeID");
+			attemptLogin();
+		}
+	}, 30000, false);
+	
+	/**
+		AUTHORIZATION
+	*/
+	var authTicket = '';
+	var nodeID = '';
+	
+	var attemptLogin = function() {
+        var authURL = fjs.CONFIG.SERVER.loginURL
+            + '/oauth/authorize'
+            + "?response_type=token"
+            + "&redirect_uri=" + encodeURIComponent(location.href)
+            + "&display=page"
+            + "&client_id=web.hud.fonality.com"
+            + "&instance_id=" + localStorage.instance_id
+            + "&lang=eng"
+            + "&revoke_token="; // + authTicket;
+			
+		worker.terminate();
+		unload = false;
+		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+		window.onbeforeunload = null;
+		$timeout(function(){
+			location.href = authURL;
+		}, 500);
+	};
+	
+	// get instance_id token
+	if (/instance_id/ig.test(location.href)) {
+		instance_id = location.href.match(/instance_id=([^&]+)/)[1];
+		localStorage.instance_id = instance_id;
+	}
+
+	// get authorization token
+	if (/access_token/ig.test(location.href)) {
+		authTicket = location.href.match(/access_token=([^&]+)/)[1];
+		localStorage.authTicket = authTicket;
+		$location.hash('');
+	}
+	else if (localStorage.authTicket === undefined)
+		attemptLogin();
+	else
+		authTicket = localStorage.authTicket;
+		
+	// get node id
+	var clientRegistry = function(){
+			$http({
+				url:fjs.CONFIG.SERVER.serverURL 
+				+ '/accounts/ClientRegistry?t=web&node=&Authorization=' 
+				+ authTicket,
+				headers:{
+					'Content-Type':'application/x-www-form-urlencoded'
+				},
+				data:$.param({b:fjs.CONFIG.BUILD_NUMBER}),
+				method:'POST'
+			})
+			.success(function(response) {
+				var nodes = response.match(/node=([^\n]+)/);
+				if(nodes && nodes.length > 0){
+					nodeID = nodes[1];
+					localStorage.nodeID = nodeID;
+					
+					// start shared worker
+					authorizeWorker();
+				}else{
+					localStorage.serverHost = response.match(/RedirectHost=([^\n]+)/)[1];
+					fjs.CONFIG.SERVER.serverURL = localStorage.serverHost;
+					clientRegistry();			
+				}
+			})
+			.error(function(response, status) {
+				switch(status){
+					case 602:
+					case 403:
+					case 402:
+						delete localStorage.me;
+						delete localStorage.nodeID;
+						delete localStorage.authTicket;
+						$rootScope.$broadcast('no_license', 'networkError');
+
+						break;
+					case 404:
+					case 500:
+					case 503:
+						$rootScope.$broadcast('network_issue', 'networkError');
+						break;
+					default:
+						attemptLogin();
+						break;
+				}
+			});
+	};
+	
+	if (localStorage.nodeID === undefined) {
+		clientRegistry();
+	}else {
+		nodeID = localStorage.nodeID;
+		authorizeWorker();
+	}
+	
+	/**
+		SCOPE FUNCTIONS
+	*/
+    
+	this.logout = function() {
+        var authURL = fjs.CONFIG.SERVER.loginURL
+            + '/oauth/authorize'
+            + "?response_type=token"
+            + "&redirect_uri=" + encodeURIComponent(location.href.replace(location.hash, ''))
+            + "&display=page"
+            + "&client_id=web.hud.fonality.com"
+            + "&lang=eng"
+            + "&revoke_token=" + authTicket
+            + "&instance_id=" + localStorage.instance_id;
+			
+		localStorage.removeItem("me");
+    	localStorage.removeItem("authTicket");
+    	localStorage.removeItem("nodeID");
+    	localStorage.removeItem("data_obj");
+    	localStorage.removeItem("instance_id");
+    	localStorage.removeItem("serverHost");
+		
+		document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+    	
+		// shut off web worker
+		worker.terminate();
+		unload = false;
+		window.onbeforeunload = null;		
+		location.href = authURL;
+	};
+	
+	this.setUnload = function() {	
+		unload = true;
+		
+		if(!cookieInterval)
+		{	
+			var cookieInterval = setInterval(function(){
+				// give it a short expiration date
+				document.cookie = "tab=true; path=/; expires=" + new Date(new Date().getTime() + 1000).toGMTString();
+			}, 1000);
+		}
+		// stupid warning
+		window.onbeforeunload = function() {	
+			window.clearInterval(cookieInterval);
+			document.cookie = "tab=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";			
+			return "Are you sure you want to navigate away from this page?";
+		};
+	};
+
+	// get feed data from web worker
+    this.getFeed = function(feed) {
+		if (worker) {
+			worker.postMessage({
+	            "action": "feed_request",
+	            "feed": feed
+	        });
+		}
+    };
+    
+    var updateSettings = function(type,action,model){
+    	var params = {
+            'a.name': type,
+            't': 'web',
+            'action': action
+        };
+		
+        if (model || model == 0) {
+            if (model.value) {
+                params['a.value'] = model.value;
+            } else {
+                params['a.value'] = model;
+            }
+        }
+    
+        var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/settings";
+        return $http({
+            method: 'POST',
+            url: requestURL,
+            data: $.param(params),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'auth=' + authTicket,
+                'node': nodeID,
+            }
+        });
+    };
+    
+    this.updateSettings = updateSettings;
+
+    this.get_avatar = function(pid,width,height,xversion){
+    	if (pid)
+           	return fjs.CONFIG.SERVER.serverURL + "/v1/contact_image?pid=" + pid + "&w=" + width + "&h=" + height + "&Authorization=" + authTicket + "&node=" + nodeID + (xversion ? '&xver=' + xversion : '');
+		else
+            return "img/Generic-Avatar.png";
+	};
+	
+	this.get_audio = function(key) {
+		return fjs.CONFIG.SERVER.serverURL + '/v1/' + key + '&play=1&t=web&Authorization=' + authTicket + '&node=' + nodeID;
+	};
+	
+	this.get_smiley = function(key) {
+		return fjs.CONFIG.SERVER.serverURL + '/v1/chat_smiles_download?xpid=' + key + '&Authorization=' + authTicket + '&node=' + nodeID;
+	};
+
+    this.get_attachment = function(xkeyUrl,fileName){
+
+    	if(xkeyUrl){
+    		return fjs.CONFIG.SERVER.serverURL + xkeyUrl + "&Authorization=" + authTicket + "&node=" + nodeID + "&" + fileName + '&d';
+    	}
+    };
+	
+    //this will return a promise to for file uploads
+    this.get_upload_progress = function(){
+    	return deferred_progress.promise;
+    };
+
+    this.upload_attachment = function(data,attachments) {
+        var params = {
+            'Authorization': authTicket,
+            'node': nodeID,
+        };
+		
+		// new task id
+		if(data != undefined){
+		data['a.taskId'] = '2_' + upload_taskId;
+		}
+		
+		var fd = new FormData();
+    
+        for (var field in data) {
+            fd.append(field, data[field]);
+        }
+
+        for (var i in attachments){
+        	fd.append('a.attachments',attachments[i]);
+        }
+
+        var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/streamevent?Authorization=" + authTicket + "&node=" + nodeID;
+    	
+    	var request = new XMLHttpRequest();
+    	 var upload_start = true;
+
+    	//angular http does not have a way to report progress so I switched to using xhrrequest and the new HTML5 onprogress callback
+		request.upload.onprogress = function(evt){
+			if(evt.lengthComputable){
+				//calculate the percentage and do a notify (different from resolve since resolve only executes once)
+				var percentComplete = (evt.loaded/evt.total)*100;
+				var data = {
+					progress:percentComplete,
+					started: upload_start,
+					xhr: request
+				};
+
+				deferred_progress.notify(data);
+				upload_start = false;
+			}	
+		};
+		request.addEventListener("abort", function(evt){
+			var data = {
+				progress: 100,
+			};
+			deferred_progress.notify(data);
+		},false);
+		request.open("POST",requestURL, true);
+		request.send(fd);
+       		
+	    upload_taskId++;
+    };
+
+    this.update_avatar = function(data) {
+        var params = {
+            'Authorization': authTicket,
+            'node': nodeID,
+        };
+    
+        var fd = new FormData();
+    
+        for (var field in data) {
+            fd.append(field, data[field]);
+        }
+        var requestURL = fjs.CONFIG.SERVER.serverURL + "/v1/settings?Authorization=" + authTicket + "&node=" + nodeID;
+    	var upload_start = true;
+        
+        var request = new XMLHttpRequest();
+		request.upload.onprogress = function(evt){
+			if(evt.lengthComputable){
+				var percentComplete = (evt.loaded/evt.total)*100;
+				var data = {
+					progress:percentComplete,
+					started: upload_start,
+					xhr:request,
+				};
+				deferred_progress.notify(data);
+				upload_start = false;
+			}	
+		};
+
+		request.addEventListener("abort", function(evt){
+			var data = {
+				progress: 100,
+			};
+			deferred_progress.notify(data);
+		},false);
+		
+		request.open("POST",requestURL, true);
+		request.send(fd);
+		
+	};
+	
+	this.preload = function(src) {
+		var img = new Image();
+		img.src = src;
+	};
+  
+	// generic 'save' function
+	this.sendAction = function(feed, action, data) {
+		// format request object
+		var params = {
+			t: 'web',
+			action: action
+		};
+		for (var key in data)
+			params['a.' + key] = data[key];
+	
+		return $http({
+			method: 'POST',
+			url: fjs.CONFIG.SERVER.serverURL + "/v1/" + feed,
+			data: $.param(params),
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': 'auth='+authTicket,
+				'node': nodeID,
+			}
+		})
+		.error(function() {
+			// network error
+			$rootScope.$broadcast('network_issue', 'networkError');
+		});
+	};
+	
+	// retrieve chat messages
+	this.getChat = function(feed, type, xpid, version) {
+		var deferred = $q.defer();
+		
+		// format request object
+		var params = {
+			alt: 'j',
+			's.limit': 60,
+			'sh.filter': '{"type":"' + type + '","key":{"feedName":"' + feed + '","xpid":"' + xpid + '"}}',
+			'sh.versions': '0:0@1100000000:' + (version ? version : 0) + '@d00000000:0'
+		};
+	
+		$http({
+			method: 'POST',
+			url: fjs.CONFIG.SERVER.serverURL + "/v1/history/streamevent",
+			data: $.param(params),
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': 'auth='+authTicket,
+				'node': nodeID,
+			},
+			transformResponse: false
+		})
+		.then(function(response) {
+			// account for characters that may break parse
+			var data = JSON.parse(response.data
+				.replace(/\\'/g, "'")
+				.replace(/([\u0000-\u001F])/g, function(match) {
+					var c = match.charCodeAt();
+					return "\\u00" + Math.floor(c/16).toString(16) + (c%16).toString(16);
+				})
+			);
+	
+			for (var key in data) {
+				// create xpid for each record
+				for (var i = 0, iLen = data[key].items.length; i < iLen; i++)
+					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
+				
+				// send items back to controller
+				deferred.resolve(data[key]);
+			}
+		});
+		
+		return deferred.promise;
+	};
+	
+	// retrieve call log history
+	this.getCallLog = function(feed, xpid) {
+		var deferred = $q.defer();
+		
+		// format request object
+		var params = {
+			alt: 'j',
+			's.limit': 60,
+			'sh.filter': '{"key":{"feedName":"' + feed + '","xpid":"' + xpid + '"},"filter_id":"' + feed + ':' + xpid + '"}',
+			'sh.versions': '0:0@' + xpid.split('_')[0] + ':0'
+		};
+	
+		$http({
+			method: 'POST',
+			url: fjs.CONFIG.SERVER.serverURL + "/v1/history/calllog",
+			data: $.param(params),
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': 'auth='+authTicket,
+				'node': nodeID,
+			},
+			transformResponse: false
+		})
+		.then(function(response) {
+			
+			var data = JSON.parse(response.data.replace(/\\'/g, "'"));
+
+			for (var key in data) {
+				// create xpid for each record
+				for (var i = 0, iLen = data[key].items.length; i < iLen; i++)
+					data[key].items[i].xpid = key + '_' + data[key].items[i].xef001id;
+				
+				// send items back to controller
+				deferred.resolve(data[key]);
+			}
+		});
+		
+		return deferred.promise;
+	};
+	
+	this.addFeedToSync = function(f) {
+		// make sure it's not already there
+		var found = false;
+		
+		for (var i = 0, len = feeds.length; i < len; i++) {
+			if (feeds[i] == f) {
+				found = true;
+				break;
+			}
+		}
+		
+		// remember feed locally
+		if (!found)
+			feeds.push(f);
+		
+		// ping worker to re-do version check
+		worker.postMessage({
+			"action": "add",
+			"feed": f
+		});
+	};
+	
+	// manually override 'delete' status in web worker
+	this.deleteFromWorker = function(feed, xpid) {
+		if (worker) {
+			worker.postMessage({
+	            "action": "delete",
+	            "feed": feed,
+				"xpid": xpid
+	        });
+		}
+	};
+	
+	this.startSocket = function() {
+		if (worker) {
+			worker.postMessage({
+	            "action": "start_socket"
+	        });
+		}
+	};
+	this.getUnload = function(){
+		return unload;
+	};
+	// preload images
+	this.preload('img/XAvatarBorder.png');
+	this.preload('img/Generic-Error.png');
+	this.preload('img/XApp-Icons.png');
+	this.preload('img/XEvent.png');
+	this.preload('img/XIconSet-24x24.png');
+	this.preload('img/XDialog-Errors.png');
+}]);

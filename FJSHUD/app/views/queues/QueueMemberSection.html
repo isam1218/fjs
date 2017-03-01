@@ -1,0 +1,23 @@
+<a href="#/contact/{{::member.contactId}}" class='ListRow' droppable="Call">
+  <avatar profile="member"></avatar>
+  
+  <div class="ListRowContent GroupListRowContent" dockable="member.fullProfile" ng-switch="member.fullProfile.call != null">
+    <div class="ListRowTitle">
+		{{ ::member.fullProfile.displayName}}
+		<br/>
+		<div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{member.status.status}}"></div>
+
+		<div class="ListRowStatusIcon XIcon-ChatStatus-{{ member.fullProfile.hud_status || 'offline' }}"></div>
+		<span class="AgentStatus" ng-bind-html="(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '')"></span>
+    </div>
+
+    <callStatus profile="member.fullProfile" ng-switch-when="true" dockable="member.fullProfile.call"></callStatus>
+
+	<div ng-switch-when="false">
+			<div class="ListRowStatus">
+				<div class="Link ListRowDesc">#{{ ::member.fullProfile.primaryExtension }}</div>
+			</div>
+			<input style="float:right"class="vmcallbtn" type="button" value="{{::verbage.Call}}" ng-click="callExtension($event, member.fullProfile)"></input>
+	</div>
+	</div>
+</a>

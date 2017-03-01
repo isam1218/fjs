@@ -1,0 +1,90 @@
+<div class="Widget Queues" id="WidgetCallCenter">
+
+  <div class="WidgetHeader">
+    <avatar profile="queue"></avatar>
+    <div class="WidgetHeaderTitle Single"><span>{{::queue.name}}</span></div>
+	
+    <div class="WidgetStat agents">
+		<div class="Left">
+			<div class="Labels">
+				<div>{{::verbage.agents}}:</div>
+				<div>{{::verbage.Reset_word}}:</div>
+			</div>
+			<div class="Data">
+				<div>{{ queue.loggedInMembers + ' of ' + queue.members.length}}</div>
+				<div>{{ queue.info.resetTime | date: 'M/d - h:mm a' }}</div>
+			</div>
+		</div>
+		<div class="Right">
+			<div class="Labels">
+				<div>{{::verbage.calls_holding}}:</div>
+				<div>{{::verbage.total_calls}}:</div>
+			</div>
+			<div class="Data">
+				<div>{{ queue.info.waiting }}</div>
+				<div>{{ queue.info.completed + queue.info.abandon }}</div>
+			</div>
+		</div>
+    </div>
+  </div>
+
+  <div class="WidgetBody" ng-switch="selected">
+    <div class="WidgetTabBar">
+        <span>
+          <a href="#/queue/{{ ::queueId + '/agents'}}" ng-click="saveQTab('agents', 0)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 0}">
+            <div class="inner">{{tabs[0].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/stats'}}" ng-click="saveQTab('stats', 1)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 1}">
+            <div class="inner">{{tabs[1].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/calls'}}" ng-click="saveQTab('calls', 2)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 2}">
+            <div class="inner">{{tabs[2].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/chat'}}" ng-click="saveQTab('chat', 3)" ng-show="chatTabEnabled" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 3}">
+            <div class="inner">{{tabs[3].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/recordings'}}" ng-click="saveQTab('recordings', 5)" ng-show="recordingPermission" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 5}">
+            <div class="inner">{{tabs[5].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+        <span>
+          <a href="#/queue/{{ ::queueId + '/alerts'}}" ng-click="saveQTab('alerts', 6)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject == 6}">
+            <div class="inner">{{tabs[6].upper}}</div>
+            <div class="arrow"></div>
+          </a>
+        </span>
+    </div>
+   
+    <!-- ng-views -->
+    <div ng-switch-when="agents" class="ListView WithToolBar" 
+		include-once="views/queues/QueueWidgetAgents.html" ng-controller="QueueWidgetAgentsController"></div>
+    <div ng-switch-when="stats" class="ListView WithToolBar"
+         include-once="views/queues/QueueWidgetStats.html" ng-controller="QueueWidgetStatsController"></div>
+    <div ng-switch-when="calls" class="ListView WithToolBar"
+         include-once="views/queues/QueueWidgetCalls.html" ng-controller="QueueWidgetCallsController"></div>
+    <div ng-switch-when="chat" class="ListView ChatView"
+         include-once="views/ChatView.html" ng-controller="ChatController" flow-init
+          flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
+         ></div>
+    <div ng-switch-when="recordings" class="ListView WithToolBar"
+         include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
+    <div ng-switch-when="alerts" class="ListView ChatView"
+         include-once="views/ChatView.html" ng-controller="ChatController"></div>
+
+  </div>
+
+
+</div>

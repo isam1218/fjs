@@ -1,55 +1,247 @@
-.Widget {
-  position: absolute;
-  top: 60px;
-  left: 320px;
-  width: 500px;
-  bottom: 10px;
-  border-radius: 4px;
-  background-image: url(../img/XTile-Widget.png);
-  box-shadow: 1px 0 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
-  border: solid 1px #ccc;
-  z-index: 1;
-}
-.WidgetHeader {
-  position: absolute;
-  height: 60px;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  overflow: hidden;
-}
-.WidgetHeader .Avatar {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-}
-
-.WidgetBody {
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  .ListLineContent.Header {
-    top:98px;
-    left:5px;
-    right:5px;
-    .ListLineContentCell {
-      display:inline-block;
-      width:auto !important;
-    }
+.ToolBar {
+  position: relative;
+  border-bottom: solid 1px #ccc;
+  width: 100%;
+  margin: 0 auto;  
+  //padding: 10px 0;
+  padding: 10px;
+  min-height: 45px;
+  
+  .XButton {     
+     width: 32.5%;
+     float: right !important;
+     margin-left: .5em;	    
   }
 }
 
+.WidgetPanel {    
+  position : fixed;
+  top : 60px;
+  left : 320px;
+  width : 500px;
+  bottom : 10px;
+  display : -webkit-box;
+  border-top-left-radius : 10px;
+  -webkit-border-top-left-radius : 10px;
+  border-top-right-radius : 10px;
+  -webkit-border-top-right-radius : 10px;
+  background-image : url("../img/XTile-Widget.png");
+  box-shadow : 1px 0px 10px rgba(0,0,0,0.3), 0px 5px 10px #fff inset;
+  border : solid 1px #ccc;
+  z-index : 1;  
+}
+
+.Widget {
+  position: absolute;
+  top: 0;
+  left: 0;  
+  width: 100%;
+  height: 100%; 
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  min-width: 0;     
+  min-height: 0;
+
+  .WidgetTabContent {
+    flex: 1 1 0;
+	-webkit-flex: 1 1 0;
+	-ms-flex: 1;
+    display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;
+	position: relative;
+    width: 100%;
+    min-width: 0;     
+    min-height: 0;
+  }
+  
+  .ListView {
+      position: relative;
+      flex: 1 1 0;
+	  -ms-flex: 1;
+	  -webkit-flex: 1 1 0;
+      overflow-y: auto;
+      width: 100%;   
+      overflow-x: hidden; 
+      min-width: 0;     
+      min-height: 0;      
+      
+      &.ChatView.WithToolBar{
+        overflow: hidden;
+        margin: 0;
+        
+        .ListViewContent{
+            overflow-y: auto;
+        }
+      }  
+   }
+
+   .SearchInputBox {      
+      width: 30%;
+      float: left;
+   }
+   
+ .ToolBar{
+   .selectWrapper{     
+     overflow: hidden;
+     background: url(../img/arrowDown_8.png)no-repeat 96%, linear-gradient(#fefefe, #ebebeb);
+     background: url(../img/arrowDown_8.png)no-repeat 96%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
+     background: url(../img/arrowDown_8.png)no-repeat 96%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
+     background: url(../img/arrowDown_8.png)no-repeat 96%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
+     background: url(../img/arrowDown_8.png)no-repeat 96%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
+     background: url(../img/arrowDown_8.png)no-repeat 96%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
+     border-radius: 2px;
+     border: 1px solid rgba(0,0,0,0.2);       
+      transition: border .3s;
+     -webkit-transition: border .3s;
+     padding-right: 5px;         
+          
+     select{
+        background: no-repeat 0 0 transparent;
+        line-height: 1;
+        border: 0;
+        border-radius: 0;                   
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        text-align: left; 
+        font-size: 11px;
+        font-weight: bold;
+        color: #333;
+        text-shadow: 0 1px 0px #fff;
+        font-family: Arial,Tahoma,"Helvetica Neue",Helvetica,sans-serif;
+        padding: 0 0 0 10px;          
+                
+        option{
+            text-align: left;
+            //padding: 0 5px;
+            background-color: #fff;
+        }           
+     }
+     
+     &.vm{
+        width: 130px;
+        float: right;
+        margin-left: 10px;
+        width: 110px\9;/* ie6/7/8/9  */
+       
+        select{                    
+            height: 24px;   
+            width: 130px;                 
+        }
+     }
+     
+     &.status,
+     &.conf,
+     &.convQueue{
+         margin-left: 10px;
+                  
+       @media screen and (-webkit-min-device-pixel-ratio:0){ 
+	         select{
+	          margin-left: -2px;
+	          margin-bottom: -2px;
+	         }
+	   }
+     }
+     
+     &.queue,
+     &.status,
+     &.conf,
+     &.members{    
+        width: 150px;       
+        float: right; 
+        width: 130px\9; /* ie6/7/8/9  */        
+        
+        select{
+            width: 150px;
+            height: 24px;
+            
+        }  
+     }
+     &.conf{                             
+        select{            
+            height: 27px;                                                           
+        }
+     }
+     
+     &.convQueue{
+       width: 100px;   
+       width: 80px\9; /* ie6/7/8/9  */     
+       float: right;
+     
+       select{
+            width: 100px;
+            height: 24px;
+
+            &.LogoutSelect{
+              padding-top: 4px;
+              
+              &:hover{            
+                background: url(../img/arrowDown_8.png)no-repeat 88.5% 60%, linear-gradient(#fefefe, #ebebeb);
+                background: url(../img/arrowDown_8.png)no-repeat 88.5% 60%, -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#ebebeb));/* Saf4+, Chrome */    
+                background: url(../img/arrowDown_8.png)no-repeat 88.5% 60%, -webkit-linear-gradient(top, #fefefe, #ebebeb); /* Chrome 10+, Saf5.1+ */
+                background: url(../img/arrowDown_8.png)no-repeat 88.5% 60%,    -moz-linear-gradient(top, #fefefe, #ebebeb); /* FF3.6+ */
+                background: url(../img/arrowDown_8.png)no-repeat 88.5% 60%,      -o-linear-gradient(top, #fefefe, #ebebeb); /* Opera 11.10+ */
+                background: url(../img/arrowDown_8.png)no-repeat 88.5% 60%,         linear-gradient(to bottom, #fefefe, #ebebeb); /* W3C */
+              }
+            }
+        }  
+     }
+           
+   }
+   &.fj-stream{
+       .XButton.convQueueInput{            
+            span{
+                vertical-align: top;
+            }
+       }
+   }
+  }
+  
+  &.WidgetZoom{
+    height: 100%;
+    
+    .WidgetHeader{min-height: 60px;}
+    .WidgetZoomBody{height: 92%;} 
+    
+  } 
+}
+.WidgetHeader {
+  position: relative;
+  padding: 20px;
+  
+  .TopBarItemAppIcon, .WidgetHeaderTitle, .Avatar {
+    position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	top: 0;
+	left: 0;
+  }  
+}
+
+.WidgetBody {
+  position: relative;
+  left: 0;
+  right: 0;
+  flex: 1;
+  -webkit-flex: 1;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  min-width: 0;     
+  min-height: 0;
+  
+  .WidgetTabBar {
+	  padding-left: 6px;
+  }
+}
 
 .WidgetHeaderTitle {
-  position: absolute;
-  left: 60px;
-  top: 6px;
-  right: 210px;
-  height: 25px;
-  line-height: 25px;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: bold;
   color: #999;
   text-shadow: 1px 1px 1px rgba(255,255,255,0.9), -1px -1px 1px rgba(0,0,0,0.01);
@@ -60,110 +252,60 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   margin:0;
+  
+  &.Full {
+    width: auto !important;
+  }
+  
+  &.Single{
+    span{
+        margin-left: 5px;
+    }
+  }
+  .ChatStatus{
+    font-weight: normal !important;
+    font-size: 0.87em;
+    max-width: 80%;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: -3px;
+  }
+  
+  .XIcon-ChatStatus-offline,
+  .XIcon-ChatStatus-away,
+  .XIcon-ChatStatus-available
+  {
+    margin-left: -5px;
+  }
 }
-.WidgetHeaderStatus
-{
-  position : absolute;
-  left : 60px;
-  top : 28px;
-  right : 10px;
-  height : 24px;
-  line-height : 24px;
-  text-align : left;
-  font-size : 12px;
-  color : #555;
-  user-select : none;
-  -webkit-user-select : none;
-}
-.WidgetHeaderCallStatus
-{
-  position : absolute;
-  right : 2px;
-  top : 0px;
-  width : 200px;
-  height : 50px;
-  border-radius : 4px;
-  -webkit-border-radius : 4px;
-  background-color : #fff;
-  border : solid 1px #ccc;
-  box-shadow : 1px 1px 0px rgba(0,0,0,0.05);
-  -webkit-box-shadow : 1px 1px 0px rgba(0,0,0,0.05);
-}
-.WidgetHeaderCallStatus:hover
-{
-}
-.WidgetHeaderCallStatus .CallAvatar
-{
-  top : 5px;
-  left : 5px;
-}
-.WidgetHeaderCallStatus .CallLineTop
-{
-  position : absolute;
-  top : 0px;
-  left : 55px;
-  right : 10px;
-}
-.WidgetHeaderCallStatus .CallDuration
-{
-  top : 11px;
-  font-weight : bold;
-}
-.WidgetHeaderCallStatus .CallerName
-{
-  top : 10px;
-}
-.WidgetHeaderCallStatus .CallerPhone
-{
-  top : 30px;
-  left : 55px;
-  right : 35px;
+.WidgetHeaderSubTitle{
+  position: relative;
+  text-align: left;
+  font-size: 12px;
+  color: #555;
+  margin-top: 20px;
+  left: 10px;
+  width: 50%;
 }
 .WidgetHeaderCallStatus .NoCallText
 {
   text-align : center;
-  margin-top : 12px;
   color : #999;
 }
 .WidgetHeaderCallStatus .NoCallIcon
 {
-  position : absolute;
-  top : 24px;
-  left : 88px;
-  height : 24px;
+  height : 16px;
   width : 24px;
-  background : url("../img/XIconSet-24x24.png?v=1383213555647") no-repeat -24px -72px;
+  background : url("../img/XIconSet-24x24.png") no-repeat -24px -72px;
 }
 
-.WidgetHeaderStatusItem
-{
-  position : relative;
-  float : left;
-  min-width : 24px;
-  height : 24px;
-  line-height : 24px;
-  overflow : hidden;
-  text-overflow : ellipsis;
-  white-space : nowrap;
-  display: inline-block;
-}
-.WidgetHeaderStatusItem.ChatStatus
-{
-  max-width : 165px;
-}
-.WidgetHeaderStatusItem.CallStatus
-{
-  max-width : 100px;
-}
-.WidgetHeaderStatus.WithIcons
-{
-  left : 55px;
-}
 .WidgetSectionTitle {
-  height: 32px;
+  height: 2.5em;
   text-align: center;
   font-size: 14px;
-  line-height: 32px;
+  line-height: 2.5em;
   border-top: 1px solid #b9b9b9;
   border-bottom: 1px solid #b9b9b9;
   text-shadow: 1px 0 0 #666;
@@ -171,270 +313,142 @@
   font-weight: normal;
   letter-spacing: 1px;
   background-image: linear-gradient(#fefefe, #ebebeb);
+  position: relative;
+  clear: both;
 }
 
-.WidgetStat {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 200px;
-  height: 38px;
+.WidgetHeaderCallStatus {
+    min-width: 30%;
+}
+.WidgetStat, .WidgetHeaderCallStatus {
+  float: right;  
   border-radius: 4px;
   background-color: #fff;
   border: solid 1px #ccc;
   box-shadow: 1px 1px 0 rgba(0,0,0,0.05);
-  padding:5px;
+  padding: 1.1%;
+  color: gray;
 }
 
-.WidgetStatEntry {
-  display:inline-block;
-  width: 90px;
-  height: 20px;
-  font-size: 11px;
-  color: #999;
-}
-
-.WidgetStatEntry .Label {
-  display:inline-block;
-  width:60px;
+.WidgetStat {
   text-align: right;
+  line-height: 1.75em;
+  font-size: .7em; 
+  width: 300px;
+  
+  &.agents{
+    width: 238px;
+    padding: 3px;
+    font-size: 11px;
+  }
+  
+  .row{
+    width: 100%;
+    float: left;
+    clear: both;
+    text-align: right;
+    white-space: nowrap;
+    
+    &.first{
+        .Left{
+          width: 50%;
+        }
+        .Right{
+            width: 35%;
+            margin-right: .3em;
+        }
+    }
+    
+    &.second{
+        .Left{
+            width: 34%;
+            width: 35%\9; /* ie9 and less */
+        }
+        .Right{
+            width: 55%;
+            margin-right: .3em;
+        }
+    }
+  }
+  .Left, .Right, .Labels, .Data {
+	display: inline-block;
+	vertical-align: top;
+	
+	&.Left {
+	  margin-right: 1em;	
+	  float: left;  
+	}
+
+	&.Right{float: right;}
+	
+	&.Labels { 
+		text-align: right; 
+	}
+
+	&.Data { 
+		text-align: left; 
+		font-weight: bold;
+	}
+  }
 }
 
-.WidgetStatEntry .Value {
-  display:inline-block;
-  font-weight: bold;
-}
-
-.Widget .ListView {
-  position:absolute;
-  bottom:5px;
-  left:0;
-  right:0;
-  top:50px;
-  overflow-y: auto;
-}
-
-.Widget .ListView.WithToolBar {
-  top:100px;
-}
-.Widget .SearchInputBox {
-  left: 2px;
-  top: 4px;
-  width: 160px;
-}
-
-/********************WidgetMe************************************/
-
-.WidgetMe .WidgetHeader {
-  height: 170px;
-  padding:0 10px;
-}
-.WidgetMe .WidgetHeaderTitle {
-  color: #333;
-  font-size: 20px;
-  line-height: 35px;
-  left: 0px;
-  right: 15px;
-  top: 0;
-  height: 35px;
-  position:relative;
-}
-.WidgetMe .Avatar.AvatarBig{
+.WidgetTabBar {  
   position: relative;
-  top: 0;
-  left: 0;
-}
-.WidgetMe .WidgetBody {
-  top: 160px;
-}
-.MeInfoBlock {
-  display:inline-block;
-  margin-left:5px;
-  vertical-align: top;
-}
-.MeInfoBlock-column {
-  width:175px;
-  display:inline-block;
-  vertical-align: top;
-}
-.MeInfoTitle {
-  color: #999;
-  font-weight: bold;
-  font-size: 9px;
-  margin-bottom: 2px;
-  text-transform: uppercase;
-}
-/**********ZOOM****************/
-
-.WidgetZoom .WidgetBody {
-  top: 75px;
-  left: 10px;
-  right: 10px;
-}
-.widget-zoom-topic {
-  position: relative;
-  height: 100px;
-  padding-right:10px;
-}
-.widget-zoom-topic textarea {
-  height: 85px;
-  width:100%;
+  width: 100%;
+  border-bottom: solid 1px #729c00;
+  border-top: solid 1px #e0e0e0;
+  vertical-align: bottom;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#eee));
+  background: #fefefe linear-gradient(#fefefe, #eee);
+  user-select: none;
+  -webkit-user-select: none;
+  height: auto;
+  max-height: 35px;
 }
 
-.WidgetZoom .SearchInputBox {
+.WidgetTabBarButton {
   position: relative;
-  width: 160px;
-  top: -6px;
-  left: 0;
-}
-
-.WidgetZoom .XButton {
-  position:absolute;
-  top: 30px;
-  right: 0;
-}
-.widget-zoom-join .SearchInputBox {
-  position: relative;
-  width: 160px;
   display: inline-block;
-  top: 0;
-  left: 0;
-}
-.widget-zoom-join .SearchInputBoxInputHolder {
-  left: 10px;
+  margin-top: 0;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-.WidgetZoom .ExpandedToolBarHolder.WidgetTabEditMode .ExpandedToolBar .SearchInputBox {
-  left: 20px;
-}
-
-/***************************Conferences*****************************************/
-
-.ListViewTopNote {
+.WidgetTabBarButton .inner {
   position: relative;
-  height: 50px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  background-color: #FFE;
-  border: solid 1px #EEE;
-  border-radius: 3px;
+  margin-left: .5em;
+  margin-right: .5em;
+  display: inline-block;
+  line-height: 3em;
+  font-size: .75em;
+  color: #888;
+  text-shadow: 0 1px 0 #FFF;
+  cursor: pointer;
 }
 
-.ListViewTopNote span {
+.WidgetTabBarButton:hover .inner {
+  color: #729c00;
+
+}
+
+.WidgetTabBarButton.fj-selected-item .inner {
+  color: #729c00;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  font-weight: bold;
+}
+
+.WidgetTabBarButton .arrow {
+  display: none;
   position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 40px;
+  bottom: 2px;
+  left: 50%;
+  margin-left: -7px;
+  width: 0;
+  height: 0;
+  border: solid 7px;
+  border-color: transparent transparent #729c00 transparent;
 }
 
-.ListViewTopNoteClose {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 24px;
-  height: 24px;
-  background: url("../img/XIconSet-24x24.png") -24px -24px;
-}
-
-
-/*************************************Conversation*********************************/
-.Widget.Conversation {
-  .WidgetHeader {
-    height:95px;
-    top:0;
-    right:0;
-    left:0;
-
-    .WidgetHeaderCallStatus {
-      left: 9px;
-      bottom: 0px;
-      width: auto;
-      height: 36px;
-      right:200px;
-      top:auto;
-      .Avatar {
-        top:1px;
-        left: 1px;
-      }
-      .NoCallIcon {
-        top: 5px;
-        left: 80px;
-      }
-      .NoCallText {
-        line-height:11px;
-      }
-      .CallLineTop {
-        top:3px;
-        left:40px;
-        .CallerName {
-          font-weight: bold;
-          font-size:13px;
-        }
-        .CallDuration {
-          top:5px;
-          right:5px;
-        }
-      }
-    }
-    .WidgetHeaderCallStatus.HasCall {
-      border-radius: 18px 4px 4px 18px;
-    }
-
-    .WidgetHeaderInfo {
-      position:absolute;
-      right:10px;
-      top:10px;
-      background-color: #fff;
-      border:1px solid #bbb;
-      height: 83px;
-      width: 180px;
-      border-radius: 4px;
-      .WidgetHeaderInfoRow {
-        padding: 2px 5px;
-        label {
-          display: inline-block;
-          width:40px;
-          text-align: right;
-          margin-right: 3px;
-          font-size: 10px;
-          color:#555;
-        }
-      }
-    }
-  }
-  .WidgetBody {
-    top:95px;
-    .ChatView {
-      -webkit-box-orient: vertical;
-      display: -webkit-box;
-      .ListViewContent {
-        -webkit-box-flex: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
-      }
-      .ChatInputBox {
-        -webkit-box-flex: 0;
-      }
-    }
-
-  }
-}
-
-.SettingsTabContent .fj-viewcontent {
-  padding:10px;
-  .lblSelect {
-    display: inline-block;
-    width:150px;
-  }
-}
-
-/**************************************Popoup************************************/
-.popupWindow {
-  .Widget {
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    min-width:400px;
-  }
-}
+.WidgetTabBarButton.fj-selected-item .arrow {
+  display: block;
+} 

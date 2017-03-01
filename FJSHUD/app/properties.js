@@ -1,74 +1,53 @@
+var fjs = {};
+
 fjs.CONFIG = {
     SERVER: {
-        //serverURL: "https://dev4.fon9.com:8081"
-        //, loginURL: "https://dev4.fon9.com:5501"
-//        serverURL: "https://huc-dev.fonality.com:8081"
-//      , loginURL: "https://huc-dev.fonality.com:5501/oauth/authorize"
-       serverURL: "https://huc-qa.fonality.com:8080"
-        , loginURL: "https://huc-qa.fonality.com:5501"
-    }
-    , CLIENT: {type:'web'}
-    , providers: ['simple', 'sharedWorker']
-    , DB: {
-        name: "HUD"
-        , version: 15
-        , size: 4*1024*1024
-        /**
-         * @type {Array}
-         */
-        , dbProviders:['indexedDB', 'webSQL']
-        , tables: [
-            {name:"versions", key:"feedSource", indexes:["source", "feedName"]}
-            , {name:"historyversions", key:"feedSourceFilter", indexes:["source", "feedName", "filter",["feedName", "filter"]]}
-            , {name:"tabsync", key: "key", indexes:["eventType"]}
-            , {name:"calls", key: "xpid", indexes:["source"]}
-            , {name:"calldetails", key: "xpid", indexes:["source"]}
-            , {name:"calllog", key: "xpid", indexes:["source"]}
-            , {name:"callrecording", key: "xpid", indexes:["source"]}
-            , {name:"callrecordingplayed", key: "xpid", indexes:["source"]}
-            , {name:"chatsmiles", key: "xpid", indexes:["source"]}
-            , {name:"conferences", key: "xpid", indexes:["source"]}
-            , {name:"conferencemembers", key: "xpid", indexes:["source"]}
-            , {name:"conferencepermissions", key: "xpid", indexes:["source"]}
-            , {name:"conferencestatus", key: "xpid", indexes:["source"]}
-            , {name:"contacts", key: "xpid", indexes:["source"]}
-            , {name:"contactpermissions", key: "xpid", indexes:["source"]}
-            , {name:"contactstatus", key: "xpid", indexes:["source"]}
-            , {name:"gadget_config", key: "xpid", indexes:["source"]}
-            , {name:"groups", key: "xpid", indexes:["source"]}
-            , {name:"groupcontacts", key: "xpid", indexes:["source"]}
-            , {name:"groupinfo", key: "xpid", indexes:["source"]}
-            , {name:"groupmyproperties", key: "xpid", indexes:["source"]}
-            , {name:"grouppermissions", key: "xpid", indexes:["source"]}
-            , {name:"groupstatus", key: "xpid", indexes:["source"]}
-            , {name:"group_page_member", key: "xpid", indexes:["source"]}
-            , {name:"i18n_langs", key: "xpid", indexes:["source"]}
-            , {name:"locations", key: "xpid", indexes:["source"]}
-            , {name:"location_status", key: "xpid", indexes:["source"]}
-            , {name:"me", key: "xpid", indexes:["source"]}
-            , {name:"mycalls", key: "xpid", indexes:["source"]}
-            , {name:"mycalldetails", key: "xpid", indexes:["source"]}
-            , {name:"parkedcalls", key: "xpid", indexes:["source"]}
-            , {name:"queues", key: "xpid", indexes:["source"]}
-            , {name:"queue_call", key: "xpid", indexes:["source"]}
-            , {name:"queuelogoutreasons", key: "xpid", indexes:["source"]}
-            , {name:"queue_members", key: "xpid", indexes:["source"]}
-            , {name:"queuemembercalls", key: "xpid", indexes:["source"]}
-            , {name:"queue_members_stat", key: "xpid", indexes:["source"]}
-            , {name:"queue_members_status", key: "xpid", indexes:["source"]}
-            , {name:"queuemessages", key: "xpid", indexes:["source"]}
-            , {name:"queuemessagestats", key: "xpid", indexes:["source"]}
-            , {name:"queuepermissions", key: "xpid", indexes:["source"]}
-            , {name:"queue_stat_calls", key: "xpid", indexes:["source"]}
-            , {name:"quickinbox", key: "xpid", indexes:["source"]}
-            , {name:"server", key: "xpid", indexes:["source"]}
-            , {name:"settings", key: "xpid", indexes:["source"]}
-            , {name:"streamevent", key: "xpid", indexes:["source"]}
-            , {name:"voicemailbox", key: "xpid", indexes:["source"]}
-            , {name:"weblauncher", key: "xpid", indexes:["source"]}
-            , {name:"weblaunchervariables", key: "xpid", indexes:["source"]}
-            , {name:"widget_history", key: "xpid", indexes:["source"]}
-            , {name:"fdpImage", key: "xpid", indexes:["source"]}
-            , {name:"sortings", key:"xpid"}]
-    }
+        serverURL: {{ server_url }},
+        loginURL: {{ login_url }},
+		ppsServer: {{ pps_url }}
+    },
+	FEEDS: ['me', 'contacts', 'fdpImage', 'locations', 'settings', 'calls', 'queues','conferences', 'weblauncher_task', 'mycalls', 'groups', 'voicemailbox', 'calllog', 'server','location_status', 'queuelogoutreasons', 'queue_members', 'queuemembercalls', 'queue_members_stat', 'queue_members_status', 'queue_call','queuepermissions', 'queue_stat_calls', 'calldetails', 'grouppermissions', 'groupcontacts', 'contactpermissions', 'contactstatus', 'group_page_member', 'weblauncher', 'weblaunchervariables', 'streamevent', 'conferencemembers', 'conferencepermissions', 'conferencestatus', 'parkedcalls', 'mycalldetails', 'i18n_langs', 'quickinbox'],
+    CALL_STATES:{
+        CALL_UNKNOWN:-1,
+        CALL_RINGING:0,
+        CALL_ACCEPTED:2,
+        CALL_HOLD:3,
+    },
+    CALL_TYPES:{
+        GROUP_CALL:1,
+        CONFERENCE_CALL:0,
+        INDIVIDUAL_CALL:2,
+        QUEUE_CALL:3,
+        BARGE_CALL:4,
+        EXTERNAL_CALL:5,
+        CALL_MENU:6,
+    },
+    BARGE_TYPE:{
+        BARGE:2,
+        MONITOR:1,
+        WHISPER:3,
+    },
+    PLUGINS:{
+        MAC:'webphone/FonalityPlugin-5.17.8986.dmg',
+        WINDOWS:'webphone/FonalityPlugin-5.17.8986.msi',
+        WINDOWS_NEW:'<%= WINDOWS_PLUGIN %>',
+        MAC_NEW:'<%= MAC_PLUGIN %>',
+        WINDOWS_HUDN: '<%= HUDN_WINDOWS_PLUGIN %>',
+        MAC_HUDN: '<%= HUDN_MAC_PLUGIN %>'
+    },
+    PLUGIN_VERSION:{
+        MAC_OLD:'5.17.008986',
+        WINDOWS_OLD:'5.17.008986',
+        WINDOWS_NEW:'<%= WINDOWS_PLUGIN_VERSION %>',
+        MAC_NEW:'<%= MAC_PLUGIN_VERSION %>',
+    },
+	BUILD_NUMBER: '<%= BUILD_NUMBER %>',
+    DEBUG:true,
+	SYNC_DELAY: 1500,
+	ACTIVITY_DELAY: 60000,
+    DROPBOX_APP_TOKEN: 'mfak8bm5ct32dji',
+    GOOGLE_APP_KEY:'AIzaSyAjCQ6Xf8ZQSylnmGu-spRtUfMgUoVLlng',
+    GOOGLE_CLIENT_ID:'1021477541761-rfj7un5tiupnjpe066u9afh9s7edpau3.apps.googleusercontent.com',
+    BOX_CLIENT_ID: 'e002eyntxr19ajn0skc77f2oqqior03a',
+    ONEDRIVE_CLIENT_ID: '000000004818C953'
 };

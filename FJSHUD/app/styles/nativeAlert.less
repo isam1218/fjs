@@ -1,0 +1,220 @@
+#CallAlert{
+  position: relative;
+  width: 300px;
+  max-height:500px;
+  font-size: 1em;
+  background: #fff;
+  
+  @font-face {
+    font-family: Comic Sans;
+    src: url(fonts/LDFComicSans.ttf);
+  }
+  
+	.Avatar {		
+		& > div {
+			border-radius: 0;
+			background-color: #8DB4BD !important;
+		}
+		
+		.Darken {
+			display: none !important;
+		}
+	}
+  
+  .CallStatusIconContainer{
+  	width: 34px;
+    height: 34px;
+  	border-radius:30px; 
+  	text-align:center;
+  	display:inline-block;
+	
+  	.CallStatusIcon{
+  	  width:30px;
+  	  height:30px;
+  	  background:url('../img/XActionSet-40x40.png') no-repeat -80px -240px;
+  	  margin-left: -5px;
+      margin-top: -5px;
+  	}
+ }
+  
+  .IsOnCall {
+	background-position: -83px -243px;
+  }
+  
+  .LeftBarNotificationMessageSection{
+    .NotificationMessage{        
+	    padding-right: 20px;
+	    -ms-word-wrap: break-word;
+	    white-space:normal;
+	    // word-break: break-all;
+      overflow-wrap:  break-word;
+      word-wrap:  break-word;
+      word-break: break-word;
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      -webkit-hypens: auto;
+      hypens: auto;
+	    height: auto;
+	    max-height: none;
+	    padding-bottom: 20px;
+    }    
+    .NotificationDisplayName {
+    	span{
+    		&.truncate{
+	          	max-width: 55%;
+	        }
+    	}
+    }
+  }
+  
+  a:not(.XButton) {
+	text-decoration: none;
+	color: inherit;
+  }
+  
+  div.CallStatusContainerOutbound{
+      position:relative;
+      bottom: 0px;
+      .controlButtons .PhoneButton{
+        width:50px;
+        height:25px;
+        text-align:center;
+        padding:5px 0px;
+      }
+      .CallStatusText .callStatus{
+          font-size: 10px;
+          font-weight: normal;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+      }
+  }
+        
+  .close{
+    width: 24px;
+    height: 24px;  
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
+    cursor: pointer;
+    background: url("../img/XIconSet-24x24.png") no-repeat -24px -24px;
+  }
+
+  .Notifications {
+      position: relative;
+      width: 100%;  
+      overflow: hidden;
+      
+      .TitleBar{
+          margin-bottom: 0px;
+          
+          &.hasButton{
+            display: none;
+          }
+          
+          .XButton {
+              float: right;
+              top: -5px;
+			  padding: 4px !important;
+          }
+      }
+      
+      .TitleBar, 
+      .NotificationDivider > div {
+          width: 101%;
+          background-color: #999;
+          color: white;
+          padding: .25em;
+          transition: none;
+          border-top: 1px solid #ccc;
+          border-right: 1px solid #ccc;
+          font-size: 12px;
+          padding-right: 10px;
+          padding-top: 10px;
+          
+        .NoNotificationIcon {
+          width: 24px;
+          height: 24px;
+          background: url("../img/XIconSet-24x24.png") no-repeat -48px -72px;
+        }
+        .HasNotificationIcon{
+          width: 24px;
+          height: 24px;
+          background: url("../img/XIconSet-24x24.png") no-repeat -72px -72px;
+      
+        }
+          
+          & > *{
+            display: inline-block;
+            vertical-align: middle;
+          }
+      }
+      
+      .NotificationMessages{ 
+        padding-bottom: 0px;
+        
+        .scroller {
+          max-height: 300px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          
+          .Messages{            
+            .NotificationSection {
+              height: auto !important;  
+              width: 100% !important;
+            }
+			
+			&.error {
+				font-size: 15px;
+				padding-bottom: 10px;
+			}
+          }
+        }  
+      }
+  }
+  
+  .LeftBarNotificationSection {
+      position:static;
+  }
+  a.ListRow-Contact.ListRowFirst{
+      background-color:#F7F4F4;
+      padding: 10px; 
+      color: #aaa;
+      font-size: 14px;
+	  height: 60px;
+	  max-height: none;
+  
+      &.ListRowFirst{
+       .Avatar{
+            width: 40px;
+            height: 40px;
+            top: -2px;
+			font-size: 16px;
+			
+			img {
+				width: 100%;
+				height: 100%;
+			}
+        } 
+      }
+      
+      .NotificationTitle .name span{   
+          font-family: Comic Sans;
+          font-size: 14px;
+       }
+       
+       .ListRowContent{
+          border-left: 0px none;
+          margin-left: 15px;
+          
+          .CallStatus{         
+              float: right;
+              margin-right: .5em;           
+          }
+          .body .ListRowStatusText{
+             display: inline-block;        
+          }
+       }
+  }
+}  

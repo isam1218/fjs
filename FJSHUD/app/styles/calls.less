@@ -1,0 +1,145 @@
+.CallLog {                
+  .vmails{                
+    .ToolBar{          
+            width: 100%;
+            
+            select.XButtonDropDown{
+                margin-top: 2px;               
+                top: -2px;
+                float: right !important;
+                padding: 6px 0;
+                &.XSortButton{
+                    width: 32.5% !important;
+                }    
+            }
+            
+            input, select{float: left;}
+            input[type=search]{
+                width: 30%;
+                  
+                &.recording{width: 45%};
+            }
+        }    
+  }   
+}
+
+.ListRowNoBorders{
+  border:none !important;
+}
+
+.RecentCallsHeader{
+  display:inline-block;  
+  color: #888;  
+  
+  &:not(:first-child){
+   .RecentPointer{
+     margin-left: -20px;
+   } 
+   &:nth-child(3){
+    margin-left: -10px;
+   }
+  }
+    
+  &.recent-selected-column{ 
+    color:#91B139;
+  }
+  span.upper{
+    font-size: 9px;
+    cursor: pointer;
+  } 
+  .desc_arrow{
+    position: relative;
+    border: solid 6px;
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-color: transparent transparent #729c00 transparent;
+    bottom: 1px;
+  }
+  
+  .asc_arrow{
+    position: relative;
+    border: solid 6px;
+    border-color: #729c00 transparent transparent transparent;
+    top: 5px;
+    width: 0;
+    height: 0;
+    display: inline-block;
+  }
+}
+
+.RecentCallSection{
+  font-size:.7em; 
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  -ms-flex: 1;
+    
+  .RecentCallColumnHeaders{    
+    padding: 6px 10px;
+    border-bottom:1px solid #ccc;
+  }
+  .RecentCallLogs{
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  -ms-flex: 1;
+    font-size: 11px; 
+    padding: 4px 10px 10px 10px;    
+    overflow-y:auto;   
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+    text-overflow: ellipsis;   
+    color: #424242;
+    text-shadow: 1px 0px 0px #B8B8B8;        
+    
+    .RecentCallsHeader{
+        color: #424242 !important;
+    }
+    .RecentCallRow{
+      padding-top:7px;
+      padding-bottom:7px;
+      border-bottom:1px solid #ccc;
+    }
+    .fj-scroll{
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        width: 10px;
+        right: 0px;
+        background-color: #f9f9f9;
+        
+        .fj-ui-scrollerFr-decoration, 
+        .fj-ui-scroller{
+            background-color: #f9f9f9;
+        }
+    }
+  }    
+
+  .RecentDate{
+    width:24%;
+    white-space: nowrap;
+  }
+  .RecentFromTo{
+    width:33%;
+    text-align:center;
+    &.call{
+        cursor: pointer;
+        text-decoration: underline;
+        color: #91B139 !important;
+    }
+ }
+  .RecentDur{
+    width:10%;
+    text-align:center;
+  }
+}
+.NoRecentCalls{
+  text-align:center;
+  font-size:1.3em;
+  opacity: 0.5;
+  padding: 10px 0 0 0;
+}

@@ -1,0 +1,751 @@
+.ListLineContent {
+  position: relative;
+  width: 100%;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.ListLineContent.Header {
+  background-color: #fff;  
+  position: relative;
+  border-bottom: solid 1px #999;
+  min-height: 25px;
+  
+    .ListLineContentCell {
+      margin: 0 .5em;
+    }
+	
+    .DirectionArrow {
+      position:absolute;
+      left:50%;
+      margin-left: -6px;
+    }
+}
+
+.ListLineContentCell {
+  position: relative;
+  float: left;
+  white-space: nowrap;
+  text-overflow: clip;
+  overflow: hidden;
+  max-width: 7em;
+}
+
+.ListLineContent.Header{
+     height: 28px;
+     vertical-align: bottom;
+     
+     .ListLineContentCell {
+          color: #666;  
+          font-size: 9px;  
+          text-transform: uppercase;  
+          line-height: 3em;
+          
+          &.CallStatus, &.HudStatus{
+            float: right;
+          }
+          
+          &.CallStatus.external{
+            right: 80px;
+          }
+          &.HudStatus{
+            margin-right: 25px;
+          }
+      }
+}
+
+.DirectionArrow {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 1px;
+  border-style: solid;
+  border-width: 6px;
+}
+
+.Up .DirectionArrow {
+  bottom: 0;
+  border-color: transparent transparent #729c00 transparent;
+}
+
+.Down .DirectionArrow {
+  border-color: #729c00 transparent transparent transparent;
+  top: 0;
+}
+
+.None .DirectionArrow {
+  display:none;
+}
+
+.ListLineContentCell.Up span, .ListLineContentCell.Down span {
+  color: #729C00;
+}
+
+.GroupRow{
+  .WidgetHeaderCallStatus{
+    height: 40px;
+    margin-top: .5em;
+
+    .CallLineTop{
+      margin-top: -5px;
+      width: 80px !important;
+
+      .CallerName{
+        width: 100%;
+      }
+    }
+    .CallDuration{
+      margin-top: -5px;
+      top: 11px !important;
+    }
+  }
+  .GroupPageListRowTitle{
+    padding: 9px !important;
+    max-width: 100% !important;
+    margin-top: -3px !important;
+    .GroupPageStatus{
+      margin-left: 5px;
+      margin-top: 3px;
+    }
+  }
+  .GroupPageListRowStatus{
+    margin-top: 5px !important;
+  }
+}
+
+.ListRow {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-bottom: solid 1px #dee1e5;
+  background-color: #f9f9f9;
+  width: 100%;
+  display: block;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  text-decoration: none;
+  min-height: 40px;
+  height: auto;
+  min-width: 0;     
+  
+  .vmcallbtn{
+        visibility:hidden;
+        right:0;
+        top:0;
+        position:absolute;
+  }
+  
+  .vmtime{
+        visibility:visible;
+   }
+  .ListRowStatus{
+    visibility:visible;
+  }
+  
+  .action-buttons {
+    position: absolute;
+    right: 0px;
+    top: 14px;
+     .XButton{
+        height: 28px;
+        width: 80px;
+        span{ float: none;}
+     }
+  }
+  
+  &:not(.ListRow-Conference):not(.ListRow-Contact):hover{ 
+   .Remove {
+      display: block;
+      background-color: #f0f0ff;
+    }
+    
+    .vmcallbtn {                      
+       background: #3c9c00 linear-gradient(#3c9c00, #328400);           
+       color: #e8e8e8;
+       border: 1px solid rgba(155,155,155,0.3);
+       text-shadow: none;
+       visibility:visible;      
+       height: 26px;
+       width: 40px;
+       text-align: center;
+       border-radius: 2px;
+       text-decoration: none;
+       cursor: pointer;
+       font-size: 11px;
+       font-weight: bold;
+       top: 8px;
+       right: 5px;
+       &:hover{
+         border: 1px solid rgba(0,0,0,0.3);
+         color: #fff;
+         text-shadow: 0 -1px 0 #000;
+         box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+       }
+    }
+    
+    .vmtime{
+        visibility:hidden;
+    }
+    
+    .ListRowStatus:not(.Members){
+        visibility:hidden;
+      }
+  }
+  
+  .Remove {
+	position: absolute;
+	top: .25em;
+	left: .5em;
+	color: red;
+	font-weight: bold;
+	cursor: pointer;
+	z-index: 5;
+	display: none;
+  }
+  
+  .Avatar {
+	margin: 3px 5px;
+  }
+  
+  .ListRowContent {
+    flex: 1;
+	-webkit-flex: 1;
+	-ms-flex:  1;
+    border-left: solid 1px #DEE1E5;
+	overflow: hidden;
+	min-height: 40px;
+	height: auto;
+	min-width: 0; 
+  }
+
+  .GroupListRowContent {
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    min-width: 0;     
+    min-height: 0;
+    
+    .Avatar{
+      margin-top: -3px !important;
+    }
+  }
+  
+  .ListRowTitle {
+    float: left;
+    padding: .5em;    
+    font-size: 12px;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #888;
+    white-space: nowrap;
+	max-width: 50%;
+	flex: 1 1 0;
+	-webkit-flex: 1 1 0;
+	-ms-flex: 4;
+	margin-top: -3px;
+	min-width: 0;     
+    min-height: 0;
+
+    .GroupPageDisplayName{
+      color: #222;
+    }
+    
+    .status{      
+       margin-left: -5px; 
+       &.conference{
+         margin-top: -5px;
+       }
+    }
+    span.desc{
+        font-size: 10px;
+        color: gray;
+        margin-top: 2px;
+    }
+    
+    .external{
+      float: left;
+      
+      &.ListRowStatusIcon{
+         margin-top: -5px;
+      }
+    }
+    
+    .ListRowStatusIcon{
+        margin-left: -6px;
+
+        &.ListRowStatusIconGroupPage{
+          margin-right: -5px;
+          margin-top: -3px;
+        }
+    }
+    strong {           
+        font-weight: bold;
+        font-size: 12px;
+        color: #222;
+    }
+    .name {      
+      font-size: 13px;
+      color: #222; 
+      text-overflow:ellipsis;
+      overflow:hidden;         
+	  
+	  & > * {
+	    display: block;
+	  }
+	  
+	  span {
+	    color: gray;
+	    font-size: 10px;
+	  }
+    .ConferenceListRowStatusText{
+      font-size: 12px !important;
+    }
+    }
+  }
+  .GroupListRowTitleWidget{
+    max-width: 100%;
+    padding-top: 10px;
+    
+    span{
+      color: #222;
+    }
+    .ListRowStatusIcon{
+      margin-left: 0px;
+    }
+
+    .status_message{
+    	-ms-text-overflow: ellipsis;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	white-space: nowrap;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: -2px;
+      width: 85%;
+    }
+  }
+  
+  .ListRowStatus {
+      float: right;
+      color: #888;
+      font-size: 11px;
+      text-align: center;
+      line-height: 1em;
+      height: 1em;
+      position: relative;
+      top: 5px;
+      right: 5px;
+      display: inline-block;
+      text-align: right;
+      
+      .ListRowStatusIcon, .ListRowStatusText {
+          display: inline-block;
+          position: relative;
+          top: -10px;
+          font-size: 10px;   
+          margin-left: -4px;      
+       }
+
+       .ConferenceStatusIcon {
+          display: inline-block;
+          position: relative;
+          top: -10px;
+          font-size: 10px;
+          margin-left: -1px !important;
+       }
+       
+       .ListRowStatusText {
+           top: -15px;
+           text-overflow: ellipsis;
+           max-width: 8em;           
+           white-space: nowrap;
+           overflow: hidden;   
+           margin-right: 5px;        
+       }
+  }
+  
+  .CallStatus {
+    float: right;
+	margin: 2px .5em 2px 0;
+	
+	&.Full {
+	  border: 1px solid #ccc;
+	  border-radius: 3px;
+	  width: 150px;
+	  display: flex;
+	  display: -webkit-flex;
+	  flex-direction: row;
+	  -webkit-flex-direction: row;
+	  padding-top: 3px;
+	  min-width: 0;     
+      min-height: 0;
+	  
+	  .Details {
+	    font-size: 12px;
+		color: #333;
+		
+		.Name {
+	      text-overflow: ellipsis;
+		  overflow: hidden;
+		  width: 70px;
+		  white-space: nowrap;
+		  font-weight: bold;
+		}
+	  }
+	  
+	  .Time {
+	    text-align: right;
+		flex: 1;
+		font-size: 11px;
+		color: gray;
+		padding-right: 2px;
+		min-width: 0;     
+        min-height: 0;
+	  }
+	}
+	
+	.Avatar{
+	  margin: 1px !important;
+	}
+  }
+} 
+
+.Widget, .LeftBar{
+  .vmsection{
+    background-color: #f9f9f9;
+    
+    &:nth-child(odd) {
+      background-color: #eee;
+    }
+    &:hover {
+          background-color: #ddd;
+    }
+ }
+} 
+
+.ListRow{
+      background-color: #fff;
+     
+      &:nth-child(odd) {
+          background-color: #f9f9f9 !important;
+      }
+      &:hover {
+          background-color: #f0f0ff !important;
+      }
+}
+
+.Groups{
+    .ListRow{
+        &:nth-child(odd) {
+          background-color: #fff !important;
+        }
+    }
+}   
+
+.Groups .ListRow > div {
+  flex: 1;
+  -webkit-flex: 1;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  min-width: 0;     
+  min-height: 0;
+  
+  .Members {
+    padding: 1em 1em 0 0;
+  }
+}
+
+.ListRowOdd {
+  background-color: #eee;
+}
+.ListRowLast{
+  border-bottom: 1px solid #ccc !important;
+}
+
+.ListRowActionButton {
+  width:30px;
+  height:32px;
+  border-left: solid 1px #dee1e5;
+  display:inline-block;
+  background-color: #ffffff;
+}
+
+.ListRowActionButton:hover {
+  background-color: #dfd;
+}
+.ListRowActionButtonChat {
+  background : url("../img/XActionSet-30x30.png") no-repeat -30px -30px;
+}
+.ListRowActionButtonCall {
+  background : url("../img/XActionSet-30x30.png") no-repeat -0px -60px;
+}
+.ListRowActionButtonEmail {
+  background : url("../img/XActionSet-30x30.png") no-repeat -60px -30px;
+}
+.ListRowActionButtonMobile {
+  background : url("../img/XActionSet-30x30.png") no-repeat -150px -60px;
+}
+.ListRowActionButtonVoicemail {
+  background: url("../img/XActionSet-30x30.png") no-repeat -90px -30px;
+}
+.ListRowActionButtonShare {
+  background: url("../img/XActionSet-30x30.png") no-repeat -0px -30px;
+}
+.ListRowActionButtonIntercom {
+  background: url("../img/XActionSet-30x30.png") no-repeat -0px -60px;
+}
+.ListRowActionButtonJoin {
+  background: url("../img/XActionSet-30x30.png") no-repeat -0px -120px;
+}
+.ListRowActionButtonLeave {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -120px;
+}
+.ListRowActionButtonScreenShare {
+  background: url("../img/XActionSet-30x30.png") no-repeat -0px -210px;
+}
+.ListRowActionButtonFileShare {
+  background: url("../img/XActionSet-30x30.png") no-repeat -0px -30px;
+}
+.ListRowActionButtonEdit {
+  background : url("../img/XActionSet-30x30.png") no-repeat -60px -150px;
+}
+.ListRowActionButtonRemove {
+  background : url("../img/XActionSet-30x30.png") no-repeat -150px -30px;
+}
+.ListRowActionButtonRead {
+  background : url("../img/XActionSet-30x30.png") no-repeat -180px -30px;
+}
+.ListRowActionButtonUnread {
+  background : url("../img/XActionSet-30x30.png") no-repeat -210px -30px;
+}
+.ListRowActionButtonUnpin {
+  background: url("../img/XActionSet-30x30.png") no-repeat -0px -120px;
+}
+.ListRowActionButtonLogin {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0 -90px;
+}
+.ListRowActionButtonLogout {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px -90px;
+}
+.ListRowActionButtonReset {
+  background: url("../img/XActionSet-30x30.png") no-repeat -60px -90px;
+}
+.ListRowActionButtonDock {
+  background: url("../img/XActionSet-30x30.png") no-repeat 0 0;
+}
+.ListRowActionButtonUndock {
+  background: url("../img/XActionSet-30x30.png") no-repeat -30px 0;
+}
+.ListRowActionButtonRecord {
+  background : url("../img/XApp-Icons.png") no-repeat -324px -5px;
+}
+.ListRowActionButtonDownload {
+  background : url("../img/XApp-Icons.png") no-repeat -324px -45px;
+}
+.ListRowActionButtonMute {
+  background : url("../img/XActionSet-30x30.png") no-repeat -180px -60px;
+}
+.ListRowActionButtonUnmute {
+  background : url("../img/XActionSet-30x30.png") no-repeat -210px -60px;
+}
+.ListRowActionButtonTake{
+  background : url("../img/XApp-Icons.png") no-repeat -606px -5px;
+}
+.ListRowActionButtonBarge {
+  background : url("../img/XActionSet-30x30.png") no-repeat -30px -60px;
+}
+.ListRowActionButtonMonitor {
+  background : url("../img/XActionSet-30x30.png") no-repeat -60px -60px;
+}
+.ListRowActionButtonWhisper {
+  background : url("../img/XActionSet-30x30.png") no-repeat -90px -60px;
+}
+
+.ListSectionHeaderTitle {
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold; 
+  line-height: 18px;
+  margin-top:10px;
+  width: auto;
+  text-transform: uppercase;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ListPage {
+  //border:1px solid #999;
+  border-radius:6px;
+  padding-top:7px;
+  padding-bottom:20px;
+  padding-left:10px;
+  //font-size: .8em;
+  font-size: 12px;
+  border: solid 1px #efefef;  
+  background-color: #fff; 
+  -webkit-border-radius: 6px;
+  box-shadow: 0px 0px 2px #999 inset;
+  min-height: 60px;
+}
+
+.ListSection {
+  position: relative;
+  min-height: 40px;
+  background-color: #f9f9f9;
+}
+
+.ListSectionBody {
+  color : #555;
+  font-size : 11px;
+  font-style : italic;
+  font-weight : normal;
+  margin-left : 10px;
+  margin-top : 0px;
+  margin-bottom : 4px;
+  display : inline-block;
+}
+
+.ListSectionHeaderTitle {
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold; 
+  line-height: 18px;
+  margin-top:10px;
+  width: auto;
+  text-transform: uppercase;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.InlineList {  
+  border-radius : 3px;
+  position : relative;
+  .ListRow{width: 96%; margin: 0 auto;}
+}
+
+.InlineList.ListIsEmpty {
+  border : solid 1px transparent;
+}
+
+/* chats */
+
+.ListMessage {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  margin: .5em 0 1em 2%;
+  width: 97%;
+  color: #999;
+  font-size: .85em;
+  min-width: 0;     
+  min-height: 0;
+  
+  .ListMessageLeft {
+    .time {
+	  margin-top: 1em;
+      font-size: .7em;
+    }
+  }
+  
+  .ListMessageContent {
+    margin-left: .5em;
+    flex: 1;
+	-webkit-flex: 1;
+	overflow: hidden;
+	min-width: 0;     
+    min-height: 0;
+  }
+  
+  .ChatMessageItem {
+    color: #222;
+  }
+  
+  .ListMessageHeader {
+    font-size: .8em;
+    width: 100%;
+    border-bottom: solid 1px #999;
+    margin-bottom: .5em;
+    padding-bottom: .5em;
+    padding-right: 10px;
+    
+    .ListMessageHeaderName {
+  	  text-overflow : ellipsis;
+  	  white-space : nowrap;
+  	  overflow : hidden;
+  	  color : #009cff;
+  	  font-weight : bold;
+  	  padding-left: 1em;
+    }
+    
+    .time {
+      float: right;
+  	  color: gray;
+    }
+  }
+}
+.vmsection.group_members{
+  .vmalternate{
+    display:inline-block;
+    float:right;
+    position:relative;
+    margin-top:6px;
+    margin-right:5px;
+    height: 40px;
+    -ms-flex:   1;
+    
+   
+    .vmcallbtn{
+        visibility:hidden;
+        right:0;
+        top:0;
+        position:absolute;
+        margin-top: 5px;
+    }
+    .extension{
+        visibility:visible;
+        position:relative;
+        font-size:11px;
+        font-weight: bold;
+    }
+   }    
+   &:hover{
+    .vmalternate{
+      .vmcallbtn {                      
+         background: #3c9c00 linear-gradient(#3c9c00, #328400);           
+         color: #e8e8e8;
+          border: 1px solid rgba(155,155,155,0.3);
+          text-shadow: none;
+          visibility:visible;      
+          height: 26px;
+           width: 40px;
+           text-align: center;
+           border-radius: 2px;
+           text-decoration: none;
+           cursor: pointer;
+           font-size: 11px;
+           font-weight: bold;
+           &:hover{
+             border: 1px solid rgba(0,0,0,0.3);
+             color: #fff;
+             text-shadow: 0 -1px 0 #000;
+             box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+           }
+      }
+      .extension{
+        visibility:hidden;
+      }
+
+     }
+    }           
+}

@@ -1,28 +1,51 @@
-/**
- * Created by vovchuk on 11/6/13.
- */fjs.core.namespace("fjs.ui");
-
-fjs.ui.LocationsController = function($scope, $element, dataManager) {
-    fjs.ui.Controller.call(this, $scope);
-
-    var locationsModel = dataManager.getModel("locations");
-    var meModel = dataManager.getModel("me");
-    $scope.locations = locationsModel.items;
+hudweb.controller('LocationsController',['$scope', '$rootScope', '$routeParams', '$element', 'HttpService', 'SettingsService', 'PhoneService', function($scope, $rootScope, $routeParams, $element, httpService, settingsService, phoneService) {
+    var call = phoneService.getCallDetail($routeParams.callId);
+    $scope.locations = {};
+	
+	// get locations
+	phoneService.getLocationPromise().then(function(data) {
+		$scope.locations = data;
+	
+	});
+	
+    
     $scope.setLocation = function(locationId){
-        dataManager.sendAction("locations", "select", {"locationId":meModel.itemsByKey["current_location"].propertyValue = locationId});
+        httpService.sendAction("locations", "select", {"locationId":$scope.meModel["current_location"] = locationId});
+        $scope.closePopup();
     };
+    
+    $scope.moveLocation = function(locationId){
+    	var callId = $routeParams.callId;
+        httpService.sendAction("mycalls", "route", {"mycallId":callId, "toLocationId":locationId, "variance": "native", "options": "0"});
+        $scope.closePopup();
+    };
+    
     $scope.getCurrentLocationTitle = function() {
+        /**
+         * @type {{name:string. phone:string}}
+         */
         var currentLocation;
-        if(meModel.itemsByKey["current_location"] && (currentLocation = locationsModel.items[meModel.itemsByKey["current_location"].propertyValue])) {
-            return currentLocation.name+" ("+currentLocation.phone+")";
-        }
-        else {
-            return "Loading...";
+
+        if($scope.meModel["current_location"] && $scope.locations[$scope.meModel["current_location"]]) {
+        	currentLocation = $scope.locations[$scope.meModel["current_location"]];
+             
+             if(currentLocation.locationType != 'a' && currentLocation.locationType != 'w' && currentLocation.locationType != 'm')
+            	 return currentLocation.shortName+" ("+ currentLocation.phone+")";
+             else
+            	 return currentLocation.shortName;
+         }
+         else {
+             return "Loading...";
+         }
+    };
+
+
+    $scope.getCurrentLocationId = function() {
+        if(call && $scope.currentPopup.model.callTransfer){
+            return call.locationId;
+        }else{
+            return $scope.meModel["current_location"] && $scope.meModel["current_location"];
         }
     };
-    $scope.getCurrentLocationId = function() {
-        return meModel.itemsByKey["current_location"] && meModel.itemsByKey["current_location"].propertyValue;
-    }
-}
 
-fjs.core.inherits(fjs.ui.LocationsController, fjs.ui.Controller)
+}]);

@@ -1,0 +1,141 @@
+<div class="LeftBarNotificationSection notificationsSection" expand-contract-notifications>
+	<div class="NotificationMessages LeftBarNotifications">
+		<div class="TitleBar" ng-switch="notifications.length > 0 || errors.length > 0">
+			<div class="HasNotificationIcon" ng-switch-when="true"></div>
+			<div class="NoNotificationIcon" ng-switch-when="false"></div>
+			<div>{{::verbage.notifications}}</div>
+			<div class="Event" ng-switch-when="true"> - {{ notifications.length + errors.length }} {{::verbage.events}}</div>
+			<input type="button" value="{{::verbage.open}}" class="XButton" ng-click="showOverlay(true, 'NotificationsOverlay', {})"/> <!-- "$parent.overlay = 'notifications'" -->
+		</div>   
+		
+		<div class="scroller">  	
+	        <div class="Messages" ng-repeat="message in todaysNotifications track by message.xpid">			
+				<div class="NotificationHeader">
+					<div class="NotificationHeaderBackground">
+						<div class="NotificationClose" ng-click="remove_notification(message.xpid)"></div>
+					</div>
+
+				</div>
+				<div class="NotificationDivider"></div>
+				<div class="NotificationSection" >
+					<avatar
+						ng-click="go_to_notification_chat(message)" 
+						profile="::checkIfGroup(message)">
+					</avatar>
+				
+					<div class="LeftBarNotificationMessageSection"> 
+						<div ng-click="go_to_notification_chat(message)" class="chatNotification">
+							<div class="" ng-class="::message.audience == 'queue' ? 'NotificationDisplayNameQueue' : 'NotificationDisplayName'" >
+								<span ng-if="::message.displayName" ng-class="::message.displayName.length > 14 ? 'truncate' : ''">{{message.displayName}}</span>
+								<span ng-if="::!message.displayName" style="width: 38.5%;">&nbsp;</span> 
+								<div class="NotificationTime">{{ message.time | fondate:'full' }} </div>
+							</div> 
+							<div class="NotificationType">
+								...{{message.label }} 
+								<span class='NotificationDisplayName' ng-if="::message.type == 'gchat'">
+									{{ ::message.conference ? 'Room #' + message.conference.roomNumber + ' (' + message.conference.extensionNumber + ')' : message.title }}
+								</span>
+							</div>
+
+						
+							<div class="NotificationMessage">
+								<span class="vmfootnote vmduration" ng-if="::message.type == 'vm'">{{ ::message.vm.duration | duration }} &nbsp;</span>
+								<span messagescroll></span>
+							</div> 
+						</div>
+						
+						<div class="NotificationZoomBtn" ng-if="::message.type == 'zoom'">
+							<span class="XButton XButtonRed" ng-click="remove_notification(message.xpid)"> {{::verbage.Reject}}</span>
+							<span class="XButton XButtonGreen" ng-click="joinZoom(message)">{{::verbage.join}}</span>
+						</div>
+						
+						<div class="NotificationZoomBtn" ng-if="::message.type == 'vm'"> 
+							<span class="XButton XButtonGreen" ng-click="makeCall(message);remove_notification(message.xpid)">{{::verbage.call_back}}</span>
+						</div>
+
+						<div class="NotificationZoomBtn" ng-if="::message.type == 'missed-call'">
+							<span class="XButton chatNotification" ng-if="::message.fullProfile != null" ng-click="go_to_notification_chat(message)">{{::verbage.chat}}</span>
+							<span class="XButton XButtonGreen" ng-click="makeCall(message);remove_notification(message.xpid)">{{::verbage.Call}}</span>	
+						</div>
+						
+						<div class="NotificationZoomBtn" ng-if="::message.type == 'busy-ring-back'">
+							<span class="XButton" ng-click="remove_notification(message.xpid);">{{::verbage.Skip}}</span>
+							<span class="XButton XButtonGreen" ng-click="makeCall(message);remove_notification(message.xpid)">{{::verbage.Call}}</span>	
+						</div>
+						
+						<div class="NotificationZoomBtn" ng-if="::message.audience=='queue' && (message.type == 'q-alert-abandoned' || message.type == 'q-alert-rotation')">
+							<span class="XButton" ng-click="showQueue(message)">{{::verbage.Show}}</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			
+			<!-- errors -->
+			<div class="Messages error" ng-repeat="error in errors track by error.xpid" ng-switch="::error.xpid">	
+				<div class="NotificationHeader"> 
+					<div class="NotificationHeaderBackground"> 
+						<div class="NotificationClose" ng-click="dismissError(error.xpid)"></div>
+					</div>
+				</div>
+				
+				<div class="NotificationDivider"></div>
+				 				
+                <div id="error-networkError" ng-switch-when="networkError" class="NotificationSection error" ng-click="showOverlay(true, 'NetworkErrorsOverlay', {})">
+                    <div class="LeftBarNotificationAvatarSection" style="display:inline-block"> 
+                        <div class="AvatarWarningSmall"></div>
+                    </div>
+                
+                    <div class="LeftBarNotificationMessageSection"> 
+                        <div class="chatNotification error">
+                            <div class="content"><span ng-bind-html="::error.displayName"></span> <div class="NotificationTime"></div></div> 
+                            <div ></div>
+                            <div class="NotificationMessage" ng-bind-html="::error.message"></div>
+                        </div>
+                        
+                    </div>
+                </div>   
+			</div>
+        </div>    
+	</div>
+</div>
+
+
+<div class="CallStatusContainer">
+	<div class="CallStatusContainerInbound" ng-repeat="currentCall in calls" 
+	
+	ng-class="currentCall.type == calltype.EXTERNAL_CALL ? 'CallStatusContainerOutbound' : ( currentCall.type == calltype.QUEUE_CALL  ? 'CallStatusContainerQueue' :  'CallStatusContainerInbound')"
+
+	ng-if="inCall" dockable="currentCall" droppable="Contact">		<!--     -->								
+				
+				<div  class="CallStatusIconContainer" ng-class="currentCall.type == calltype.EXTERNAL_CALL ? 'CallStatusIconExternalBorder' : ( currentCall.type == calltype.QUEUE_CALL  ? 'CallStatusIconQueueBorder' :  'CallStatusIconInternalBorder')">
+					<div ng-click="showCurrentCallControls(currentCall)" ng-class="currentCall.state == callState.CALL_HOLD ? 'IsCallHold' : 
+					(volume.micVolume == 0 ? 'CallIsMuted' : 'IsOnCall' )
+					"> </div>
+				</div>
+				<div ng-click="showCurrentCallControls(currentCall)" class="CallStatusText" ng-class="currentCall.state == callState.CALL_RINGING || currentCall.state == callState.CALL_UNKNOWN ? 'ringing' : 'accepted'"> 
+					<div class="memberName"><div class="name ng-class:{'truncate': currentCall && currentCall.displayName.length > 14}">{{currentCall.displayName | formatPhoneNumber}}</div> <div class="MyCallBlock_Rec ng-class:{'true': currentCall.record}"></div></div>
+					<div class="callStatus">
+						<div class="onCall">{{ currentCall.incoming ? verbage.inbound : verbage.outbound}} {{::verbage.on_call}} &nbsp;</div>
+						<span class="MyCallBlock_Duration" timer="currentCall.created"></span>
+						<span ng-if="currentCall.state == callState.CALL_HOLD">	/ <span class="MyCallBlock_Duration Hold" timer="currentCall.holdStart"></span>
+						</span>
+					</div>
+				</div>				
+				<div class="controlButtons" ng-switch="currentCall.state">
+					<span ng-if="currentCall.mute" class="mute">Muted</span>
+					
+					<div ng-click="endCall(currentCall.xpid)" class="XButton decline" ng-switch-when="0">{{ currentCall.incoming ? verbage.decline : verbage.cancel}}</div>
+					<div ng-click="endCall(currentCall.xpid)" class="XButton end" ng-switch-when="2">{{::verbage.end}}</div>
+					<div ng-click="currentCall.type != calltype.CONFERENCE_CALL ? holdCall(currentCall.xpid,true) : ''" ng-class="currentCall.type == calltype.CONFERENCE_CALL ? 'disabled' : ''" ng-if="currentCall.state == callState.CALL_ACCEPTED && currentCall.barge == 0" class="XButton hold">{{::verbage.hold}}</div>
+					
+					<div ng-click=" holdCall(currentCall.xpid,false)" class="XButton" ng-switch-when="3">{{::verbage.Talk}}</div>
+					<div ng-click="acceptCall(currentCall.xpid, false, currentCall)" ng-if="currentCall.incoming && currentCall.state == callState.CALL_RINGING && meModel.location.locationType != 'm' && currentCall.location.locationType != 'm'" class="XButton accept">{{::verbage.accept}}</div>
+				</div>
+	</div>	
+</div>
+	<!--include once directive is causing the IE to crash for call alerts still unsure why until then switching back to ng-include   -->
+	<div id="Alert" style="visibility:hidden;position:absolute;left:-1000px"  ng-if="displayAlert" ng-include="'views/nativealerts/CallAlert.html'"></div>
+    
+
+

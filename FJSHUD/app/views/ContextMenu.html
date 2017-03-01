@@ -1,0 +1,352 @@
+<div ng-if="contextShow">
+<div ng-class="type == 'Transfer' ? 'bluearrow' : ''" class="Arrow Left"></div>
+<div class="TopRow" ng-if="type != 'Transfer'" ng-switch="type == 'Contact' && profile != null">
+	<div class="Contact" ng-switch-when="true">
+		<div>
+			<div class="info">
+				<span ng-bind-html="profile.displayName"></span>
+				<br/>
+				<div class="ListRowStatusIcon XIcon-QueueStatus-{{profile.queue_status}}"></div>
+				<div class="ListRowStatusIcon XIcon-ChatStatus-{{profile.hud_status || 'offline' }}"></div>
+			</div>
+		</div>
+
+		<div class="Numbers">
+			<div>email:</div> <span>{{ profile.email }}</span>
+			<br/>
+			<div>ext:</div> <span>{{ profile.primaryExtension }}</span>
+		</div>
+
+		<div class="Numbers">
+			<div>mobile:</div> <span>{{ profile.phoneMobile }}</span>
+			<br/>
+			<div>phone:</div> <span>{{ profile.phoneBusiness }}</span>
+		</div>
+	</div>
+
+	<div ng-switch-when="false">
+		<strong ng-bind-html="profile.displayName || profile.name || 'private'"></strong>
+	</div>
+</div>
+<div class="TopRow transfers" ng-if="type == 'Transfer'">
+  <div class="Contact">
+   	<div class="transferheader">
+		<span>
+		{{::verbage.transfer_external}}
+		</span>
+   </div>
+ </div>
+</div>
+<div class="BottomRow Actions" ng-show="!reasons.show && type != 'Transfer'">
+	<!-- queue calls -->
+	<div ng-if="widget == 'queue'">
+		<a class="Button" href="" ng-show="context.agent.xpid != myPid" ng-click="takeQueueCall()">
+			<div class="ListRowActionButtonTake"></div>
+			<span>To Me</span>
+		</a>
+		<a class="Button" href="" ng-show="canRecord && !context.recorded" ng-click="recordQueueCall(true)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>Start Rec</span>
+		</a>
+		<a class="Button" href="" ng-show="canRecord && context.recorded" ng-click="recordQueueCall(false)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>Stop Rec</span>
+		</a>
+	</div>
+
+	<!-- myself -->
+	<div ng-if="profile.xpid && profile.xpid == myPid && type == 'Contact'">
+		<a class="Button" href="" ng-show="widget == 'conference' && !original.muted" ng-click="muteUser(true)">
+			<div class="ListRowActionButtonMute"></div>
+			<span>{{::verbage.Mute}}</span>
+		</a>
+		<a class="Button" href="" ng-show="widget == 'conference' && original.muted" ng-click="muteUser(false)">
+			<div class="ListRowActionButtonUnmute"></div>
+			<span>Unmute</span>
+		</a>
+		<a class="Button" href="" ng-show="widget == 'conference' && context.status.isMeJoined" ng-click="joinConference(false)">
+			<div class="ListRowActionButtonLeave"></div>
+			<span>{{::verbage.leave}}</span>
+		</a>
+
+		<div ng-show="widget == 'chat' && original.data.attachment && !original.data.attachment[0].fileLink">
+			<a class="Button" href="" ng-click="deleteAttachment()">
+				<div class="ListRowActionButtonRemove"></div>
+				<span>{{::verbage.delete_word}}</span>
+			</a>
+		</div>
+		<a class="Button" href="" ng-show="original.status.status == 'logout'" ng-click="loginQueue()">
+			<div class="ListRowActionButtonLogin"></div>
+			<span>{{::verbage.login}}</span>
+		</a>
+		<a class="Button Logout" href="" ng-show="original.status.status == 'login'" ng-click="reasons.show = true">
+			<div class="ListRowActionButtonLogout"></div>
+			<span>{{::verbage.logout}}</span>
+		</a>
+		<a class="Button" href="" ng-click="callInternal('callVoicemail')">
+			<div class="ListRowActionButtonVoicemail"></div>
+			<span>{{::verbage.voicemail}}</span>
+		</a>
+		<a class="Button" href="" ng-show="profile.phoneMobile" ng-click="callNumber(profile.phoneMobile)">
+			<div class="ListRowActionButtonMobile"></div>
+			<span>{{::verbage.mobile}}</span>
+		</a>
+	</div>
+	<!-- contact -->
+	<div ng-if="profile.xpid != myPid && type != 'QueueStat' && type != 'ConferenceRoom' && type != 'Group'">
+		<a class="Button" href="" ng-show="original.parkExt" ng-click="takeParkedCall()">
+			<div class="ListRowActionButtonTake"></div>
+			<span>{{::verbage.take}}</span>
+		</a>
+
+		<div ng-if="widget == 'conference'">
+			<a class="Button" href="" ng-show="context.permissions == 0 && !original.muted" ng-click="muteUser(true)">
+				<div class="ListRowActionButtonMute"></div>
+				<span>{{::verbage.Mute}}</span>
+			</a>
+			<a class="Button" href="" ng-show="context.permissions == 0 && original.muted" ng-click="muteUser(false)">
+				<div class="ListRowActionButtonUnmute"></div>
+				<span>Unmute</span>
+			</a>
+			<a class="Button" href="" ng-show="context.permissions == 0" ng-click="kickMember()">
+				<div class="ListRowActionButtonLeave"></div>
+				<span>Kick</span>
+			</a>
+		</div>
+
+		<a class="Button" href="" ng-show="canLoginAgent && original.status.status == 'logout'" ng-click="loginQueue()">
+			<div class="ListRowActionButtonLogin"></div>
+			<span>{{::verbage.login}}</span>
+		</a>
+		<a class="Button Logout" href="" ng-show="canLoginAgent && original.status.status == 'login'" ng-click="reasons.show = true">
+			<div class="ListRowActionButtonLogout"></div>
+			<span>{{::verbage.logout}}</span>
+		</a>
+		<a class="Button" href="" ng-show="context == 'favorites' && isFavorite" ng-click="removeFavorite()">
+			<div class="ListRowActionButtonRemove"></div>
+			<span>{{::verbage.Remove}}</span>
+		</a>
+		<a class="Button" href="" ng-show="profile.displayName !== undefined && !profile.primaryExtension" ng-click="editContact()">
+			<div class="ListRowActionButtonEdit"></div>
+			<span>{{::verbage.Edit}}</span>
+		</a>
+
+		<a class="Button" href="#/contact/{{profile.xpid}}/chat" ng-show="profile.primaryExtension">
+			<div class="ListRowActionButtonChat"></div>
+			<span>{{::verbage.chat}}</span>
+		</a>
+
+		<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callNumber(profile.primaryExtension)">
+			<div class="ListRowActionButtonCall"></div>
+			<span>{{::verbage.Call}}</span>
+		</a>
+
+		<a class="Button" href="" ng-show="callLaterEnabled()" ng-click="callInternal('callLater')">
+			<div class="ListRowActionButtonCall"></div>
+			<span>{{::verbage.Call_Later}}</span>
+		</a>
+
+		<div>
+			<a class="Button" href="" ng-show="canIntercom && profile.primaryExtension" ng-click="callInternal('callIntercom')">
+				<div class="ListRowActionButtonCall"></div>
+				<span>{{::verbage.Intercom}}</span>
+			</a>
+			<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="callInternal('callVoicemail')">
+				<div class="ListRowActionButtonVoicemail"></div>
+				<span>{{::verbage.voicemail}}</span>
+			</a>
+			<a class="Button" href="" ng-show="profile.phoneBusiness" ng-click="callNumber(profile.phoneBusiness)">
+				<div class="ListRowActionButtonCall"></div>
+				<span>{{::verbage.Business}}</span>
+			</a>
+			<a class="Button" href="" ng-show="profile.phoneMobile" ng-click="callNumber(profile.phoneMobile)">
+				<div class="ListRowActionButtonMobile"></div>
+				<span>{{::verbage.mobile}}</span>
+			</a>
+
+			<div ng-if="canBarge && profile.call && profile.call.type > 0 && profile.call.fullProfile.xpid != myPid">
+				<a class="Button" href="" ng-click="bargeCall('barge')">
+					<div class="ListRowActionButtonBarge"></div>
+					<span>{{::verbage.barge}}</span>
+				</a>
+				<a class="Button" href="" ng-click="bargeCall('monitor')">
+					<div class="ListRowActionButtonMonitor"></div>
+					<span>{{::verbage.monitor}}</span>
+				</a>
+				<a class="Button" href="" ng-click="bargeCall('whisper')">
+					<div class="ListRowActionButtonWhisper"></div>
+					<span>{{::verbage.whisper}}</span>
+				</a>
+			</div>
+
+			<a class="Button" href="mailto:{{ profile.email }}" target="_blank" ng-show="profile.email">
+				<div class="ListRowActionButtonEmail"></div>
+				<span>{{::verbage.email}}</span>
+			</a>
+			<a class="Button" href="" ng-show="profile.primaryExtension" ng-click="fileShare()">
+				<div class="ListRowActionButtonFileShare"></div>
+				<span>{{::verbage.file_share}}</span>
+			</a>
+			<a class="Button" href="" ng-show="profile.primaryExtension && !hideScreenShare"  ng-disabled="noEmail"  ng-click="noEmail ? checkEmail() : screenShare(profile)">
+				<div class="ListRowActionButtonScreenShare" ></div>
+				<span>Screen Share</span>
+			</a>
+	  	</div>
+	</div>
+
+	<!-- group -->
+	<div ng-if="type == 'Group'">
+		<a class="Button" href="" ng-show="profile.ownerId && profile.ownerId == myPid" ng-click="editGroup()">
+			<div class="ListRowActionButtonEdit"></div>
+			<span>{{::verbage.Edit}}</span>
+		</a>
+		<a class="Button" href="#/group/{{profile.xpid}}/chat" ng-show="isMine">
+			<div class="ListRowActionButtonChat"></div>
+			<span>{{::verbage.chat}}</span>
+		</a>
+		<a class="Button" href="" ng-click="sendGroupMail(profile)">
+			<div class="ListRowActionButtonEmail"></div>
+			<span>{{::verbage.email}}</span>
+		</a>
+		<a class="Button" href="" ng-show="canGroupPage && profile.extension" ng-click="callInternal('page', profile)">
+			<div class="ListRowActionButtonCall"></div>
+			<span>{{::verbage.page}}</span>
+		</a>
+		<a class="Button" href="" ng-show="canGroupIntercom && profile.extension" ng-click="callInternal('intercom', profile)">
+			<div class="ListRowActionButtonCall"></div>
+			<span>{{::verbage.Intercom}}</span>
+		</a>
+		<a class="Button" href="" ng-show="canGroupVoicemail && profile.extension" ng-click="callInternal('voicemail', profile)">
+			<div class="ListRowActionButtonVoicemail"></div>
+			<span>{{::verbage.voicemail}}</span>
+		</a>
+		<a class="Button" href="" ng-show="isMine" ng-click="fileShare()">
+			<div class="ListRowActionButtonFileShare"></div>
+			<span>{{::verbage.file_share}}</span>
+		</a>
+		<a class="Button" href="" ng-show="isMine" ng-hide="hideScreenShare"  ng-disabled="noEmail"  ng-click="noEmail ? checkEmail():screenShare(profile.members)">
+			<div class="ListRowActionButtonScreenShare" ng-hide="hideScreenShare"></div>
+			<span ng-hide="hideScreenShare">Screen Share</span>
+		</a>
+	</div>
+
+	<!-- queue -->
+	<div ng-if="type == 'QueueStat'">
+		<a class="Button" href="" ng-show="canLoginAgent && context.status.status == 'logout'" ng-click="loginQueue()">
+			<div class="ListRowActionButtonLogin"></div>
+			<span>{{::verbage.login}}</span>
+		</a>
+		<a class="Button Logout" href="" ng-show="canLoginAgent && context.status.status == 'login'" ng-click="reasons.show = true">
+			<div class="ListRowActionButtonLogout"></div>
+			<span>{{::verbage.logout}}</span>
+		</a>
+		<a class="Button" href="" ng-show="myQueue" ng-click="fileShare()">
+            <div class="ListRowActionButtonFileShare"></div>
+            <span>{{::verbage.file_share}}</span>
+        </a>
+		<a class="Button" href="#/queue/{{profile.xpid}}/chat" ng-show="myQueue">
+			<div class="ListRowActionButtonChat"></div>
+			<span>{{::verbage.chat}}</span>
+		</a>
+		<a class="Button" href="" ng-click="resetQueue()">
+            <div class="ListRowActionButtonReset"></div>
+            <span>{{::verbage.Reset_Stats}}</span>
+        </a>
+	</div>
+
+	<!-- conference -->
+	<div ng-if="type == 'ConferenceRoom'">
+		<a class="Button" href="" ng-show="profile.status && !profile.status.isMeJoined" ng-click="joinConference(true)">
+			<div class="ListRowActionButtonJoin"></div>
+			<span>{{::verbage.join}}</span>
+		</a>
+		<a class="Button" href="" ng-show="profile.status && profile.status.isMeJoined" ng-click="joinConference(false)">
+			<div class="ListRowActionButtonLeave"></div>
+			<span>{{::verbage.leave}}</span>
+		</a>
+		<a class="Button" href="" ng-show="canRecord && inConf && profile.members && profile.members.length > 0 && profile.status && !profile.status.recorded" ng-click="recordConference(true)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>{{::verbage.start}}</span>
+		</a>
+		<a class="Button" href="" ng-show="canRecord  && profile.members && profile.members.length > 0 && profile.status && profile.status.recorded" ng-click="recordConference(false)">
+			<div class="ListRowActionButtonRecord"></div>
+			<span>{{::verbage.stop}}</span>
+		</a>
+		<a class="Button" href="#/conference/{{profile.xpid}}/chat" ng-show="profile.status && profile.status.isMeJoined">
+			<div class="ListRowActionButtonChat"></div>
+			<span>{{::verbage.chat}}</span>
+		</a>
+		<a class="Button" href="" ng-show="profile.members && profile.members.length > 0" ng-click="sendGroupMail(profile)">
+			<div class="ListRowActionButtonEmail"></div>
+			<span>{{::verbage.email}}</span>
+		</a>
+		<a class="Button" href="" ng-show="profile.status && profile.status.isMeJoined" ng-click="fileShare()">
+			<div class="ListRowActionButtonFileShare"></div>
+			<span>{{::verbage.file_share}}</span>
+		</a>
+	</div>
+
+	<!-- dockable -->
+	<div ng-show="profile.xpid  && profile.xpid != myPid && (profile.displayName || profile.name) && (profile.displayName !== undefined || profile.name !== undefined)">
+		<div>
+			<a class="Button" href="" ng-show="canDock && showDock" ng-click="dockItem(true)">
+				<div class="ListRowActionButtonDock"></div>
+				<span>{{::verbage.dock}} </span>
+			</a>
+			<a class="Button" href="" ng-show="!canDock" ng-click="dockItem(false)">
+				<div class="ListRowActionButtonUndock"></div>
+				<span>{{::verbage.undock}}</span>
+			</a>
+		</div>
+	</div>
+
+	<div ng-if="profile.xpid && profile.xpid != myPid && profile.call">
+		<callStatus profile="profile"></callStatus>
+	</div>
+</div>
+<div class="BottomRow transfer" ng-show="!reasons.show && type == 'Transfer'">
+		<!-- Transfer to External -->
+    <div ng-if="type ==  'Transfer' && 'business' && !contactObj">
+     	<div class="transfercontainer">
+       	<span ng-click="transferToExternal('business', original.business, callId)" class="material-icons" id="business" title="Business">business</span>
+       	<span ng-click="transferToExternal('mobile', externalXpid, callId)" class="material-icons" id="externalmobile" title="Mobile">smartphone</span>
+     	</div>
+    </div>
+    <!-- Transfer to Internal -->
+    <div ng-if="type == 'Transfer' && contactObj">
+    	<div ng-class="contactObj.phoneMobile ? 'iconpaddingright' : '' " class="transfercontainer">
+    	<span ng-class="{iconpaddingleft: !contactObj.phoneMobile, onlyicon: original.queueId && !contact.phoneMobile}" class="material-icons" ng-click="transferToInternal('extension', callId, contactObj, params)" id="extension" title="Extension">call</span>
+	    	<span class="material-icons" ng-if="!original.queueId" ng-click="transferToInternal('vm', callId, contactObj, params)" id="vm" title="Voicemail">voicemail</span>
+	    	<span ng-if="contactObj.phoneMobile" class="material-icons" ng-click="transferToInternal('mobile', callId, contactObj, params)" id="mobile" title="Mobile">smartphone</span>
+    	</div>
+    </div>
+</div>
+<div class="BottomRow Reasons" ng-show="reasons.show">
+	<h4>{{::verbage.reason}}</h4>
+	<em>{{::verbage.select_logout_reason}}</em>
+
+	<div class="List">
+		<div class="Button" ng-repeat="reason in ::reasons.list | orderBy: 'name'"
+			ng-click="logoutQueue(reason.xpid)">
+			{{ ::reason.name }}
+		</div>
+	</div>
+</div>
+</div>
+
+<script type="text/ng-template" id="emailCheck.html">
+    <div  class="emailWidgetHeader">
+        <div class="TopBarItemAppIcon Zoom" id="emailIcon"></div>
+        <div class="WidgetHeaderTitle">
+            Fonality Video Collaboration
+        </div>
+    </div>
+    <div id="emailCheckContent">
+        <p>We have released a new version of Video Collaboration. Note that because of the new features, it is necessary for Fonality to capture a unique email address. To perform this change yourself, please go to the <a target="_blank" href="http://bit.ly/1NK8QIy">instructions link</a>.</p>
+        <p> Alternatively, please contact your Administrator to add an email address to your profile.</p>
+    </div>
+
+    <div class="modal-footer">
+       <button class="SchedulingBtns" id="schedulingEmailBtn" type="button" ng-click="cancelEmailCheck()">Cancel</button>
+    </div>
+</script>

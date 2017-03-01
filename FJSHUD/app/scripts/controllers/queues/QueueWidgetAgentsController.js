@@ -1,0 +1,83 @@
+hudweb.controller('QueueWidgetAgentsController', ['$scope', '$rootScope', 'QueueService', 'HttpService', 'StorageService', '$routeParams', 'CallStatusService', 'PhoneService', function ($scope, $rootScope, queueService, httpService, storageService, $routeParams, callStatusService, phoneService) {
+  $scope.que = {};
+  $scope.que.query = '';
+  $scope.query = "";
+  $scope.agents = [];
+  $scope.myself = $rootScope.myPid;
+  var queueId = $scope.$parent.$parent.queueId;
+
+  $scope.statusFilter = function(status){
+	  return function(agent) {
+	    if (status == 'in') {
+	      if (agent.status && agent.status.status.indexOf('login') != -1)
+	        return true;
+	    }
+	    else {
+	      if (agent.status && agent.status.status.indexOf('login') == -1)
+	        return true;
+	    }
+	  };
+  };
+
+  $scope.selectedSort = localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid] ? JSON.parse(localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid]) : 'displayName';
+
+  $scope.customAgentOrderBy = function(member){
+    localStorage['Queue_' + $routeParams.queueId + '_agent_sort_of_' + $rootScope.myPid] = JSON.stringify($scope.selectedSort);
+    switch($scope.selectedSort){
+      case 'displayName':
+        return member.displayName;
+      case 'queue_status':
+        return [!member.fullProfile.call, member.displayName];
+      case 'hud_status':
+        return [member.fullProfile.hud_status, member.displayName];
+    }
+  };
+
+  queueService.getQueues().then(function() {
+     $scope.agents = $scope.queue.members;
+  });
+
+  // refresh list
+  $scope.$on('queue_members_status_synced', function() {
+     $scope.agents = $scope.queue.members;
+  });
+
+  $scope.searchFilter = function(){
+    var query = $scope.que.query.toLowerCase();
+    return function(member){
+      if (query == '' || member.displayName.toLowerCase().indexOf(query) != -1 || member.fullProfile.primaryExtension.indexOf(query) != -1)
+        return true;
+    };
+  };
+
+  $scope.callExtension = function($event, contact) {
+    $event.stopPropagation();
+    $event.preventDefault();
+    phoneService.holdCalls();
+    httpService.sendAction('me', 'callTo', {phoneNumber: contact.primaryExtension});
+  };
+
+  $scope.showCallStatus = function($event, contact) {
+    $event.stopPropagation();
+    $event.preventDefault();
+    //if user doesn't have permission to view call show overlay else if its a conference call route to the conference room.
+    if(contact.call.displayName == "Private"){
+      $scope.showOverlay(true, 'CallStatusOverlay', contact);
+    }
+    else if(contact.call.details.conferenceId != undefined){
+    $location.path("/conference/" + contact.call.details.conferenceId + "/currentcall");
+    }
+    // if this service-function returns true -> it's a trap! User is trying to click on own cso so do not show
+    if (callStatusService.blockOverlay(contact)){
+      return;
+    } else {
+      // if user isn't clicking on own -> then show overlay
+      $scope.showOverlay(true, 'CallStatusOverlay', contact);
+    }
+  };
+
+  $scope.$on("$destroy", function () {
+
+  });
+
+}]);

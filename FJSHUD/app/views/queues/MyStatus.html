@@ -1,0 +1,44 @@
+<div class="ToolBar">
+ <div class="SelectBox selectWrapper status">
+  <select class="HideFirst" ng-model="checkSelect" ng-change="selectQueues(checkSelect); checkSelect = ''">
+	<option value="">{{::verbage.select}}</option>
+	<option value="all">{{::verbage.select_all}}</option>
+	<option value="clear">{{::verbage.clear_selection}}</option>
+  </select>
+ </div> 
+ <div class="SelectBox selectWrapper status"> 
+  <select 
+    class="calllogout"
+	ng-model="mystatus.logoutReason" 
+	ng-change="loginQueues(false)"	
+	ng-disabled="disableLogout"	
+	ng-options="reason.name for reason in reasons | orderBy:'name' track by reason.xpid">
+		<option value="">{{::verbage.logout}}</option>
+  </select>
+ </div> 
+  <input type="button" class="XButton" value="{{::verbage.login}}" ng-click="loginQueues(true)" ng-disabled="disableLogin" />
+</div>
+
+<div class="QueueList">
+	<div class="ListRow myStatus" ng-repeat="queue in queues | orderBy: 'name' track by queue.xpid" ng-click="checkboxes[queue.xpid] = !checkboxes[queue.xpid]" dockable="queue">	
+		<avatar profile="queue"></avatar>
+
+		<div class="ListRowContent">
+			<div class="ListRowTitle">
+				{{ ::queue.name }}
+				<br/>
+				<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
+				{{ queueStatusLabel(queue.me.status.status) }}
+			</div>
+		</div>
+		
+		<div class="ListRowStatus">
+			<input type="checkbox" 
+				ng-model="checkboxes[queue.xpid]" 
+				ng-click="$event.stopPropagation();"
+				ng-true-value="true" ng-false-value="false" 
+				ng-init="checkboxes[queue.xpid] = false" 
+				ng-if="queue.me.status.status.indexOf('permanent') == -1" />
+		</div>
+	</div>
+</div>

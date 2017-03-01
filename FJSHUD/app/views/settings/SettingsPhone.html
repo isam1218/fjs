@@ -1,0 +1,63 @@
+          <div class="ListSection">
+            <div class="ListSectionHeader">
+              <div class="ListSectionHeaderTitle">{{::verbage.sound_quality}}</div>
+            </div>
+            <div class="ListSectionBody">{{::verbage.sound_settings}}</div>
+          </div>
+          <div class="ListPage">
+          <div class="Dialog-settings-row">
+            <div class="lblSelect">{{::verbage.web_phone_state}}: </div>
+            <b class="WebphoneRegistred-true">{{phoneState ? 'Registered' : 'Unregistered'}}</b>
+          </div>
+          <div class="Dialog-settings-row">
+            <div class="lblSelect">{{::verbage.microphone}}:</div>
+            <input type="range" min="0" max="1" step=".01" ng-model="volume.micVol" ng-change="update_settings('hudmw_webphone_mic','update',volume.micVol)"
+              ></input>
+          </div>
+        <div class="Dialog-settings-row">
+          <div class="lblSelect">{{::verbage.speaker}}:</div>
+          <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVol" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVol)"></input>
+        </div>
+      
+  </div>
+  <div class="ListSection" >
+    <div class="ListSectionHeader">
+      <div class="ListSectionHeaderTitle">{{::verbage.device}}</div>
+      <div class="ListSectionHeaderRight"></div>
+    </div>
+  <div class="ListSectionBody">{{::verbage.select_device_to_use}}</div>
+  </div>
+  <div class="ListPage">
+    <div class="ListPageHeader"></div>
+    <div class="Dialog-settings-row">
+      <div class="lblSelect">{{::verbage.input_devices}}: </div>
+      <select class="fj-hbox SelectBox SelectBoxSettings"
+          ng-model="$parent.currentDevices.selectedInput"
+          ng-options="inputDevice.name for inputDevice in inputDevices"
+          ng-change="updateAudioSettings(currentDevices.selectedInput,'Input')"
+      >
+      </select>
+
+    </div>
+    <div class="Dialog-settings-row">
+      <div class="lblSelect">{{::verbage.output_devices}}: </div>
+      <select class="fj-hbox SelectBox SelectBoxSettings"
+         ng-model="$parent.currentDevices.selectedOutput"
+          ng-options="outputDevice.name for outputDevice in outputDevices"
+          ng-change="updateAudioSettings(currentDevices.selectedOutput,'Output')"
+   
+      >
+      </select>
+
+      </div>
+      <div class="Dialog-settings-row">
+        <div class="lblSelect">{{::verbage.ring_devices}}: </div>
+        <select class="fj-hbox SelectBox SelectBoxSettings"
+             ng-model="$parent.currentDevices.selectedRingput"
+            ng-options="outputDevice.name for outputDevice in outputDevices"
+               ng-change="updateAudioSettings(currentDevices.selectedRingput,'Ring')"
+        >
+        </select>
+
+      </div>
+    </div>

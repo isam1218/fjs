@@ -1,71 +1,268 @@
-<div class="Widget WidgetMe" unpun="/settings" draggable="true">
+<div class="Widget WidgetMe">
     <div class="WidgetHeader">
-        <div class="WidgetHeaderTitle">{{ meData.display_name.propertyValue }}</div>
-        <div class="Avatar AvatarBig">
-            <img onerror="this.src='img/Generic-Avatar-Small.png'" class="AvatarImgPH" data-ng-src="{{getMeAvatarUrl()}}">
-            <div class="AvatarForeground AvatarStatic"></div>
-        </div>
+        <div class="WidgetHeaderTitle">{{ ::meModel.display_name }}</div>
+        <avatar profile="me" size="90"></avatar>
         <div class="MeInfoBlock">
-               <div class="MeInfoBlock-column">
-                    <div class="MeInfoTitle">Chat status</div>
-                    <div class="MenuSection">
-                        <div class="MenuItem" data-ng-class="{'selected':(meData.chat_status.propertyValue ==cstatus.key)}"  data-ng-click="setChatStatus(cstatus.key)" data-ng-repeat="cstatus in chatStatuses">
-                            <div class="MenuItemIcon XIcon-ChatStatus-{{ cstatus.title }}" >
-                            </div>
-                            <div class="MenuItemText">{{ cstatus.title }}</div>
-                            <div class="SelectedIcon"></div>
+            <div class="MeInfoBlock-column">
+                <div class="MeInfoTitle">{{::verbage.chat_status}}</div>
+                <div class="MenuSection">
+                    <div class="MenuItem" data-ng-class="{'selected':(meModel.chat_status ==cstatus.key)}"  data-ng-click="setChatStatus(cstatus.key)" data-ng-repeat="cstatus in chatStatuses">
+                        <div class="MenuItemIcon XIcon-ChatStatus-{{ cstatus.key }}" >
                         </div>
-                    </div>
-                </div>
-                <div class="MeInfoBlock-column">
-                    <div class="MeInfoTitle">Custom status</div>
-                    <div class="LeftBarMeCustomStatusSection">
-                        <textarea data-ng-change="" class="LeftBarMeCustomStatus" data-ng-model="meData.chat_custom_status.propertyValue" placeholder="Custom message"></textarea>
-                    </div>
-                    <div class="MeInfoTitle">Location</div>
-                    <div class="LocationSelector ">
-                        <div class="SelectBox" data-ng-click="showLocationsPopup($event, $element)">
-                                <div class="SelectBoxText">
-                                    <span class="InnerIco">@</span>&nbsp;<span>{{ getCurrentLocationTitle() }}</span>
-                                </div>
-                                <div class="SelectBoxArrow"></div>
-                            </div>
-                        </div>
+                        <div class="MenuItemText">{{ cstatus.title }}</div>
+                        <div class="SelectedIcon"></div>
                     </div>
                 </div>
             </div>
-    <div class="WidgetBody">
-        <div class="WidgetSectionTitle">Preferences</div>
-        <div class="WidgetTabBar">
-            <a href="#/settings/" class="WidgetTabBarButton Ready fj-selected-item">
-                <div class="inner">General</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/settings/weblauncer" class="WidgetTabBarButton Ready ">
-                <div class="inner">Web Launcher</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/settings/queues" class="WidgetTabBarButton Ready">
-                <div class="inner">Queues</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/settings/account" class="WidgetTabBarButton Ready">
-                <div class="inner">Account</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/settings/alerts" class="WidgetTabBarButton Ready">
-                <div class="inner">Alerts</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/settings/cp" class="WidgetTabBarButton Ready">
-                <div class="inner">CP</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/settings/about" class="WidgetTabBarButton Ready">
-                <div class="inner">About</div>
-                <div class="arrow"></div>
-            </a>
+            <div class="MeInfoBlock-column" ng-class="{'Unregistered': locations[meModel.current_location].status.deviceStatus != 'r'}">
+                <div class="MeInfoTitle">{{::verbage.custom_status}}</div>
+                <div class="LeftBarMeCustomStatusSection">
+                  <textarea
+					on-submit="setCustomStatus()"
+					ng-blur="setCustomStatus()"
+					ng-bind-html="::meModel.chat_custom_status"
+					ng-attr-placeholder="{{::verbage.custom_message}}"
+					id="CustomStatusText"
+					class="LeftBarMeCustomStatus">
+				  </textarea>
+                </div>
+                <div class="MeInfoTitle">{{::verbage.location}}</div>
+                <div class="LocationSelector ">
+                  <!--<select> </select>-->
+                    <div class="SelectBox" data-ng-click="showLocationsPopup($event, $element)">
+                        <div class="SelectBoxText">
+                            <span class="InnerIco">@</span>&nbsp;<span>{{ getCurrentLocationTitle() }}</span>
+                        </div>
+                        <div class="SelectBoxArrow"></div>
+                    </div>
+                </div>
+				<div class="asterisk">* Device Unregistered</div>
+            </div>
         </div>
-        <div class="SettingsPanel DialogContentMainBlock_List"><div class="SettingsTabContent fj-content fj-stream hud-settings-form" fjtype="v" data-fj-local-id="tabPanel" data-controller-id="id8552" data-event="mousedown mouseover mouseup" data-template-id="settings-general-tab"><div class="fj-scrollable ListView WithoutToolBar" data-fj-local-id="SettingsListView"><div class="fj-viewport" style="overflow: hidden;"><div class="fj-viewcontent"><div class="ListSection"><div class="ListSectionHeader"><div class="ListSectionHeaderTitle">Interface</div><div class="ListSectionHeaderRight"></div></div><div class="ListSectionBody">Application tuning</div></div><div class="ListPage"><div class="ListPageHeader"></div><div class="Dialog-settings-row"><div class="lblSelect">Language:</div><div data-fj-local-id="settings-language" data-controller-id="id8557" data-template-id="fjSelect" data-event="click mousedown mouseover mouseup" class="SelectBox enabled-true"><div class="fj-hbox"><div class="fj-hbox-cell SelectBoxIcon  fj-visibility-false"><div class="status-icon-inner"></div></div><div class="fj-hbox-space SelectBoxText"><span class="InnerIco"></span><span>English (United States)</span></div><div class="fj-hbox-cell SelectBoxArrowBox"><div class="SelectBoxArrow"></div></div></div></div></div><div class="Dialog-settings-row"><label><input name="autoclear" type="checkbox" value="true" data-fj-local-id="autoclear"> Autoclear search</label></div><div class="Dialog-settings-row"><div class="lblSelect">Autoclear after: </div><div data-fj-local-id="autocleardelay" data-controller-id="id8555" data-template-id="fjSelect" data-event="click mousedown mouseover mouseup" class="SelectBox enabled-true"><div class="fj-hbox"><div class="fj-hbox-cell SelectBoxIcon  fj-visibility-false"><div class="status-icon-inner"></div></div><div class="fj-hbox-space SelectBoxText"><span class="InnerIco"></span><span>30 seconds</span></div><div class="fj-hbox-cell SelectBoxArrowBox"><div class="SelectBoxArrow"></div></div></div></div></div><div class="Dialog-settings-row"><div class="lblSelect">Avatar hover menu delay: </div><div data-fj-local-id="avatarhoverdelay" data-controller-id="id8556" data-template-id="fjSelect" data-event="click mousedown mouseover mouseup" class="SelectBox enabled-true"><div class="fj-hbox"><div class="fj-hbox-cell SelectBoxIcon  fj-visibility-false"><div class="status-icon-inner"></div></div><div class="fj-hbox-space SelectBoxText"><span class="InnerIco"></span><span>1.0 seconds</span></div><div class="fj-hbox-cell SelectBoxArrowBox"><div class="SelectBoxArrow"></div></div></div></div></div><div class="Dialog-settings-row"><label><input name="boxing" type="checkbox" value="true" data-fj-local-id="boxing">Enable Box</label></div><div class="Dialog-settings-row AppsReset"><div class="lblSelect"></div><div data-event="click" data-fj-local-id="resetAppsOrder" event="c" class="XButton XButtonNormal XButtonWide "><span>Reset App Menu Order</span></div></div></div><div class="ListSection"><div class="ListSectionHeader"><div class="ListSectionHeaderTitle">Sounds</div><div class="ListSectionHeaderRight"></div></div><div class="ListSectionBody">Sound settings for chat and notifications</div></div><div class="ListPage"><div class="ListPageHeader"></div><div class="Dialog-settings-row"><label><input type="checkbox" checked="checked" data-fj-local-id="sound_enable">Enable chat sound</label></div><div class="Dialog-settings-row"><label><input name="chat_sound_received" type="checkbox" value="true" data-fj-local-id="chat_sound_received">On message received</label></div><div class="Dialog-settings-row"><label><input name="chat_sound_sent" type="checkbox" value="true" data-fj-local-id="chat_sound_sent">On sent message</label></div></div><div class="ListSection"><div class="ListSectionHeader"><div class="ListSectionHeaderTitle">Calls</div><div class="ListSectionHeaderRight"></div></div><div class="ListSectionBody">Call preferences</div></div><div class="ListPage"><div class="ListPageHeader"></div><div class="Dialog-settings-row"><div class="lblSelect">Call log size:</div><div data-fj-local-id="rchlength" data-controller-id="id8554" data-template-id="fjSelect" data-event="click mousedown mouseover mouseup" class="SelectBox enabled-true"><div class="fj-hbox"><div class="fj-hbox-cell SelectBoxIcon  fj-visibility-false"><div class="status-icon-inner"></div></div><div class="fj-hbox-space SelectBoxText"><span class="InnerIco"></span><span>50 items</span></div><div class="fj-hbox-cell SelectBoxArrowBox"><div class="SelectBoxArrow"></div></div></div></div></div><div class="Dialog-settings-row"><label><input name="busy_ring_back" type="checkbox" value="true" data-fj-local-id="busy_ring_back">Busy ring back</label></div></div><div class="ListSection"><div class="ListSectionHeader"><div class="ListSectionHeaderTitle">Auto away</div><div class="ListSectionHeaderRight"></div></div><div class="ListSectionBody">Auto away settings</div></div><div class="ListPage"><div class="ListPageHeader"></div><div class="Dialog-settings-row"><div class="lblSelect">Auto away after:</div><div data-fj-local-id="autoawaydelay" data-controller-id="id8558" data-template-id="fjSelect" data-event="click mousedown mouseover mouseup" class="SelectBox enabled-true"><div class="fj-hbox"><div class="fj-hbox-cell SelectBoxIcon  fj-visibility-false"><div class="status-icon-inner"></div></div><div class="fj-hbox-space SelectBoxText"><span class="InnerIco"></span><span>4 minutes</span></div><div class="fj-hbox-cell SelectBoxArrowBox"><div class="SelectBoxArrow"></div></div></div></div></div><div class="Dialog-settings-row"><label><input name="autoaway" type="checkbox" value="true" data-fj-local-id="autoaway">Enable Auto away</label></div></div><div class="ListSection"><div class="ListSectionHeader"><div class="ListSectionHeaderTitle">Dashboard</div><div class="ListSectionHeaderRight"></div></div><div class="ListSectionBody">Dashboard settings</div></div><div class="ListPage"><div class="ListPageHeader"></div><div class="Dialog-settings-row"><label><input name="use-column-layout" type="checkbox" value="true" data-fj-local-id="use-column-layout">Use column layout</label></div></div></div></div><div class="fj-scroll fj-ui-scrollerFr" data-controller-id="id8553" data-template-id="scroll" data-event="mousedown mouseover mouseup" data-fj-local-id="dynamic" style=""><div class="fj-ui-scrollerFr-decoration"></div><div class="fj-ui-scroller" data-fj-local-id="scroller" style="height: 89.32490518331227px; top: 0px;"><div class="fj-ui-scroller-decoration"></div></div></div></div></div></div>
     </div>
+
+    <div class="WidgetBody" ng-switch="currentCall != null">
+
+      <div class="CurrentCall" ng-switch-when="true">
+        <div class="WidgetSectionTitle">{{::verbage.current_call}} <span timer="currentCall.startedAt ? currentCall.startedAt : currentCall.created"> </span> </div>
+        <div class="LeftSide">
+          <div class="ListRowNoBorders ListRowFirst ListRow ListRow-Contact " >
+			  <avatar profile="currentCall" context="callstatus" type="{{currentCall.type || 11}}"></avatar>
+
+
+              <div class="ListRowContent" style="border-left:none">
+                <div class="ListRowTitle ListRowTitleName">
+                  <div class="name">
+                    <strong>{{ currentCall.displayName | formatPhoneNumber}}</strong>
+                  </div>
+                  <div class="ListRowStatus" ng-switch="currentCall.type != 0">
+                    <div class="phone">{{ currentCall.phone }}</div>
+                    <div ng-switch-when="true" class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{currentCall.fullProfile.queueStatus}}">
+                      <div class="status-icon-inner"></div>
+                    </div>
+                    <div ng-switch-when="true" class="ListRowStatusIcon XIcon-ChatStatus-{{currentCall.fullProfile.hud_status || 'offline' }} last">
+                      <div class="status-icon-inner"></div>
+                    </div>
+
+					<br/>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="Dialog-settings-row" ng-if="currentCall.location.locationType != 'o'">
+            <div class="XButton XButtonToggleSmall" ng-class="volume.micVolume == 0 ? 'XIcon24-MuteOn' : 'XIcon24-MuteOff'"
+
+            ng-click="muteCall()"></div>
+
+            <input type="range" min="0" max="1" step=".01" ng-model="volume.micVolume" ng-change="update_settings('hudmw_webphone_mic','update',volume.micVolume)"
+            ></input>
+         </div>
+         <div class="Dialog-settings-row" ng-if="currentCall.location.locationType == 'o'">
+            <div>&nbsp;</div>
+         	&nbsp;&nbsp;
+         </div>
+	     <div class="Dialog-settings-row" ng-if="currentCall.location.locationType != 'o'">
+	        <div class="XButton XButtonToggleSmall " ng-class="volume.spkVolume == 0 ? 'XIcon24-Speaker-Off' : 'XIcon24-Speaker-On'" ng-click="silentSpk()"></div>
+	        <input type="range" min="0" max="1" step=".01" ng-model="volume.spkVolume" ng-change="update_settings('hudmw_webphone_speaker','update',volume.spkVolume)"></input>
+	     </div>
+	     <div class="Dialog-settings-row" ng-if="currentCall.location.locationType == 'o'">
+            <div>&nbsp;</div>
+         	&nbsp;&nbsp;
+         </div>
+       </div>                          
+        <div class="RightSide">                                   
+          <div class="row_buttons"> 
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom || call2 || transferOpened" ng-click="showTransferComponent()" ng-if="currentCall.barge < 1 && cpFourteen && serverVersionCloud"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || !canTransferFrom || call2" ng-click="showCallOvery('transfer',currentCall)" ng-if="currentCall.barge < 1 && (!cpFourteen || !serverVersionCloud)"><span class="CallControlButton">{{::verbage.transfer}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || (currentCall.state != 2 && currentCall.state != 3) || call2" ng-click="showCallOvery('conference',currentCall)" ng-if="currentCall.barge < 1"><span class="CallControlButton">{{::verbage.conf_room}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="call2" ng-class="currentCall.mute ? 'UnmuteBtn' : ''" ng-click="muteConference()" ng-if="currentCall.type == 0"><span class="CallControlButton">{{ currentCall.mute ? verbage.UnMute : verbage.Mute}}</span></button>
+            <button class="XButton CurrentCallBtn" ng-disabled="(currentCall.state != 2 && currentCall.state != 3 && currentCall.state != 0) || call2" ng-click="parkCall(currentCall)" ng-if="currentCall.barge < 1 && currentCall.type != 0"><span class="CallControlButton">{{::verbage.Park}}</span></button>
+            <div class="SelectBox XButton" ng-if="currentCall.barge > 0" style="width:97%" ng-click="showBargePopup($event,$element,true)">
+                <div class="SelectBoxText"><span class="CallControlButton">{{ currentCall.barge == 2 ? 'Barge' : (currentCall.barge == 3 ? 'Whisper' : 'Monitor')}}</span></div>
+                <div class="SelectBoxArrow"></div>
+            </div>
+          </div>
+
+          <div class="row_buttons">
+            <button class="XButton CurrentCallBtn" ng-disabled="currentCall.type == 0 || call2" ng-if="currentCall.state == 2 || currentCall.state == 0" ng-click="holdCall(currentCall)"><span class="CallControlButton"> {{::verbage.Hold}}</span></button>
+            <button class="XButton talk" ng-disabled="call2" ng-if="currentCall.state == 3" ng-click="holdCall(currentCall,'False')"> {{::verbage.Talk}}</button>
+			<button class="XButton record ng-class:{'XButtonRecordOn': currentCall.record}" ng-disabled="!canRecord || (currentCall.state != 2 && currentCall.state != 3) || call2" ng-click="recordCall(currentCall)">
+				<span class="CallControlButton">{{::verbage.REC}}  </span>
+				<div ng-class="currentCall.record ? 'XIcon24-Record-On' : 'XIcon24-Record-Off'"></div>
+			</button>
+            <div class=" SelectBox XButton " ng-disabled="call2" type="move" data-ng-click="showLocationsPopup($event, $element, true)">
+              <div class="SelectBoxText">
+                    <span class="CallControlButton">{{::verbage.move}}</span>
+              </div>
+             </div>
+
+          </div>
+          <div class="row_buttons">
+            <div class="XButton CurrentCallBtnLong" ng-disabled="call2" ng-click="endCall(currentCall)"><span class="CallControlButton">{{currentCall.state == 0 ? verbage.decline : verbage.end}}</span></div>
+          </div>
+
+      </div>
+     </div>
+
+      <div class="NewCall" ng-switch-when="false">
+        <div class="WidgetSectionTitle">{{::verbage.place_a_call}}</div>
+        <input class="NewCall" on-submit="makeCall(call_obj.phoneNumber)" type="tel" ng-model="call_obj.phoneNumber" ng-attr-placeholder="{{::verbage.phone_number}}">
+        <div class="XButton XButtonGreen" ng-click="makeCall(call_obj.phoneNumber)"><span>{{::verbage.Call}}</span></div>
+        
+      </div>
+
+
+      <div class="TransferCallSection" ng-if="transferComponent && currentCall != null">
+        <div class="WidgetSectionTitle meTitle">Transfer Call</div>
+
+        <div class="TransferSectionWithoutHeader" >
+          <!-- search  -->
+          <div class="TransferSearch" droppable="Contact">
+            <div class="ContactSearchHolder">
+              <form ng-submit="inputtedSearch()">
+                <div class="FormInterior">
+                  <span>To:</span>
+                  <input type="search" ng-show="transferComponent && !showResult" ng-model="transfer.search" ng-model-options="{debounce: 200}" id="SearchSection" autocomplete="off" placeholder="Enter Phone Number, Extension or Contact Name" />
+
+                  <div class="ListRow" ng-if="transferComponent && showResult" ng-click="showResultFalse()">
+                    <avatar profile="transferToDisplayName"></avatar>
+                    <div class="ListRowContent" ng-switch="transferToDisplayName.call != null">
+                      <div class="ListRowTitle">
+                        <span>{{ transferToDisplayName.displayName }}</span>
+
+                        <br/>
+                        <div class="ChatStatusLine">
+                          <div class="ListRowStatusIcon XIcon-ChatStatus-{{transferToDisplayName.hud_status || 'offline' }}"></div>
+                          <div class="status_message" ng-bind-html="(transferToDisplayName.custom_status ? transferToDisplayName.custom_status : transferToDisplayName.hud_status ? verbage[transferToDisplayName.hud_status] : verbage['offline']) + (transferToDisplayName.call ? ' + ' + verbage['on_call'] : '')"></div>
+                        </div>
+                      </div>
+                    <div class="ListRowStatus">
+                      <div class="ListRowDesc">#{{ transferToDisplayName.primaryExtension }}</div>
+                    </div>
+                    <div class="CallStatus" ng-if="transferToDisplayName.call">
+                        <avatar
+                            ng-click="showCallStatus($event, transferToDisplayName)"
+                            profile="transferToDisplayName.call.fullProfile"
+                            context="callstatus"
+                            type="{{transferToDisplayName.call.type}}">
+                        </avatar>
+                    </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- Results -->
+          <div class="TransferResultContacts" droppable="Contact">
+            <div class="TransferContactsContainer" ng-class="filteredTransferContacts.length <= 2 ? 'FilteredDown' : ''">
+              <div class="ListRow" ng-repeat="contact in filteredTransferContacts = (transferContacts | filter: transferFilter()) | orderBy: 'displayName'" ng-click="selectTransferContact(contact)" ng-hide="transferComponent && showResult" ng-if="transfer.search.length > 0">
+                <avatar profile="contact"></avatar>
+                <div class="ListRowContent" ng-switch="contact.call != null">
+                  <div class="ListRowTitle">
+                    <span>{{ ::contact.displayName }}</span>
+
+                    <br/>
+                    <div class="ChatStatusLine">
+                      <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                      <div class="status_message" ng-bind-html="(contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + ' + verbage['on_call'] : '')"></div>
+                    </div>
+                  </div>
+                <div class="ListRowStatus">
+                  <div class="ListRowDesc">#{{ ::contact.primaryExtension }}</div>
+                </div>
+                <div class="CallStatus" ng-if="contact.call">
+                    <avatar
+                        ng-click="showCallStatus($event, contact)"
+                        profile="contact.call.fullProfile"
+                        context="callstatus"
+                        type="{{contact.call.type}}">
+                    </avatar>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transfer Buttons -->
+          <div class="TransferButtons">
+            <button  class="XButton CurrentCallBtn ColdTransfer" ng-if="!changeWarmButton" ng-disabled="!enableColdTransfer() || !canTransferToOthers" ng-click="coldTransfer()" droppable="Contact"><span class="CallControlButton">Cold Transfer</span></button>
+
+            <button  class="XButton CurrentCallBtn WarmTransfer" ng-if="!changeWarmButton" ng-disabled="transferType == 'external' || !warmTransferButtonEnabled || !canTransferToOthers" ng-click="goToWarmTransfer()" droppable="Contact"><span class="CallControlButton">Warm Transfer</span></button>
+            <button  class="XButton CurrentCallBtn CompleteTransfer" ng-class="changeWarmButton ? 'CompleteTransferFinal' : ''" ng-if="changeWarmButton" ng-disabled="transferType == 'external' || !warmTransferButtonEnabled || !warmTransferToConnected || !canTransferToOthers" ng-click="completeWarmTransfer()" droppable="Contact"><span class="CallControlButton">Complete Transfer</span></button>
+
+            <button  class="XButton CurrentCallBtn ToVoicemail" ng-if="!changeWarmButton" ng-disabled="transferType == 'external' || !toVMButtonEnabled || !canTransferToVoicemail" ng-click="transferToVM()" droppable="Contact"><span class="CallControlButton">To Voicemail</span></button>
+
+          </div>
+          <div class="CancelSection">
+            <span ng-click="cancelTransfer()">Cancel Transfer</span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="RecentCallSection" ng-show="currentCall == null" ng-hide="transferComponent">
+          <div class="WidgetSectionTitle meTitle">{{::verbage.recent_calls}}</div>
+
+          <div class="RecentCallColumnHeaders">
+            <div class="RecentCallsHeader RecentDate" ng-class="recentSelectSort == 'Date' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('Date','startedAt')">
+              <div class="RecentPointer">
+                <span class="upper">{{::verbage.date + '/' + verbage.time}}</span>
+                <div ng-class="recentSelectSort == 'Date' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
+              </div>
+            </div>
+
+            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'From' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('From','fromDisplayValue')">
+                <div class="RecentPointer"><span class="upper">{{::verbage.from}}</span></div>
+                <div ng-class="recentSelectSort == 'From' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
+            </div>
+
+            <div class="RecentCallsHeader RecentFromTo" ng-class="recentSelectSort == 'To' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('To','toDisplayValue')">
+                <div class="RecentPointer"><span class="upper">{{::verbage.to}}</span></div>
+                <div ng-class="recentSelectSort == 'To' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
+            </div>
+
+            <div class="RecentCallsHeader RecentDur" ng-class="recentSelectSort == 'Duration' ? 'recent-selected-column' :''" ng-click="sortRecentCalls('Duration','duration')">
+             <div class="RecentPointer"><span class="upper">{{::verbage.duration}}</span></div>
+             <div ng-class="recentSelectSort == 'Duration' ? isAscending ? 'desc_arrow' : 'asc_arrow' : ''"></div>
+            </div>
+          </div>
+          <div ng-show="calllogs.length == 0" class="NoRecentCalls">{{::verbage.no_recent_calls}}</div>
+
+          <div  class="RecentCallLogs">
+            <div ng-repeat="calllog in calllogs | limitTo:70 | orderBy:sortCallLog:isAscending track by calllog.xpid" class="RecentCallRow">
+
+              <div class="RecentCallsHeader RecentDate">{{ ::calllog.startedAt | fondate:'full'}} </div>
+              <div class="RecentCallsHeader RecentFromTo " ng-class="::calllog.incoming && calllog.phone && !calllog.departmentId ? 'call' : ''" ng-click="recentCallToFunctionA(calllog)">{{ ::calllog.fromDisplayValue  | formatPhoneNumber}}</div>
+              <div class="RecentCallsHeader RecentFromTo" ng-class="::!calllog.incoming && calllog.phone && !calllog.departmentId ? 'call' : ''" ng-click="recentCallToFunctionB(calllog)">{{ ::calllog.toDisplayValue  | formatPhoneNumber}}</div>
+              <div class="RecentCallsHeader RecentDur">{{ ::calllog.duration | duration }} </div>
+
+            </div>
+          </div>
+       </div>
+	</div>
 </div>

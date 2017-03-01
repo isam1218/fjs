@@ -58,13 +58,20 @@ var options = {
     key: fs.readFileSync('ssl/cakey.pem')
     , cert: fs.readFileSync('ssl/cacert.pem')
 };
+app.use(
+  function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*.fonality.com');
+
+    next();
+  }
+);
 app.use(express.static(__dirname));
 
 var server = https.createServer(options, app)
 
-server.listen(98);
-console.log("https started on 98");
+server.listen(9800);
+console.log("https started on 9800");
 
-app.listen(99);
-console.log("http started on 99");
+app.listen(9900);
+console.log("http started on 9900");
 

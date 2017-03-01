@@ -1,0 +1,117 @@
+<div class="ToolBar chatTop">
+    <div class="ChatSearch">
+      <div class="SearchIcon ChatSearchChild"></div>
+      <input ng-model="chat.query" ng-focus="trackMe()" class="Search chat ChatSearchChild" type="search" ng-model-options="{debounce: 200}" ng-attr-placeholder="{{::verbage.search}}" />
+  		<div class="Arrows ChatSearchChild">
+        <input type="button" class="ChatSearchUpArrow" ng-click="searchChat(-1)" />
+  			<input type="button" class="ChatSearchDownArrow"  ng-click="searchChat(1)" />
+  		</div>
+    </div>
+    <!-- <button class="XButton XButtonNormal group" ng-if="::!showAlerts" ng-disabled="!enableChat" ng-click="showAttachmentOverlay()"><span>{{::verbage.file_share}}</span></button> -->
+
+	 <img src="img/XLoading.gif" class="Loading" ng-show="loading" />
+</div>
+
+<div class="ListViewContent" id="ListViewContent">       
+    <div class="ListMessage" ng-class="::message.data.attachment.length > 0 ? 'ListMessageChatWidgetAttachments' : 'ListMessageChatWidget'" ng-repeat="message in $parent.filteredMessages = (messages | orderBy: 'created') track by message.xpid" >
+        <div class="ListMessageLeft">
+            <avatar ng-if="::nameDisplay(message, $index) || message.data.attachment" profile="message" context="chat"></avatar>
+            <div class="time">{{::message.created | fondate: 'time'}}</div>
+        </div>
+        <div class="ListMessageContent AttachmentsHolder" >
+            <div class="ListMessageHeader"  ng-if="::nameDisplay(message, $index)" >
+                <em>...{{::verbage.from}}</em>
+                <span class="ListMessageHeaderName">{{::message.fullProfile.xpid == meModel.my_pid ? 'Me' : message.fullProfile.displayName}}</span>
+                <div class="time">{{::message.created | fondate:'date'}}</div>
+            
+            </div>
+            <div class="ChatMessageItem AttachmentsHolder" class="attachmentDrag" >
+                <div class="ListMessageText"  ng-bind-html="message.message | highlight:chat.query"></div>
+                
+                
+                <div class="AttachmentContainer" ng-repeat="attachment in ::message.data.attachment" ng-click="!attachment.dropbox && !attachment.googleDrive && !attachment.box && !attachment.oneDrive ? showDownloadAttachmentOverlay(attachment) : ''">
+                    <div class="imgContainer"><img style-size  ng-src="{{::getAttachment(attachment)}}" /></div>               
+                    <p ng-class="attachment.dropbox ? 'hideParagraph' : ''"> {{ ::attachment.fileName }}</p>
+                    <div class="DropboxAttachmentContainer" ng-repeat="attachment in ::message.data.attachment">
+                        <a id="dropboxFile" href="{{::attachment.dropboxLink}}" target="_blank"> {{ ::attachment.dropboxFile }}</a>
+                        <p ng-hide="attachment.box" id="dropboxFileSize"> {{::attachment.fileBytes}}</p>
+                	</div>
+                </div> 
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ChatInputBox">
+	<div ng-if="!enableChat">
+		<div ng-if="conversationType == 'conference'">
+			<div class="TabWarning">
+				<div class="TabWarningHeader">{{::verbage.join_to_chat}}</div>
+				<div class="TabWarningMessage">{{::verbage.only_see_messages_during_chat}}</div>
+				<div class="XButton XButtonGreen TabWarningButton" ng-click="joinConference()"><span>{{::verbage.join}}</span></div>
+			</div>
+		</div>
+		
+		<div ng-if="conversationType == 'conversation'">
+			<div class="TabWarning">
+				<div class="TabWarningHeader">You don't have permission to use chat.</div>
+				<div class="TabWarningMessage">You can only see messages.</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ChatAlertOptions" ng-if="::showAlerts">
+		<div class="Left">
+            <input type="radio" ng-model="chat.status" name="alertStatus" value="3" /> {{::verbage.all_agents}}
+			<input type="radio" ng-model="chat.status" name="alertStatus" value="1" /> {{::verbage.logged_in}}
+			<input type="radio" ng-model="chat.status" name="alertStatus" value="2" /> {{::verbage.logged_out}}
+		</div>
+		<div class="Right">
+			{{ 150 - (chat.message.length) }} {{::verbage.characters_left}}
+		</div>
+	</div>
+
+  
+  <div class="ChatInputFields" ng-class="::{'disableShare': showAlerts}" ng-if="enableChat">
+
+    <div id="attachmentBox" ng-if="chat.attachmentItems" >
+      <div class="attachmentTitle" id="topUploadTitle" flow-btn>Upload From Computer</div>
+
+      <div class="attachmentTitle" ng-click="chooseDropbox()">
+          <img src="img/dropbox-logo-16.png">
+          <p>Link From Dropbox</p>
+      </div>
+
+      <div class="attachmentTitle" lk-google-picker on-picked="onPicked(docs)" on-loaded="onLoaded()" on-cancel="onCancel()">
+        <img src="img/GoogleDrive-logo-16.png">
+        <p>Link From Google Drive</p>
+      </div>
+      
+      <div class="attachmentTitle" ng-click="launchBox()">
+        <img src="img/box-logo-16.png">
+        <p>Link From Box</p>
+      </div>
+       <div class="attachmentTitle" ng-click="launchOneDrivePicker()">
+       	<img src="img/OneDrive-logo-16.png">
+       	<p>Link From OneDrive</p>
+       </div>
+
+
+    </div>
+
+    <div ng-if="chat.showBG" class="upload-background"></div>
+
+    <div class="chatInputBtnSection">
+
+  		<div id="attachBtn" ng-click="chat.attachmentItems=!chat.attachmentItems; determineAudience()" click-anywhere="chat.attachmentItems=false" ><span class="material-icons">attach_file</span></div>
+  		<textarea ng-hide="upload_progress > 0" id="ChatMessageText" placeholder="Type Your Message" ng-model="chat.message" class="text ChatInputBoxInput" on-submit="sendMessage()" title="You can use shift+enter to set a line break" maxlength="{{::showAlerts ? 150 : ''}}" auto-focus></textarea>
+
+  		<progress ng-if="upload_progress > 0" ng-value="upload_progress" max="100"  > </progress>
+  		<div id="sendBtn" ng-click="sendMessage()"><span class="material-icons" >send</span></div>
+    </div>
+
+       
+	</div>
+
+</div>

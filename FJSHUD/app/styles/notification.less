@@ -1,0 +1,543 @@
+.LeftBarNotificationMessageSection{
+
+	border-left:solid 1px #eee;
+	padding-left: 5px;
+	margin-left: 5px;
+	width: 92%;
+	padding-top: 5px;
+	-webkit-flex: 1;
+	min-width: 0;     
+    min-height: 0;
+		
+	.NotificationDisplayName{
+		height: 2em;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+		color: #009cff;
+		font-weight: bold;
+		font-size:.7em;
+		span{
+			float: left;
+			&.truncate{
+				max-width: 55%;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+            }
+		}
+	}
+
+	.NotificationDisplayNameQueue{
+		height: 20px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+		color: #e27100;
+		font-weight: bold;
+		font-size:.7em;
+		padding-left: 5px;
+		span{float: left;}
+
+  }
+  
+  .displayName{
+    float: left;
+  }
+
+
+	.NotificationTime{
+		font-size:11px;
+		color:black;
+		font-weight:normal;
+		position: relative;
+		float:right;
+		right: 5px;	
+	}
+
+	.NotificationMessage{
+		width:100%;		
+		position:relative;
+		overflow:hidden;
+		font-size: 13px;
+		color: #222;
+		white-space: normal;		
+		max-height: 75px;
+		top: 7px;		
+        padding-right: 10px;
+        padding-top: 1.5px;
+        -ms-word-wrap: break-word;
+        white-space:normal;
+        // word-break: break-all;
+        overflow-wrap:  break-word;
+        word-wrap:  break-word;
+        word-break: break-word;
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hypens: auto;
+        hypens: auto;
+		p{
+			font-size:13px;
+		}
+	}		
+}
+
+.CallStatusContainer {
+  position: relative;
+}
+
+
+.CallStatusContainerQueue{
+  background: linear-gradient(#fff1dd,#f8e7cd);
+  background: -webkit-linear-gradient(#fff1dd,#f8e7cd);
+}
+
+.CallStatusContainerInbound {
+    background: linear-gradient(#e4f1f8, #dfebf1);
+    background: -webkit-linear-gradient(#e4f1f8, #dfebf1);
+}
+
+.CallStatusContainerQueue{
+  background: linear-gradient(#fff1dd,#f8e7cd);
+  background: -webkit-linear-gradient(#fff1dd,#f8e7cd);
+}
+
+.CallStatusContainerOutbound {
+    background: linear-gradient(#f3f8e6, #ecf2da);
+    background: -webkit-linear-gradient(#f3f8e6, #ecf2da);
+
+}
+
+
+
+.CallStatusIconContainer {
+  width: 40px;
+  height: 40px;
+  //border: 1px solid #0093f0;
+  border-radius: 30px;
+  text-align: center;
+  display: inline-block;
+}
+
+.CallStatusIconInternalBorder{
+	border: 1px solid #24a0fe;
+}
+
+.CallStatusIconExternalBorder{
+	border: 1px solid #00ad33;
+}
+
+
+.CallStatusIconQueueBorder{
+	border: 1px solid #fd5c2a;
+}
+
+.CallStatusIconContainer .CallStatusIcon {
+  width: 38px;
+  height: 38px;
+  background: url('../img/XActionSet-40x40.png') no-repeat -82px -242px;
+}
+
+.CallStatusContainerInbound,
+.CallStatusContainerOutbound,
+.CallStatusContainerQueue
+{     
+    min-height: 40px;
+    overflow: hidden;
+    width: 100%;
+    padding-right: 5px;
+    position: relative;
+    bottom: 1px;
+
+   .CallStatusIconContainer,
+   .CallStatusText{
+    float: left;  
+    margin: 5px 0px 5px 5px;    
+    cursor: pointer;
+    pointer-events: auto;     
+   }
+   .CallStatusIconContainer{
+    .CallStatusIcon{
+        cursor: pointer;
+        pointer-events: auto; 
+    }
+   }
+   
+   .MyCallBlock_Duration {
+        position: relative;
+        text-shadow: 0px 1px 0px #FFF;
+        clear: none;
+        display: inline-block;
+        left: -2px;
+		
+		&.Hold {
+			color: gray;
+		}
+   }
+    
+   .CallStatusText{
+        font-size: 11px;
+        font-weight: bold;
+        cursor: pointer;
+        display:inline-block;
+        clear: none;        
+        margin-left: 10px;  
+        margin-top: 10px;
+        &.ringing{     
+        	max-width: 45%; 
+        }
+        &.accepted{        	
+        	max-width: 55%;
+        }	                                      
+                        
+        .callStatus{
+            font-size: 10px;
+            font-weight: normal;  
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap; 
+            
+            .onCall{
+               float: left;
+            }                     
+        }
+        .memberName{
+            font-size: 12px;
+            line-height: 15px;
+            font-weight: bold;
+            text-shadow: 0px 1px 0px #EEE;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            .name{
+              width: 100%;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            } 
+            
+            .MyCallBlock_Rec {
+                position: absolute;
+                background: transparent url("../img/XIconSet-24x24.png") no-repeat scroll -152px -4px;
+                width: 36px;
+                height: 19px;
+                display: none;                               
+                right: 26%;
+                margin-top: -15px;
+                &.true {
+                    display: block;
+                }
+            }                
+        }
+   }
+   
+   .controlButtons{
+        float: right;
+        display: inline-block;
+        margin-top: 10px;
+            
+        .XButton{
+            font-size: 11px;  
+            pointer-events: auto;        
+            
+            &.record, &.SelectBox[type=move]{
+                top: 10px;
+            }  
+            
+            &.disableButton, &[disabled] {
+                pointer-events: none;
+                opacity: 0.5;
+            } 
+        }
+        .mute{
+        	bottom: -5px;
+			position: relative;
+			font-size:9px;
+			color:red;
+        }
+    }   	
+}
+
+.NotificationSectionHeader{
+	display:inline-block;
+	text-align:center;
+	.NotificationSectionHeaderImage{
+		background:url("../img/XApp-Icons.png") no-repeat -0px -0px;
+	}
+	.NotificationHeaderTitle{
+		display:inline-block;
+	}
+}
+
+
+.NotificationMessages{	
+	overflow:hidden;
+	background-image:url("../img/XTile-Widget.png");	
+	width: 100%;		
+	padding-bottom: 5px;
+	display: flex;
+	display: -webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;
+	min-width: 0;     
+    min-height: 0;
+	
+	.scroller{	    
+      background-color: #999;
+      
+      &:hover{
+       overflow-y: auto;
+      }
+	}
+}
+
+.LeftBarNotifications{		
+	transition: 1s;		
+}
+
+.LeftBarNotificationSection{
+    background-color: #999;
+    background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#888));
+    border-bottom: solid 1px #777;
+    width: 100%;
+    position: relative;
+    bottom: 0px;
+
+	&.hasMessages {
+		&.Expand {
+			.TitleBar .XButton { visibility: visible; }
+			.scroller { padding-top: 20px; }
+			.Messages { display: block; }
+		}
+		
+		.TitleBar .XButton { visibility: hidden; }
+	}
+    
+    &:hover, &.noMessages{
+        background: transparent;
+    }  
+    &.noMessages{       
+       bottom: 0px;
+       
+       .NotificationMessages{
+         padding-bottom: 0px;
+         bottom: 0px;
+         top: -5px;
+       }
+      .TitleBar{
+        margin-bottom: 0px;
+      }
+    }
+	
+	.NotificationHeaderBackground { bottom: 17px; }
+	.NotificationDivider { height: 1px; }
+}
+
+.LeftBarNotificationSection:hover > .LeftBarNotifications{	
+	visibility:visible;
+	overflow-y:auto;
+	overflow-x: hidden;	
+	-ms-overflow-y: hidden;
+	
+	.scroller{
+	   -ms-overflow-y: auto;
+	}
+}
+
+.NotificationType{
+	font-size: 11px;
+	font-style:italic;
+	font-color:#ccc;
+	border-bottom: 1px solid #888;
+  margin-bottom: -5px;
+}
+
+.NotificationSection{
+	margin-top:5px;	
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	padding-left: 5px;
+	overflow: hidden;
+	width: 95%;
+	height: 0px;
+	padding-bottom: 15px;
+	min-width: 0;     
+    min-height: 0;
+  
+  	&.last{
+    	min-height: 60px;
+    	height: auto !important;
+  	}
+}
+.NotificationSection.open {
+  height: auto;
+}
+
+.NotificationHeader{
+	float:right;
+	margin-right: -1px;
+  height: 0px;
+	
+	.firstHeaderTitle{	   
+       position: relative;      
+       bottom: -1.2em;
+       right: -1px;
+	}
+}
+
+.NotificationDivider{
+	border-bottom:1px solid #ccc;	
+	display:block;
+	height: 4px;
+	
+	&.firstHeaderDivider{
+	   background-color: #999;      
+       height: 2.3em;
+       &.noMessagess{
+         margin-top: -1px;
+       }
+       &.firstHeaderDivider > div{
+        border-top: none 0px;
+       }
+       img{display: none;}
+	}
+}
+	
+.LeftBarNotificationAvatarSection{
+	position:relative;
+	width:35px;
+	height:40px;
+	float:left;
+
+}
+
+.NotificationTitle{
+	width:100%;
+}
+
+.NotificationHeaderBackground{
+	right: 20px;
+	width: 51px;
+	height: 21px;
+	background: url("../img/XEvent.png") no-repeat 0px 0px;
+	position: relative;
+	right: 0;
+	bottom: 14px;
+}
+.NotificationClose{
+		width: 50%;
+		height: 24px;
+		margin:-3px auto 0 auto;
+		background: url("../img/XIconSet-24x24.png") no-repeat -24px -24px;
+}
+
+.NotificationAvatar{
+  width: 33px;
+  height: 33px;
+	margin:0 auto;
+	border:1px solid #3c9c00;
+	border-radius:2px;
+}
+
+.overlayNotificationsSection{
+	
+	.NotificationSection{
+			height: auto;
+	}
+}
+
+.NotificationZoomBtn{
+	margin-top:10px;
+	.XButton{	   
+	   width: auto;
+	   font-size: 0.8em;	   
+	}
+}
+
+.Messages{
+	position: relative;	
+	font-style:normal;
+	font-size:1em;
+	background-image:url("../img/XTile-Widget.png");
+	background-color: white;
+	width: 100%;
+	
+	&:not(.first){
+    	.NotificationDivider > div{
+            border-left:1px solid #ccc;
+        }
+    }
+	
+	&:last-child {
+		.NotificationSection {
+			height: auto !important;
+		}
+	}
+	
+	&:not(.overlay):nth-last-child(n+6) {
+		display: none;
+	}
+	
+	&:after {
+		clear: both;
+		content: "";
+		display: table;
+	}
+    
+    .header_text{
+       display: none;
+    }
+    
+    &.first{
+           &.noMessagess{
+              .NotificationDivider{
+                 margin-top: -1px;
+              }   
+           }
+           /*.NotificationHeader{
+               
+           }*/
+           .NotificationHeaderBackground{         
+               position: relative;     
+               bottom: -1.2em;
+               right: -1px;    
+           }
+           .NotificationDivider{               
+               background-color: #999;              
+               height: 2.3em;               
+               img{display: none;}   
+           }
+           .header_text{
+               display: block;
+           }
+    }
+    
+	&.error{
+	   cursor:pointer;
+	   text-decoration:none;
+	   color:inherit;
+	   
+	   .content{
+	       font-weight:bold;
+	       font-size:.7em;
+	       height: 2.5em;
+	   }
+	}	
+}
+a.Messages{
+	
+	text-decoration:none;
+}
+
+.chatNotification{
+    cursor: pointer;
+    
+    &.error{
+      & > div{
+         font-weight:bold;
+         font-size:.7em;
+      }
+    }
+}

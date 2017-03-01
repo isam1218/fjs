@@ -1,0 +1,225 @@
+<div id="InnerDock" class="InnerDock" droppable="Contact,Group,ConferenceRoom,QueueStat">
+	<div 
+		class="Gadget"
+		ng-repeat="gadget in gadgets | filter: filterQueues() | orderBy:'value.index' track by gadget.name" 
+		ng-class="::{'Parked' : gadget.value.factoryId == 'GadgetParkedCalls', 'TallGadget': gadget.value.factoryId == 'GadgetHudSoftphoneDownload'}"
+		droppable="{{::getDroppableType(gadget.value.factoryId)}}"
+		dragger>			 
+		<!-- my queues -->
+		<a ng-if-start="::gadget.value.factoryId == 'GadgetUserQueues'" href="#/callcenter" class="Header">
+			<div class="Icon TopBarItemAppIcon CallCenter"></div>
+			<div class="Title">
+				<div class="titleHeader header">{{::verbage.my_queue}}</div>
+				<div class="subTitle" ng-if="gadget.data.queues.length == 0">Not an agent</div>
+				<div class="subTitle" ng-if="gadget.data.queues.length > 0">{{ gadget.data.loggedIn > 0 ?  verbage.logged_in + '(' + gadget.data.loggedIn + ')' : verbage.logged_out }}</div>
+			</div>
+		</a>
+			
+		<div class="Content">
+			<div class="SubHeader">{{::verbage.my_queue}}</div>
+			
+			<div class="List">
+				<a href="#/queue/{{::queue.xpid}}" class="ListRow" ng-repeat="queue in gadget.data.queues | orderBy: 'name' track by queue.xpid">
+					<avatar profile="queue" context="dock"></avatar>
+				
+					<div class="ListRowContent" dockable="queue">
+						<div class="ListRowTitle">
+							<div class="name">{{ ::queue.name }}</div>							
+							<div class="ListRowStatusIcon XIcon-QueueStatus-{{ queue.me.status.status }}"></div>
+							<div class="status">{{ queueStatusLabel(queue.me.status.status) }}</div>
+						</div>
+					</div>
+				</a>
+				
+				<div ng-if="gadget.data.queues.length == 0">
+			    {{::verbage.no_queues}}
+	
+				</div>
+			
+			</div>
+		</div>
+		
+		<resizer ng-if-end></resizer>
+
+
+
+
+		<!-- parked calls -->
+		<div ng-if-start="::gadget.value.factoryId == 'GadgetParkedCalls'" class="Header Single">
+			<avatar profile="4" context="dock"></avatar>
+			<div class="Title" ng-switch="parkedCalls.length">
+				<div class="titleHeader header">{{::verbage.parked_calls}}</div>
+				<div class="subTitle GadgetStatusText" ng-switch-when="0">{{::verbage.no_calls_on_park}}</div>
+				<div class="subTitle GadgetStatusText" ng-switch-when="1"> 1 call on park </div> 
+				<div class="subTitle GadgetStatusText" ng-switch-default> {{ parkedCalls.length }} calls on park </div> 
+			</div>
+		</div>
+		
+		<div ng-if="parkedCalls.length > 0" class="Content">
+			<div class="SubHeader ListSectionGadget"> <span>{{::verbage.calls}}</span> </div>
+			<div id="parked_calls"> 
+				<div ng-repeat="call in parkedCalls" class="ListRowFirst ListRow ListRow-Contact" style=" background-image: linear-gradient(#fefefe, #ebebeb);">			
+					<avatar profile="call" context="dock"></avatar>
+					
+					<div class="ListRowContent" style="display:inline-block;margin-right:2px">
+						<div class="ListRowTitle">
+							<div class="ParkedCallDisplayName">{{ ::call.displayName }}</div>
+							<div>{{ ::call.phone}}</div>
+						</div>
+						<div timer="call.created" class="timer"></div>
+					</div>
+				</div>
+				
+			</div>		
+		</div>
+
+		<resizer ng-if-end ng-if="parkedCalls.length > 0"></resizer>
+
+		<!-- contacts -->
+		<a ng-if="::gadget.value.factoryId == 'GadgetContact'" href="#/contact/{{::gadget.data.xpid}}" class="Header Single">
+			<avatar profile="gadget.data" context="dock"></avatar>
+			<div class="Title">
+				<div class="titleHeader" ng-if="::contact.primaryExtension">{{ ::gadget.data.displayName }}</div>
+				<div class="titleHeader" ng-if="::!contact.primaryExtension">{{ gadget.data.displayName }}</div>
+				<div>
+					<div class="ListRowStatusIcon XIcon-QueueStatus-{{ gadget.data.queue_status }}"></div>
+					<div class="ListRowStatusIcon XIcon-ChatStatus-{{ gadget.data.hud_status || 'offline' }}"></div>
+				</div>
+			</div>
+				
+			<div class="CallStatus" ng-if="gadget.data.call">
+				<avatar
+					ng-click="showCallStatus($event, gadget.data)"
+					profile="gadget.data.call"
+					context="callstatus"
+					type="{{::gadget.data.call.type}}">
+				</avatar>
+			</div>	
+		</a>
+
+		<!-- groups -->
+		<a ng-if-start="::gadget.value.factoryId == 'GadgetGroup'" href="#/group/{{::gadget.data.xpid}}" class="Header">
+			<avatar profile="gadget.data" context="dock"></avatar>
+			<div class="Title">
+				<div class="titleHeader">{{ ::gadget.data.name }}</div>
+				<div class="subTitle">None</div>
+			</div>
+		</a>
+		
+		<div class="Content">
+			<div class="SubHeader">{{::verbage.member}}</div>
+			
+			<div class="List">
+				<a href="#/contact/{{::member.fullProfile.xpid}}" class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'fullProfile.displayName' track by member.xpid" droppable="Call">
+					<avatar profile="member.fullProfile" context="dock"></avatar>
+				
+					<div class="ListRowContent" dockable="member.fullProfile">
+						<div class="ListRowTitle">
+							{{ ::member.fullProfile.displayName }}
+							<br/>
+							<div class="IconDisplay XIcon-ChatStatus-{{member.fullProfile.hud_status || 'offline' }}"></div>
+							<div class="status" ng-bind-html="(member.fullProfile.custom_status ? member.fullProfile.custom_status : member.fullProfile.hud_status ? verbage[member.fullProfile.hud_status] : verbage['offline']) + (member.fullProfile.call ? ' + ' + verbage['on_call'] : '')"></div>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+		
+		<resizer ng-if-end></resizer>
+
+		<!-- conferences -->
+		<a ng-if-start="::gadget.value.factoryId == 'GadgetConferenceRoom'" href="#/conference/{{::gadget.data.xpid}}" class="Header">
+			<avatar profile="gadget.data" context="dock"></avatar>
+			<div class="Title" ng-switch="gadget.data.members.length">
+				<div class="titleHeader">Room #{{ ::gadget.data.roomNumber + ' (' + gadget.data.extensionNumber + ')' }}</div>
+				<div class="subTitle" ng-switch-when="0">{{ ::gadget.data.location }}</div>
+				<div class="subTitle" ng-switch-default>Talking: {{ gadget.data.members.length }}</div>
+			</div>
+		</a>
+		
+		<div class="Content">
+			<div class="SubHeader">{{::verbage.member}}</div>
+			
+			<div class="List">
+				<a class="ListRow" ng-repeat="member in gadget.data.members | orderBy: 'displayName' track by member.xpid">
+					<avatar profile="member" context="conference:gadget.data"></avatar>
+				
+					<div class="ListRowContent" dockable="member.fullProfile">
+						<div class="ConfMemberRowTitle">
+							<div class="name">{{ ::member.fullProfile.displayName || member.displayName }}</div>
+							<div class="">{{ ::member.fullProfile.primaryExtension || member.phone }}</div>
+						</div>
+						<div class="ListRowStatus" timer="member.fullProfile.call.startedAt || member.started"></div>
+					</div>
+				</a>
+				
+				<div class="free" ng-if="!gadget.data.members || gadget.data.members.length == 0">
+					{{::verbage.room_is_free}}...
+					<p>
+						<input type="button" value="Join!" class="XButton" ng-click="joinConference(gadget.data)" />
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<resizer ng-if-end></resizer>
+
+		<!-- queues -->
+		<a ng-if-start="::gadget.value.factoryId == 'GadgetQueueStat'" href="#/queue/{{::gadget.data.xpid}}" class="Header">
+			<avatar profile="gadget.data" context="dock"></avatar>
+			<div class="Title">
+				<div class="Name">{{ ::gadget.data.name }}</div>
+				<div class="Agents">Agents: {{ gadget.data.info.active + ' / ' + gadget.data.loggedInMembers + ' / ' + gadget.data.members.length }}</div>
+			</div>
+		</a>
+		
+		<div ng-if-end class="Content">
+			<div class="List Stats">
+				<div ng-class="{'RedText': queueThresholds.waiting && gadget.data.info.waiting > queueThresholds.waiting}">
+					<strong>{{ gadget.data.info.waiting }}</strong> 
+					{{::verbage.waiting}}
+				</div>
+				<div ng-switch="gadget.data.longestWait">
+					<strong ng-switch-default timer="gadget.data.longestWait"></strong>
+					<strong ng-switch-when="0">00:00</strong>
+					{{::verbage.longest_hold}}
+				</div>
+				<div ng-class="{'RedText': queueThresholds.avg_talk && gadget.data.info.avgTalk/60 > queueThresholds.avg_talk}">
+					<strong>{{ gadget.data.info.avgTalk*1000 | duration }}</strong>
+                    {{::verbage.avg_talk}}
+				</div>
+				<div>
+					<strong>{{ gadget.data.info.abandon + gadget.data.info.completed }}</strong>
+					{{::verbage.total}}
+				</div>
+				<div ng-class="{'RedText': queueThresholds.abandoned && gadget.data.info.abandonPercent > queueThresholds.abandoned}">
+					<strong>{{ gadget.data.info.abandonPercent }}%</strong>
+					{{::verbage.Abandon}}
+
+				</div>
+				<div>
+					<strong>{{ gadget.data.info.active }}</strong>
+					{{::verbage.active}}
+				</div>
+			</div>
+		</div>
+
+	<div ng-if="::gadget.value.factoryId == 'GadgetHudSoftphoneDownload'" ng-show="showDockDownload && !registered" class="Header HudSoftphoneDownloadGadget" id="downloadWidget">
+			<div class="HudSoftphoneDownloadGadgetHeader" style="">
+				HUD Softphone: Reminder
+			</div>
+			<div class="DownloadText">
+				Make, receive and control calls from your computer.
+			</div>
+			<div class="HudSoftphoneDownloadGadgetButtonSection">
+				<button class="HudSoftphoneDownloadGadgetButton" style="" ng-click="openDownloadHudModal()">LEARN MORE</button>
+			</div>
+			<div class="RemoveReminder">
+				<input type="checkbox" ng-model="downloadWidgetCheckbox.remove" ng-change="toggleDownloadWidget()"> Remove this reminder.<br>
+			</div>
+	</div>
+
+	</div>
+</div>
+
+

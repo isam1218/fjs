@@ -1,29 +1,17 @@
 #!/bin/bash
-echo FJSCore Install
-cd ../FJSCore
+pushd `dirname $0` > /dev/null
+FJ_ROOT_DIR=..
+
+pushd $FJ_ROOT_DIR/FJSHUD
 npm install
-grunt
-echo FJSModel Install
-cd ../FJSModel
-npm install
-grunt
-cd ../FJSDB
-npm install
-grunt
-cd ../FJSTabs
-npm install
-grunt
-cd ../FJSFDP
-npm install
-grunt
-cd ../FJSPlugin
-npm install
-grunt
-cd ../FJSAPI
-npm install
-grunt
-cd ../FJSHUD
-npm install
+rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
+popd
+
+pushd $FJ_ROOT_DIR/FJSHUD/app
 bower install
-npm install angular-ui-bootstrap
-bower install angular-bootstrap
+rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
+popd
+
+
+
+popd > /dev/null

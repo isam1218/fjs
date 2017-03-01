@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body, html {
   position : relative;
   height : 100%;
@@ -5,35 +9,97 @@ body, html {
   padding: 0;
   margin: 0;
   font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 12px;
   color: #555;
   background: #ccc url(../img/bg.png);
   box-shadow: 0 4px 5px rgba(255,255,255,0.3) inset;
-  user-select: none;
-  overflow-x: hidden;
+  overflow: hidden;
+}
+body {
+  font-size: 1em;
 }
 
-textarea {
-  background-color: #FFFFFF;
-  appearance: textfield;
-  user-select: text;
-  resize: none;
-  outline: none;
-  padding: 5px;
+p {
   font-size: 11px;
-  border-radius: 3px;
-  color: #333;
-  border: solid 1px #C7C7C7;
-  box-shadow: 0 0 1px #ddd inset;
-  font-family: Arial, Tahoma, 'Helvetica Neue', Helvetica, sans-serif;
-  position: relative;
 }
 
-input[type="text"], input[type="email"], input[type="search"], input[type="tel"] {
-  /*padding:5px;*/
-  /*height:16px;*/
-  border-radius:2px;
-  outline: none;
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
+.fon_main_wrapper {
+  color: inherit !important;
+  font-size: inherit !important;
+  
+  span {
+    pointer-events: none !important;
+	color: inherit !important;
+	font-size: inherit !important;
+  }
+}
+.fon_main_wrapper img{
+  display:none !important;
+}
+body .fon-hightlighted{
+  background:none !important;
+}
+
+.upper{
+  text-transform:uppercase;
+}
+
+
+.RedText{
+  color:#FF0D0D;
+}
+
+.HeaderTitle{
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 18px;
+  width: auto;
+  text-transform: uppercase;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#App {
+  //position: relative;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  min-width: 300px;
+  min-height: 300px;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+}
+
+.PanelWrapper {
+  position: relative;
+  padding: 0 10px 10px 10px;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  -ms-flex: 1;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  width: 100%;
+  //height: 90%;
+  height: 100%;
+  min-width: 0;     
+  min-height: 0;
+}
+.PanelWrapper:after {
+  padding-top: 25%;
+  /* 16:9 ratio */
+  display: block;
+  content: '';
 }
 
 .text[contenteditable] {
@@ -42,27 +108,14 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   padding-left: 12px;
   font-size: 12px;
   border-radius: 3px;
-  -webkit-border-radius: 3px;
   color: #333;
   border: solid 1px #C7C7C7;
   box-shadow: 0px 0px 1px #DDD inset;
-  -webkit-box-shadow: 0px 0px 1px #DDD inset;
   user-select: text;
   -webkit-user-select: text;
   outline: none;
 }
 
-::-webkit-scrollbar {
-  background-color: #eee;
-  height: 7px;
-  width: 4px;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
 .PopupMenu {
   position: absolute;
   background-color: #fff;
@@ -80,117 +133,189 @@ input[type="text"], input[type="email"], input[type="search"], input[type="tel"]
   background-color: #b3d4fc;
 }
 
-.ContextMenu.SelectMenuBox {
-  width:140px;
-  min-width:140px;
-  .MenuContent {
-    margin: 0px;
-    .MenuItem:hover {
-      background-color: #b3d4fc;
-    }
-    .MenuItem {
-      padding:0 5px;
-      height: 32px;
-      .SelectedIcon {
-        width: 30px;
-        height: 30px;
-      }
-    }
-  }
-}
-
-
 .LeftBarMeCustomStatusSection {
   textarea {
     width:100%;
   }
 }
 
-.LocationSelector {
-  .SelectBox {
-    width:150px;
+.LocationSelector {  
+   position: relative;
+   width: 182px;
+   height: 28px;
+   left: 0px;
+  
+  .SelectBox {              
+      width: 100%;
+      height: 100%;
+      padding: 5px 10px 5px 0px;
   }
 }
 
-.Widget.Contacts {
-  .ListRow-Contact {
-    .details {
-      float:right;
-    }
-  }
-  .ListLineContent.Header {
-    height:23px;
-    .ListLineContentCell {
-      padding:0 5px;
-    }
-    .Up {
-      .DirectionArrow {
-        //bottom:3px;
-      }
-    }
-    .Down {
+.HeaderLabel{
+  font-size:1em;
+}
 
-    }
-    .DirectionArrow {
-      position:absolute;
-      left:50%;
-      margin-left: -6px;
-    }
-  }
-  .LeftBarTabContentList {
-    top:125px;
+#AppLoading {
+  position: fixed;
+  left:0;
+  top:0;
+  width: 100%;
+  height: 100%;
+  background: #ccc url("../img/bg.png");
+  z-index: 1000;
+  font-size: 40px;
+  text-align:center;
+  color: #333;
+  font-weight:bold;
+  text-shadow: 0 2px 0 #fff;
+  
+  div {
+    margin-top: 20%;
   }
 }
 
-.ChatMessageIco {
-  display: none;
-  width: 20px;
-  height: 20px;
-  margin-bottom: -6px;
-  margin-right:3px;
+.RecentPointer{
+  cursor:pointer;
+  display:inline;
 }
-.ChatMessageIco.call {
-    display:inline-block;
 
-  }
-.ChatMessageIco.call.Incoming {
+.footnote{
+  font-size:.6em;
+  font-style:italic;
+  color:#ccc;
+  display:inline-block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  width:40%;
+}
 
-      background-image: url(../img/XIcon-CallLog-Incoming.png);
-    }
-.ChatMessageIco.call.Outbound {
-      background-image: url(../img/XIcon-CallLog-Outbound.png);
-    }
-.ChatMessageIco.call.Missed {
-      background-image: url(../img/XIcon-CallLog-Missed.png);
-    }
-.ChatMessageIco.voicemail {
-    display:inline-block;
-  background-image: url(../img/XIcon-Voicemail.png);
-  }
+.BoxFramePH{
+  top: 66px;
+  width: 70%;
+  height:80%;
+  bottom: 16px;
+}
 
+.BoxFrame{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  width: 95%;
+  height: 95%;
+  border: none;
+  margin: 13px 13px 13px 13px;
+}
 
+.Center{
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
 
-@import "loading";
-@import "menu";
-@import "queue-status";
-@import "search";
-@import "select-box";
-@import "table";
-@import "tabs";
-@import "toolbar";
+.LeftSide{
+  float:left;
+}
+
+.RightSide{
+  float:right;
+}
+
+.ui-state-highlight {
+  display: inline-block;
+  border-style: dashed;
+  border-width: 1px;
+}
+
+.not-sortable {
+  cursor: default;
+}
+
+.loadmore {
+  color: #729C00;
+  margin: 0 auto;
+  display: block;
+  border: none;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.TeamDescription {
+  padding: 20px;
+  background-color: #fff;
+  -webkit-border-radius: 3px;
+  border: solid 1px #ddd;
+  -webkit-box-shadow: 0px 0px 1px #eee;
+}
+
 @import "topBar";
-@import "widget";
-@import "avatar";
-@import "button";
-@import "chat-status";
-@import "dialog";
-@import "expandedToolbar";
-@import "list-section";
-@import "listMessge";
-@import "listRow";
-@import "media";
 @import "leftBar";
-@import "mycalls";
-@import "chat";
-@import "slider";
+@import "dock";
+@import "widget";
+@import "settings";
+@import "calls";
+@import "conference";
+@import "queue";
+@import "search";
+@import "video";
+@import "intellinote";
+@import "zipwhip";
+@import "conversation";
+@import "tables";
+@import "buttons";
+@import "icons";
+@import "notification";
+@import "popups";
+@import "voicemail";
+@import "queue";
+@import "media";
+@import "nativeAlert";
+@import "inphonex";
+@import "fonalityDialer";
 
+.LeftBar .Recent {
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  min-width: 0;     
+  min-height: 0;
+}
+
+.LeftBar .Recent .ContactList {
+  flex: 1 1 0;
+  -ms-flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+  overflow-y: auto;
+  min-height: 60px;
+  margin-top: 10px;
+  min-width: 0;     
+}
+
+.LeftBar .Recent .ContactList h4 {
+  margin: .5em 0 0 .5em;
+  color: #0093f0;
+  font-variant: small-caps;
+  font-size: .9em;
+}
+
+.LeftBar .Recent .ContactList h4 + em {
+  margin: 0 0 .5em .5em;
+  font-size: .8em;
+  display: block;
+}
+
+.Overlay .Foreground {
+  max-height: 575px;
+}
+
+.jp{
+ font-size: 0.67em !important;
+}

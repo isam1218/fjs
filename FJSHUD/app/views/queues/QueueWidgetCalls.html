@@ -1,0 +1,72 @@
+<div class="ToolBar">
+	<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-model="que.query" ng-attr-placeholder="{{::verbage.search}}" />
+</div>
+
+
+<div class="QueueList CallList">
+	<div class="Header">
+		<div class="ListSectionHeaderTitle">{{::verbage.in_queue}}</div>
+		<em ng-if="callsWaiting > 0">
+			{{ callsWaiting }} {{::verbage.calls_in_queue_longest_wait}}
+			<span timer="longestWait"></span>
+		</em>
+
+		<div class="Arrow" ng-class="showWaiting ? 'On' : 'Off'" ng-click="showWaiting = !showWaiting"></div>
+	</div>
+
+	<div ng-if="showWaiting">
+		<div class="Empty" ng-if="callsWaiting == 0">
+			{{::verbage.nobody_is_waiting}}
+		</div>
+
+		<div ng-repeat="call in queue.calls | filter: filterActive(false) | filter: {displayName: query}">
+			<div class="ActiveCall">
+				<div class="Info" dockable="call">
+					<div class="Arrow" ng-if="call.agent"></div>
+					<avatar profile="call" context="queue:call" type="3"></avatar>
+					<div class="Name">{{ ::call.displayName + ' (' + call.phone + ')' }}</div>
+					<div class="Time" timer="call.startedAt"></div>
+				</div>
+
+				<div class="Agent" ng-if="call.agent">
+					<avatar profile="call.agent" context="queue:call"></avatar>
+					<div>{{ ::call.agent.displayName }}</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="Header">
+		<div class="ListSectionHeaderTitle">{{::verbage.active_calls_answered}}</div>
+		<em ng-if="callsActive > 0">
+			{{ callsActive }} {{::verbage.active_calls_in_queue_longest_wait}}
+			<span timer="longestActive"></span>
+		</em>
+
+		<div class="Arrow" ng-class="showActive ? 'On' : 'Off'" ng-click="showActive = !showActive"></div>
+	</div>
+
+	<div ng-if="showActive">
+		<div class="Empty" ng-if="callsActive == 0">
+			{{::verbage.no_active_calls}}
+		</div>
+
+		<div ng-repeat="call in queue.calls | filter: filterActive(true) | filter: {agent: {displayName: query}}">
+			<div class="ActiveCall">
+				<div class="Info" dockable="call">
+					<div class="Arrow"></div>
+					<avatar profile="call" context="queue:call" type="3"></avatar>
+					<div class="Name">{{ ::call.displayName + ' (' + call.phone + ')' }}</div>
+					<div class="Time" timer="call.startedAt"></div>
+				</div>
+
+				<div class="Agent">
+					<avatar profile="call.agent" context="queue:call"></avatar>
+					<div>{{ ::call.agent.displayName }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

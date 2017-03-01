@@ -1,0 +1,37 @@
+<div class="Overlay" style="z-index:1200">
+    
+
+    <div   class="Background"></div>
+    <div class="Foreground">
+        <div class="Header">
+          <div class="Close">
+           <div class="CloseIcon2"></div>
+          </div>
+          <div class="headerIcon network"></div>
+          <div class="HeaderTitle no_permission">{{::verbage.sorry_no_authorization_header}}</div>
+        </div>
+        
+        <div class="Sections no_permission" style="height:300px">
+            <div class="Section">
+                 <div>
+                    <h4 class="upper">{{::verbage.WHY}}?</h4>
+                    <p>{{::verbage.no_valid_license}}</p>
+                </div>
+            </div>
+            
+            <div class="Section">
+                <div>
+                    <h4 class="upper">{{::verbage.SUGGESTION}}</h4>
+                    <p>{{::verbage.if_this_is_an_error}}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="Footer">
+            
+        
+            <input type="button" class="XButton XButtonRed" value="Sign in as another user" ng-click="reloadPage()" />
+           
+        </div>
+    </div>
+</div>

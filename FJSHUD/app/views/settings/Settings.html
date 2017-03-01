@@ -1,0 +1,145 @@
+          <div class="PreferenceSwitch" ng-switch="interfaceSettings">
+          <div class="PreferenceSection" ng-click="interfaceSettings= !interfaceSettings" >
+            <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.interface_word}}</div>
+            
+            <div class="ListSectionBody" ng-switch-when="false">{{::verbage.application_tuning}}</div>
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
+
+          </div>
+          
+
+          <div class="PreferencePage" ng-switch-when="true">
+            <div class="ListSectionHeaderTitle" >{{::verbage.interface_word}}</div>   
+            <div class="Dialog-settings-row">
+              <div class="lblSelect">{{::verbage.language}}:</div>
+              <select class="fj-hbox SelectBox SelectBoxSettings"
+              ng-model="languageSelect"
+              ng-options="language.name for language in languages"
+              ng-change="update_settings('hudw_lang','update',languageSelect)"
+              ></select>
+            </div>
+
+            <div class="Dialog-settings-row">
+              <div class="lblSelect">{{::verbage.avatar_hover_menu_delay}}: </div>
+              <select class="fj-hbox SelectBox SelectBoxSettings"
+                ng-model="hoverDelaySelected"
+                ng-options="hoverDelay.label for hoverDelay in hoverDelayOptions"
+                ng-change="update_settings('avatar_hover_delay','update',hoverDelaySelected)"
+              >
+              </select>
+            </div>
+          </div>
+          </div>
+
+          <div class="PreferenceSwitch" ng-switch="softphoneSettings" >
+          <div class="PreferenceSection" ng-click="softphoneSettings= !softphoneSettings" >
+            <div class="ListSectionHeaderTitle" ng-switch-when="false">SOFTPHONE</div>
+            
+            <div class="ListSectionBody" ng-switch-when="false">HUD Softphone settings</div>
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
+            </div>
+            <div class="PreferencePage DownloadNative" ng-switch-when="true">
+              <div class="ListSectionHeaderTitle">HUD SOFTPHONE</div>
+              <div class="Dialog-settings-row" ng-if="!softphoneRegistered">
+              <label ><input
+                ng-model="enableDockDownload"
+                ng-click="dockDownload()"
+                type="checkbox"  >Display the HUD Softphone Download Dock Widget</label>
+              </div>
+
+              <div class="Dialog-settings-row">
+              <h4 class="Row-title">Download the HUD Softphone</h4>
+              <p class="Row-text" >Auto login and presence on computer startup. Control your location and presence. Place and control calls outside of HUD.</p>
+              <button class="Download-button" ng-click="downloadHudn()" >DOWNLOAD</button>
+              </div>
+
+            </div>
+          
+          
+          
+
+          </div>
+          <div class="PreferenceSwitch" ng-switch="soundPreference">
+          <div class="PreferenceSection" ng-click="soundPreference= !soundPreference">
+              <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.sounds}}</div>
+            <div class="ListSectionBody" ng-switch-when="false">{{::verbage.sound_settings_general_desc}}</div>
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true">keyboard_arrow_down</i>
+          </div>
+          <div class="PreferencePage" ng-switch-when="true">
+              <div class="ListSectionHeaderTitle">{{::verbage.sounds}}</div>
+            <div class="Dialog-settings-row">
+              <label><input
+                ng-model="enableSound"
+                ng-change="update_settings('hudmw_chat_sounds','update',enableSound)"
+                type="checkbox" checked="checked" >{{::verbage.enable_chat_sound}}</label>
+            </div>
+            <div class="Dialog-settings-row">
+              <label><input
+                ng-disabled="!enableSound"
+                ng-model="soundOnChatMsgReceived"
+                ng-change="update_settings('hudmw_chat_sound_received','update',soundOnChatMsgReceived)"
+                name="chat_sound_received" type="checkbox" value="true">{{::verbage.on_message_received}}</label>
+            </div>
+            <div class="Dialog-settings-row">
+              <label><input
+                ng-disabled="!enableSound"
+                ng-model="soundOnSentMsg"
+                ng-change="update_settings('hudmw_chat_sound_sent','update',soundOnSentMsg)"
+                name="chat_sound_sent" type="checkbox" value="true">{{::verbage.on_sent_message}}</label>
+            </div>
+          </div>
+          </div>
+
+          <div class="PreferenceSwitch" ng-switch="awayPreference">
+          <div class="PreferenceSection" ng-click="awayPreference= !awayPreference">
+              <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.auto_away}}</div>
+            <div class="ListSectionBody" ng-switch-when="false">{{::verbage.auto_away_settings_desc}}</div>
+
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true">keyboard_arrow_down</i>
+          </div>
+          <div class="PreferencePage" ng-switch-when="true">
+              <div class="ListSectionHeaderTitle">{{::verbage.auto_away}}</div>
+
+            <div class="Dialog-settings-row">
+              <label><input
+                ng-model="enableAutoAway"
+                ng-change="update_settings('auto_away_timeout','update',enableAutoAway)"
+                name="autoaway" type="checkbox" value="true">{{::verbage.enable_auto_away}}</label>
+            </div>
+            <div class="Dialog-settings-row" >
+              <div class="lblSelect">{{::verbage.auto_away_after}}:</div>
+              <select
+                ng-model="autoAwaySelected"
+                ng-disabled="!enableAutoAway"
+                ng-options="autoAway.label for autoAway in autoAwayOptions"
+                ng-change="update_settings('hudmw_auto_away_timeout','update',autoAwaySelected)"
+
+                class="fj-hbox SelectBox SelectBoxSettings">
+              </select>
+            </div>
+            
+          </div>
+          </div>
+
+          <div class="PreferenceSwitch" ng-switch="dashboardPreference">
+          <div class="PreferenceSection" ng-click="dashboardPreference= !dashboardPreference">
+              <div class="ListSectionHeaderTitle" ng-switch-when="false">{{::verbage.dashboard}}</div>
+            <div class="ListSectionBody" ng-switch-when="false">{{::verbage.dashboard_setting}}</div>
+
+            <i class="material-icons" ng-switch-when="false">keyboard_arrow_right</i>
+            <i class="material-icons down" ng-switch-when="true" >keyboard_arrow_down</i>
+          </div>
+          <div class="PreferencePage" ng-switch-when="true">
+              <div class="ListSectionHeaderTitle">{{::verbage.dashboard}}</div>
+            <div class="Dialog-settings-row">
+              <label><input
+                ng-model="useColumnLayout"
+                ng-change="update_settings('use_column_layout','update',useColumnLayout)"
+                name="use-column-layout" type="checkbox" value="true" >{{::verbage.use_column_layout}}</label>
+            </div>
+          </div>
+          </div>

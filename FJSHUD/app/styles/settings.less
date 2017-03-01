@@ -1,0 +1,2228 @@
+.WidgetMe {
+
+  .WidgetHeader {
+      width: 100%;
+   }
+   .WidgetHeaderTitle {
+      color: #333;
+      font-size: 20px;
+      line-height: 35px;
+      left: 0px;
+      right: 15px;
+      top: 0;
+	  width: 100%;
+    }
+    .Avatar{
+      float: left;
+      left: 0px;
+      top: 0px;
+    }
+
+    .Preferences-Holder{
+      position: relative;
+	  flex: 1 1 0;
+	  -webkit-flex: 1 1 0;
+	  -ms-flex: 1;
+      margin-top: 3px;
+      display: flex;
+	  display: -webkit-flex;
+	  flex-direction: column;
+	  -webkit-flex-direction: column;
+      overflow: hidden;
+      min-width: 0;
+      min-height: 0;
+     .WidgetTabBar{
+        top: 0px;
+        border-top: none;
+     }
+
+    }
+
+    .WidgetBody{
+		padding-bottom: 10px;
+
+		input[type=range]::-ms-tooltip {
+            display: none;
+        }
+
+       .CurrentCall{
+        & + .TransferCallSection {
+          flex: 1 1 0;
+          -webkit-flex: 1 1 0;
+          -ms-flex: 1;
+          font-size: .7em;
+          display: flex;
+          display: -webkit-flex;
+          flex-direction: column;
+          -webkit-flex-direction: column;
+
+          .TransferSectionWithoutHeader{
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+            flex: 1 0 0;
+            -webkit-flex: 1 0 0;
+
+            .TransferSearch{
+              form{
+                .FormInterior{
+                  margin-right: 20px;
+                  min-height: 50px;
+
+                  span{
+                    position: relative;
+                    margin-top: 17px;
+
+                    margin-left: 20px;
+                    font-size: 18px;
+                    color: #015d73;
+                    font-family: Arial;
+                    font-weight: bold;
+                    display: inline-block;
+                  }
+                  input[type=placeholder]{
+                    font-size: 13px !important;
+                    font-family: Arial !important;
+                    color: #CCCCCC !important;
+                  }
+                  input[type=search]{
+                    font-size: 17px !important;
+                    font-family: Arial !important;
+                    color: #CCCCCC !important;
+                    margin: 0px;
+                    height: 45px;
+                    margin-bottom: 5px;
+                    margin-top: 5px;
+                    padding-top: 7.5px;
+                    padding-bottom: 7.5px;
+                    border-bottom: solid 1px #b9b9b9;
+                    width: 405px !important;
+                    border-radius: 0px;
+                    border-radius: 0px;
+                  }
+                  #SearchSection{
+                    padding: 15px 0px 11px 0px;
+                    border-bottom: solid 1px #b9b9b9 !important;
+                    color: #333333 !important;
+                    border: 0px;
+                    box-shadow: none;
+                  }
+                  #DisplaySelection{
+                    font-family: Arial !important;
+                    font-size: 14px;
+                    font-family: bold;
+                    color: #333333;
+                    border: 0px;
+                    box-shadow: none;
+                    padding: 15px 15px 10px 15px;
+                    margin-top: 5px;
+                    margin-bottom: 5px;
+                  }
+
+                  .ListRow{
+                    width: 88%;
+                    float: right;
+                    right: 5px;
+                    height: 50px;
+                    border-bottom: solid 1px #ccc;
+
+                    .Avatar{
+                      margin: 5px;
+                    }
+                    .ListRowContent{
+                      border-left: none !important;
+                      min-height: none;
+
+                      .ListRowTitle{
+                        height: 49px;
+                        padding-top: 13px;
+                        max-width: 75%;
+
+                        span{
+                          font-family: Arial;
+                          font-size: 13px;
+                          font-weight: normal;
+                          color: #333333;
+                          margin-top: 0px;
+                          margin-left: 0px;
+                        }
+
+                        .ChatStatusLine{
+                          .ListRowStatusIcon{
+                            margin-top: -4px;
+                            margin-left: -2px;
+                          }
+                          .status_message{
+                            margin-top: 1px;
+                            margin-left: -4px;
+                            display: inline;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            width: 80%;
+                          }
+                        }
+                      }
+
+                      .CallStatus{
+                        height: 35px;
+                        width: 35px;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                      }
+                    }
+                    .ListRowStatus{
+                      top: 13px;
+                      right: 0px;
+                    }
+                  }
+
+
+                }
+              }
+            }
+            .TransferResultContacts{
+              overflow: auto;
+              -webkit-flex: 1 0 0;
+              flex: 1 0 0;
+
+              .TransferContactsContainer{
+                margin-left: 20px;
+                margin-right: 20px;
+
+                &.FilteredDown{
+                  margin-right: 30px;
+                }
+
+                .ListRow{
+                  width: 96%;
+                  margin-left: 25px;
+
+                  .Avatar{
+                    margin: 5px;
+                  }
+                  .ListRowContent{
+                    border-left: none !important;
+                    min-height: none;
+
+                    .ListRowTitle{
+                      height: 49px;
+                      padding-top: 11px;
+                      max-width: 75%;
+
+                      span{
+                        font-family: Arial;
+                        font-size: 13px;
+                        color: #333333;
+                      }
+
+                      .ChatStatusLine{
+                        .ListRowStatusIcon{
+                          margin-top: -4px;
+                          margin-left: -2px;
+                        }
+                        .status_message{
+                          font-size: 11px;
+                          font-family: Arial;
+                          margin-top: 1px;
+                          margin-left: -4px;
+                          display: inline;
+                          text-overflow: ellipsis;
+                          white-space: nowrap;
+                          overflow: hidden;
+                          width: 80%;
+                        }
+                      }
+                    }
+
+                    .CallStatus{
+                      height: 35px;
+                      width: 35px;
+                      margin-top: 6px;
+                      margin-right: 10px;
+                    }
+                  }
+                  .ListRowStatus{
+                    top: 9px;
+                    right: 0px;
+                  }
+                }
+              }
+            }
+
+            .TransferButtons{
+              display: -webkit-flex;
+              display: flex;
+              display: -ms-flexbox;
+              -webkit-justify-content: space-around;
+              justify-content: space-around;
+              // margin-top: 5px;
+              // margin-bottom: -5px;
+              font-size: 10px;
+
+              .CurrentCallBtn{
+                flex: 1 1 0;
+                -webkit-flex: 1 1 0;
+                -moz-webkit-flex: 1 1 0;
+                -ms-webkit-flex: 1 1 0;
+                -o-webkit-flex: 1 1 0;
+                max-width: 100px !important;
+                height: 25px;
+
+                &.ColdTransfer{
+                  left: 25px;
+                }
+
+                &.CompleteTransfer{
+                  &.CompleteTransferFinal{
+                    max-width: 120px !important;
+                  }
+                }
+
+                &.ToVoicemail{
+                  right: 25px;
+                }
+              }
+            }
+
+            .CancelSection{
+              display: -webkit-flex;
+              display: flex;
+              display: -ms-flexbox;
+              justify-content: center;
+
+              span{
+                font-size: 11px;
+                // font-weight: bold;
+                cursor: pointer;
+                color: #015D73;
+              }
+            }
+
+          }
+
+        }
+			& + .RecentCallSection {
+			  flex: 1 1 0;
+			  -webkit-flex: 1 1 0;
+			  -ms-flex: 1;
+			  overflow: auto;
+			  min-width: 0;
+              min-height: 0;
+			}
+
+            .LeftSide{
+                width: 50%;
+                margin-bottom: -5px;
+
+                .Dialog-settings-row{
+                    margin: 5px;
+
+                    input[type=range]{
+                        width: 70%;
+                        margin-bottom: -8px;
+                    }
+                    .XButtonToggleSmall{
+                        margin-top: 0;
+                        vertical-align: top;
+
+                        &.XIcon24-MuteOff:hover{
+                            background: url(../img/XIconSet-24x24.png) no-repeat 0px 0px;
+                        }
+                        &.XIcon24-MuteOn:hover{
+                            background: url(../img/XIconSet-24x24.png) no-repeat -24px 0px;
+                        }
+                        &.XIcon24-Speaker-Off:hover{
+                            background: url(../img/XIconSet-24x24.png) no-repeat -48px 0px;
+                        }
+                        &.XIcon24-Speaker-On:hover{
+                            background: url(../img/XIconSet-24x24.png) no-repeat -120px 0px;
+                        }
+                    }
+                }
+
+                .ListRowTitle{
+                  width: 60%;
+                  max-width: none;
+
+                  &.ListRowTitleName{
+                    width: 100%;
+                  }
+
+                  & > div{
+                    float: left;
+                    margin-left: -5px;
+                    clear: both;
+                  }
+                }
+
+                .name{
+                  margin-left: 0px;
+                  margin-top: 5px;
+                  clear: none;
+                  width: 100%;
+                  max-width: none;
+
+                  strong{
+                    font-size: 14px;
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    overflow: hidden;
+                  }
+                }
+                .ListRowStatus{
+                    margin-left: 5px;
+                    margin-top: 5px;
+
+                    .ListRowStatusIcon{
+                       margin-left: 0px;
+                       .last{
+                        margin-left: -5px;
+                       }
+                    }
+                    .phone{
+                        margin-right: 5px;
+                        display: inline-block;
+                        margin-left: 5px;
+                        float: left;
+                    }
+                }
+                .Avatar{
+                  margin-top: 8px;
+                }
+            }
+            .RightSide{
+                width: 50%;
+                padding-top: 5px;
+                margin-bottom: -5px;
+
+                .row_buttons{
+                    width: 100%;
+                    float: left;
+                    min-height: 40px;
+                    position: relative;
+                    padding: 5px 0;
+                    vertical-align: top;
+                    margin: 0;
+
+                    .XButton{
+                       min-width: 74px;
+                       height: 24px;
+                       float: left;
+                       clear: none;
+                       font-size: 12px;
+                       display: inline-block;
+                       margin-right: 5px;
+
+                       &.talk{
+                        border: 1px solid #FF8E29;
+                       }
+                       &.dial{
+                        margin-top: 0;
+                       }
+
+                       &.CurrentCallBtn{margin:0px 5px 0px 0px;}
+                    }
+                    .record{
+                      top: 0px;
+                    }
+                    .SelectBox{
+                        top: 0px;
+                    }
+                    .CurrentCallBtnLong{
+                        width: 154px !important;
+                        margin: 0 0 0 40px;
+                    }
+
+                }
+            }
+       }
+    }
+
+
+
+}
+
+.MeInfoBlock {
+  margin-left:5px;
+  vertical-align: top;
+  /*width: 79.5%;*/
+  float: left;
+  clear: none;
+
+}
+.MeInfoBlock-column {
+  display:inline-block;
+  vertical-align: top;
+  width: 180px;
+
+  &:nth-child(1)
+  {
+    float: left;
+
+    .MeInfoTitle{margin-left: 5px;}
+  }
+
+  &:nth-child(2)
+  {
+    float: right;
+
+    .LeftBarMeCustomStatusSection{
+        position: relative;
+        height: 33px;
+        width: 180px;
+        margin-bottom: 5px;
+
+        textarea{
+            padding: 2px;
+            margin: 0px;
+            height: 33px;
+            width: 182px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    }
+  }
+  .MenuItem{
+    font-weight: bold;
+
+    &:hover{
+      background-color: transparent !important;
+      color: #555450;
+      text-shadow: 0 -1px 0 #555450;
+    }
+    &.selected{
+        color: #729C00 !important;
+        &:hover{
+            text-shadow: 0 -1px 0 #729C00 !important;
+        }
+    }
+  }
+  
+  &.Unregistered {
+	  .asterisk {
+		  display: block;
+	  }
+	  
+	  .SelectBox {
+		  border: 1px solid #ff0000;
+	  }
+  }
+  
+  .asterisk {
+	  display: none;
+	  position: absolute;
+	  color: #555450;
+	  font-size: 11px;
+	  margin-top: 2px;
+  }
+}
+.MeInfoTitle {
+  color: #999;
+  font-weight: bold;
+  font-size: 9px;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+.DialogHolder {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 2000;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.DialogAlign {
+  width: 90%;
+  max-width: 1000px;
+}
+.DialogSettingWLInput{
+  width:98%;
+}
+
+.DialogSettingInput{
+  width: 70%;
+  border:solid 1px #C7C7C7;
+  -webkit-user-select:text;
+  border-radius:3px;
+  -foz-border-radius:3px;
+  outline:none;
+  padding-left:12px;
+}
+
+.Dialog {
+  position: relative;
+  width: 836px;
+  margin-top: -1px;
+  margin-left: auto;
+  min-height: 500px;
+  z-index: 2000;
+  background-color: #F9F9F9;
+  border: solid 1px #333;
+  box-shadow: 0 0 100px rgba(0,0,0,0.7);
+}
+
+.DialogHeader {
+  position: absolute;
+  height: 60px;
+  left: 18px;
+  right: 18px;
+  z-index: 1;
+}
+.DialogHeaderBorder
+{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+  border-top: solid 1px #aaa;
+  border-bottom: solid 1px #fff;
+}
+.DialogHeaderIcon {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  background: url("../img/XApp-Icons.png") no-repeat -0px -0px;
+}
+.DialogHeaderTitle {
+  position:absolute;
+  left: 60px;
+  top: 10px;
+  right: 30px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 40px;
+  color: #777;
+  text-shadow: 0 1px 0 #fff;
+  letter-spacing: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.DialogHeaderTitle .name
+{
+  color: #729c00;
+  font-weight: bold;
+}
+.DialogClose
+{
+  position: absolute;
+  top: 18px;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  border: solid 1px #999;
+  border-radius: 2px;
+}
+.DialogClose .DialogCloseIcon
+{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: url("../img/XIconSet-24x24.png") -24px -24px;
+}
+.DialogContent
+{
+  position: absolute;
+  top: 68px;
+  left: 18px;
+  right: 18px;
+  bottom: 78px;
+}
+
+.DialogBottom
+{
+  position: absolute;
+  left: 18px;
+  right:8px;
+  bottom: 0;
+  height: 80px;
+}
+.DialogButtons
+{
+  margin-right: 0;
+  margin-top: 20px;
+}
+.DialogError
+{
+  position: absolute;
+  left: 10px;
+  right: 100px;
+  top: 22px;
+  color: red;
+  max-width: 200px;
+  border: solid 1px #f00;
+  border-radius: 6px;
+  padding:0 10px;
+}
+
+.DialogError .inner
+{
+  line-height: 16px;
+  position: relative;
+  margin: 6px;
+  vertical-align: middle;
+}
+
+.DialogErrorArrow
+{
+  position: absolute;
+  top:-22px;
+  left: 30px;
+  border: solid 11px;
+  border-color: transparent transparent #f00 transparent;
+}
+.DialogSuggestion
+{
+  position: relative;
+  margin-left: 10px;
+}
+.DialogSuggestion .ListSectionHeaderTitle
+{
+  position: absolute;
+  top: 15px;
+}
+.DialogSuggestion .Link
+{
+  position: absolute;
+  top: 40px;
+  color: #999;
+  text-decoration:underline;
+  cursor: pointer;
+}
+.Link
+{
+  text-decoration:underline;
+  cursor: pointer;
+}
+
+.DialogContentCol_21 {
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 10px;
+  width: 380px;
+}
+
+.DialogContentCol_22 {
+  position: absolute;
+  left: 410px;
+  top: 0;
+  bottom: 10px;
+  width: 380px;
+}
+
+.DialogField {
+  position: relative;
+  height: 70px;
+}
+
+.DialogField.small {
+  height: 40px;
+}
+
+.DialogField label {
+  position: absolute;
+  width: 130px;
+  left: 30px;
+  top: 5px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.Dialog-settings-row{
+    &.file-input{
+        padding-bottom: 30px;
+
+        & > label,
+        .Avatar,
+        .XButton
+        {
+             float: left;
+        }
+        .Avatar,
+        .XButton
+        {
+            clear: none;
+        }
+
+        .Avatar{
+            vertical-align: top;
+            margin-top: -4px;
+        }
+        .XButton{
+            margin-left: 10px;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}
+.lblSelect, .SelectBoxSettings{
+    float: left;
+ }
+ .SelectBoxSettings{
+    top: -2px;
+    clear: none;
+    height: 24px;
+    line-height: 24px;
+    overflow: hidden;
+    color: #555555;
+    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+ }
+ input[name='lwa']{
+    margin-left: 0px;
+    vertical-align: bottom;
+    margin-bottom: 0px;
+ }
+ .Dialog-settings-row{
+      margin: 10px 5px;
+      min-height: 26px;
+
+      input[type=text]{
+        position: relative;
+        width: 100%;
+        margin-top: 3px;
+        height: 26px;
+        line-height: 24px;
+        padding-left: 12px;
+        font-size: 12px;
+        border-radius: 3px;
+        color: #333;
+        border: solid 1px #C7C7C7;
+        box-shadow: 0px 0px 1px #ddd inset;
+        user-select: text;
+        -webkit-user-select: text;
+        outline: none;
+        background-color: #fff;
+
+        &.DialogSettingInput{
+            width: 70%;
+        }
+      }
+
+      .Dialog-check-block{
+        font-size: 14px;
+        position: relative;
+        //margin-top: -3px;
+        width: 100%;
+
+        span{float: left;}
+      }
+      &.checkbox-label{
+        clear: both;
+        float: left;
+      }
+      .labels{
+        padding: 0px;
+        label{
+          //margin-left: 3px;
+          font-size: 11px;
+          padding: 0px;
+         input{
+            margin-bottom: 2px;
+            margin-right: 2px;
+            vertical-align: bottom;
+         }
+        }
+      }
+ }
+ .SettingsPanelBlock{
+    position:relative;
+    left:60px;
+    width:80%;
+    height:96.5%;
+    overflow-y: auto;
+
+    .SettingsPanel{
+      width:95%;
+      float:right;
+      margin-right:20px;
+    }
+    }
+
+
+
+ .PreferencesSectionTitle{
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:24px;
+    background: none;
+    height: 54px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
+    padding-left:28px;
+    padding-top: 15px;
+    box-shadow: 0px 2px 6px lightgray;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+
+    .material-icons{
+      float:right;
+      margin-right:15px;
+      color:#d2dbe1;
+      font-size:28px;
+      cursor:pointer;
+    }
+ }
+
+ .PreferencesContent{
+    height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top:10px;
+    padding-bottom:20px;
+ }
+
+ .PreferenceSection{
+  background-color:white;
+   border-top:1px solid #D9D9D9;
+   font-family: Helvetica, Arial, sans-serif;
+
+   .ListSectionHeaderTitle{
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-top: 24px;
+   }
+
+   .ListSectionBody{
+    font-size: 16px;
+    margin-bottom: 24px;
+    margin-top: 5px;
+   }
+
+   .material-icons{
+   float: right;
+   font-size: 30px;
+   margin-top: -26px;
+   margin-right: 5px;
+   cursor:pointer;
+   color:#4A4A4A;
+   }
+
+   .material-icons.down{
+   margin-top:14px;
+   color:#4A4A4A;
+   }
+
+   &:hover{
+   background-color:#EEEEEE;
+   }
+
+   
+ }
+
+ .PreferenceSwitch:last-child{
+
+   border-bottom:1px solid #D9D9D9;
+   
+ }
+
+ .PreferencePage{
+  border:none;
+  padding-bottom:20px;
+  padding-left:10px;
+  font-size: 14px;
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: #fff; 
+  box-shadow:none;
+  min-height: 60px;
+
+    .ListSectionHeaderTitle{
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-bottom: 20px;
+   margin-top:24px;
+   margin-left:0;
+   }
+
+   &.DownloadNative{
+      .Row-title{
+        margin-bottom:5px;
+      }
+      .Row-text{
+        width:300px;
+      }
+
+      .Download-button{
+        float: right;
+        position: relative;
+        bottom: 50px;
+        right: 50px;
+        background-color: #00AD33;
+        font-family: Helvetica, Arial, Sans-serif;height: 28px;
+        width: 128px;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+      }
+
+
+   }
+
+   .Dialog-settings-row{
+   width:100%;
+   margin-bottom:20px;
+
+    .fj-hbox.SelectBox.SelectBoxSettings{
+      float:right;
+      height:30px;
+      margin-right: 180px;
+      background:#EEEEEE;
+      background-image:url(../img/doubleArrow.png);
+      background-size: 13px;
+      background-repeat:no-repeat;
+      background-position:173px;
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      -ms-appearance:none;
+
+      &::-ms-expand{
+        display:none;
+      }
+
+
+    }
+
+
+
+
+    .lblSelect{
+    margin-top:12px;
+    }
+
+    .left.h2{
+      font-weight:bold;
+    }
+
+    .right.h2{
+      font-weight:bold;  
+    }
+
+    .left{
+      float: left;
+      font-size:14px;
+      width: 37%;
+    }
+
+    .right{
+      float:left;
+      font-size:14px;
+      width:300px;
+    }
+    
+
+    .labels{
+    float:right;
+      .labelsCheckbox{
+        list-style: none;
+        margin-top: 15px;
+        margin-right: 60px;
+        padding: 0;
+      }
+    }
+
+    .text.DialogSettingWLInput{
+      width:70%;
+      height:36px;
+    }
+   }
+
+   &:last-child{
+   border-bottom:1px solid #D9D9D9;
+   }
+
+ }
+
+ .PreferencesTabBar{
+    width: 90px;
+    float: left;
+    margin: 0;
+    padding-left: 24px;
+    list-style:none;
+    cursor:pointer;
+
+    .TabLabels{
+      height:30px;
+    }
+    .TabLabels.fj-selected-item{
+    
+      .PrefTabLabel.us{
+        border-radius:5px;
+        background-color:#065976;
+        color:#ffffff;
+      }
+    }
+ }
+
+
+ .PrefTabLabel.us{
+    background-color:#ffffff;
+    width:115px;
+    color: #333333;
+    margin-bottom: 10px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+
+    &:hover{
+    background-color:#065976;
+    color:#ffffff;
+    }
+ }
+
+
+
+ .QueueSection{
+
+   border-bottom:1px solid #D9D9D9;
+   border-top:1px solid #D9D9D9;
+   padding-bottom:24px;
+   font-family: Helvetica, Arial, sans-serif;
+
+
+   .ListSectionHeaderTitle{
+    font-size: 18px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #4A4A4A;
+    margin:24px 0px 24px 0px;
+   }
+  
+ }
+
+ .CPSection{
+
+    font-family: Helvetica, Arial, sans-serif;
+
+   .ListSectionHeaderTitle{
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-top: 24px;
+   }
+
+   .ListSectionBody{
+    font-size: 16px;
+    margin-top: 5px;
+    color: #4A4A4A;
+   }
+
+
+   &:last-child{
+   border-bottom:1px solid #D9D9D9;
+   padding-bottom:24px;
+   }
+
+    &:first-child{
+    border-top:1px solid #D9D9D9;
+    }
+ }
+
+ .CpPage{
+
+  border:none;
+  border-radius:none;
+  padding-left:10px;
+  font-size: .8em;
+  font-size: 14px;
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: #fff; 
+  -webkit-border-radius: none;
+  box-shadow:none;
+  -webkit-box-shadow: none;
+
+    .ListSectionHeaderTitle{
+   font-size:15px;
+   color:#686868;
+   margin-left:0;
+   margin-bottom: 20px;
+   }
+
+   .Dialog-settings-row{
+   width:370px;
+   margin-bottom:20px;
+
+    .fj-hbox.SelectBox.SelectBoxSettings{
+      float:right;
+      height:30px;
+      background:#EEEEEE;
+      background-image:url(../img/doubleArrow.png);
+      background-size: 13px;
+      background-repeat:no-repeat;
+      background-position:173px;
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+
+
+    }
+    .lblSelect{
+    margin-top:10px;
+    }
+   }
+
+
+ }
+
+  .AboutSection{
+    font-family: Helvetica, Arial, sans-serif;
+
+   .ListSectionHeaderTitle{
+   font-size:18px;
+   font-family:Helvetica, Arial, sans-serif;
+   color:#4A4A4A;
+   margin-top: 24px;
+   }
+
+   .ListSectionBody{
+    font-size: 16px;
+    margin-top: 5px;
+   }
+
+
+   &:last-child{
+   border-bottom:1px solid #D9D9D9;
+   padding-bottom:24px;
+   }
+
+    &:first-child{
+    border-top:1px solid #D9D9D9;
+    }
+ }
+
+ .ListSection.general,
+ .ListPage.general{
+    .Dialog-settings-row{
+        clear: both;
+
+        .SelectBoxSettings.fj-hbox{
+            float: left;
+        }
+    }
+
+ }
+
+ .ListSection.queues{
+    .ListPage{
+        padding-top: 10px;
+    }
+ }
+
+ .ListSection.cp{
+    .ListSectionLink{
+        a.Link{
+            font-size: 12px;
+            margin-left: 20px;
+        }
+    }
+ }
+
+.ListSection.launcher,
+.ListPage.launcher{
+   .weblauncher-variables{
+     font-size: 12px;
+     .right{
+            clear: none;
+            width: 60%;
+      }
+      .left{
+        width: 40%;
+      }
+      .left, .right{
+            float: left;
+      }
+   }
+}
+
+.ListPageHeaderText{
+  position: relative;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 10px;
+  top: 5px;
+  color: #0093f0;
+}
+
+input.text.DialogFieldInput {
+  position: absolute;
+  left: 160px;
+  top: 3px;
+  width: 200px;
+}
+
+.queueBlock{
+  float:none;
+  width: 25%;
+  display:inline-block;
+}
+
+.queueBlock.Account{
+  width:22%;
+  float:left;
+
+  & + div{
+  float:left;
+  font-style:italic;
+  font-size:14px;
+  }
+}
+.queueBlock.MyAccount{
+  width:10%;
+  float:left;
+
+  & + div{
+  float:left;
+  font-style:italic;
+  font-size:14px;
+  }
+}
+
+span.inputBlock{
+  //width:300px;
+ // display:inline-block;
+}
+
+input.text{
+  height:24px;
+  border-radius: 3px;
+  border:solid 1px #C7C7C7
+}
+
+
+div.NewCall{
+      width: 100%;
+      background-color: #fff;
+      padding: 10px 0;
+
+      input.NewCall{
+        height: 26px;
+        position: relative;
+        top: 7px;
+        margin-bottom: 4px;
+        left: 10px;
+        width: 77%;
+        border: 1px solid #c2c2c2;
+        border-radius: 2px;
+        padding: 5px 5px;
+      }
+
+      .XButton{
+        height: 26px;
+        float: right;
+        width: 15%;
+        position: relative;
+        margin-left: 0.5em;
+        top: 7px;
+        padding-top: 2px;
+
+        &.XButtonGreen{
+            margin-right: 1em;
+        }
+        &.XButtonNormal{
+            margin-left: 0;
+        }
+      }
+ }
+
+
+/* TODO: rewrite this css */
+
+.Preferences-Holder {
+  height:100%;
+  p{ font-size: 12px; margin-top: 3px; padding: 0px; vertical-align: top;}
+
+  .Dialog-settings-row{
+        margin-left: 0px;
+
+        input[type=checkbox]{
+            margin-bottom: 1px;
+            margin-left: 0px;
+            vertical-align: bottom;
+            height: 15px;
+            width: 15px;
+        }
+  }
+
+  .fj-content-items {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+  }
+  .fj-scroll-content {
+    position: relative;
+  }
+
+  .fj-hbox {
+    -webkit-box-orient: horizontal;
+    display: -webkit-box;
+  }
+  .fj-hbox-cell {
+    -webkit-box-flex: 0;
+    min-width: 0;
+    min-height: 0;
+  }
+  .fj-hbox-space {
+    -webkit-box-flex: 1;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .fj-scrollable .fj-viewport {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: hidden;
+  }
+  .fj-scrollable .fj-scroll {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    width: 10px;
+    right: -10px;
+  }
+  .fj-scrollable-h .fj-scroll-h {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    height: 10px;
+    bottom: -10px;
+  }
+
+  .ListViewTopSpace {
+    height: 9px;
+    width: 100%;
+  }
+
+  .QueueBlockHolder {
+    position: relative;
+    display: inline-block;
+    margin: 0px;
+    width: 160px;
+    height: 140px;
+  }
+  .QueueDetailsEnabled-true .QueueBlockHolder {
+    cursor: pointer;
+  }
+  .QueueBlock {
+    left: 5px;
+    top: 5px;
+    height: 130px;
+    width: 150px;
+    position: relative;
+    border-radius: 6px;
+    border: solid 1px #aaa;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#dcdcdc));
+    transition: all 0.1s linear;
+    -webkit-transition: all 0.1s linear;
+  }
+  .QueueDetailsEnabled-true .QueueBlockHolder:hover .QueueBlock {
+    box-shadow: white 0 -1px 15px inset, #bbbbbb 0 1px 4px 2px, #bbbbbb 0 0 0 1px;
+  }
+  .Avatar .QueueBlockAvatar {
+    left: 6px;
+    top: 6px;
+    cursor: pointer;
+  }
+  .QueueBlockTitle {
+    position: absolute;
+    top: 7px;
+    left: 55px;
+    right: 5px;
+    height: 16px;
+    line-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: #fff 0 1px 0;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    color: #888;
+  }
+  .QueueBlockTitle:hover {
+    color: blue;
+  }
+  .SortField, .QueueBlockTitle.SortField, .QueueBlockStatBlock.SortField {
+    color: #000;
+  }
+  .QueueBlockStatus {
+    position: absolute;
+    top: 27px;
+    left: 55px;
+    right: 1px;
+    height: 25px;
+    line-height: 15px;
+    color: #888;
+    font-size: 11px;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .QueueBlockStatus.Waiting {
+    color: orange;
+  }
+  .QueueBlockStatus.NoWaiting {
+    color: #888;
+  }
+  .QueueBlockStatBlock {
+    width: 30%;
+    display: inline-block;
+    text-align: center;
+    color: #888;
+  }
+  .QueueBlockStatBlockTitle {
+    left: 0px;
+    top: 3px;
+    height: 4px;
+    border-radius: 1px;
+  }
+  .QueueBlockStatLineSlider.Red {
+    background-color: #b32a15;
+    border-color: #b32a15;
+  }
+  .QueueBlockStatLineSlider.Green {
+    background-color: #88a21f;
+    border-color: #88a21f;
+  }
+  .QueueBlockStatLineSlider.Blue {
+    background-color: #226dd2;
+    border-color: #226dd2;
+  }
+
+.table.Queues{
+      width: 99%;
+      border: 1px solid #bbb;
+      border-bottom:3px solid #1E3236;
+      .QueueHeader {
+        width: 100%;
+        border-bottom: solid 1px #E6E8EB;
+        background-color: #ddd;
+        clear: both;
+
+        .QueueSetting.QueueSettingHeader {
+            display: inline-block;
+            test-align: center;
+            color: #666;
+            font-size: 12px;
+            float: left;
+            clear: none;
+            height: 30px;
+            line-height: 24px;
+            white-space: nowrap;
+            text-overflow: clip;
+            overflow: hidden;
+            width: 16.6666%;
+            padding-right: 6px;
+
+            &:first-child{
+              font-weight: bold;
+              font-size: 13px;
+              width: 33.30%;
+              text-align: center;
+            }
+        }
+        &:not(.top){
+          .QueueSetting.QueueSettingHeader {
+            border-bottom: 1px solid #E6E8EB;
+
+             &:nth-child(3){
+                border-right: 1px solid #E6E8EB;
+            }
+          }
+        }
+
+        &.top{
+
+          div:first-child{
+            background-color:#1E3236;
+            border-right:none;
+          }
+
+            .QueueSetting {
+                color: #ffffff;
+                width: 33.333%;
+                &:nth-child(2){
+                        background-color: #1E3236;
+                        padding-top: 5px;
+                }
+                &:nth-child(3){
+                        background-color: #1E3236;
+                        padding-top: 5px;
+                }
+            }
+        }
+      }
+      .queueList{
+        border: solid 1px #eee;
+        border-radius: 3px;
+        position: relative;
+        clear: both;
+
+        .ListRow{
+            min-height: inherit;
+
+            .SettingsListLineContent{
+                width: 100%;
+                .QueueSetting{
+                  height: 32px;
+                  padding-top: 6px;
+                  background-color: #f9f9f9;
+                  display: inline-block;
+                  float: left;
+                  line-height: 24px;
+                  white-space: nowrap;
+                  text-overflow: clip;
+                  overflow: hidden;
+                  width: 16.66%;
+                  text-align: center;
+                  font-size: 12px;
+                  padding-right: 6px;
+
+                  &:first-child{
+                    text-align: center;
+                    border-right: 1px solid #E6E8EB;
+                    width: 33.2%;
+                  }
+                  &:nth-child(2),
+                  &:nth-child(3){
+                    padding-left: 1px;
+                  }
+                  &:nth-child(3){
+                    border-right: 1px solid #E6E8EB;
+                    width: 17%;
+                  }
+                  &:nth-child(5){
+                    width: 16.48%;
+                  }
+                }
+            }
+
+            &:nth-child(even){
+                .SettingsListLineContent .QueueSetting{
+                    background-color: #ECEEF2;
+                }
+            }
+            &:nth-child(odd){
+                .SettingsListLineContent .QueueSetting{
+                    background-color: #ffffff;
+                }
+            }
+          }
+       }
+}
+  .QueueSetting {
+    display: inline-block;
+    test-align: center;
+  }
+
+  .QueueSettingCol1 {
+    width: 20%;
+    overflow: auto;
+    margin: auto;
+    text-align: center;
+
+    &:nth-of-type(1) {
+       border-right: 1px solid #E6E8EB;
+       }
+  }
+ 
+
+  .QueueSettingHeader {
+    width: 155px;
+    text-align: center;
+    color: #0093f0;
+
+  }
+
+  .secondRow{
+    height: 65px !important;
+    padding-top: 15px;
+    background-color: #ECEEF2;
+  }
+
+  .QueueSettingCheckBox {
+    width: 77px;
+    text-align: center;
+    font-size: .6em;
+  }
+
+  .WidgetTabContent.QueueStatTab {
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .WidgetTabContent.myStatus{top: -5px;}
+
+  .WidgetTabQueueStatArea {
+    height: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 3px;
+    position: relative;
+  }
+
+  .WidgetTabQueueStatArea {
+    height: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 3px;
+    position: relative;
+  }
+  .WidgetTabQueueStatBlock {
+    position: relative;
+    height: 50px;
+    width: 78px;
+  }
+  .WidgetTabQueueStatBlockDelimiter {
+    position: relative;
+    height: 28px;
+    margin-top: 10px;
+    width: 0px;
+    border-left: solid 1px #999;
+    border-right: solid 1px #fff;
+  }
+  .WidgetTabQueueStatBlockText {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 8px;
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+  }
+  .WidgetTabQueueStatBlockValue, .WidgetTabQueueStatBlockValueNormal {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 24px;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+  }
+  .WidgetTabQueueStatBlockValue.Alert {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 24px;
+    font-size: 16px;
+    color: red;
+    text-align: center;
+  }
+
+  .ListLineDetails .OtherQueuesStat {
+    margin-left: 25px;
+    margin-right: 24px;
+  }
+  .ListLineDetails .ListViewIsEmpty {
+    position: relative;
+    font-size: 12px;
+  }
+  .ListLineDetails .QueueAgentCall {
+    margin-left: 25px;
+    margin-right: 24px;
+    position: relative;
+    height: 50px;
+  }
+  .ListLineDetails .QueueCallerInfo {
+    border: 1px solid #555;
+    border-radius: 18px 0 0 18px;
+    height: 35px;
+    position: absolute;
+    left: 0;
+    right: 40px;
+  }
+  .ListLineDetails .QueueAgentDetails {
+    margin: 5px;
+    font-weight: bold;
+  }
+  .ListLineDetails .QueueCallerInfo .QueueCallerName {
+    left: 45px;
+    top: 10px;
+    position: absolute;
+  }
+  .ListLineDetails .QueueCallerInfo .QueueCallDuration {
+    right: 5px;
+    top: 10px;
+    position: absolute;
+  }
+  .ListLineDetails .QueueCallerInfo .QueueCallArrowGray {
+    height: 0px;
+    width: 0px;
+    right: -12px;
+    top: 10px;
+    position: absolute;
+    border-style: solid;
+    border-width: 6px;
+    border-color: transparent transparent transparent #555;
+  }
+  .ListLineDetails .QueueCallerInfo .QueueCallArrowWhite {
+    height: 0px;
+    width: 0px;
+    right: -10px;
+    top: 11px;
+    position: absolute;
+    border-style: solid;
+    border-width: 5px;
+    border-color: transparent transparent transparent white;
+  }
+  .ListLineDetails .QueueCallerInfo .Avatar {
+    top: 3px;
+    left: 3px;
+  }
+  .ListLineDetails .QueueAgentAvatar.Avatar {
+    left: auto;
+    right: 0;
+  }
+  .ListLine .Avatar {
+    position: absolute;
+    left: 0px;
+    top: 4px;
+  }
+
+  .ListLineExpanded {
+    height: auto;
+  }
+
+  .ListRow.Small .CallButton {
+    width: 60px;
+  }
+  .ListRow.Small .CallButton span {
+    top: 1px;
+  }
+  .ListRowQueueCall {
+    position: relative;
+    height: 36px;
+    margin: 0px;
+    margin-bottom: 4px;
+    width: 100%;
+    display: block;
+    cursor: default;
+    background-color: #fff;
+  }
+  .ListRowQueueCallContent {
+    background-color: #fff;
+    border-radius: 2px;
+    border-top-left-radius: 16px;
+    -webkit-border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    -webkit-border-bottom-left-radius: 16px;
+    border: solid 1px #999;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    cursor: pointer;
+  }
+  .ListRowQueueCallContent.WithAgent-true {
+    right: 165px;
+  }
+  .ListRowQueueCallContent:hover {
+    border-color: #666;
+  }
+  .ListRowQueueCallContentArrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: -17px;
+    top: 8px;
+    border-style: solid;
+    border-width: 8px;
+    border-color: transparent transparent transparent #999;
+  }
+  .ListRowQueueCallContent:hover .ListRowQueueCallContentArrow {
+    border-color: transparent transparent transparent #666;
+  }
+  .ListRowQueueCallContentArrow2 {
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: -16px;
+    top: 8px;
+    border-style: solid;
+    border-width: 8px;
+    border-color: transparent transparent transparent #fff;
+  }
+  .ListRowQueueCallContent .Avatar {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+  }
+  .ListRowQueueCallContentTitle {
+    position: absolute;
+    left: 40px;
+    top: 0px;
+    height: 34px;
+    line-height: 34px;
+    right: 10px;
+  }
+  .ListRowQueueCallContentTitle .Name {
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .ListRowQueueCallContentTitle .Duration {
+    font-size: 10px;
+    font-weight: bold;
+    color: #666;
+  }
+  .ListRowQueueAgentContent {
+    position: absolute;
+    width: 150px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    background-color: #fff;
+    border-radius: 2px;
+    border: solid 1px #999;
+    cursor: pointer;
+  }
+  .ListRowQueueAgentContent:hover {
+    border: solid 1px #666;
+  }
+  .ListRowQueueAgentContent .Avatar {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+  }
+
+  .ListLineContent.RecentStat,
+  .ListLineContent.RecentStat:hover {
+    position: relative;
+    height: 20px;
+    line-height: 20px;
+    width: 100%;
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+    background-color: #f9f9f9;
+    cursor: default;
+  }
+
+  .ListLineContentCell {
+    float: none;
+  }
+
+  .ListLineContentCell.Status {
+    width: 24px;
+    text-align: center;
+    border-right: solid 1px #fff;
+  }
+  .ListLineContentCell.Name {
+    width: 24px;
+    margin-left: 4px;
+    border-right: solid 1px #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ListLineContentCell.Duration {
+    width: 105px;
+    padding-left: 4px;
+    border-right: solid 1px #fff;
+  }
+  .ListLineContentCell.Calls {
+    width: 55px;
+    padding-left: 4px;
+    border-right: solid 1px #fff;
+  }
+  .ListLineContentCell.AvgTalk {
+    width: 55px;
+    padding-left: 4px;
+    border-right: solid 1px #fff;
+  }
+  .ListLineContentCell.Twistie {
+    position: relative;
+    width: 24px;
+  }
+  .ListLineContentCell.AvgWaiting {
+    width: 60px;
+    padding-left: 4px;
+    border-right: solid 1px #fff;
+  }
+  .ListLineContentCell.Number {
+    width: 52px;
+    padding-left: 4px;
+    border-right: solid 1px #fff;
+  }
+  .ListLineContentCell.Twistie .TwistieArrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: 5px;
+    top: 7px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: transparent transparent transparent #999;
+  }
+  .ListLineExpanded .ListLineContentCell.Twistie .TwistieArrow {
+    right: 7px;
+    top: 11px;
+    border-color: #999 transparent transparent transparent;
+  }
+
+  .ListLineContent.Header .ListLineContentCell {
+    color: #666;
+    padding-top: 4px;
+    font-size: 11px;
+    font-size: .563em;
+    display: block;
+    text-transform: uppercase;
+  }
+  .ListView {
+    font-size: .9em;
+  }
+  .ListView.WithStatBar {
+    top: 95px;
+    left: 10px;
+  }
+  .ListView.WithStatBar:after {
+    display: none;
+  }
+  .ListLineDetails {
+    position: relative;
+    width: 100%;
+    display: none;
+    background-color: #fff;
+    padding-bottom: 10px;
+  }
+  .ListLineDetailsBorder {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 5px;
+    font-size: 8px;
+  }
+  .QueueBlockStatBlockValue {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .QueueBlockStatBlock.Red {
+    font-weight: bold;
+    color: red;
+  }
+  .XButton.QueueViewButton {
+    width: 25px;
+  }
+  .QueueViewIcon {
+    height: 20px;
+    width: 20px;
+    top: 3px;
+    left: 4px;
+    position: absolute;
+  }
+  .QueueTileView {
+    background: url("../img/QueueTileView.png") no-repeat 0px 0px;
+  }
+  .QueueListView {
+    background: url("../img/QueueListView.png") no-repeat 0px 0px;
+  }
+  .QueueBlockAgentsStatLine {
+    position: absolute;
+    left: 49px;
+    right: 5px;
+    height: 18px;
+    line-height: 18px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 10px;
+    border-radius: 6px;
+    text-align: center;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
+  }
+  .QueueBlockStat {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    right: 0px;
+    border-bottom: solid 1px #ccc;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), color-stop(0.3, #e2e2e2), to(#eeeeee));
+  }
+  .QueueBlockStatInner {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 0px;
+  }
+  .QueueBlockStatLine {
+    position: relative;
+    height: 12px;
+  }
+  .QueueBlockStatLineLabel {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 45px;
+    height: 16px;
+    line-height: 16px;
+    color: #333;
+    font-size: 10px;
+    font-weight: bold;
+    overflow: hidden;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .QueueBlockStatLineValue {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 16px;
+    line-height: 16px;
+    color: #555;
+    font-size: 10px;
+    font-weight: bold;
+    overflow: hidden;
+    text-align: left;
+    white-space: nowrap;
+    margin-left: 10px;
+  }
+  .QueueBlockStatLineBg {
+    position: absolute;
+    left: 50px;
+    right: 0px;
+    top: 3px;
+    height: 8px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#fff));
+    border-radius: 1px;
+  }
+  .QueueBlockStatLineSlider {
+    position: absolute;
+    border: dashed 1px rgb(193, 204, 218);
+    border-top: none;
+  }
+  .ListLineExpanded .ListLineDetails {
+    display: block;
+    position: relative;
+  }
+  .ListLineDetails .OtherQueuesStat {
+    margin-left: 25px;
+    margin-right: 24px;
+  }
+  .ListLineDetails .ListViewIsEmpty {
+    position: relative;
+    font-size: 12px;
+  }
+  .ListLineDetails .QueueAgentCall {
+    margin-left: 25px;
+    margin-right: 24px;
+    position: relative;
+    height: 50px;
+  }
+  .ListLineDetails .QueueCallerInfo {
+    border: 1px solid #555;
+    border-radius: 18px 0 0 18px;
+    height: 35px;
+    position: absolute;
+    left: 0;
+    right: 40px;
+  }
+  .ListLineDetails .QueueAgentDetails {
+    margin: 5px;
+    font-weight: bold;
+  }
+  .ListLineDetails .QueueCallerInfo .QueueCallerName {
+    left: 45px;
+    top: 10px;
+    position: absolute;
+  }
+  .ListLineDetails .QueueCallerInfo .QueueCallDuration {
+    right: 5px;
+    top: 10px;
+    position: absolute;
+  }
+  .ListLineDetails .QueueCallerInfo .QueueCallArrowGray {
+    height: 0px;
+    width: 0px;
+    right: -12px;
+    top: 10px;
+    position: absolute;
+    border-style: solid;
+    border-width: 6px;
+    border-color: transparent transparent transparent #555;
+  }
+  .ListLineDetails .QueueCallerInfo .QueueCallArrowWhite {
+    height: 0px;
+    width: 0px;
+    right: -10px;
+    top: 11px;
+    position: absolute;
+    border-style: solid;
+    border-width: 5px;
+    border-color: transparent transparent transparent white;
+  }
+  .ListLineDetails .QueueCallerInfo .Avatar {
+    top: 3px;
+    left: 3px;
+  }
+  .ListLineDetails .QueueAgentAvatar.Avatar {
+    left: auto;
+    right: 0;
+  }
+  .ListLine .Avatar {
+    position: absolute;
+    left: 0px;
+    top: 4px;
+  }
+
+  .SortHeader {
+    display: flex;
+	display: -webkit-flex;
+	min-width: 0;
+    min-height: 0;
+  }
+
+  .SortButton {
+    width: 150px;
+  }
+
+  .OtherQueueLine {
+    display: flex;
+	display: -webkit-flex;
+	min-width: 0;
+    min-height: 0;
+  }
+
+  .QueueButtonToggle {
+    width: 28px;
+    height: 28px;
+  }
+
+  .WidgetStatEntry .Label {
+    width: 75px;
+    display: block;
+  }
+  .WidgetStatEntry .Value {
+    width: 75px;
+    display: inline-block;
+  }
+
+}

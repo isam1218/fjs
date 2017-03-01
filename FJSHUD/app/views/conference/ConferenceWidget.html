@@ -1,0 +1,44 @@
+<div class="fj-widget-area Widget Conversation conference" droppable="Contact,Call">
+    <div class="WidgetHeader">
+        <avatar profile="conference"></avatar>
+		
+        <div class="WidgetHeaderTitle Single">{{ ::conference.name}}</div>
+        <div class="WidgetHeaderSubTitle">{{ conference.members.length > 0 ? conference.members.length + ' ' + verbage.members_on_call : verbage.free_room }}</div>
+		
+        <div class="WidgetStat" ng-if="conference.members.length > 0">
+			<div class="Left">
+				<div class="Labels">
+					<div>{{::verbage.duration}}:</div>
+					<div>Recording:</div>
+				</div>
+				<div class="Data">
+					<div timer="conference.status.started"></div>
+					<div style="color:red" ng-if="conference.status.recorded" timer="conference.status.recordedStartTime"></div>
+					<div ng-if="!conference.status.recorded">00:00</div>
+				</div>
+			</div>
+        </div>
+    </div>
+    <div class="WidgetBody" ng-switch="selected">
+		<div class="WidgetTabBar">
+            <span ng-repeat="tab in tabs | filter: tabFilter()">
+                <a href="#/conference/{{ ::conferenceId + '/' +  tab.lower}}" ng-click="saveConfTab(tab.lower, $index)" class="WidgetTabBarButton Ready" ng-class="{'fj-selected-item' : toggleObject.item == $index}">
+                    <div class="inner">{{::tab.upper}}</div>
+                    <div class="arrow"></div>
+                </a>
+            </span>
+        </div>
+
+        <!-- ng-views -->
+        <div ng-switch-when="chat" class="ListView ChatView WithToolBar" include-once="views/ChatView.html" flow-init
+        flow-name="upload.flow" flow-files-added="uploadAttachments($files)" flow-drop flow-files-submitted="flow_cleanup($files)"
+        ng-controller="ChatController"
+        ></div>
+        <div ng-switch-when="currentcall" class="fj-content WidgetTabContent conference currentCall" include-once="views/conference/CurrentCall.html"
+        ></div>
+        <div ng-switch-when="recordings" class="fj-content WidgetTabContent" include-once="views/Recordings.html" ng-controller="RecordingsController"></div>
+        
+    </div>
+
+   
+</div>

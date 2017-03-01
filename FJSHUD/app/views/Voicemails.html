@@ -1,0 +1,64 @@
+<div class="ToolBar">
+	<input type="search" ng-model-options="{debounce: 200}" class="SearchBox" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="vm.query" />
+    <div class="SelectBox selectWrapper vm">
+        <select ng-model="selectedVoice" ng-options="voice_option.display_name for voice_option in voice_options track by voice_option.display_name" ng-change="sortBy(selectedVoice)">
+        </select>	        
+    </div>
+    <div class="SelectBox selectWrapper vm">    
+        <select class="HideFirst" ng-model="actionObj.selectedAction" ng-options = "action.display_name for action in actions track by action.display_name" ng-change="handleVoiceMailAction(actionObj.selectedAction.type)">
+            <option>{{::verbage.action}}</option>
+        </select>	        
+    </div>    
+</div>
+
+<div class="ListView VMList"> 
+    <div class="NotAny" ng-if="voicemails.length == 0"> 
+        <div> {{::verbage.no_voicemails}} </div> 
+        <div> {{::verbage.no_voicemails_between}} <span ng-bind-html="::emptyVoiceLabel"></span></div>
+    </div>
+	
+	<div class="Voicemail" 
+		ng-repeat="voicemail in voicemails | filter: voiceFilter() | SortVoiceMail:selectedVoice.type:selectedVoice.desc track by voicemail.xpid" 
+		ng-class="{'read': voicemail.readStatus}"
+		ng-switch="vm.opened == voicemail.xpid"
+		ng-click="vm.opened = voicemail.xpid">
+		
+		<div class="material-icons">voicemail</div>
+		
+		<div class="body">
+			<div class="info">
+				<div class="data">
+					<div class="name" ng-bind-html="::voicemail.displayName"></div>
+					<div class="number" ng-bind-html="::getNumber(voicemail)"></div>
+				</div>
+				<div class="time">
+					<div class="date">{{ ::voicemail.date | fondate: 'full' }}</div>
+					<div class="duration" ng-switch-when="false">{{ ::voicemail.duration | duration }}</div>
+				</div>
+			</div>
+			
+			<div class="details">
+				<div class="transcription" ng-switch-when="false">
+					{{ voicemail.transcription != "" ? shortenText(voicemail.transcription) : verbage.no_transcriptions }}
+				</div>
+				<div class="transcription" ng-switch-when="true">
+					{{ voicemail.transcription != "" ? voicemail.transcription : verbage.no_transcriptions }}
+				</div>
+				
+				<div class="actions" ng-switch-when="true">
+					<player data="voicemail"></player>
+					
+					<div class="buttons">
+						<span class="material-icons" title="Call" ng-click="callExtension(voicemail)">call</span>
+						<a class="material-icons" title="Chat" ng-href="#contact/{{::voicemail.fullProfile.xpid}}/chat" ng-if="::voicemail.fullProfile.primaryExtension">chat</a>
+						<span class="material-icons" title="Download" ng-click="downloadFile(voicemail)">file_download</span>
+						<span class="vm material-icons" title="Mark as {{ voicemail.readStatus ? 'unread' : 'read' }}" ng-click="updateStatus(voicemail)">voicemail</span>
+						<span class="material-icons" title="Delete" ng-click="deleteFile(voicemail)">delete</span>
+					</div>
+				</div>
+			</div>
+			
+			<div ng-switch-when="false" class="more material-icons">more_horiz</div>
+		</div>
+   </div> 
+</div>

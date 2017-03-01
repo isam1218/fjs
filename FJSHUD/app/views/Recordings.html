@@ -1,0 +1,43 @@
+<div class="ToolBar" >
+	<input type="search" ng-model-options="{debounce: 200}" class="SearchBox recording" ng-attr-placeholder="{{::verbage.search}}" data-ng-model="rec.query" />
+</div>
+
+<div class="ListView VMList"> 
+	<div>
+		<img src="img/XLoading.gif" class="Loading" ng-show="loading" />
+	
+		<div class="Voicemail" 
+			ng-repeat="recording in recordings | filter: customFilter() | orderBy: 'created': true track by recording.xpid"
+			ng-switch="rec.opened == recording.xpid"
+			ng-click="rec.opened = recording.xpid">
+		
+			<div class="material-icons">mic</div>
+			
+			<div class="body recording">
+				<div class="info">
+					<div class="data">
+						<div class="name" ng-bind-html="::recording.fullProfile.displayName || recording.fullProfile.name || recording.calleePhone"></div>
+					</div>
+					<div class="time">
+						<div class="date">{{ ::recording.created | fondate: 'full' }}</div>
+						<div class="duration" ng-switch-when="false">{{ ::recording.duration | duration }}</div>
+					</div>
+				</div>
+				
+				<div class="details">					
+					<div class="actions" ng-switch-when="true">
+						<player data="recording"></player>
+						
+						<div class="buttons">
+							<span ng-if="!hideQueueRecordingCallBackButton" ng-hide="recording.fullProfile.info" class="material-icons" title="Call" ng-click="callNumber(recording)">call</span>
+							<span class="material-icons" title="Download" ng-click="downloadFile(recording)">file_download</span>
+							<span class="material-icons" title="Delete" ng-click="deleteFile(recording)">delete</span>
+						</div>
+					</div>
+				</div>
+				
+				<div ng-switch-when="false" class="more material-icons">more_horiz</div>
+			</div>
+	   </div> 
+	</div>
+</div>

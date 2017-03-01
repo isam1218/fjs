@@ -1,0 +1,283 @@
+.Conference {
+  .ToolBar{
+   .XButton {        
+        width: 34.8%;
+    }
+    select.XButton {padding: 5px 0px;}
+    .SearchBox {width: 27%;}  
+    
+    input[type=button],   
+    .selectWrapper.conf{        
+        height: 30px !important;
+        width: 150px !important;       
+        font-size: 11px;
+        font-weight: bold;
+        font-color: #333;
+     }             
+ }
+ @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  	
+ }
+ .XButton.joinConference{
+    float:right; 
+    margin-top:5px; 
+    margin-right:5px;
+ } 
+    .ListRow{
+    min-height: 50px;
+    max-height: none;
+    height: auto;
+
+    .ListRowContent{
+        min-height: 50px;
+        max-height: none;
+        height: auto;  
+        
+        .Avatar.CallAvatar_Office{
+            margin: auto !important;
+        }                 
+    }
+    .ListConferenceStatusIcon{
+        margin: 0 -3px -3px 0px;
+        vertical-align: bottom;
+    } 
+    
+    .ListRowTitle{
+        & > div:not(.name) {
+            margin-top: 3px;
+        } 
+    }   
+  }
+ 
+  .ListViewTopNoteClose{top: 30%;}
+  .ListViewTopNote{font-size: 12px;}
+
+  .WidgetStat{
+    width: 200px;
+  }
+
+  .WidgetBody{
+    .ListRowTitle{
+      margin-top: .1em;
+    }
+    .ListRowTitle > div{
+      margin-top: 0px !important;
+    }
+    .ListRowStatus{
+      margin-top: .5em;
+    }
+  }
+
+}
+
+.conference.currentCall{
+    .ListRowTitle{
+        max-width: 100%;
+        float: none;
+        padding: .3em !important;
+        display: flex;
+        display: -webkit-flex;
+        min-width: 0;     
+        min-height: 0; 
+        .name {
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;   
+          }
+        .vmtime{
+          font-weight: bold;
+          font-size: 11px;
+          color: #222;
+        }
+      .ListRowStatusLeftSide{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;    
+      }
+      .ListRowStatusLeftSideNoJoin{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 55%;
+      }
+    }
+}
+.ListViewTopNote {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #FFE;
+  border: solid 1px #EEE;  
+  height: 50px;
+  border-radius: 3px;
+  
+  .XButton.joinConference{
+    float: right;
+    font-size: 11px;
+    width: 55px;
+    height: 26px;
+    margin: 10px;
+  }
+  
+  span{
+    font-size:12px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 40px;
+  }   
+}
+.ConferenceMembers{
+    margin-top: 30px;
+}
+ .searchboxWrapper{
+    position:relative;   
+    
+    .SearchBox.Add{
+        width: 160px !important;
+        height: 30px !important;
+    } 
+ }
+ 
+.Conference-HeaderTitle{
+  color: #0093f0;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 18px;
+  width: auto;
+  text-transform: uppercase;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ConferenceMembers{
+    .Conference-HeaderTitle{margin-left: 0px;}
+}
+
+.ListViewTopNoteClose {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: url("../img/XIconSet-24x24.png") -24px -24px;
+  cursor: pointer;
+}
+
+.ListRow-Conference-Members {
+  clear: both;
+  position: relative;  
+}
+
+.conferences-room-item-member {
+  width: 62px;
+  display: inline-block;
+  position: relative;
+  height: 60px;
+  border: solid 1px #EEE;
+  border-radius: 3px;
+  margin-left: 6px;
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+  background-color: #FAFAFA;
+}
+
+.ListRow .conferences-room-item-member .Avatar {
+  position: absolute;
+  margin:0;
+  left: 15px;
+  top: 8px;
+}
+
+.conferences-room-item-member .first-name {
+  position: absolute;
+  top: 45px;
+  left: 5px;
+  right: 5px;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  color: gray;
+}
+
+.ConferenceMembersInput{
+  position: absolute;
+  margin: 0px;
+left: 0px;
+top: 0px;
+width: 100%;
+height: 18px;
+border: none;
+color: #729c00;
+}
+.TabWarning{
+  position: relative;
+  background-color: #ffffc0;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffd0), to(#ffffc0));
+  height: 84px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 2px #999 inset;
+  font-size:12px;
+  .TabWarningHeader{
+    position: relative;
+    margin: 0 10px;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    color: #555;
+    border-bottom: solid 1px #999;
+  }
+
+  .TabWarningMessage{
+    position: relative;
+    margin: 10px;
+    margin-right: 80px;
+  }
+
+  .TabWarningButton{
+    position: absolute;
+    right: 0px;
+    bottom: 10px;    
+  }
+  .XButton.XButtonGreen.TabWarningButton{
+    font-size: 1em;
+    margin-right: 10px;
+    span{
+        top: -2px;
+    }
+  }
+}
+
+.ConferenceAvatarSection{
+    -webkit-box-flex:0;
+    position:relative;
+    width:50px;
+    height:100%;
+    float:left;
+    min-width: 0;     
+    min-height: 0;
+}
+
+.ConferenceRecording{
+  border-radius:30px;
+  color: #0093f0;
+}
+.noJoinConf{
+        .ListRow .ListRowContent{
+            display: flex;
+            min-width: 0;     
+            min-height: 0;
+            
+            span{
+               font-size: 11px;
+               font-weight: bold; 
+               color: #333;
+               text-shadow: 0px 1px 0px #FFF;
+               transition: border 0.3s ease 0s;
+            }
+        }
+        .ListSection{margin-bottom: 10px;}
+ }

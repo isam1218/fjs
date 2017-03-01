@@ -1,0 +1,42 @@
+          <div class="AboutSection" >
+            <div class="ListSectionHeader">
+              <div class="ListSectionHeaderTitle" >
+                {{::verbage.fonality_web_client}}
+              </div>
+            </div>
+            <div class="ListSectionBody">{{::verbage.version}}: 1.4.4.000000</div>
+          </div>
+
+          <div class="AboutSection" >
+            <div class="ListSectionHeader">
+              <div class="ListSectionHeaderTitle" >{{::verbage.fon_cloud_service}}</div>
+            </div>
+            <div class="ListSectionBody">{{::verbage.fdp_version}} {{::meModel.fdp_version}}</div>
+          </div>
+
+          <div class="AboutSection">
+            <div class="ListSectionHeader">
+              <div class="ListSectionHeaderTitle">{{::verbage.fon_pbx_control_server}}</div>
+            </div>
+              <div class="ListSectionBody">{{::verbage.hud_server_version}}: {{::meModel.server_version}}</div>
+          </div>
+
+            <div class="AboutSection" >
+              <div class="ListSectionHeader">
+                <div class="ListSectionHeaderTitle">{{::verbage.fon_pbx_server}}</div>
+              </div>
+              <div class="ListSectionBody">{{::verbage.fon_core_version}}: {{::meModel.fon_core}}</div>
+            </div>
+
+           <!--  <div class="ListSection PluginSection fj-visibility-true">
+              <div class="ListSectionHeader">
+                <div class="ListSectionHeaderTitle">{{::verbage.fon_plugin}}</div>
+              </div>
+              <div class="ListSectionBody">{{::verbage.version}}: <span>{{ pluginVersion || 'undefined' }}</span>
+                   <br>
+                  <div class="XButton" ng-if="!isPluginUptoDate()" ng-click="showOverlay(true,'DownloadPlugin',{});">
+                    <a style="color:#333;text-decoration:none" href="{{::pluginDownloadUrl}}" download target="_blank"><span> Download plugin </span></a>
+                  </div>
+
+              </div>
+            </div> -->

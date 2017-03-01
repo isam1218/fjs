@@ -1,91 +1,56 @@
-<div class="Widget Contacts" id="WidgetContacts" unpin="#/contacts" draggable="true">
-    <div class="WidgetHeader">
-        <div class="Avatar AvatarApp">
-            <div class="TopBarItemAppIcon Contacts"></div>
-        </div>
-        <div class="WidgetHeaderTitle" >Contacts</div>
-    </div>
-    <div class="WidgetBody">
-        <div class="WidgetTabBar">
-            <a href="#/contacts" class="WidgetTabBarButton Ready fj-selected-item">
-                <div class="inner">Contacts</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/groups" class="WidgetTabBarButton Ready">
-                <div class="inner">Groups</div>
-                <div class="arrow"></div>
-            </a>
-            <a href="#/external" class="WidgetTabBarButton Ready  ">
-                <div class="inner">External</div>
-                <div class="arrow"></div>
-            </a>
-        </div>
-    <div class="ToolBar">
-        <div class="SearchInputBox">
-            <div class="SearchInputBoxInputHolder">
-                <input class="SearchInputBoxInput" data-ng-change="onSearch()" type="text" x-webkit-speech="" data-ng-model="query" placeholder="Search">
-            </div>
-            <div class="SearchInputBoxStateButton">
-                <div class="SearchInputBoxStateButtonIcon"></div>
-            </div>
-        </div>
-        <button class="XButton XButtonNormal" data-ng-click="createContact($event)">New
-        </button>
-    </div>
-    <div class="ListLineContent Header LeftContactsColumns">
-        <div class="ListLineContentCell" >
-            Sort:
-        </div>
-        <div data-ng-click="sort('displayName')" class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-            <span>NAME</span>
+<div class="ListLineContent Header LeftContactsColumns">
+	<div ng-show="$parent.tab != 'recent'">
+		<div data-ng-click="sort('displayName')" class="ListLineContentCell Name {{(sortField == 'displayName' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			<span>{{::verbage.name}}</span>
+			<div class="DirectionArrow"></div>
+		</div>
+		<div  ng-if="$parent.tab != 'external'" data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+			/<span>{{::verbage.extension}}</span>
+			<div class="DirectionArrow"></div>
+		</div>
+		<div ng-if="$parent.tab != 'external'" data-ng-click="sort('hud_status')"  class="ListLineContentCell HudStatus {{(sortField == 'hud_status' && ((sortReverse && 'Down') || 'Up')) || 'None'}}">
+            <span>{{::verbage.hud_status}}</span>
             <div class="DirectionArrow"></div>
         </div>
-        <div data-ng-click="sort('primaryExtension')" class="ListLineContentCell Extension {{(sortField == 'primaryExtension' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-            <span>EXTENSION</span>
-            <div class="DirectionArrow"></div>
-        </div>
-        <div data-ng-click="sort('startedAt')"  class="ListLineContentCell CallStatus {{(sortField == 'startedAt' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-            <span>CALL STATUS</span>
-            <div class="DirectionArrow"></div>
-        </div>
-        <div data-ng-click="sort('xmpp')"  class="ListLineContentCell HudStatus {{(sortField == 'xmpp' && ((sortReverce && 'Down') || 'Up')) || 'None'}}">
-            <span>HUD STATUS</span>
-            <div class="DirectionArrow"></div>
-        </div>
-    </div>
-        <div contacts-list></div>
-    <!--<div  class="LeftBarTabContentList">
-            <a href="#/contact/{{contact.xpid}}" context-menu="contact"  data-ng-repeat="contact in contacts | ContactsWithoutMe | filter:filterContactFn(query) |  orderBy:sortField:sortReverce" class="ListRowFirst ListRow ListRow-Contact">
-                <div class="Avatar AvatarNormal" avatar-menu="contact">
-                    <img class="AvatarImgPH" data-ng-src="{{contact.getAvatarUrl(28,28)}}">
-                    <div class="AvatarForeground AvatarInteractable"></div>
-                </div>
-                <div class="ListRowContent">
-                    <div class="ListRowTitle">
-                        <div class="name">
-                            <b>{{ contact.getDisplayName()}}</b>
-                            <span class="details">#{{ contact.primaryExtension }}</span>
-                        </div>
-                    </div>
-                    &lt;!&ndash;<div class="CallStatus">
-                        <div class="Avatar AvatarSmall CallAvatar CallAvatar_Office">
-                            <img class="AvatarImgPH" data-fj-local-id="avatarImg" ng-src="{{ contact.getCallAvatarUrl(28,28)}}">
-                            <div class="AvatarInteractable AvatarForeground"></div>
-                        </div>
-                    </div>&ndash;&gt;
-                    <div class="ListRowStatus">
-                        <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.getChatStatus()}}">
-                            <div class="status-icon-inner"></div>
-                        </div>
-                        <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.contactstatus_queueStatus}}">
-                            <div class="status-icon-inner"></div>
-                        </div>
-                        <div class="ListRowStatusText">{{contact.contactstatus_xmppCustom || contact.contactstatus_xmpp || 'offline'}}</div>
-                    </div>
-                </div>
-            </a>
-        </div>-->
-
-    </div>
+    <div data-ng-click="sort('call')"  class="ListLineContentCell CallStatus {{(sortField == 'call' && ((sortReverse && 'Down') || 'Up')) || 'None'}} ng-class:{'external': $parent.tab == 'external'}">
+			<span>{{::verbage.call_status}}</span>
+			<div class="DirectionArrow"></div>
+		</div>		
+	</div>
 </div>
 
+<div class="ContactList">
+	<div class="LeftBarTabContentList">
+			<a href="#contact/{{::contact.xpid}}" ng-repeat="contact in contacts | orderBy: 'displayName'  | orderBy: sortField: sortReverse track by contact.xpid" class="ListRowFirst ListRow ListRow-Contact ContactRow-{{::contact.xpid}}" droppable="Call">	
+			<avatar profile="contact" context="contacts:$parent.tab"></avatar>
+			
+			<div class="ListRowContent" dockable="contact">
+				<div class="ListRowTitle">
+					<div class="name" ng-if="::contact.primaryExtension">
+						<strong ng-bind-html="::contact.displayName"></strong>
+						<span class="ListRowTitleExtension">#{{ ::contact.primaryExtension }}</span>
+					</div>
+					<div class="name" ng-if="::!contact.primaryExtension" >
+						<strong ng-bind-html="contact.displayName"></strong>
+					</div>
+				</div>	
+				
+				<div class="ListRowStatus">
+                    <div class="ListRowStatusIcon XIcon-ChatStatus-{{contact.hud_status || 'offline' }}"></div>
+                    <div class="ListRowStatusIcon XIcon-QueueStatus XIcon-QueueStatus-{{contact.queue_status}}"></div>
+                    <br/>                   
+                    <div class="ListRowStatusText" ng-bind-html="(contact.custom_status ? contact.custom_status : contact.hud_status ? verbage[contact.hud_status] : verbage['offline']) + (contact.call ? ' + ' + verbage['on_call'] : '')"></div>
+                </div>	
+                
+                <div class="CallStatus" ng-if="contact.call">
+                    <avatar 
+                        ng-click="showCallStatus($event, contact)"
+                        profile="contact.call"
+                        context="callstatus"
+                        type="{{contact.call.type}}">
+                    </avatar>
+                </div>  
+			</div>
+		</a>
+	</div>
+</div>

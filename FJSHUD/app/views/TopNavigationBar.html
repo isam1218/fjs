@@ -1,0 +1,53 @@
+<div class="TopBarLogo"></div>
+
+<div class="TopBarIcons">
+	<a ng-href="{{::icon.url}}" class="TopBarItemApp" data-ng-repeat="icon in appIcons | filter: {enabled: true}"  ng-show="showNavIcon(icon)"  >
+		<avatar profile="me" ng-show="::icon.key == 'Me'"></avatar>
+		<div class="TopBarItemAppIcon {{ ::icon.key }}" ng-show="::icon.key != 'Me'"  ></div>
+		<div class="TopBarItemAppName" >{{ ::icon.title }}</div>
+	</a>	
+	<div class="TopBarItemApp more" ng-click="showHideiconsDropdown(true)"><!--  ng-if="voicemail && smallScreen" -->	  
+        <div class="TopBarItemAppIcon more"></div>
+        <div class="TopBarItemAppName">More ...</div>
+        
+        <div class="DropDownMoreList" id="DropDownMoreList"><!--  ng-if="showDropdown" -->
+			  <div class="DropDownMoreListScrollable">
+			
+			   <div class="dropdownView">		   
+			     <div id="apps">
+			        <a href="{{::icon.url}}" id="{{ ::icon.key }}" class="TopBar2MenuItemApp {{ ::icon.key }}" data-ng-repeat="icon in appIcons | filter: {enabled: true}"  ng-show="::icon.key != 'Me'">
+				        <div class="TopBar2ItemAppIcon {{ ::icon.key }}"></div>
+				        <div class="TopBar2MenuItemName">{{ ::icon.title }}</div>				        
+				    </a>			   			
+			      </div>			    
+			   </div>					   			
+			 </div>			 
+	    </div>
+    </div>
+</div>
+
+<div class="TopBarMeStatus">
+    <div class="cust_status">
+        <span class="Preferences" title="settings" ng-click="openPreferences()">
+            <span class="material-icons">settings</span>
+        </span>
+        <span class="Logout" title="log out" ng-click="logout()">
+            <span class="material-icons">power_settings_new</span>
+        </span>
+    
+        <div class="Status">
+            <div ng-if="queue.queues && queue.queues.length > 0">
+                {{::verbage.me}} {{ queue.loggedIn > 0 ? 'in (' + queue.loggedIn + ')' : 'out (' + queue.queues.length + ')' }}
+                <div class="ListRowStatusIcon XIcon-QueueStatus-{{ meModel.queue_agent_status }}"></div>
+            </div>
+            <div ng-if="!queue.queues || queue.queues.length == 0" class="ListRowStatusIcon XIcon-QueueStatus-"></div>
+            
+            <div class="hud_status">
+                {{ meModel.chat_status ? (meModel.chat_status == 'dnd' ? verbage['busy'] : verbage[meModel.chat_status]) : verbage.offline }}
+                <div class="ListRowStatusIcon XIcon-ChatStatus-{{ meModel.chat_status || 'offline' }}"></div>
+            </div>
+        </div>
+    </div>  	
+</div>
+
+

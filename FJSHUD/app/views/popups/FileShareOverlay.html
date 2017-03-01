@@ -1,0 +1,112 @@
+<div class="Overlay fileShare" ng-controller="FileShareOverlayController" flow-init flow-name="upload.flow">
+    <div ng-click="showOverlay(false)" class="Background"></div>
+ <div class="wrapper">
+    <div class="Foreground" ng-if="audience">
+        <div class="Header">
+            <div ng-click="showOverlay(false)" class="Close">
+	           <div class="CloseIcon2"></div>
+	        </div>
+            <div class="headerIcon share"></div>
+            <div class="HeaderTitle">{{::verbage.file_share_to}} <span class="name">{{ toName }}</span></div>
+        </div>
+
+        <div class="Sections">
+            <div class="Section">
+                <div>
+                    <h4 class="upper">{{::verbage.Message}}</h4>
+                    <p>{{::verbage.add_message_to_shared_files}} </p>
+                    <textarea type="text" ng-model="message" class="XInputText"></textarea>
+                </div>
+                <div>
+                    <h4 class="upper">{{::verbage.auto_delete}}</h4>
+                    <p>{{::verbage.schedule_move_to_trash}} </p>
+                    <div ng-repeat="archive in archiveOptions" class="AutoDelete">
+                        <input  type="radio" ng-model="$parent.selectedArchiveOption" ng-value="archive" ng-change="update(selectedArchiveOption)">{{archive.name}}</input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="Section ">
+                <div id="attachments">
+                 <h4 class="upper">{{::verbage.attachments}}  </h4>
+                 <span class="XButton" flow-btn>{{::verbage.attach}}</span>
+                 <p>{{::verbage.attach_files_to_share}}</p>
+                </div>
+                <div class="Members">
+                    <div ng-repeat="file in $flow.files" class="ListRow">
+                        <div class="file">
+	                        <p>{{::verbage.file}}</p>
+	                        <span><p>{{::file.name + ' (' + file.size + ' ' + verbage.bytes + ')'}}</p></span>
+                        </div>
+                        <div class="XButton" ng-click="$flow.removeFile(file)">{{::verbage.Remove}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="Footer">
+            <input type="button" class="XButton" value="{{::verbage.cancel}}" ng-click="showOverlay(false)" />
+            <input type="button" class="XButton XButtonBlue" value="{{::verbage.share_message_and_files}}" ng-click="uploadAttachments($flow.files)" />
+        </div>
+	</div>
+
+    <div class="Foreground" ng-if="downloadables">
+       <!-- <div ng-click="showOverlay(false)" class="Close">x</div> -->
+        <div class="Header">
+            <div ng-click="showOverlay(false)" class="Close">
+	           <div class="CloseIcon2"></div>
+	        </div>
+            <div class="headerIcon share"></div>
+            <div class="HeaderTitle DownloadHeader">{{::verbage.Preview}}: <span class="name">{{ currentDownload.fileName }}</span></div>
+        </div>
+        <div class="Sections" >
+            <div class="Section">
+                <div class="review">
+					<!-- embed types -->
+					<img style="vertical-align: top;" class="CurrentDownload DownloadPreview" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'img'" />
+
+					<iframe style="vertical-align: top;" class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'doc' || embedType == 'text'"></iframe>
+
+					<video style="vertical-align: top;" class="CurrentDownload" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'video'" controls>Your browser doesn't support HTML5 video.</video>
+
+					<audio style="vertical-align: top;" class="CurrentDownloadDocument" ng-src="{{getEmbedURL(currentDownload.url)}}" ng-if="embedType == 'audio'" controls>Your browser doesn't support HTML5 audio.</audio>
+                </div>
+            </div>
+
+            <div class="Section" style="
+                min-width: 42%;
+                max-width: 42%;
+                margin-left: 9%
+            ">
+                <div style="margin-bottom:10px">
+                    <span>
+                        <h4 class="upper">{{::verbage.items}} </h4>
+                        <i>{{downloadables.length}} {{::verbage.items_found}} </i>
+                    </span>
+                </div>
+
+                <div class="AttachmentDownload">
+                    <div style="vertical-align: top;" ng-repeat="download in downloadables" class="ListRow Small Downloadables" ng-click="selectCurrentDownload(download)">
+                        <div style="display:inline-block;width:40px" class="Center">
+                            <img class="AvatarSmall Center" ng-src="{{::getPreviewIcon(download.url, download.fileName)}}" />
+                        </div>
+                        <div class="FileInfo" ng-class="currentDownload.xkey == download.xkey ? 'Selected' : '' ">
+                            <div style="margin-top:0px;margin-left:5px">
+                                <p class="UploadFileName" style="margin-top:0px">{{::download.fileName}}</p>
+                                <p> {{ ::download.created | date: 'yyyy MMMM d, hh:ss a' }} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="Footer">
+            <input type="button" class="XButton" value="{{::verbage.Previous}}" ng-click="getOffsetDownload(-1)" />
+            <input type="button" class="XButton" value="{{::verbage.Next}}" ng-click="getOffsetDownload(1)" />
+            <a type="button" href="{{getDownloadURL(currentDownload.url)}}" target="_blank" class="XButton XButtonBlue" download value="{{::verbage.share_message_and_files}}">{{::verbage.download_current}}</a>
+
+        </div>
+    </div>
+  </div>
+</div>
