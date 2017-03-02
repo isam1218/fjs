@@ -21,3 +21,5 @@ The build process is based on grunt. While there are many tasks registered in th
 ###DEBUGGING
 
 Check the network requests to see if the "sync" API is returning the correct data. It's not safe to rely on console.log(), because the data will most likely have been tampered with by then.
+
+A lot of client data is stored in localStorage, and localStorage isn't cleared unless you wipe your browser's entire history. If you suspect cookies are at the root of an issue, just use localStorage.clear() from the console.
