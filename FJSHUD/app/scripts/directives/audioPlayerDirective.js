@@ -6,13 +6,22 @@ hudweb.directive('player', ['$parse', '$sce', '$filter', 'HttpService', function
 		link: function(scope, element, attrs) {
 			// player data
 			var data = $parse(attrs.data)(scope);
+
 			if (data.voicemailMessageKey){
-				data.voicemailMessageKey = encodeURIComponent(data.voicemailMessageKey);
+				// need to run a check so not encoded twice...
+				if (decodeURIComponent(data.encodedId) != data.voicemailMessageKey){
+					// if hasn't been encoded, then encode it
+					data.encodedId = encodeURIComponent(data.voicemailMessageKey);
+				}				
+			} else if (data.xpid){
+				if (decodeURIComponent(data.encodedId) != data.xpid){
+					// if hasn't been encoded, then encode it
+					data.encodedId = encodeURIComponent(data.xpid);
+				}
 			}
-			else{
-				data.xpid = encodeURIComponent(data.xpid);
-			}
-			var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
+			
+			var path = data.encodedId ? 'vm_download?id=' + data.encodedId : 'media?key=callrecording:' + data.encodedId;
+
 			var audio = new Audio($sce.trustAsResourceUrl(httpService.get_audio(path)));
 			var retry;
 			var attempts = 0;

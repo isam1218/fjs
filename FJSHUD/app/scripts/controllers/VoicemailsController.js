@@ -191,8 +191,7 @@ hudweb.controller('VoicemailsController', ['$rootScope', '$scope', '$routeParams
 	};
 	
 	$scope.downloadFile = function(vm) {
-    vm.voicemailMessageKey = encodeURIComponent(vm.voicemailMessageKey);
-		var path = httpService.get_audio('vm_download?id=' + vm.voicemailMessageKey);
+    var path = httpService.get_audio('vm_download?id=' + vm.encodedId);
 		document.getElementById('download_file').setAttribute('src', path);
 	};
 }]);
