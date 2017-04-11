@@ -6,14 +6,12 @@ hudweb.directive('player', ['$parse', '$sce', '$filter', 'HttpService', function
 		link: function(scope, element, attrs) {
 			// player data
 			var data = $parse(attrs.data)(scope);
-
 			if (data.voicemailMessageKey){
-				data.voicemailMessageKey = data.voicemailMessageKey.replace(/#/g, '%23');
+				data.voicemailMessageKey = encodeURIComponent(data.voicemailMessageKey);
 			}
 			else{
-				data.xpid = data.xpid.replace(/#/g, '%23');
+				data.xpid = encodeURIComponent(data.xpid);
 			}
-
 			var path = data.voicemailMessageKey ? 'vm_download?id=' + data.voicemailMessageKey : 'media?key=callrecording:' + data.xpid;
 			var audio = new Audio($sce.trustAsResourceUrl(httpService.get_audio(path)));
 			var retry;
