@@ -155,7 +155,7 @@ hudweb.controller('RecordingsController', ['$scope', '$rootScope', '$routeParams
 	};
 	
 	$scope.downloadFile = function(rec) {
-		var path = httpService.get_audio('media?key=callrecording:' + rec.xpid);
+		var path = httpService.get_audio('media?key=callrecording:' + rec.recordingEncodedId);
 		document.getElementById('download_file').setAttribute('src', path);
 	};
 }]);

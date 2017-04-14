@@ -11,16 +11,16 @@ hudweb.directive('player', ['$parse', '$sce', '$filter', 'HttpService', function
 				// need to run a check so not encoded twice...
 				if (decodeURIComponent(data.encodedId) != data.voicemailMessageKey){
 					// if hasn't been encoded, then encode it
-					data.encodedId = encodeURIComponent(data.voicemailMessageKey);
+					data.vmEncodedId = encodeURIComponent(data.voicemailMessageKey);
 				}				
 			} else if (data.xpid){
 				if (decodeURIComponent(data.encodedId) != data.xpid){
 					// if hasn't been encoded, then encode it
-					data.encodedId = encodeURIComponent(data.xpid);
+					data.recordingEncodedId = encodeURIComponent(data.xpid);
 				}
 			}
 			
-			var path = data.encodedId ? 'vm_download?id=' + data.encodedId : 'media?key=callrecording:' + data.encodedId;
+			var path = data.vmEncodedId ? 'vm_download?id=' + data.vmEncodedId : 'media?key=callrecording:' + data.recordingEncodedId;
 
 			var audio = new Audio($sce.trustAsResourceUrl(httpService.get_audio(path)));
 			var retry;
