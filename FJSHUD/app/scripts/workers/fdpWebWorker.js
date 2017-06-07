@@ -120,6 +120,7 @@ function sync_request(f){
 			// account for characters that may break parse
 			var synced_data = JSON.parse(xmlhttp.responseText
 				.replace(/\\'/g, "'")
+				.replace(/\\\'/g, "'")
 				.replace(/([\u0000-\u001F])/g, function(match) {
 					var c = match.charCodeAt();
 					return "\\u00" + Math.floor(c/16).toString(16) + (c%16).toString(16);

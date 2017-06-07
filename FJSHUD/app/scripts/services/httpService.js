@@ -488,6 +488,7 @@ hudweb.service('HttpService', ['$http', '$rootScope', '$location', '$q', '$timeo
 			// account for characters that may break parse
 			var data = JSON.parse(response.data
 				.replace(/\\'/g, "'")
+				.replace(/\\\'/g, "'")
 				.replace(/([\u0000-\u001F])/g, function(match) {
 					var c = match.charCodeAt();
 					return "\\u00" + Math.floor(c/16).toString(16) + (c%16).toString(16);
