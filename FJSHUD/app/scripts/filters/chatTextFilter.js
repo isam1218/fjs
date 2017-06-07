@@ -20,6 +20,8 @@ hudweb.filter('chatify', ['$sce', 'HttpService', function($sce, httpService) {
 		}
 		
 		text = words.join(' ');
+
+		text = text.replace(/\\\'/g, "'");
 			
 		// 2: make smilies
 		text = text
