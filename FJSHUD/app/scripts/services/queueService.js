@@ -137,12 +137,18 @@ hudweb.service('QueueService', ['$rootScope', '$q', '$location', 'ContactService
 		httpService.getFeed('queuepermissions');*/
 	});
 
+	$rootScope.resetQueueStatsPermission;
+	var resetStatsPermissionIsFalseFlag = false;
 	$rootScope.$on('queuepermissions_synced', function (event, data){
 		$rootScope.in_queue = false;
 		for (var i = 0, iLen = queues.length; i < iLen; i++){
 			for (var j = 0, jLen = data.length; j < jLen; j++){
 				if (data[j].xpid == queues[i].xpid){
 					queues[i].permissions = data[j];
+					if (settingsService.isEnabled(queues[i].permissions.permissions, 3) === false){
+						// if permission returns false for any queue -> set flag to true and resetqueuestats permission to false;
+						resetStatsPermissionIsFalseFlag = true;
+					}
 					break;
 				}
 				
@@ -163,7 +169,9 @@ hudweb.service('QueueService', ['$rootScope', '$q', '$location', 'ContactService
 			
 			if(locationArray[1] == 'callcenter')			
 				$location.path('/callcenter/allqueues');
-		}	
+		}
+		// if flag is true -> don't have permission, so set $rootScope.resetqueuestats to true
+		$rootScope.resetQueueStatsPermission = resetStatsPermissionIsFalseFlag ? false : true;
 		//localStorage['in_queue'] = $rootScope.in_queue;
 	});
 
